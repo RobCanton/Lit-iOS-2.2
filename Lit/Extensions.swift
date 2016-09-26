@@ -1,0 +1,190 @@
+//
+//  Extensions.swift
+//  Lit
+//
+//  Created by Robert Canton on 2016-07-28.
+//  Copyright © 2016 Robert Canton. All rights reserved.
+//
+
+import UIKit
+import RecordButton
+
+let imageCache = NSCache()
+
+extension UIImageView {
+    
+    func loadImageUsingCacheWithURLString(_url:String, completion: (result: Bool)->()) {
+        
+        // Check for cached image
+        if let cachedImage = imageCache.objectForKey(_url) as? UIImage {
+            self.image = cachedImage
+            return completion(result: false)
+        }
+        
+        // Otherwise, download image
+        let url = NSURL(string: _url)
+        NSURLSession.sharedSession().dataTaskWithURL(url!, completionHandler:
+            { (data, response, error) in
+                
+                //error
+                if error != nil {
+                    print(error)
+                    return
+                }
+                
+                dispatch_async(dispatch_get_main_queue(), {
+                    
+                    if let downloadedImage = UIImage(data: data!) {
+                        imageCache.setObject(downloadedImage, forKey: _url)
+                    }
+                    
+                    self.image = UIImage(data: data!)
+                    completion(result: true)
+                })
+                
+        }).resume()
+    }
+    
+}
+
+extension UIImage {
+    public func imageRotatedByDegrees(degrees: CGFloat, flip: Bool) -> UIImage {
+        let radiansToDegrees: (CGFloat) -> CGFloat = {
+            return $0 * (180.0 / CGFloat(M_PI))
+        }
+        let degreesToRadians: (CGFloat) -> CGFloat = {
+            return $0 / 180.0 * CGFloat(M_PI)
+        }
+        
+        // calculate the size of the rotated view's containing box for our drawing space
+        let rotatedViewBox = UIView(frame: CGRect(origin: CGPointZero, size: size))
+        let t = CGAffineTransformMakeRotation(degreesToRadians(degrees));
+        rotatedViewBox.transform = t
+        let rotatedSize = rotatedViewBox.frame.size
+        
+        // Create the bitmap context
+        UIGraphicsBeginImageContext(rotatedSize)
+        let bitmap = UIGraphicsGetCurrentContext()
+        
+        // Move the origin to the middle of the image so we will rotate and scale around the center.
+        CGContextTranslateCTM(bitmap, rotatedSize.width / 2.0, rotatedSize.height / 2.0);
+        
+        //   // Rotate the image context
+        CGContextRotateCTM(bitmap, degreesToRadians(degrees));
+        
+        // Now, draw the rotated/scaled image into the context
+        var yFlip: CGFloat
+        
+        if(flip){
+            yFlip = CGFloat(-1.0)
+        } else {
+            yFlip = CGFloat(1.0)
+        }
+        
+        CGContextScaleCTM(bitmap, yFlip, -1.0)
+        CGContextDrawImage(bitmap, CGRectMake(-size.width / 2, -size.height / 2, size.width, size.height), CGImage)
+        
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage
+    }
+    
+    
+}
+
+extension NSDate
+{
+    
+    func timeStringSinceNow() -> String
+    {
+        let calendar = NSCalendar.currentCalendar()
+        
+        let components = calendar.components([.Day, .Hour, .Minute, .Second], fromDate: self, toDate: NSDate(), options: [])
+        
+        if components.day > 0 {
+            return "\(components.day)d ago"
+        }
+        else if components.hour > 0 {
+            return "\(components.hour)h ago"
+        }
+        else if components.minute > 0 {
+            return "\(components.minute)m ago"
+        }
+        
+        return "\(components.second)s ago"
+    }
+
+}
+
+extension UILabel
+{
+    func styleLocationTitle(_str:String) {
+        let str = _str.uppercaseString
+        let font = UIFont(name: "Avenir-Black", size: 30.0)
+        let attributes: [String: AnyObject] = [
+            NSFontAttributeName : font!,
+            NSForegroundColorAttributeName : UIColor.whiteColor()
+        ]
+        
+        let title = NSMutableAttributedString(string: str, attributes: attributes) //1
+        
+        let searchStrings = ["THE ", " THE ", " & ", "NIGHTCLUB", " NIGHTCLUB ", "CLUB", " CLUB", "YOU ARE NEAR"]
+        for string in searchStrings {
+            if let range = str.rangeOfString(string) {
+                
+                let index: Int = str.startIndex.distanceTo(range.startIndex)
+                
+                let a2: [String: AnyObject] = [
+                    NSFontAttributeName : UIFont(name: "Avenir-Light", size: 30.0)!,
+                ]
+                
+                title.addAttributes(a2, range: NSRange(location: index, length: string.characters.count))
+            }
+        }
+        
+        self.attributedText = title //3
+    }
+    
+    func styleLocationTitleWithPreText(str:String, size1: CGFloat, size2: CGFloat) {
+        let font = UIFont(name: "Avenir-Black", size: size1)
+        let attributes: [String: AnyObject] = [
+            NSFontAttributeName : font!,
+            NSForegroundColorAttributeName : UIColor.whiteColor()
+        ]
+        
+        let title = NSMutableAttributedString(string: str, attributes: attributes) //1
+        
+        let preStrings = ["You are at", "Uploading to"]
+        for string in preStrings {
+            if let range = str.rangeOfString(string) {
+                let index = str.startIndex.distanceTo(range.startIndex)
+                let a: [String: AnyObject] = [
+                    NSFontAttributeName : UIFont(name: "Avenir-Light", size: size2)!,
+                    NSForegroundColorAttributeName : UIColor.whiteColor()
+                ]
+                title.addAttributes(a, range: NSRange(location: index, length: string.characters.count))
+            }
+        }
+        
+        let searchStrings = ["THE ", " THE ", " & ", "NIGHTCLUB", " NIGHTCLUB ", "CLUB", " CLUB"]
+        for string in searchStrings {
+            if let range = str.rangeOfString(string) {
+                
+                let index: Int = str.startIndex.distanceTo(range.startIndex)
+                
+                let a2: [String: AnyObject] = [
+                    NSFontAttributeName : UIFont(name: "Avenir-Light", size: size1)!,
+                    ]
+                
+                title.addAttributes(a2, range: NSRange(location: index, length: string.characters.count))
+            }
+        }
+        
+        self.attributedText = title //3
+    }
+    
+    
+}
+
+
