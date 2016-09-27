@@ -18,11 +18,11 @@
                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BA3-MC-YcS">
                         <rect key="frame" x="14" y="8" width="44" height="44"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="44" id="o0j-wo-ecb"/>
+                            <constraint firstAttribute="width" constant="44" id="fkz-SC-oU7"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Robert" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H0a-gk-2be">
-                        <rect key="frame" x="66" y="19" width="161" height="21"/>
+                        <rect key="frame" x="66" y="19" width="201" height="21"/>
                         <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="17"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
@@ -30,8 +30,9 @@
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cfN-XA-EmO">
                         <rect key="frame" x="275" y="14" width="32" height="32"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="32" id="NHP-Fo-vTz"/>
+                            <constraint firstAttribute="width" constant="32" id="Q9P-tR-99b"/>
                         </constraints>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <state key="normal" image="plus"/>
                         <connections>
                             <action selector="addFriendButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Aw4-Ol-tuW"/>
@@ -39,15 +40,15 @@
                     </button>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailingMargin" secondItem="cfN-XA-EmO" secondAttribute="trailing" constant="5" id="8RA-lx-utS"/>
-                    <constraint firstItem="BA3-MC-YcS" firstAttribute="centerY" secondItem="H0a-gk-2be" secondAttribute="centerY" id="L3A-nD-Z4S"/>
-                    <constraint firstItem="BA3-MC-YcS" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="6" id="SBE-C2-lRb"/>
-                    <constraint firstItem="BA3-MC-YcS" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="VDB-bt-lQx"/>
-                    <constraint firstItem="H0a-gk-2be" firstAttribute="centerY" secondItem="cfN-XA-EmO" secondAttribute="centerY" id="czz-Nn-Gpe"/>
-                    <constraint firstItem="H0a-gk-2be" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="11" id="da5-ie-EMP"/>
-                    <constraint firstItem="cfN-XA-EmO" firstAttribute="leading" secondItem="H0a-gk-2be" secondAttribute="trailing" constant="48" id="jei-5R-eXw"/>
-                    <constraint firstItem="H0a-gk-2be" firstAttribute="leading" secondItem="BA3-MC-YcS" secondAttribute="trailing" constant="8" symbolic="YES" id="wZV-eU-50e"/>
-                    <constraint firstItem="BA3-MC-YcS" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="yeq-qF-JNV"/>
+                    <constraint firstItem="cfN-XA-EmO" firstAttribute="leading" secondItem="H0a-gk-2be" secondAttribute="trailing" constant="8" symbolic="YES" id="0Pq-rG-1Du"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="cfN-XA-EmO" secondAttribute="trailing" constant="5" id="1m5-x4-ajF"/>
+                    <constraint firstItem="H0a-gk-2be" firstAttribute="centerY" secondItem="cfN-XA-EmO" secondAttribute="centerY" id="2Xh-WS-cjH"/>
+                    <constraint firstItem="H0a-gk-2be" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="11" id="55c-OJ-1R3"/>
+                    <constraint firstItem="BA3-MC-YcS" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="YDq-Wh-20W"/>
+                    <constraint firstItem="H0a-gk-2be" firstAttribute="leading" secondItem="BA3-MC-YcS" secondAttribute="trailing" constant="8" symbolic="YES" id="dSF-Vr-GeW"/>
+                    <constraint firstItem="BA3-MC-YcS" firstAttribute="centerY" secondItem="H0a-gk-2be" secondAttribute="centerY" id="lSl-R0-DH1"/>
+                    <constraint firstItem="BA3-MC-YcS" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="6" id="mDT-SS-Aua"/>
+                    <constraint firstItem="BA3-MC-YcS" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="uWp-D1-4CD"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>

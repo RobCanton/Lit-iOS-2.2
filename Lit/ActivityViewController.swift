@@ -12,7 +12,7 @@ import ReSwift
 class ActivityViewController: UITableViewController, StoreSubscriber {
     
     
-    var requests = [Friend]()
+    var requests = [FriendRequest]()
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -20,14 +20,10 @@ class ActivityViewController: UITableViewController, StoreSubscriber {
         
         for request in requests {
             if request.getStatus() == .PENDING_INCOMING {
-                request.setStatus(FriendStatus.PENDING_INCOMING_SEEN)
-                let ref = FirebaseService.ref.child("users/\(mainStore.state.userState.uid)/friends/\(request.getId())")
+                let ref = FirebaseService.ref.child("users/\(mainStore.state.userState.uid)/friendRequests/\(request.getId())")
                 ref.updateChildValues(["status": FriendStatus.PENDING_INCOMING_SEEN.rawValue])
             }
         }
-
-        
-        
     }
     
     override func viewWillDisappear(animated: Bool) {

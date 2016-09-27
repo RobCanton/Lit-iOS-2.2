@@ -34,6 +34,9 @@ struct UserState {
     var activeCity: City?
     var activeLocationKey:String=""
     var vote:RatingState = .Selection
-    var friendRequests = [Friend]()
+    var friendRequests = [FriendRequest]()
+    var friendRequestsOut = [FriendRequest]()
     var unseenRequests = 0
+    
+    var friends = [Friend]()
 }

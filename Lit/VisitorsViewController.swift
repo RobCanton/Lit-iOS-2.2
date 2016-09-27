@@ -58,6 +58,7 @@ class VisitorsViewController: UIViewController, StoreSubscriber, UITableViewDele
         if key != activeLocationKey {
             activeLocationKey = key
         }
+        tableView.reloadData()
     }
     override func viewDidLoad() {
         super.viewDidLoad()

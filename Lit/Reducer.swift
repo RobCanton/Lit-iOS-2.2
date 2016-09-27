@@ -61,6 +61,14 @@ func UserStateReducer(action: Action, state: UserState?) -> UserState {
         state.friendRequests = a.requests
         state.unseenRequests = a.unseen
         break
+    case _ as UpdateFriendRequestsOut:
+        let a = action as! UpdateFriendRequestsOut
+        state.friendRequestsOut = a.requests
+        break
+    case _ as UpdateFriends:
+        let a = action as! UpdateFriends
+        state.friends = a.friends
+        break
     default:
         break
     }

@@ -21,7 +21,7 @@ class ActivityFriendRequestCell: UITableViewCell {
         // Initialization code
     }
     
-    var friend:Friend?
+    var friend:FriendRequest?
 
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
@@ -29,7 +29,7 @@ class ActivityFriendRequestCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func set(_friend:Friend) {
+    func set(_friend:FriendRequest) {
         friend = _friend
         userImage.layer.cornerRadius = userImage!.frame.size.width / 2;
         userImage.clipsToBounds = true;
@@ -54,11 +54,13 @@ class ActivityFriendRequestCell: UITableViewCell {
     @IBAction func confirmTapped(sender: AnyObject) {
         print("Confirm")
         let uid = mainStore.state.userState.uid
-        let ref = FirebaseService.ref.child("users/\(uid)/friendRequests_in")
-        ref.child(friend!.getId()).removeValue()
+
+        FirebaseService.ref.child("users/\(uid)/friendRequests/\(friend!.getId())").removeValue()
         
-        let outRef = FirebaseService.ref.child("users/\(friend!.getId())/friendRequests_out")
-        outRef.child(uid).removeValue()
+        FirebaseService.ref.child("users/\(friend!.getId())/friendRequests/\(uid)").removeValue()
+        
+        FirebaseService.ref.child("users/\(uid)/friends/\(friend!.getId())").setValue(true)
+        FirebaseService.ref.child("users/\(friend!.getId())/friends/\(uid)").setValue(true)
     }
     @IBAction func deleteTapped(sender: AnyObject) {
         print("Delete")
