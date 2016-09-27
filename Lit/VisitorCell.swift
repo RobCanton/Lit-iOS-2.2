@@ -21,11 +21,16 @@ class VisitorCell: UITableViewCell {
             sender.enabled = false
             
             let uid = mainStore.state.userState.uid
-            let userRef = FirebaseService.ref.child("users/\(uid)/friendRequests_out")
-            userRef.child(_user.getUserId()).setValue(true)
             
-            let friendRef = FirebaseService.ref.child("users/\(_user.getUserId())")
-            friendRef.child("friendRequests_in/\(uid)").setValue(true, withCompletionBlock: {
+            let userRef = FirebaseService.ref.child("users/\(uid)/friends")
+            userRef.child(_user.getUserId())
+                .setValue([
+                    "status": "PENDING_OUTGOING"
+                ])
+            let friendRef = FirebaseService.ref.child("users/\(_user.getUserId())/friends/\(uid)")
+            friendRef.setValue([
+                "status": "PENDING_INCOMING"
+                ], withCompletionBlock: {
                 error, ref in
                 
                 if error != nil {
@@ -58,6 +63,8 @@ class VisitorCell: UITableViewCell {
         
         addFriendBtn.enabled = false
         let uid = mainStore.state.userState.uid
+        
+    
         let ref = FirebaseService.ref.child("users/\(uid)/friendRequests_out/\(visitor_uid)")
         ref.observeSingleEventOfType(.Value, withBlock: { snapshot in
             if snapshot.exists() {
@@ -74,6 +81,15 @@ class VisitorCell: UITableViewCell {
         
         visitorImage.layer.cornerRadius = visitorImage!.frame.size.width / 2;
         visitorImage.clipsToBounds = true;
+        
+        let requests = mainStore.state.userState.friendRequests
+        for request in requests {
+            if request.getId() == visitor_uid {
+                if request.getStatus() == .PENDING_INCOMING || request.getStatus() == .PENDING_INCOMING_SEEN {
+                    
+                }
+            }
+        }
 
         FirebaseService.getUser(visitor_uid, completionHandler: {user in
             print(user.getDisplayName())
@@ -82,8 +98,7 @@ class VisitorCell: UITableViewCell {
             })
             self.visitorName.text = user.getDisplayName()!
         })
-
-        
-        
     }
+    
+    
 }

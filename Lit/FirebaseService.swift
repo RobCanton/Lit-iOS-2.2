@@ -162,6 +162,7 @@ class FirebaseService {
         let uploadTask = storageRef.child("user_uploads/\(city.getKey())/\(saveRef.key))").putData(data!, metadata: metadata) { metadata, error in
             if (error != nil) {
                 // Uh-oh, an error occurred!
+                saveRef.removeValue()
             } else {
                 // Metadata contains file metadata such as size, content-type, and download URL.
                 let downloadURL = metadata!.downloadURL()

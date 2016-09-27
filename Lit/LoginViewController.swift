@@ -30,6 +30,8 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, StoreSubs
     func newState(state: AppState) {
         counterLabel.text = "\(mainStore.state.userState.uid)"
         if mainStore.state.userState.isAuth {
+            
+            startRetrievers() 
             loginButton.enabled = false
             let cities = mainStore.state.cities
             if cities.count == 0 {
@@ -126,6 +128,10 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, StoreSubs
                 if let uid = user?.uid
                 {
                     mainStore.dispatch(UserIsAuthenticated(uid: uid))
+                    let ref = FirebaseService.ref.child("users/\(mainStore.state.userState.uid)")
+                    ref.observeEventType(.Value, withBlock: { (snapshot) in
+                        print("Snapshot updated foo")
+                    })
                 }
             }
             
@@ -159,6 +165,58 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, StoreSubs
         
         if let user = FIRAuth.auth()?.currentUser {
             mainStore.dispatch(UserIsAuthenticated(uid: user.uid))
+            
+        }
+    }
+    var retrieversStarted = false
+    
+    func startRetrievers() {
+        if (!retrieversStarted){
+            retrieversStarted = true
+            let ref = FirebaseService.ref.child("users/\(mainStore.state.userState.uid)/friends")
+            ref.observeEventType(.Value, withBlock: { (snapshot) in
+                var requests = [Friend]()
+                var unseen_requests = 0
+                if snapshot.exists() {
+                    for child in snapshot.children {
+                        let friend_uid = child.key!!
+                        let status = child.value["status"] as! String
+                        if let friendStatus = self.convertStatus(status) {
+                            let friend = Friend(friend_uid: child.key, status: friendStatus)
+                            if friendStatus == .FRIENDS {
+                                // add to friends list
+                            } else if friendStatus == .PENDING_INCOMING {
+                                unseen_requests += 1
+                                requests.append(friend)
+                            } else if friendStatus == .PENDING_INCOMING_SEEN {
+                                requests.append(friend)
+                            }
+                            
+                            
+                        }
+                        //let friend = Friend(friend_uid: child.key, status: convertStatus(status))
+                        //requests.append(child.key)
+                    }
+                }
+                mainStore.dispatch(UpdateFriendRequestsIn(requests: requests, unseen: unseen_requests))
+                
+                
+            })
+        }
+    }
+    
+    func convertStatus(string:String) -> FriendStatus?{
+        switch string {
+        case FriendStatus.PENDING_INCOMING.rawValue:
+            return FriendStatus.PENDING_INCOMING
+        case FriendStatus.PENDING_INCOMING_SEEN.rawValue:
+            return FriendStatus.PENDING_INCOMING_SEEN
+        case FriendStatus.PENDING_OUTGOING.rawValue:
+            return FriendStatus.PENDING_OUTGOING
+        case FriendStatus.FRIENDS.rawValue:
+            return FriendStatus.FRIENDS
+        default:
+            return nil
         }
     }
     

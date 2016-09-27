@@ -16,9 +16,9 @@ enum RatingState {
 class RatingViewController: UIViewController, StoreSubscriber  {
 
     @IBOutlet weak var locationTitle: UILabel!
-    @IBOutlet weak var imageView: UIImageView!
     
     
+    @IBOutlet weak var imageContainer: UIView!
     
     var voteState: RatingState = .Selection {
         didSet {
@@ -57,19 +57,41 @@ class RatingViewController: UIViewController, StoreSubscriber  {
             }
         }
     }
+    let imageView = UIImageView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        imageView.layer.cornerRadius = imageView!.frame.size.width / 2;
+        imageView.frame = imageContainer.bounds
+        imageContainer.addSubview(imageView)
+
+        imageView.contentMode = .ScaleAspectFill
+        imageView.layer.cornerRadius = imageContainer.frame.size.width / 20;
         imageView.clipsToBounds = true;
-        imageView.layer.borderWidth = 2.0
-        imageView.layer.borderColor = UIColor(white: 0.7, alpha: 1.0).CGColor
+        //imageView.layer.borderWidth = 2.0
+        //imageView.layer.borderColor = UIColor(white: 0.7, alpha: 1.0).CGColor
         
-        imageView.layer.shadowOffset = CGSize(width: 3, height: 3)
-        imageView.layer.shadowOpacity = 0.7
-        imageView.layer.shadowRadius = 2
         
+        imageContainer.layer.masksToBounds = false
+        imageContainer.layer.shadowOffset = CGSize(width: 0, height: 6)
+        imageContainer.layer.shadowOpacity = 0.4
+        imageContainer.layer.shadowRadius = 4
+        
+        checkInBtn.layer.cornerRadius = 4
+        notHereBtn.layer.cornerRadius = 4
+        
+        checkInBtn.layer.masksToBounds = false
+        checkInBtn.layer.shadowOffset = CGSize(width: 0, height: 6)
+        checkInBtn.layer.shadowOpacity = 0.4
+        checkInBtn.layer.shadowRadius = 4
+        
+        notHereBtn.layer.masksToBounds = false
+        notHereBtn.layer.shadowOffset = CGSize(width: 0, height: 6)
+        notHereBtn.layer.shadowOpacity = 0.4
+        notHereBtn.layer.shadowRadius = 4
+
+        
+
 
         // Do any additional setup after loading the view.
     }
@@ -105,6 +127,10 @@ class RatingViewController: UIViewController, StoreSubscriber  {
         //locationTitle.styleLocationTitle(location.getName())
         
         locationTitle.styleLocationTitleWithPreText("You are at\n\(activeLocation!.getName().uppercaseString)", size1: 26, size2: 18)
+        locationTitle.layer.masksToBounds = false
+        locationTitle.layer.shadowOffset = CGSize(width: 0, height: 4)
+        locationTitle.layer.shadowOpacity = 0.8
+        locationTitle.layer.shadowRadius = 4
         imageView.alpha = 0
         imageView.loadImageUsingCacheWithURLString((activeLocation?.getImageURL())!, completion: { result in
             UIView.animateWithDuration(1.0, animations: {

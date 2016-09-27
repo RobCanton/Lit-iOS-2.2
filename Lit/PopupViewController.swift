@@ -51,6 +51,7 @@ class PopupViewController: UIViewController, UIScrollViewDelegate, StoreSubscrib
         super.viewDidLoad()
         scrollView.delegate = self
      
+       
         ratingViewController = RatingViewController(nibName: "RatingViewController", bundle: nil)
         cameraViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("CameraViewController") as! CameraViewController
         visitorsViewController = VisitorsViewController(nibName: "VisitorsViewController", bundle: nil)
@@ -83,6 +84,7 @@ class PopupViewController: UIViewController, UIScrollViewDelegate, StoreSubscrib
         self.scrollView.setContentOffset(CGPoint(x: self.view.frame.width / 3, y: 0), animated: false)
         
         ratingViewController.view.alpha = 1.0
+
         
     }
     

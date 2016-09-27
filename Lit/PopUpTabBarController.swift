@@ -43,6 +43,13 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, PopUpProtocolD
                 }
             }
         }
+        
+        let unseenActivity = state.unseenRequests
+        if unseenActivity > 0 {
+            tabBar.items?[2].badgeValue = "\(unseenActivity)"
+        } else {
+            tabBar.items?[2].badgeValue = nil
+        }
     }
     
     override func viewDidLoad() {
@@ -53,12 +60,6 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, PopUpProtocolD
         popupVC.popupBar?.tintColor = UIColor.whiteColor()
         popupVC.cameraViewController.delegate = self
         
-        
-    
-        let leftButton = UIBarButtonItem(image: UIImage(named: "friends"), style: .Plain, target: self, action: #selector(presentVisitors))
-        let rightButton = UIBarButtonItem(image: UIImage(named: "camera"), style: .Plain, target: self, action: #selector(presentCamera))
-        popupVC.popupItem.leftBarButtonItems = [leftButton]
-        popupVC.popupItem.rightBarButtonItems = [rightButton]
         
         
         
@@ -73,20 +74,24 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, PopUpProtocolD
             if key == "center" {
                 if let newCenter = change["new"]?.CGPointValue() {
                     barTitleView.alpha = max(0, -0.7 + (max(0,newCenter.y) / self.view.frame.height) * 1.3)
+                    popupVC.scrollView.alpha =  1 - max(0, -0.2 + (max(0,newCenter.y) / self.view.frame.height) * 1.8)
                 }
             } else if key == "frame" {
                 if let newFrame = change["new"]?.CGRectValue() {
                     if (newFrame.origin.y > 0) {
                         barTitleView.alpha = 1
+                        popupVC.scrollView.alpha = 0
                     } else {
                         barTitleView.alpha = 0
+                        popupVC.scrollView.alpha = 1
                         
                     }
                 }
             }
         }
         
-        popupVC.view.alpha = 1 - barTitleView.alpha
+        
+        
 
     }
     
@@ -125,6 +130,10 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, PopUpProtocolD
         barTitleView.addSubview(progressView)
         
         barTitle.styleLocationTitleWithPreText("You are at\n\(activeLocation!.getName().uppercaseString)", size1: 24.0, size2: 11.0)
+        barTitle.layer.masksToBounds = false
+        barTitle.layer.shadowOffset = CGSize(width: 0, height: 4)
+        barTitle.layer.shadowOpacity = 0.8
+        barTitle.layer.shadowRadius = 4
         barTitleView.addSubview(barTitle)
         popupBar?.addSubview(barTitleView)
         popupBar!.addObserver(self, forKeyPath: "center", options: .New, context: nil)

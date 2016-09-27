@@ -7,24 +7,58 @@
 //
 
 import UIKit
+import ReSwift
 
-class ActivityViewController: UITableViewController {
+class ActivityViewController: UITableViewController, StoreSubscriber {
     
-    let activity = ["carter", "bree", "robert", "tea", "jaylen"]
+    
+    var requests = [Friend]()
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        mainStore.subscribe(self)
+        
+        for request in requests {
+            if request.getStatus() == .PENDING_INCOMING {
+                request.setStatus(FriendStatus.PENDING_INCOMING_SEEN)
+                let ref = FirebaseService.ref.child("users/\(mainStore.state.userState.uid)/friends/\(request.getId())")
+                ref.updateChildValues(["status": FriendStatus.PENDING_INCOMING_SEEN.rawValue])
+            }
+        }
+
+        
+        
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        mainStore.unsubscribe(self)
+    }
+    
+    func newState(state: AppState) {
+        requests = state.userState.friendRequests
+        print("Requests: \(requests)")
+        tableView.reloadData()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.delegate = self
-        self.tableView.dataSource = self
+        tableView.delegate = self
+        tableView.dataSource = self
         
         let nib = UINib(nibName: "ActivityFriendRequestCell", bundle: nil)
-        self.tableView.registerNib(nib, forCellReuseIdentifier: "activityFriendRequestCell")
-        self.tableView.reloadData()
+        tableView.registerNib(nib, forCellReuseIdentifier: "activityFriendRequestCell")
+        tableView.reloadData()
+        tableView.tableFooterView = UIView()
+    }
+    
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 72
     }
     
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return activity.count
+        return requests.count
     }
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -36,7 +70,7 @@ class ActivityViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("activityFriendRequestCell", forIndexPath: indexPath) as! ActivityFriendRequestCell
-        
+        cell.set(requests[indexPath.item])
         //cell.textLabel?.text = "Section \(indexPath.section) Row \(indexPath.row)"
         
         return cell
