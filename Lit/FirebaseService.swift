@@ -81,7 +81,7 @@ class FirebaseService {
     }
     
     static func retrieveLocationsForCity(city:String) {
-        let refHandle = ref.child("locations/\(city)").queryOrderedByChild("story_count").observeSingleEventOfType(FIRDataEventType.Value, withBlock: { (snapshot) in
+        let refHandle = ref.child("locations/\(city)").observeSingleEventOfType(FIRDataEventType.Value, withBlock: { (snapshot) in
             var locations = [Location]()
             for child in snapshot.children {
                 let key = child.key!!
@@ -96,11 +96,27 @@ class FirebaseService {
                 let website = child.value["website"] as! String
                 let storyCount = child.value["story_count"] as! Int
                 
-                let loc = Location(key: key, name: name, coordinates: coord, imageURL: imageURL, address: address, description: description, number: number, website: website, storyCount: storyCount)
+                
+                var visitorsArray = [String]()
+                if child.hasChild("visitors") {
+                    let visitors = child.value["visitors"]! as! [String:Bool]
+                    print("VISITORS \(key)")
+                    print(visitors)
+                    
+                    for visitor in visitors.keys {
+                        visitorsArray.append(visitor)
+                    }
+                }
+                
+
+
+                
+                let loc = Location(key: key, name: name, coordinates: coord, imageURL: imageURL, address: address, description: description, number: number, website: website,visitors: visitorsArray, storyCount: storyCount)
                 
                 locations.append(loc)
             }
-            mainStore.dispatch(LocationsRetrieved(locations: locations.reverse()))
+            locations.sortInPlace({ $0.getVisitors().count > $1.getVisitors().count })
+            mainStore.dispatch(LocationsRetrieved(locations: locations))
             
         })
     }

@@ -147,23 +147,28 @@ class StoryViewController: UIViewController, StoreSubscriber, ItemDelegate {
         
         // show next story
         if !isLoading {
-            print("Tapped: next")
-            showNextStoryItem()
+            if let _ = timer {
+                timer?.fire()
+            } else {
+                showNextStoryItem()
+            }
         } else {
             print("Tapped: isLoading")
         }
     }
     
     func showNextStoryItem() {
+        if let _ = timer {
+            timer?.invalidate()
+            timer = nil
+        }
         loadNextChunk()
         self.imageView!.image = nil
         self.removePlayer()
         self.progressIndicator?.deactivateIndicator(currentStoryItem)
         
         self.imageView!.image = nil
-        if let _ = timer {
-            timer?.invalidate()
-        }
+        
         
         if currentStoryItem >= 0 && currentStoryItem < story?.count {
             story![currentStoryItem].delegate = nil
@@ -198,6 +203,8 @@ class StoryViewController: UIViewController, StoreSubscriber, ItemDelegate {
                 self.imageView?.image = image
                 videoView?.hidden = true
                 progressIndicator?.activateIndicator(currentStoryItem)
+                timer?.invalidate()
+                timer = nil
                 timer = NSTimer.scheduledTimerWithTimeInterval(story![currentStoryItem].getLength()!, target: self, selector: "showNextStoryItem", userInfo: nil, repeats: false)
                 if let user = story![currentStoryItem].getAuthor() {
                     authorLoaded(user)
@@ -213,6 +220,8 @@ class StoryViewController: UIViewController, StoreSubscriber, ItemDelegate {
                 videoPlayer.play()
                 videoView!.hidden = false
                 progressIndicator?.activateIndicator(currentStoryItem)
+                timer?.invalidate()
+                timer = nil
                 timer = NSTimer.scheduledTimerWithTimeInterval(story![currentStoryItem].getLength()!, target: self, selector: "showNextStoryItem", userInfo: nil, repeats: false)
                 if let user = story![currentStoryItem].getAuthor() {
                     authorLoaded(user)

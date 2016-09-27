@@ -17,6 +17,8 @@ class RatingViewController: UIViewController, StoreSubscriber  {
 
     @IBOutlet weak var locationTitle: UILabel!
     
+    @IBOutlet weak var visitorsCountLabel: UILabel!
+    @IBOutlet weak var friendsCountLabel: UILabel!
     
     @IBOutlet weak var imageContainer: UIView!
     
@@ -136,8 +138,14 @@ class RatingViewController: UIViewController, StoreSubscriber  {
             UIView.animateWithDuration(1.0, animations: {
                 self.imageView.alpha = 1.0
             })
-        
         })
+        let visitorsCount = activeLocation!.getVisitors().count
+        let friendsCount = activeLocation!.getFriendsCount()
+
+        visitorsCountLabel.styleVisitorsCountLabel(visitorsCount, size: 22)
+        friendsCountLabel.styleFriendsCountLabel(friendsCount, size: 22)
+        
+        
     }
     
     @IBOutlet weak var checkInBtn: UIButton!

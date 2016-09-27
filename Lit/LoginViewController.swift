@@ -30,9 +30,9 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, StoreSubs
     func newState(state: AppState) {
         counterLabel.text = "\(mainStore.state.userState.uid)"
         if mainStore.state.userState.isAuth {
-            
-            startRetrievers() 
             loginButton.enabled = false
+            startRetrievers() 
+            
             let cities = mainStore.state.cities
             if cities.count == 0 {
                 FirebaseService.retrieveCities()

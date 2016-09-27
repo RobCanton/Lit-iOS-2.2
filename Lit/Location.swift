@@ -23,10 +23,13 @@ class Location {
     private var storyCount: Int?
     
     private var story: [StoryItem]?
+    
+    private var visitors:[String]
 
+    private var friendsCount = 0
     
     
-    init(key:String, name:String, coordinates:CLLocation, imageURL:String, address:String, description:String, number:String, website:String, storyCount: Int)
+    init(key:String, name:String, coordinates:CLLocation, imageURL:String, address:String, description:String, number:String, website:String, visitors:[String],storyCount: Int)
     {
         self.key          = key
         self.name         = name
@@ -37,6 +40,9 @@ class Location {
         self.number       = number
         self.website      = website
         self.storyCount   = storyCount
+        self.visitors     = visitors
+        
+        self.collectInfo()
     }
     
     /* Getters */
@@ -93,5 +99,25 @@ class Location {
     
     func getStoryCount() -> Int? {
         return storyCount
+    }
+    
+    func getVisitors() -> [String] {
+        return visitors
+    }
+    
+    func getFriendsCount() -> Int {
+        return friendsCount
+    }
+    
+    func collectInfo() {
+        friendsCount = 0
+        for visitor in visitors {
+            for friend in mainStore.state.userState.friends {
+                if visitor == friend.getId() {
+                    friendsCount += 1
+                }
+            }
+        }
+
     }
 }

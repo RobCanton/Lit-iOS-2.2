@@ -68,18 +68,18 @@
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CHt-sy-jju" userLabel="Address Label">
-                                            <rect key="frame" x="0.0" y="122" width="200" height="21"/>
+                                            <rect key="frame" x="0.0" y="122" width="200" height="24"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="21" id="30Z-5c-BC3"/>
+                                                <constraint firstAttribute="height" constant="24" id="30Z-5c-BC3"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="AvenirNext-Italic" family="Avenir Next" pointSize="17"/>
                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KEl-nf-S2l">
-                                            <rect key="frame" x="0.0" y="143" width="200" height="21"/>
+                                            <rect key="frame" x="0.0" y="153" width="200" height="24"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="21" id="983-bE-7Dc"/>
+                                                <constraint firstAttribute="height" constant="24" id="983-bE-7Dc"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -103,7 +103,7 @@
                                 </view>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="CHt-sy-jju" secondAttribute="trailing" id="4Um-5U-KsJ"/>
-                                    <constraint firstItem="KEl-nf-S2l" firstAttribute="top" secondItem="CHt-sy-jju" secondAttribute="bottom" id="6X6-qG-2ek"/>
+                                    <constraint firstItem="KEl-nf-S2l" firstAttribute="top" secondItem="CHt-sy-jju" secondAttribute="bottom" constant="7" id="6X6-qG-2ek"/>
                                     <constraint firstItem="CHt-sy-jju" firstAttribute="leading" secondItem="dMM-gk-jcA" secondAttribute="leading" id="CAU-fu-bLZ"/>
                                     <constraint firstAttribute="centerY" secondItem="d9G-wv-cRC" secondAttribute="centerY" id="E3K-mK-xPL"/>
                                     <constraint firstAttribute="centerY" secondItem="rpN-f7-ial" secondAttribute="centerY" id="EzD-eY-jnv"/>
@@ -417,7 +417,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <color key="tintColor" red="1" green="0.80148517929493224" blue="0.0025468899886618157" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="barTintColor" red="0.058315794205474461" green="0.058724774119388749" blue="0.060424214975845381" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="barTintColor" red="0.04876824463924137" green="0.049266778286194329" blue="0.050762379227053178" alpha="1" colorSpace="calibratedRGB"/>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
                                 <color key="value" red="1" green="0.6705882352941176" blue="0.015686274509803921" alpha="1" colorSpace="calibratedRGB"/>

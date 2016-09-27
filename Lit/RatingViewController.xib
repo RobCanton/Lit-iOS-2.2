@@ -12,10 +12,12 @@
                 <outlet property="cameraBtn" destination="w92-LF-RrX" id="Egz-nL-ZOb"/>
                 <outlet property="checkInBtn" destination="l4S-kp-fMY" id="BpY-ys-Gbb"/>
                 <outlet property="friendsBtn" destination="dQm-bp-Ztn" id="H29-qL-epG"/>
+                <outlet property="friendsCountLabel" destination="F3M-8U-bfL" id="j0q-wW-N8F"/>
                 <outlet property="imageContainer" destination="ErO-DG-9jA" id="KgA-kk-ov6"/>
                 <outlet property="locationTitle" destination="USe-bv-DFV" id="gMt-6W-B0B"/>
                 <outlet property="notHereBtn" destination="Kux-MF-FNs" id="QDX-Y2-4dz"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="visitorsCountLabel" destination="K6u-i7-7QP" id="QAh-sr-Vb8"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -40,9 +42,9 @@
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K6u-i7-7QP">
-                            <rect key="frame" x="8" y="353" width="584" height="21"/>
+                            <rect key="frame" x="8" y="353" width="584" height="25"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="21" id="ICj-1D-aQJ"/>
+                                <constraint firstAttribute="height" constant="25" id="ICj-1D-aQJ"/>
                             </constraints>
                             <attributedString key="attributedText">
                                 <fragment content="47">
@@ -65,9 +67,9 @@
                             <size key="shadowOffset" width="0.0" height="1"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F3M-8U-bfL">
-                            <rect key="frame" x="8" y="384" width="584" height="21"/>
+                            <rect key="frame" x="8" y="384" width="584" height="25"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="21" id="vUT-Iw-gEZ"/>
+                                <constraint firstAttribute="height" constant="25" id="vUT-Iw-gEZ"/>
                             </constraints>
                             <attributedString key="attributedText">
                                 <fragment content="6">
@@ -151,8 +153,8 @@
                         <constraint firstItem="Kux-MF-FNs" firstAttribute="leading" secondItem="5uq-vl-mf8" secondAttribute="leading" constant="41" id="YGa-K5-Qhs"/>
                         <constraint firstItem="F3M-8U-bfL" firstAttribute="centerX" secondItem="l4S-kp-fMY" secondAttribute="centerX" id="haj-Lx-0MA"/>
                         <constraint firstItem="ErO-DG-9jA" firstAttribute="top" secondItem="USe-bv-DFV" secondAttribute="bottom" constant="8" id="lSu-j2-0px"/>
-                        <constraint firstItem="l4S-kp-fMY" firstAttribute="top" secondItem="F3M-8U-bfL" secondAttribute="bottom" constant="16" id="oqv-qs-1hr"/>
-                        <constraint firstItem="F3M-8U-bfL" firstAttribute="top" secondItem="K6u-i7-7QP" secondAttribute="bottom" constant="10" id="rfx-OG-gu5"/>
+                        <constraint firstItem="l4S-kp-fMY" firstAttribute="top" secondItem="F3M-8U-bfL" secondAttribute="bottom" constant="12" id="oqv-qs-1hr"/>
+                        <constraint firstItem="F3M-8U-bfL" firstAttribute="top" secondItem="K6u-i7-7QP" secondAttribute="bottom" constant="6" id="rfx-OG-gu5"/>
                         <constraint firstItem="ErO-DG-9jA" firstAttribute="centerX" secondItem="K6u-i7-7QP" secondAttribute="centerX" id="tCD-Vl-ehA"/>
                         <constraint firstItem="dQm-bp-Ztn" firstAttribute="top" secondItem="w92-LF-RrX" secondAttribute="top" id="yRu-wn-PUr"/>
                         <constraint firstItem="USe-bv-DFV" firstAttribute="trailing" secondItem="K6u-i7-7QP" secondAttribute="trailing" id="zVW-f1-mfx"/>

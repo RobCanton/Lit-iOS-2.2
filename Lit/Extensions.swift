@@ -184,6 +184,81 @@ extension UILabel
         self.attributedText = title //3
     }
     
+    func styleVisitorsCountLabel(count:Int, size: CGFloat) {
+        
+        var str = ""
+        
+        if count == 1 {
+            str = "\(count) person is here"
+        } else if count > 1 {
+            str = "\(count) people are here"
+        }
+        
+        let font = UIFont(name: "Avenir-Medium", size: size)
+        let attributes: [String: AnyObject] = [
+            NSFontAttributeName : font!,
+            NSForegroundColorAttributeName : UIColor.whiteColor()
+        ]
+        
+        let title = NSMutableAttributedString(string: str, attributes: attributes) //1
+        
+        let countStr = "\(count)"
+        if let range = str.rangeOfString(countStr) {
+            let index = str.startIndex.distanceTo(range.startIndex)
+            let a: [String: AnyObject] = [
+                NSFontAttributeName : UIFont(name: "Avenir-Black", size: size)!,
+                NSForegroundColorAttributeName : accentColor
+            ]
+            title.addAttributes(a, range: NSRange(location: index, length: countStr.characters.count))
+        }
+
+        
+        self.attributedText = title
+        self.layer.masksToBounds = false
+        self.layer.shadowOffset = CGSize(width: 0, height: 4)
+        self.layer.shadowOpacity = 0.8
+        self.layer.shadowRadius = 4
+        self.layer.shouldRasterize = true
+    }
+    
+    func styleFriendsCountLabel(count:Int, size: CGFloat) {
+        
+        var str = ""
+        
+        if count == 1 {
+            str = "\(count) of your friends is here"
+        } else if count > 1 {
+            str = "\(count) of your friends are here"
+        }
+        
+        let font = UIFont(name: "Avenir-Medium", size: size)
+        let attributes: [String: AnyObject] = [
+            NSFontAttributeName : font!,
+            NSForegroundColorAttributeName : UIColor.whiteColor()
+        ]
+        
+        let title = NSMutableAttributedString(string: str, attributes: attributes) //1
+        
+        let countStr = "\(count)"
+        if let range = str.rangeOfString(countStr) {
+            let index = str.startIndex.distanceTo(range.startIndex)
+            let a: [String: AnyObject] = [
+                NSFontAttributeName : UIFont(name: "Avenir-Black", size: size )!,
+                NSForegroundColorAttributeName : accentColor
+            ]
+            title.addAttributes(a, range: NSRange(location: index, length: countStr.characters.count))
+        }
+        
+        
+        self.attributedText = title
+        self.layer.masksToBounds = false
+        self.layer.shadowOffset = CGSize(width: 0, height: 4)
+        self.layer.shadowOpacity = 0.8
+        self.layer.shadowRadius = 4
+        self.layer.shouldRasterize = true
+    }
+    
+    
     
 }
 

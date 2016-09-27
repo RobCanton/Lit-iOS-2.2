@@ -30,9 +30,15 @@ class LocationCell: UICollectionViewCell {
                             })
                         }
                         //self.titleLabel.text = location.getName().uppercaseString
-                        self.addressLabel.text = location.getAddress()
+                        //self.addressLabel.text = location.getAddress()
                         
                         self.titleLabel.styleLocationTitle(location.getName())
+                        
+                        let visitorsCount = location.getVisitors().count
+                        let friendsCount = location.getFriendsCount()
+                        
+                        self.addressLabel.styleVisitorsCountLabel(visitorsCount, size: 22)
+                        self.speakerLabel.styleFriendsCountLabel(friendsCount, size: 22)
                     }
                 }
                 

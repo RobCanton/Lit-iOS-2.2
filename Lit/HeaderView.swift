@@ -52,7 +52,7 @@ class HeaderView: UIView {
         
         let story = self.story!
         storyItemIndex += 1
-        print("nextStoryItem: \(storyItemIndex) of \(self.story!.count)")
+//        print("nextStoryItem: \(storyItemIndex) of \(self.story!.count)")
         if storyItemIndex >= 0  &&  storyItemIndex < story.count {
             let item = story[storyItemIndex]
             if item.getContentType() == ContentType.Image {
