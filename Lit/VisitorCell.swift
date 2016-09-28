@@ -22,15 +22,11 @@ class VisitorCell: UITableViewCell {
             
             let uid = mainStore.state.userState.uid
             if friendStatus == .NOT_FRIENDS {
-                let userRef = FirebaseService.ref.child("users/\(uid)/friendRequests")
+                let userRef = FirebaseService.ref.child("users/\(uid)/friendRequestsOut")
                 userRef.child(_user.getUserId())
-                    .setValue([
-                        "status": FriendStatus.PENDING_OUTGOING.rawValue
-                        ])
-                let friendRef = FirebaseService.ref.child("users/\(_user.getUserId())/friendRequests/\(uid)")
-                friendRef.setValue([
-                    "status": FriendStatus.PENDING_INCOMING.rawValue
-                    ], withCompletionBlock: {
+                    .setValue(false)
+                let friendRef = FirebaseService.ref.child("users/\(_user.getUserId())/friendRequestsIn/\(uid)")
+                friendRef.setValue(false, withCompletionBlock: {
                         error, ref in
                         
                         if error != nil {
@@ -45,8 +41,8 @@ class VisitorCell: UITableViewCell {
                         }
                 })
             } else if friendStatus == .PENDING_INCOMING {
-                FirebaseService.ref.child("users/\(uid)/friendRequests/\(_user.getUserId())").removeValue()
-                FirebaseService.ref.child("users/\(_user.getUserId())/friendRequests/\(uid)").removeValue()
+                FirebaseService.ref.child("users/\(uid)/friendRequestsIn/\(_user.getUserId())").removeValue()
+                FirebaseService.ref.child("users/\(_user.getUserId())/friendRequestsOut/\(uid)").removeValue()
                 FirebaseService.ref.child("users/\(uid)/friends/\(_user.getUserId())").setValue(true)
                 FirebaseService.ref.child("users/\(_user.getUserId())/friends/\(uid)").setValue(true)
             }
@@ -68,7 +64,8 @@ class VisitorCell: UITableViewCell {
     var friendStatus:FriendStatus = FriendStatus.NOT_FRIENDS
     
     func set(visitor_uid:String) {
-        
+        friendStatus = FriendStatus.NOT_FRIENDS
+        addFriendBtn.hidden = true
         addFriendBtn.enabled = false
         addFriendBtn.tintColor = UIColor.whiteColor()
 
@@ -82,7 +79,6 @@ class VisitorCell: UITableViewCell {
         
         
         FirebaseService.getUser(visitor_uid, completionHandler: {user in
-            print(user.getDisplayName())
             self.user = user
             self.visitorImage.loadImageUsingCacheWithURLString(user.getImageUrl()!, completion: { result in
             })
@@ -91,13 +87,19 @@ class VisitorCell: UITableViewCell {
         
         /*  THIS IS VERY COSTLY */
         /*  LOOK FOR NEW SOLUTION */
-        let requests = mainStore.state.userState.friendRequests
+        let requests = mainStore.state.friendRequestsIn
         if let _ = requests[visitor_uid] {
             friendStatus = FriendStatus.PENDING_INCOMING
         }
         
-        let requestsOut = mainStore.state.userState.friendRequestsOut
+        let requestsOut = mainStore.state.friendRequestsOut
+        
+        for (key, request) in requestsOut {
+            print("REQUEST OUT: \(key)")
+        }
+        
         if let _ = requestsOut[visitor_uid] {
+            print("Found tings")
             friendStatus = FriendStatus.PENDING_OUTGOING
         }
         
@@ -109,12 +111,16 @@ class VisitorCell: UITableViewCell {
         
         switch friendStatus {
         case .PENDING_INCOMING:
+            addFriendBtn.imageView!.image = UIImage(named: "plus")
             addFriendBtn.tintColor = accentColor
             addFriendBtn.enabled = true
+            visitorName.textColor = UIColor.whiteColor()
             break
         case .PENDING_OUTGOING:
+            addFriendBtn.imageView!.image = UIImage(named: "plus")
             addFriendBtn.tintColor = accentColor
             addFriendBtn.enabled = false
+            visitorName.textColor = UIColor.whiteColor()
             break
         case .FRIENDS:
             addFriendBtn.tintColor = accentColor
@@ -123,15 +129,17 @@ class VisitorCell: UITableViewCell {
             visitorName.textColor = accentColor
             break
         case .NOT_FRIENDS:
+            addFriendBtn.imageView!.image = UIImage(named: "plus")
             addFriendBtn.tintColor = UIColor.whiteColor()
             addFriendBtn.enabled = true
+            visitorName.textColor = UIColor.whiteColor()
             break
         default:
             break
         }
         
+        addFriendBtn.hidden = false
 
-        
     }
     
     

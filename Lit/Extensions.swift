@@ -23,12 +23,16 @@ extension UIImageView {
         
         // Otherwise, download image
         let url = NSURL(string: _url)
-        NSURLSession.sharedSession().dataTaskWithURL(url!, completionHandler:
+
+        let task = NSURLSession.sharedSession().dataTaskWithURL(url!, completionHandler:
             { (data, response, error) in
                 
                 //error
                 if error != nil {
-                    print(error)
+                    if error?.code == -999 {
+                        return
+                    }
+                    print(error?.code)
                     return
                 }
                 
@@ -43,6 +47,7 @@ extension UIImageView {
                 })
                 
         }).resume()
+        
     }
     
 }
@@ -144,6 +149,8 @@ extension UILabel
         }
         
         self.attributedText = title //3
+
+
     }
     
     func styleLocationTitleWithPreText(str:String, size1: CGFloat, size2: CGFloat) {
@@ -182,6 +189,13 @@ extension UILabel
         }
         
         self.attributedText = title //3
+        self.layer.masksToBounds = false
+        self.layer.shadowOffset = CGSize(width: 0, height: 4)
+        self.layer.shadowOpacity = 0.8
+        self.layer.shadowRadius = 4
+        self.layer.shouldRasterize = true
+
+
     }
     
     func styleVisitorsCountLabel(count:Int, size: CGFloat) {
@@ -221,14 +235,20 @@ extension UILabel
         self.layer.shouldRasterize = true
     }
     
-    func styleFriendsCountLabel(count:Int, size: CGFloat) {
+    func styleFriendsCountLabel(count:Int, size: CGFloat, you:Bool) {
         
         var str = ""
         
-        if count == 1 {
-            str = "\(count) of your friends is here"
-        } else if count > 1 {
+        if count == 0 && you {
+            str = "You are here"
+        } else if count == 1 && !you {
+            str = "\(1) of your friends is here"
+        } else if count == 1 && you{
+            str = "You and a friend are here"
+        } else if count > 1 && !you {
             str = "\(count) of your friends are here"
+        } else if count > 1 && you {
+            str = "You and \(count) friends are here"
         }
         
         let font = UIFont(name: "Avenir-Medium", size: size)
@@ -239,14 +259,19 @@ extension UILabel
         
         let title = NSMutableAttributedString(string: str, attributes: attributes) //1
         
-        let countStr = "\(count)"
-        if let range = str.rangeOfString(countStr) {
-            let index = str.startIndex.distanceTo(range.startIndex)
-            let a: [String: AnyObject] = [
-                NSFontAttributeName : UIFont(name: "Avenir-Black", size: size )!,
-                NSForegroundColorAttributeName : accentColor
-            ]
-            title.addAttributes(a, range: NSRange(location: index, length: countStr.characters.count))
+        let searchStrings = ["\(count)", "You", "friend", "friends"]
+        for string in searchStrings {
+            if let range = str.rangeOfString(string) {
+                
+                let index: Int = str.startIndex.distanceTo(range.startIndex)
+                
+                let a: [String: AnyObject] = [
+                    NSFontAttributeName : UIFont(name: "Avenir-Black", size: size )!,
+                    NSForegroundColorAttributeName : accentColor
+                ]
+                
+                title.addAttributes(a, range: NSRange(location: index, length: string.characters.count))
+            }
         }
         
         

@@ -44,7 +44,12 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, PopUpProtocolD
             }
         }
         
-        let unseenActivity = state.unseenRequests
+        var unseenActivity = 0
+        for (_, seen) in mainStore.state.friendRequestsIn {
+            if !seen {
+                unseenActivity += 1
+            }
+        }
         if unseenActivity > 0 {
             tabBar.items?[2].badgeValue = "\(unseenActivity)"
         } else {
@@ -130,10 +135,7 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, PopUpProtocolD
         barTitleView.addSubview(progressView)
         
         barTitle.styleLocationTitleWithPreText("You are at\n\(activeLocation!.getName().uppercaseString)", size1: 24.0, size2: 11.0)
-        barTitle.layer.masksToBounds = false
-        barTitle.layer.shadowOffset = CGSize(width: 0, height: 4)
-        barTitle.layer.shadowOpacity = 0.8
-        barTitle.layer.shadowRadius = 4
+
         barTitleView.addSubview(barTitle)
         popupBar?.addSubview(barTitleView)
         popupBar!.addObserver(self, forKeyPath: "center", options: .New, context: nil)

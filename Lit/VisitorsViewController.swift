@@ -53,10 +53,7 @@ class VisitorsViewController: UIViewController, StoreSubscriber, UITableViewDele
     
     func newState(state: AppState) {
         
-        let key = state.userState.activeLocationKey
-        if key != activeLocationKey {
-            activeLocationKey = key
-        }
+        activeLocationKey = state.userState.activeLocationKey
         tableView.reloadData()
     }
     override func viewDidLoad() {

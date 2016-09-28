@@ -21,6 +21,8 @@ struct AppState: StateType {
     var viewLocationKey:String = ""
     
     var friends = Tree<String>()
+    var friendRequestsIn = [String:Bool]()
+    var friendRequestsOut = [String:Bool]()
     
     func printStore() {
         
@@ -34,9 +36,4 @@ struct UserState {
     var activeCity: City?
     var activeLocationKey:String=""
     var vote:RatingState = .Selection
-    
-    var friendRequests = [String:FriendRequest]()
-    var friendRequestsOut = [String:FriendRequest]()
-    
-    var unseenRequests = 0
 }

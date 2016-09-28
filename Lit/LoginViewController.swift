@@ -30,9 +30,9 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, StoreSubs
         counterLabel.text = "\(mainStore.state.userState.uid)"
         if mainStore.state.userState.isAuth {
             loginButton.enabled = false
-            //startRetrievers()
             
             Listeners.listenToFriends()
+            Listeners.listenToFriendRequests()
             let cities = mainStore.state.cities
             if cities.count == 0 {
                 FirebaseService.retrieveCities()
@@ -169,51 +169,6 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, StoreSubs
     }
     var retrieversStarted = false
     
-    func startRetrievers() {
-        if (!retrieversStarted){
-            
-            retrieversStarted = true
-            FirebaseService.ref.child("users/\(mainStore.state.userState.uid)/friendRequests")
-                .observeEventType(.Value, withBlock: { (snapshot) in
-                    var requests = [String:FriendRequest]()
-                    var requestsOut = [String:FriendRequest]()
-                    var unseen_requests = 0
-                    if snapshot.exists() {
-                        for child in snapshot.children {
-                            let status = child.value["status"] as! String
-                            if let friendStatus = self.convertStatus(status) {
-                                let friend_uid = child.key!!
-                                let friend = FriendRequest(friend_uid: friend_uid, status: friendStatus)
-                                if friendStatus == .PENDING_INCOMING {
-                                    unseen_requests += 1
-                                    requests[friend_uid] = friend
-                                } else if friendStatus == .PENDING_INCOMING_SEEN {
-                                    requests[friend_uid] = friend
-                                } else if friendStatus == .PENDING_OUTGOING {
-                                    requestsOut[friend_uid] = friend
-                                    
-                                }
-                            }
-                        }
-                    }
-                    mainStore.dispatch(UpdateFriendRequestsIn(requests: requests, unseen: unseen_requests))
-                    mainStore.dispatch(UpdateFriendRequestsOut(requests: requestsOut))
-            })
-        }
-    }
-    
-    func convertStatus(string:String) -> FriendStatus?{
-        switch string {
-        case FriendStatus.PENDING_INCOMING.rawValue:
-            return FriendStatus.PENDING_INCOMING
-        case FriendStatus.PENDING_INCOMING_SEEN.rawValue:
-            return FriendStatus.PENDING_INCOMING_SEEN
-        case FriendStatus.PENDING_OUTGOING.rawValue:
-            return FriendStatus.PENDING_OUTGOING
-        default:
-            return nil
-        }
-    }
     
     func igLocationManager(manager: IGLocationManager!, didUpdateLocation igLocation: IGLocation!) {
         print("didUpdateLocation: \(igLocation.description)")

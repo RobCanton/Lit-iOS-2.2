@@ -21,7 +21,7 @@ class ActivityFriendRequestCell: UITableViewCell {
         // Initialization code
     }
     
-    var friend:FriendRequest?
+    var friend_uid:String!
 
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
@@ -29,8 +29,8 @@ class ActivityFriendRequestCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func set(_friend:FriendRequest) {
-        friend = _friend
+    func set(friend_uid:String) {
+        self.friend_uid = friend_uid
         userImage.layer.cornerRadius = userImage!.frame.size.width / 2;
         userImage.clipsToBounds = true;
         
@@ -41,9 +41,9 @@ class ActivityFriendRequestCell: UITableViewCell {
         deleteBtn.layer.borderWidth = 1.0
         deleteBtn.layer.cornerRadius = 1
         deleteBtn.clipsToBounds = true;
-        print("FRIEND ID: " + friend!.getId())
+
         
-        FirebaseService.getUser(friend!.getId() ,  completionHandler: {user in
+        FirebaseService.getUser(friend_uid ,  completionHandler: {user in
             print(user.getDisplayName())
             self.userImage.loadImageUsingCacheWithURLString(user.getImageUrl()!, completion: { result in
             
@@ -55,12 +55,12 @@ class ActivityFriendRequestCell: UITableViewCell {
         print("Confirm")
         let uid = mainStore.state.userState.uid
 
-        FirebaseService.ref.child("users/\(uid)/friendRequests/\(friend!.getId())").removeValue()
+        FirebaseService.ref.child("users/\(uid)/friendRequestsIn/\(friend_uid)").removeValue()
         
-        FirebaseService.ref.child("users/\(friend!.getId())/friendRequests/\(uid)").removeValue()
+        FirebaseService.ref.child("users/\(friend_uid)/friendRequestsOut/\(uid)").removeValue()
         
-        FirebaseService.ref.child("users/\(uid)/friends/\(friend!.getId())").setValue(true)
-        FirebaseService.ref.child("users/\(friend!.getId())/friends/\(uid)").setValue(true)
+        FirebaseService.ref.child("users/\(uid)/friends/\(friend_uid)").setValue(true)
+        FirebaseService.ref.child("users/\(friend_uid)/friends/\(uid)").setValue(true)
     }
     @IBAction func deleteTapped(sender: AnyObject) {
         print("Delete")

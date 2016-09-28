@@ -20,7 +20,9 @@ struct AppReducer: Reducer {
             activeLocationIndex: ActiveLocationIndexReducer(action, state: state?.activeLocationIndex),
             storyViewIndex:StoryViewIndexReducer(action, state: state?.storyViewIndex),
             viewLocationKey: ViewLocationReducer(action, state: state?.viewLocationKey),
-            friends: FriendsReducer(action, state: state?.friends)
+            friends: FriendsReducer(action, state: state?.friends),
+            friendRequestsIn: FriendRequestsInReducer(action, state: state?.friendRequestsIn),
+            friendRequestsOut: FriendRequestsOutReducer(action, state: state?.friendRequestsOut)
         )
     } 
     
@@ -53,15 +55,6 @@ func UserStateReducer(action: Action, state: UserState?) -> UserState {
     case _ as Vote:
         let a = action as! Vote
         state.vote = a.state
-        break
-    case _ as UpdateFriendRequestsIn:
-        let a = action as! UpdateFriendRequestsIn
-        state.friendRequests = a.requests
-        state.unseenRequests = a.unseen
-        break
-    case _ as UpdateFriendRequestsOut:
-        let a = action as! UpdateFriendRequestsOut
-        state.friendRequestsOut = a.requests
         break
     default:
         break

@@ -20,36 +20,19 @@ class LocationCell: UICollectionViewCell {
     var location: Location? {
         didSet {
             if let location = location {
+                imageView.image = nil
                 if let imageURL = location.getImageURL() {
-                    self.imageView.loadImageUsingCacheWithURLString(imageURL) { (notFromCache) -> () in
-                        // do stuff with the result
-                        if notFromCache {
-                            self.imageCoverView.alpha = 1.0
-                            UIView.animateWithDuration(1.0, animations: {
-                                self.imageCoverView.alpha = self.getImageCoverAlpha()
-                            })
-                        }
-                        //self.titleLabel.text = location.getName().uppercaseString
-                        //self.addressLabel.text = location.getAddress()
-                        
-                        self.titleLabel.styleLocationTitle(location.getName())
-                        
-                        location.collectInfo()
-                        let visitorsCount = location.getVisitorsCount()
-                        let friendsCount = location.getFriendsCount()
-                        
-                        self.addressLabel.styleVisitorsCountLabel(visitorsCount, size: 22)
-                        self.speakerLabel.styleFriendsCountLabel(friendsCount, size: 22)
-                    }
+                    loadLocationImage(imageURL, completion: { (notFromCache) in })
                 }
                 
-                if location.isActive {
-                    self.layer.borderColor = accentColor.CGColor
-                    self.layer.borderWidth = 0
-                } else {
-                    self.layer.borderColor = UIColor.clearColor().CGColor
-                    self.layer.borderWidth = 0
-                }
+                self.titleLabel.styleLocationTitle(location.getName())
+                
+                location.collectInfo()
+                let visitorsCount = location.getVisitorsCount()
+                let friendsCount = location.getFriendsCount()
+                
+                self.addressLabel.styleVisitorsCountLabel(visitorsCount, size: 22)
+                self.speakerLabel.styleFriendsCountLabel(friendsCount, size: 22, you: location.getKey() == mainStore.state.userState.activeLocationKey)
             }
         }
     }
@@ -61,7 +44,7 @@ class LocationCell: UICollectionViewCell {
         let delta = 1 - ((featuredHeight - CGRectGetHeight(frame)) / (featuredHeight - standardHeight))
         
         let minAlpha: CGFloat = 0
-        let maxAlpha: CGFloat = 0.65
+        let maxAlpha: CGFloat = 0.75
         
         return maxAlpha - (delta * (maxAlpha - minAlpha))
     }
@@ -84,11 +67,69 @@ class LocationCell: UICollectionViewCell {
         
         imageCoverView.alpha = getImageCoverAlpha()
         
+        if delta > 0 {
+            titleLabel.layer.masksToBounds = false
+            titleLabel.layer.shadowOffset = CGSize(width: 0, height: 4)
+            titleLabel.layer.shadowOpacity = 0.8
+            titleLabel.layer.shadowRadius = 4
+        } else {
+            titleLabel.layer.masksToBounds = true
+            titleLabel.layer.shadowOpacity = 0
+            titleLabel.layer.shadowRadius = 0
+        }
+        
     }
     
     func offset(offset: CGPoint) {
         //imageView.clipsToBounds = false
         imageView.frame = CGRectOffset(self.imageView.bounds, offset.x, offset.y)
+    }
+    
+    var task:NSURLSessionDataTask?
+    func loadLocationImage(_url:String, completion: (result: Bool)->()) {
+        if task != nil{
+            
+            task!.cancel()
+            task = nil
+            
+        }
+        
+        // Check for cached image
+        if let cachedImage = imageCache.objectForKey(_url) as? UIImage {
+            imageView.image = cachedImage
+            return completion(result: false)
+        }
+        
+        // Otherwise, download image
+        let url = NSURL(string: _url)
+        
+        
+        task = NSURLSession.sharedSession().dataTaskWithURL(url!, completionHandler:
+            { (data, response, error) in
+                
+                //error
+                if error != nil {
+                    if error?.code == -999 {
+                        return
+                    }
+                    print(error?.code)
+                    return
+                }
+                
+                dispatch_async(dispatch_get_main_queue(), {
+                    
+                    if let downloadedImage = UIImage(data: data!) {
+                        imageCache.setObject(downloadedImage, forKey: _url)
+                    }
+                    
+                    self.imageView.image = UIImage(data: data!)
+                    completion(result: true)
+                })
+                
+        })
+        
+        task?.resume()
+        
     }
     
 }

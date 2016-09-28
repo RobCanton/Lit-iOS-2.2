@@ -127,10 +127,7 @@ class RatingViewController: UIViewController, StoreSubscriber  {
         //locationTitle.styleLocationTitle(location.getName())
         
         locationTitle.styleLocationTitleWithPreText("You are at\n\(activeLocation!.getName().uppercaseString)", size1: 26, size2: 18)
-        locationTitle.layer.masksToBounds = false
-        locationTitle.layer.shadowOffset = CGSize(width: 0, height: 4)
-        locationTitle.layer.shadowOpacity = 0.8
-        locationTitle.layer.shadowRadius = 4
+
         imageView.alpha = 0
         imageView.loadImageUsingCacheWithURLString((activeLocation?.getImageURL())!, completion: { result in
             if result {
@@ -146,7 +143,7 @@ class RatingViewController: UIViewController, StoreSubscriber  {
         let friendsCount = activeLocation!.getFriendsCount()
 
         visitorsCountLabel.styleVisitorsCountLabel(visitorsCount, size: 22)
-        friendsCountLabel.styleFriendsCountLabel(friendsCount, size: 22)
+        friendsCountLabel.styleFriendsCountLabel(friendsCount, size: 22, you: false)
         
         
     }

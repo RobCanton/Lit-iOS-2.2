@@ -12,16 +12,16 @@ import ReSwift
 class ActivityViewController: UITableViewController, StoreSubscriber {
     
     
-    var requests = [FriendRequest]()
+    var requests = [String]()
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         mainStore.subscribe(self)
         
-        for request in requests {
-            if request.getStatus() == .PENDING_INCOMING {
-                let ref = FirebaseService.ref.child("users/\(mainStore.state.userState.uid)/friendRequests/\(request.getId())")
-                ref.updateChildValues(["status": FriendStatus.PENDING_INCOMING_SEEN.rawValue])
+        for (uid, seen) in mainStore.state.friendRequestsIn {
+            if !seen {
+                let ref = FirebaseService.ref.child("users/\(mainStore.state.userState.uid)/friendRequestsIn/\(uid)")
+                ref.setValue(true)
             }
         }
     }
@@ -32,13 +32,12 @@ class ActivityViewController: UITableViewController, StoreSubscriber {
     }
     
     func newState(state: AppState) {
-        let requestsDictionary = state.userState.friendRequests
-        requests = [FriendRequest]()
-        for (_, request) in requestsDictionary {
-            requests.append(request)
+        
+        requests = [String]()
+        for (uid, _) in mainStore.state.friendRequestsIn{
+            requests.append(uid)
         }
         
-        print("Requests: \(requests)")
         tableView.reloadData()
     }
     
@@ -49,8 +48,9 @@ class ActivityViewController: UITableViewController, StoreSubscriber {
         
         let nib = UINib(nibName: "ActivityFriendRequestCell", bundle: nil)
         tableView.registerNib(nib, forCellReuseIdentifier: "activityFriendRequestCell")
-        tableView.reloadData()
+        
         tableView.tableFooterView = UIView()
+        tableView.reloadData()
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {

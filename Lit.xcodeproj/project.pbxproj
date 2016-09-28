@@ -300,10 +300,10 @@
 				76A5166B1D6103AF005E2815 /* ProfileViewController.swift */,
 				76A516661D60C69D005E2815 /* ChatViewController.swift */,
 				76B361D41D6517A50024CDC7 /* PopUpTabBarController.swift */,
-				B087E9BB1D9B43A30079E2BF /* Main */,
-				B087E9BC1D9B43DC0079E2BF /* Location */,
-				B087E9BA1D9B435C0079E2BF /* Popup */,
 				B087E9B91D9B42880079E2BF /* Activity */,
+				B087E9BC1D9B43DC0079E2BF /* Location */,
+				B087E9BB1D9B43A30079E2BF /* Main */,
+				B087E9BA1D9B435C0079E2BF /* Popup */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
