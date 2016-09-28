@@ -194,8 +194,6 @@ extension UILabel
         self.layer.shadowOpacity = 0.8
         self.layer.shadowRadius = 4
         self.layer.shouldRasterize = true
-
-
     }
     
     func styleVisitorsCountLabel(count:Int, size: CGFloat) {
@@ -281,6 +279,33 @@ extension UILabel
         self.layer.shadowOpacity = 0.8
         self.layer.shadowRadius = 4
         self.layer.shouldRasterize = true
+    }
+    
+    
+    func styleProfileBlockText(count:Int, text:String, size1: CGFloat, size2: CGFloat) {
+        self.numberOfLines = 2
+        self.textAlignment = .Center
+        let str = "\(count)\n\(text)"
+        let font = UIFont(name: "Avenir-Medium", size: 14)
+        let attributes: [String: AnyObject] = [
+            NSFontAttributeName : font!,
+            NSForegroundColorAttributeName : UIColor(white: 1.0, alpha: 0.7)
+        ]
+        
+        let title = NSMutableAttributedString(string: str, attributes: attributes) //1
+        
+        let countStr = "\(count)"
+        if let range = str.rangeOfString(countStr) {
+            let index = str.startIndex.distanceTo(range.startIndex)
+            let a: [String: AnyObject] = [
+                NSFontAttributeName : UIFont(name: "Avenir-Black", size: 24)!,
+                NSForegroundColorAttributeName : UIColor.whiteColor()
+            ]
+            title.addAttributes(a, range: NSRange(location: index, length: countStr.characters.count))
+        }
+        
+        
+        self.attributedText = title
     }
     
     
