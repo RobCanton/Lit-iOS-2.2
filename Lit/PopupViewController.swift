@@ -14,9 +14,6 @@ class PopupViewController: UIViewController, UIScrollViewDelegate, StoreSubscrib
     
     @IBOutlet weak var scrollView: UIScrollView!
     
-    override func prefersStatusBarHidden() -> Bool {
-        return true
-    }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -26,6 +23,10 @@ class PopupViewController: UIViewController, UIScrollViewDelegate, StoreSubscrib
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         mainStore.unsubscribe(self)
+    }
+    
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return UIStatusBarStyle.LightContent
     }
     
     func newState(state: AppState) {

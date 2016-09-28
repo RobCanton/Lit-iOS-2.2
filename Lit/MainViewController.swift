@@ -90,7 +90,7 @@ class MainViewController: UICollectionViewController, StoreSubscriber, CLLocatio
         
         self.navigationController?.navigationBar.topItem!.title = mainStore.state.userState.activeCity?.getName()
         self.navigationController?.navigationBar.titleTextAttributes =
-            [NSFontAttributeName: UIFont(name: "Avenir-Light", size: 18.0)!]
+            [NSFontAttributeName: UIFont(name: "Avenir-Book", size: 20.0)!]
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: .Default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.translucent = true

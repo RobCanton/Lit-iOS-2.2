@@ -56,9 +56,7 @@ class ActivityFriendRequestCell: UITableViewCell {
         let uid = mainStore.state.userState.uid
 
         FirebaseService.ref.child("users/\(uid)/friendRequestsIn/\(friend_uid)").removeValue()
-        
         FirebaseService.ref.child("users/\(friend_uid)/friendRequestsOut/\(uid)").removeValue()
-        
         FirebaseService.ref.child("users/\(uid)/friends/\(friend_uid)").setValue(true)
         FirebaseService.ref.child("users/\(friend_uid)/friends/\(uid)").setValue(true)
     }
