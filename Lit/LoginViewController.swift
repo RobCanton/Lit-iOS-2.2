@@ -8,7 +8,6 @@
 
 import UIKit
 import ReSwift
-import ReSwiftRouter
 import Firebase
 import FBSDKCoreKit
 import FBSDKLoginKit
@@ -31,8 +30,9 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, StoreSubs
         counterLabel.text = "\(mainStore.state.userState.uid)"
         if mainStore.state.userState.isAuth {
             loginButton.enabled = false
-            startRetrievers() 
+            //startRetrievers()
             
+            Listeners.listenToFriends()
             let cities = mainStore.state.cities
             if cities.count == 0 {
                 FirebaseService.retrieveCities()
@@ -62,12 +62,11 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, StoreSubs
                     }
                 } else if mainStore.state.locations.count == 0 {
                     // get locations
-                    print("City: \(mainStore.state.userState.activeCity?.getName())")
                     let city = mainStore.state.userState.activeCity
                     FirebaseService.retrieveLocationsForCity(city!.getKey())
                 }
                 else if mainStore.state.userState.activeLocationKey == ""{
-                    print("Locations: \(mainStore.state.locations)")
+                    Listeners.listenToLocations()
                     var minDistance = Double(MAXFLOAT)
                     var nearestLocation:Location?
                     for location in mainStore.state.locations {
@@ -85,7 +84,6 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, StoreSubs
                         let uid = mainStore.state.userState.uid
                         let city = mainStore.state.userState.activeCity!.getKey()
                         
-                        print("users/\(uid)/ignores/\(city)/\(nLoc.getKey()))")
                         let ignoreRef = FirebaseService.ref.child("users/\(uid)/ignores/\(city)/\(nLoc.getKey())")
                         ignoreRef.observeSingleEventOfType(.Value, withBlock: { (snapshot) in
                             
@@ -130,7 +128,6 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, StoreSubs
                     mainStore.dispatch(UserIsAuthenticated(uid: uid))
                     let ref = FirebaseService.ref.child("users/\(mainStore.state.userState.uid)")
                     ref.observeEventType(.Value, withBlock: { (snapshot) in
-                        print("Snapshot updated foo")
                     })
                 }
             }
@@ -153,6 +150,8 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, StoreSubs
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        createTree()
+        
         loginButton.loginBehavior = .Browser
         loginButton.delegate = self
         
@@ -172,44 +171,34 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, StoreSubs
     
     func startRetrievers() {
         if (!retrieversStarted){
+            
             retrieversStarted = true
             FirebaseService.ref.child("users/\(mainStore.state.userState.uid)/friendRequests")
                 .observeEventType(.Value, withBlock: { (snapshot) in
-                var requests = [FriendRequest]()
-                var requestsOut = [FriendRequest]()
-                var unseen_requests = 0
-                if snapshot.exists() {
-                    for child in snapshot.children {
-                        let status = child.value["status"] as! String
-                        if let friendStatus = self.convertStatus(status) {
-                            let friend = FriendRequest(friend_uid: child.key!!, status: friendStatus)
-                            if friendStatus == .PENDING_INCOMING {
-                                unseen_requests += 1
-                                requests.append(friend)
-                            } else if friendStatus == .PENDING_INCOMING_SEEN {
-                                requests.append(friend)
-                            } else if friendStatus == .PENDING_OUTGOING {
-                                requestsOut.append(friend)
-                                
+                    var requests = [String:FriendRequest]()
+                    var requestsOut = [String:FriendRequest]()
+                    var unseen_requests = 0
+                    if snapshot.exists() {
+                        for child in snapshot.children {
+                            let status = child.value["status"] as! String
+                            if let friendStatus = self.convertStatus(status) {
+                                let friend_uid = child.key!!
+                                let friend = FriendRequest(friend_uid: friend_uid, status: friendStatus)
+                                if friendStatus == .PENDING_INCOMING {
+                                    unseen_requests += 1
+                                    requests[friend_uid] = friend
+                                } else if friendStatus == .PENDING_INCOMING_SEEN {
+                                    requests[friend_uid] = friend
+                                } else if friendStatus == .PENDING_OUTGOING {
+                                    requestsOut[friend_uid] = friend
+                                    
+                                }
                             }
                         }
                     }
-                }
-                mainStore.dispatch(UpdateFriendRequestsIn(requests: requests, unseen: unseen_requests))
-                mainStore.dispatch(UpdateFriendRequestsOut(requests: requestsOut))
+                    mainStore.dispatch(UpdateFriendRequestsIn(requests: requests, unseen: unseen_requests))
+                    mainStore.dispatch(UpdateFriendRequestsOut(requests: requestsOut))
             })
-            
-            FirebaseService.ref.child("users/\(mainStore.state.userState.uid)/friends")
-                .observeEventType(.Value, withBlock: { (snapshot) in
-                    var friends = [Friend]()
-                    if snapshot.exists() {
-                        for child in snapshot.children {
-                            let friend = Friend(friend_uid: child.key!!)
-                            friends.append(friend)
-                        }
-                    }
-                    mainStore.dispatch(UpdateFriends(friends: friends))
-                })
         }
     }
     
@@ -238,6 +227,13 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, StoreSubs
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    
+    
+    
+    func createTree () {
+
     }
 }
 

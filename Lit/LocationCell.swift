@@ -34,7 +34,8 @@ class LocationCell: UICollectionViewCell {
                         
                         self.titleLabel.styleLocationTitle(location.getName())
                         
-                        let visitorsCount = location.getVisitors().count
+                        location.collectInfo()
+                        let visitorsCount = location.getVisitorsCount()
                         let friendsCount = location.getFriendsCount()
                         
                         self.addressLabel.styleVisitorsCountLabel(visitorsCount, size: 22)
@@ -59,7 +60,7 @@ class LocationCell: UICollectionViewCell {
         
         let delta = 1 - ((featuredHeight - CGRectGetHeight(frame)) / (featuredHeight - standardHeight))
         
-        let minAlpha: CGFloat = 0.25
+        let minAlpha: CGFloat = 0
         let maxAlpha: CGFloat = 0.65
         
         return maxAlpha - (delta * (maxAlpha - minAlpha))

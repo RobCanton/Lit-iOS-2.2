@@ -11,7 +11,6 @@ import Firebase
 import FBSDKCoreKit
 import FBSDKLoginKit
 import ReSwift
-import ReSwiftRouter
 
 let mainStore = Store<AppState>(
     reducer: AppReducer(),
@@ -25,7 +24,6 @@ let errorColor:UIColor = UIColor(red: 1, green: 80/255, blue: 80/255, alpha: 1)
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    var router: Router<AppState>!
     
 
 
@@ -38,30 +36,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
         
         UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.LightContent
-        
-        window = UIWindow(frame: UIScreen.mainScreen().bounds)
-        
-        /*
-         Set a dummy VC to satisfy UIKit
-         Router will set correct VC throug async call which means
-         window would not have rootVC at completion of this method
-         which causes a crash.
-         */
-        window?.rootViewController = UIViewController()
-        
-        let rootRoutable = RootRoutable(window: window!)
-        
-        router = Router(store: mainStore, rootRoutable: rootRoutable) { state in
-            return state.navigationState
-        }
-        
-        if mainStore.state.userState.isAuth {
-            mainStore.dispatch(ReSwiftRouter.SetRouteAction([mainViewRoute]))
-        } else {
-            mainStore.dispatch(ReSwiftRouter.SetRouteAction([loginRoute]))
-        }
-        
-        window?.makeKeyAndVisible()
         
         
         return true

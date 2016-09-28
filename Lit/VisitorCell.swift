@@ -92,24 +92,20 @@ class VisitorCell: UITableViewCell {
         /*  THIS IS VERY COSTLY */
         /*  LOOK FOR NEW SOLUTION */
         let requests = mainStore.state.userState.friendRequests
-        for request in requests {
-            if request.getId() == visitor_uid {
-                friendStatus = FriendStatus.PENDING_INCOMING
-            }
+        if let _ = requests[visitor_uid] {
+            friendStatus = FriendStatus.PENDING_INCOMING
         }
         
         let requestsOut = mainStore.state.userState.friendRequestsOut
-        for requestOut in requestsOut {
-            if requestOut.getId() == visitor_uid {
-                friendStatus = FriendStatus.PENDING_OUTGOING
-            }
+        if let _ = requestsOut[visitor_uid] {
+            friendStatus = FriendStatus.PENDING_OUTGOING
         }
-        let friends = mainStore.state.userState.friends
-        for friend in friends {
-            if friend.getId() == visitor_uid {
-                friendStatus = FriendStatus.FRIENDS
-            }
+        
+        let friends = mainStore.state.friends
+        if friends.contains(visitor_uid) {
+            friendStatus = FriendStatus.FRIENDS
         }
+
         
         switch friendStatus {
         case .PENDING_INCOMING:

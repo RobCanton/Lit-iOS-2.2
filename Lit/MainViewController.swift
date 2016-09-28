@@ -18,7 +18,7 @@ import FBSDKLoginKit
 
 class MainViewController: UICollectionViewController, StoreSubscriber, CLLocationManagerDelegate, UIGestureRecognizerDelegate {
     
-    var locations = mainStore.state.locations
+    var locations = [Location]()
     
     var filteredLocations = [Location]()
     
@@ -62,12 +62,14 @@ class MainViewController: UICollectionViewController, StoreSubscriber, CLLocatio
     }
     
     func newState(state: [Location]?) {
-        
-        if state != nil && locations.count == 0{
-            print("MainViewController: New Locations")
+        print("MainViewController: New State")
+        if state != nil{
             locations = state!
-            collectionView?.reloadData()
+            locations.sortInPlace({ $0.getVisitorsCount() > $1.getVisitorsCount() })
+
         }
+
+        collectionView?.reloadData()
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {

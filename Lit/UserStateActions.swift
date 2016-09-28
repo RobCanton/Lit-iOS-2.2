@@ -8,7 +8,6 @@
 
 import Foundation
 import ReSwift
-import ReSwiftRouter
 //
 
 
@@ -19,14 +18,14 @@ struct UserIsAuthenticated: Action {
 struct UserIsUnauthenticated: Action {}
 
 struct UpdateFriendRequestsIn: Action {
-    let requests:[FriendRequest]
+    let requests:[String:FriendRequest]
     let unseen: Int
 }
 struct UpdateFriendRequestsOut: Action {
-    let requests:[FriendRequest]
+    let requests:[String:FriendRequest]
 }
 
 
 struct UpdateFriends: Action {
-    let friends:[Friend]
+    let friends:[String:Friend]
 }

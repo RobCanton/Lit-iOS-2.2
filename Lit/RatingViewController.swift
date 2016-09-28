@@ -112,12 +112,10 @@ class RatingViewController: UIViewController, StoreSubscriber  {
     
     func newState(state: AppState) {
         let key = mainStore.state.userState.activeLocationKey
-        if activeLocation == nil || activeLocation?.getKey() != key {
-            print("RatingViewController: New Active Location")
-            for location in mainStore.state.locations {
-                if key == location.getKey() {
-                    setLocation(location)
-                }
+        print("RatingViewController: New Active Location")
+        for location in mainStore.state.locations {
+            if key == location.getKey() {
+                setLocation(location)
             }
         }
         
@@ -135,10 +133,15 @@ class RatingViewController: UIViewController, StoreSubscriber  {
         locationTitle.layer.shadowRadius = 4
         imageView.alpha = 0
         imageView.loadImageUsingCacheWithURLString((activeLocation?.getImageURL())!, completion: { result in
-            UIView.animateWithDuration(1.0, animations: {
-                self.imageView.alpha = 1.0
-            })
+            if result {
+                UIView.animateWithDuration(1.0, animations: {
+                    self.imageView.alpha = 1.0
+                })
+            } else {
+                self.imageView.alpha = 1
+            }
         })
+        activeLocation!.collectInfo()
         let visitorsCount = activeLocation!.getVisitors().count
         let friendsCount = activeLocation!.getFriendsCount()
 

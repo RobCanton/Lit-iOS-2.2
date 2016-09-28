@@ -24,12 +24,12 @@ class Location {
     
     private var story: [StoryItem]?
     
-    private var visitors:[String]
+    private var visitors = [String]()
 
     private var friendsCount = 0
     
     
-    init(key:String, name:String, coordinates:CLLocation, imageURL:String, address:String, description:String, number:String, website:String, visitors:[String],storyCount: Int)
+    init(key:String, name:String, coordinates:CLLocation, imageURL:String, address:String, description:String, number:String, website:String,storyCount: Int)
     {
         self.key          = key
         self.name         = name
@@ -40,9 +40,7 @@ class Location {
         self.number       = number
         self.website      = website
         self.storyCount   = storyCount
-        self.visitors     = visitors
         
-        self.collectInfo()
     }
     
     /* Getters */
@@ -101,8 +99,27 @@ class Location {
         return storyCount
     }
     
+    func addVisitor(visitor:String) {
+        visitors.append(visitor)
+    }
+    
+    func removeVisitor(_visitor:String) {
+        for i in 0 ..< visitors.count {
+            print("i: \(i) count: \(visitors.count)")
+            let visitor = visitors[i]
+            if visitor == _visitor {
+                visitors.removeAtIndex(i)
+                break
+            }
+        }
+    }
+    
     func getVisitors() -> [String] {
         return visitors
+    }
+    
+    func getVisitorsCount() -> Int {
+        return visitors.count
     }
     
     func getFriendsCount() -> Int {
@@ -112,10 +129,8 @@ class Location {
     func collectInfo() {
         friendsCount = 0
         for visitor in visitors {
-            for friend in mainStore.state.userState.friends {
-                if visitor == friend.getId() {
-                    friendsCount += 1
-                }
+            if mainStore.state.friends.contains(visitor) {
+                friendsCount += 1
             }
         }
 

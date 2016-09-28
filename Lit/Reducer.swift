@@ -8,8 +8,6 @@
 
 import Foundation
 import ReSwift
-import ReSwiftRouter
-//
 
 struct AppReducer: Reducer {
     
@@ -17,12 +15,12 @@ struct AppReducer: Reducer {
 
         return AppState(
             userState: UserStateReducer(action, state: state?.userState),
-            navigationState: NavigationReducer.handleAction(action, state: state?.navigationState),
             locations:LocationsReducer(action, state: state?.locations),
             cities:CitiesReducer(action, state: state?.cities),
             activeLocationIndex: ActiveLocationIndexReducer(action, state: state?.activeLocationIndex),
             storyViewIndex:StoryViewIndexReducer(action, state: state?.storyViewIndex),
-            viewLocationKey: ViewLocationReducer(action, state: state?.viewLocationKey)
+            viewLocationKey: ViewLocationReducer(action, state: state?.viewLocationKey),
+            friends: FriendsReducer(action, state: state?.friends)
         )
     } 
     
@@ -65,10 +63,6 @@ func UserStateReducer(action: Action, state: UserState?) -> UserState {
         let a = action as! UpdateFriendRequestsOut
         state.friendRequestsOut = a.requests
         break
-    case _ as UpdateFriends:
-        let a = action as! UpdateFriends
-        state.friends = a.friends
-        break
     default:
         break
     }
@@ -83,25 +77,6 @@ func CitiesReducer(action: Action, state:[City]?) -> [City] {
     case _ as CitiesRetrieved:
         let a = action as! CitiesRetrieved
         state = a.cities
-        break
-    default:
-        break
-    }
-    return state
-}
-
-func LocationsReducer(action: Action, state:[Location]?) -> [Location] {
-    var state = state ?? []
-    
-    switch action {
-    case _ as LocationsRetrieved:
-        let a = action as! LocationsRetrieved
-        state = a.locations
-        break
-    case _ as LocationStoryLoaded:
-        let a = action as! LocationStoryLoaded
-        let index = a.locationIndex
-        state[index].setStory(a.story)
         break
     default:
         break

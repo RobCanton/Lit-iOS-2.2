@@ -17,7 +17,7 @@ import Foundation
 //
 
 
-class Friend {
+class Friend : Comparable {
     
     private var friend_uid:String
     
@@ -31,5 +31,12 @@ class Friend {
     func getId() -> String {
         return friend_uid
     }
-    
+}
+
+func < (lhs: Friend, rhs: Friend) -> Bool {
+    return lhs.friend_uid < rhs.friend_uid
+}
+
+func == (lhs: Friend, rhs: Friend) -> Bool {
+    return lhs.friend_uid == rhs.friend_uid
 }

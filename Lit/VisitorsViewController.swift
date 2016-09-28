@@ -33,7 +33,6 @@ class VisitorsViewController: UIViewController, StoreSubscriber, UITableViewDele
                            array.append(uid)
                         }
                     }
-                    print(array)
                     self.visitors = array
             
                     self.tableView.reloadData()

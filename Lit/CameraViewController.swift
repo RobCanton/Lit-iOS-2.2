@@ -11,6 +11,19 @@ import AVFoundation
 import RecordButton
 import Firebase
 
+
+enum CameraState {
+    case Initiating, Running, PhotoTaken, VideoTaken, Recording
+}
+
+enum CameraMode {
+    case Front, Back
+}
+
+enum FlashMode {
+    case Off, On, Auto
+}
+
 protocol PopUpProtocolDelegate {
     func close(uploadTask:FIRStorageUploadTask, outputUrl:NSURL?)
 }

@@ -32,7 +32,12 @@ class ActivityViewController: UITableViewController, StoreSubscriber {
     }
     
     func newState(state: AppState) {
-        requests = state.userState.friendRequests
+        let requestsDictionary = state.userState.friendRequests
+        requests = [FriendRequest]()
+        for (_, request) in requestsDictionary {
+            requests.append(request)
+        }
+        
         print("Requests: \(requests)")
         tableView.reloadData()
     }

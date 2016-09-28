@@ -52,3 +52,13 @@ struct SetActiveLocation: Action {
 struct Vote: Action {
     let state:RatingState
 }
+
+struct AddVisitorToLocation: Action {
+    let locationIndex:Int
+    let uid:String
+}
+
+struct RemoveVisitorFromLocation: Action {
+    let locationIndex:Int
+    let uid:String
+}

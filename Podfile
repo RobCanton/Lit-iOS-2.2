@@ -6,20 +6,15 @@ use_frameworks!
 target 'Lit' do
 
 pod 'ReSwift'
-pod 'ReSwiftRouter'
-pod 'JLSwiftRouter'
 pod 'Bolts'
 pod 'Firebase'
 pod 'Firebase/Auth'
 pod 'Firebase/Database'
 pod 'Firebase/Storage'
 pod 'BRYXBanner'
-pod 'Presentr'
 pod 'RecordButton'
-pod 'RxSwift'
 pod 'JSQMessagesViewController'
 pod 'MXSegmentedPager'
-pod 'DynamicBlurView'
 pod 'IngeoSDK'
 pod 'Whisper'
 end

@@ -8,19 +8,19 @@
 
 import Foundation
 import ReSwift
-import ReSwiftRouter
 import CoreLocation
 import IngeoSDK
 
 
-struct AppState: StateType, HasNavigationState {
+struct AppState: StateType {
     var userState: UserState
-    var navigationState: NavigationState
     var locations: [Location]
     var cities: [City]
     var activeLocationIndex:Int
     var storyViewIndex:Int
     var viewLocationKey:String = ""
+    
+    var friends = Tree<String>()
     
     func printStore() {
         
@@ -34,9 +34,9 @@ struct UserState {
     var activeCity: City?
     var activeLocationKey:String=""
     var vote:RatingState = .Selection
-    var friendRequests = [FriendRequest]()
-    var friendRequestsOut = [FriendRequest]()
-    var unseenRequests = 0
     
-    var friends = [Friend]()
+    var friendRequests = [String:FriendRequest]()
+    var friendRequestsOut = [String:FriendRequest]()
+    
+    var unseenRequests = 0
 }

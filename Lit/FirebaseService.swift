@@ -95,27 +95,11 @@ class FirebaseService {
                 let number = child.value["number"] as! String
                 let website = child.value["website"] as! String
                 let storyCount = child.value["story_count"] as! Int
-                
-                
-                var visitorsArray = [String]()
-                if child.hasChild("visitors") {
-                    let visitors = child.value["visitors"]! as! [String:Bool]
-                    print("VISITORS \(key)")
-                    print(visitors)
-                    
-                    for visitor in visitors.keys {
-                        visitorsArray.append(visitor)
-                    }
-                }
-                
 
-
-                
-                let loc = Location(key: key, name: name, coordinates: coord, imageURL: imageURL, address: address, description: description, number: number, website: website,visitors: visitorsArray, storyCount: storyCount)
+                let loc = Location(key: key, name: name, coordinates: coord, imageURL: imageURL, address: address, description: description, number: number, website: website, storyCount: storyCount)
                 
                 locations.append(loc)
             }
-            locations.sortInPlace({ $0.getVisitors().count > $1.getVisitors().count })
             mainStore.dispatch(LocationsRetrieved(locations: locations))
             
         })
