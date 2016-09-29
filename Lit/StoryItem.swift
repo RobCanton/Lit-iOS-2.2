@@ -9,18 +9,19 @@ import Foundation
 import UIKit
 
 protocol ItemDelegate {
-    func contentLoaded(contentType:ContentType)
-    func authorLoaded(author:User)
+    func contentLoaded()
+    func authorLoaded()
 }
 
 enum ContentType {
-    case Image, Video
+    case Image, Video, Invalid
 }
 
 class StoryItem: NSObject {
     
     private var key:String                    // Key in database
     private var authorId:String
+    private var locationKey:String
     private var downloadUrl:NSURL?
     private var contentType:ContentType
     private var dateCreated: NSDate?
@@ -32,11 +33,12 @@ class StoryItem: NSObject {
     
     var isContentLoaded = false
     
-    init(key: String, authorId: String, downloadUrl: String, contentType: ContentType, dateCreated: Double, length: Double)
+    init(key: String, authorId: String, locationKey:String, downloadUrl: String, contentType: ContentType, dateCreated: Double, length: Double)
     {
         
         self.key          = key
         self.authorId     = authorId
+        self.locationKey     = locationKey
         self.downloadUrl  = NSURL(string: downloadUrl)
         self.contentType  = contentType
         self.dateCreated  = NSDate(timeIntervalSince1970: dateCreated/1000)
@@ -52,6 +54,10 @@ class StoryItem: NSObject {
     }
     
     func getAuthorId() -> String {
+        return authorId
+    }
+    
+    func getLocationKey() -> String {
         return authorId
     }
     
@@ -90,7 +96,7 @@ class StoryItem: NSObject {
                     if self.contentType == .Image {
                         self.image = UIImage(data: data!)
                         
-                        self.delegate?.contentLoaded(self.contentType)
+                        self.delegate?.contentLoaded()
                         print("Key: \(self.key) | image loaded")
                     }
                     else if self.contentType == .Video {
@@ -99,7 +105,7 @@ class StoryItem: NSObject {
                         
                         do {
                             try data!.writeToURL(self.filePath!, atomically: true)
-                            self.delegate?.contentLoaded(self.contentType)
+                            self.delegate?.contentLoaded()
                             print("Key: \(self.key) | video loaded")
                             
                         } catch {
@@ -117,7 +123,7 @@ class StoryItem: NSObject {
         FirebaseService.getUser(authorId, completionHandler: { user in
             print("Fetched author: \(user.getUserId()) : \(user.getDisplayName())")
             self.author = user
-            self.delegate?.authorLoaded(user)
+            self.delegate?.authorLoaded()
         })
     }
     

@@ -131,6 +131,7 @@ class FirebaseService {
                     let downloadURL = metadata!.downloadURL()
                     let obj = [
                         "author": mainStore.state.userState.uid,
+                        "location": activeLocationKey,
                         "url": downloadURL!.absoluteString,
                         "contentType": contentTypeStr,
                         "dateCreated": [".sv": "timestamp"],
@@ -191,33 +192,6 @@ class FirebaseService {
     }
     
     static func downloadLocationStory(locationIndex:Int) {
-        
-//        let location = mainStore.state.locations[locationIndex]
-//        let city = mainStore.state.userState.activeCity!.getKey()
-//        let refHandle = ref.child("uploads/\(city)/\(location.getKey())").observeEventType(FIRDataEventType.Value, withBlock: { (snapshot) in
-//            var story = [StoryItem]()
-//            for child in snapshot.children {
-//                let key = child.key!!
-//                let authorId = child.value["author"] as! String
-//                let downloadUrl = child.value["url"] as! String
-//                let contentTypeStr = child.value["contentType"] as! String
-//                var contentType: ContentType
-//                if contentTypeStr == "image/jpg" {
-//                    contentType = .Image
-//                } else {
-//                    contentType = .Video
-//                }
-//                
-//                let dateCreated = child.value["dateCreated"] as! Double
-//                let length = child.value["length"] as! Double
-//                
-//                let storyItem = StoryItem(key: key, authorId: authorId, downloadUrl: downloadUrl, contentType: contentType, dateCreated: dateCreated, length: length)
-//                story.append(storyItem)
-//            }
-//            
-//            mainStore.dispatch(LocationStoryLoaded(locationIndex: locationIndex, story: story))
-//            
-//        })
         
         
     }
