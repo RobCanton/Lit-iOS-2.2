@@ -17,6 +17,7 @@ class LocationCell: UICollectionViewCell {
     @IBOutlet private weak var addressLabel: UILabel!
     @IBOutlet private weak var speakerLabel: UILabel!
     
+    @IBOutlet weak var postsCountLabel: UILabel!
     var location: Location? {
         didSet {
             if let location = location {
@@ -33,6 +34,9 @@ class LocationCell: UICollectionViewCell {
                 
                 self.addressLabel.styleVisitorsCountLabel(visitorsCount, size: 22)
                 self.speakerLabel.styleFriendsCountLabel(friendsCount, size: 22, you: location.getKey() == mainStore.state.userState.activeLocationKey)
+                
+                
+                postsCountLabel.text = "\(location.getPostKeys().count)"
             }
         }
     }

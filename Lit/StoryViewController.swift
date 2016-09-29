@@ -27,7 +27,7 @@ class StoryViewController: UIViewController, StoreSubscriber, ItemDelegate {
     
     var progressIndicator: StoryProgressIndicator?
     
-    var story:[StoryItem]?
+    var story = [StoryItem]()
     
     var isLoading = true
     
@@ -112,9 +112,9 @@ class StoryViewController: UIViewController, StoreSubscriber, ItemDelegate {
         mainStore.unsubscribe(self)
     }
     
+    var postKeys = [String]()
     
     func newState(state: AppState) {
-        print("New State Tingz")
         
         locationIndex = mainStore.state.storyViewIndex
         
@@ -123,6 +123,46 @@ class StoryViewController: UIViewController, StoreSubscriber, ItemDelegate {
             let location = mainStore.state.locations[locationIndex!]
             print("Viewing story for : \(location.getKey())")
             titleView!.text = location.getName()
+            
+            postKeys = location.getPostKeys()
+            
+            
+            story = [StoryItem]()
+            var loadedCount = 0
+            for postKey in postKeys {
+                let postRef = FirebaseService.ref.child("uploads/\(postKey)")
+                
+                postRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+                    
+                    if snapshot.exists() {
+                        let key = snapshot.key
+                        let authorId = snapshot.value!["author"] as! String
+                        let downloadUrl = snapshot.value!["url"] as! String
+                        let contentTypeStr = snapshot.value!["contentType"] as! String
+                        var contentType: ContentType
+                        if contentTypeStr == "image/jpg" {
+                            contentType = .Image
+                        } else {
+                            contentType = .Video
+                        }
+        
+                        let dateCreated = snapshot.value!["dateCreated"] as! Double
+                        let length = snapshot.value!["length"] as! Double
+                        
+                        let storyItem = StoryItem(key: key, authorId: authorId, downloadUrl: downloadUrl, contentType: contentType, dateCreated: dateCreated, length: length)
+                        self.story.append(storyItem)
+                    }
+                    
+                    loadedCount += 1
+                    if loadedCount >= self.postKeys.count {
+                        
+                        dispatch_async(dispatch_get_main_queue(), {
+                            self.prepareStory()
+                        })
+                    }
+                })
+            }
+            
             
             if let story = location.getStory() {
                 self.story = story
@@ -141,6 +181,21 @@ class StoryViewController: UIViewController, StoreSubscriber, ItemDelegate {
                 FirebaseService.downloadLocationStory(locationIndex!)
             }
         }
+    }
+    
+    func prepareStory() {
+        
+        progressIndicator?.createProgressIndicator(story)
+        
+        for item in story {
+            totalLength += item.getLength()!
+        }
+        
+        // Load next 3, then from here load as each item passes
+        loadNextChunk()
+        loadNextChunk()
+        loadNextChunk()
+        showNextStoryItem()
     }
     
     func mainViewTapped(sender: UITapGestureRecognizer) {
@@ -170,14 +225,14 @@ class StoryViewController: UIViewController, StoreSubscriber, ItemDelegate {
         self.imageView!.image = nil
         
         
-        if currentStoryItem >= 0 && currentStoryItem < story?.count {
-            story![currentStoryItem].delegate = nil
+        if currentStoryItem >= 0 && currentStoryItem < story.count {
+            story[currentStoryItem].delegate = nil
         }
         currentStoryItem += 1
         
-        if story?.count > 0 && currentStoryItem < story?.count {
-            story![currentStoryItem].delegate = self
-            authorInfoView?.setTime(story![currentStoryItem].getDateCreated()!)
+        if story.count > 0 && currentStoryItem < story.count {
+            story[currentStoryItem].delegate = self
+            authorInfoView?.setTime(story[currentStoryItem].getDateCreated()!)
             
             print("Content loaded already")
             presentContent()
@@ -196,23 +251,23 @@ class StoryViewController: UIViewController, StoreSubscriber, ItemDelegate {
     
     func presentContent() {
         isLoading = true
-        let contentType = story![currentStoryItem].getContentType()
+        let contentType = story[currentStoryItem].getContentType()
         if contentType == .Image {
-            if let image = story![currentStoryItem].image {
+            if let image = story[currentStoryItem].image {
                 isLoading = false
                 self.imageView?.image = image
                 videoView?.hidden = true
                 progressIndicator?.activateIndicator(currentStoryItem)
                 timer?.invalidate()
                 timer = nil
-                timer = NSTimer.scheduledTimerWithTimeInterval(story![currentStoryItem].getLength()!, target: self, selector: "showNextStoryItem", userInfo: nil, repeats: false)
-                if let user = story![currentStoryItem].getAuthor() {
+                timer = NSTimer.scheduledTimerWithTimeInterval(story[currentStoryItem].getLength()!, target: self, selector: "showNextStoryItem", userInfo: nil, repeats: false)
+                if let user = story[currentStoryItem].getAuthor() {
                     authorLoaded(user)
                 }
                 
             }
         } else if contentType == .Video {
-            if let filePath = story![currentStoryItem].filePath {
+            if let filePath = story[currentStoryItem].filePath {
                 isLoading = false
                 let item = AVPlayerItem(URL: filePath)
                 videoPlayer.replaceCurrentItemWithPlayerItem(item)
@@ -222,8 +277,8 @@ class StoryViewController: UIViewController, StoreSubscriber, ItemDelegate {
                 progressIndicator?.activateIndicator(currentStoryItem)
                 timer?.invalidate()
                 timer = nil
-                timer = NSTimer.scheduledTimerWithTimeInterval(story![currentStoryItem].getLength()!, target: self, selector: "showNextStoryItem", userInfo: nil, repeats: false)
-                if let user = story![currentStoryItem].getAuthor() {
+                timer = NSTimer.scheduledTimerWithTimeInterval(story[currentStoryItem].getLength()!, target: self, selector: "showNextStoryItem", userInfo: nil, repeats: false)
+                if let user = story[currentStoryItem].getAuthor() {
                     authorLoaded(user)
                 }
             }
@@ -239,17 +294,17 @@ class StoryViewController: UIViewController, StoreSubscriber, ItemDelegate {
     
     func authorLoaded(author:User) {
         print("AUTHOR: \(author.getDisplayName())")
-        if story![currentStoryItem].getAuthorId() == author.getUserId() {
+        if story[currentStoryItem].getAuthorId() == author.getUserId() {
             authorInfoView?.setAuthor(author)
         }
     }
     
     func loadNextChunk() {
-        if stepper >= 0 && stepper < story?.count {
-            if let item = story?[stepper] {
-                item.initiateDownload()
-                stepper += 1
-            }
+        if stepper >= 0 && stepper < story.count {
+            let item = story[stepper]
+            item.initiateDownload()
+            stepper += 1
+
         }
     }
     

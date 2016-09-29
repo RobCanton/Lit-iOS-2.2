@@ -62,3 +62,14 @@ struct RemoveVisitorFromLocation: Action {
     let locationIndex:Int
     let uid:String
 }
+
+struct AddPostToLocation: Action {
+    let locationIndex:Int
+    let key:String
+}
+
+struct RemovePostFromLocation: Action {
+    let locationIndex:Int
+    let key:String
+}
+

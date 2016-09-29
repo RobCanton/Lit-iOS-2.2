@@ -66,7 +66,6 @@ class MainViewController: UICollectionViewController, StoreSubscriber, CLLocatio
         if state != nil{
             locations = state!
             locations.sortInPlace({ $0.getVisitorsCount() > $1.getVisitorsCount() })
-
         }
 
         collectionView?.reloadData()

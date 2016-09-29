@@ -29,6 +29,13 @@ func LocationsReducer(action: Action, state:[Location]?) -> [Location] {
     case _ as RemoveVisitorFromLocation:
         let a = action as! RemoveVisitorFromLocation
         state[a.locationIndex].removeVisitor(a.uid)
+    case _ as AddPostToLocation:
+        let a = action as! AddPostToLocation
+        state[a.locationIndex].addPost(a.key)
+        break
+    case _ as RemovePostFromLocation:
+        let a = action as! RemovePostFromLocation
+        state[a.locationIndex].removePost(a.key)
         break
     default:
         break

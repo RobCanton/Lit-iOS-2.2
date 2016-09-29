@@ -25,6 +25,8 @@ class Location {
     private var story: [StoryItem]?
     
     private var visitors = [String]()
+    
+    private var postKeys = [String]()
 
     private var friendsCount = 0
     
@@ -105,7 +107,6 @@ class Location {
     
     func removeVisitor(_visitor:String) {
         for i in 0 ..< visitors.count {
-            print("i: \(i) count: \(visitors.count)")
             let visitor = visitors[i]
             if visitor == _visitor {
                 visitors.removeAtIndex(i)
@@ -124,6 +125,24 @@ class Location {
     
     func getFriendsCount() -> Int {
         return friendsCount
+    }
+    
+    func addPost(key:String) {
+        postKeys.append(key)
+    }
+    
+    func removePost(_key:String) {
+        for i in 0 ..< postKeys.count {
+            let key = postKeys[i]
+            if key == _key {
+                postKeys.removeAtIndex(i)
+                break
+            }
+        }
+    }
+    
+    func getPostKeys() -> [String] {
+        return postKeys
     }
     
     func collectInfo() {

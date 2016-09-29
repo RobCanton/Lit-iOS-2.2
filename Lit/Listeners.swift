@@ -53,17 +53,30 @@ class Listeners {
             
             for i in 0 ..< locations.count {
                 let location = locations[i]
-                let locationRef = ref.child("locations/\(city)/\(location.getKey())/visitors")
+                let locationRef = ref.child("locations/\(city)/\(location.getKey())")
                 
-                locationRef.observeEventType(.ChildAdded, withBlock: { snapshot in
+                locationRef.child("visitors").observeEventType(.ChildAdded, withBlock: { snapshot in
                     if snapshot.exists() {
                         mainStore.dispatch(AddVisitorToLocation(locationIndex: i, uid: snapshot.key))
                     }
                 })
                 
-                locationRef.observeEventType(.ChildRemoved, withBlock: { snapshot in
+                locationRef.child("visitors").observeEventType(.ChildRemoved, withBlock: { snapshot in
                     if snapshot.exists() {
                         mainStore.dispatch(RemoveVisitorFromLocation(locationIndex: i, uid: snapshot.key))
+                    }
+                })
+                
+                
+                locationRef.child("uploads").observeEventType(.ChildAdded, withBlock: { snapshot in
+                    if snapshot.exists() {
+                        mainStore.dispatch(AddPostToLocation(locationIndex: i, key: snapshot.key))
+                    }
+                })
+                
+                locationRef.child("uploads").observeEventType(.ChildRemoved, withBlock: { snapshot in
+                    if snapshot.exists() {
+                        mainStore.dispatch(RemovePostFromLocation(locationIndex: i, key: snapshot.key))
                     }
                 })
             }

@@ -5,12 +5,13 @@
 //  Created by Robert Canton on 2016-08-14.
 //  Copyright © 2016 Robert Canton. All rights reserved.
 //
+import ReSwift
 import FBSDKCoreKit
 import FBSDKLoginKit
 import Firebase
 import UIKit
 
-class ProfileViewController: UIViewController {
+class ProfileViewController: UIViewController, StoreSubscriber {
     
     @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var profileImageView: UIView!
@@ -35,41 +36,23 @@ class ProfileViewController: UIViewController {
     
     @IBOutlet weak var activityInnerBlock: UIView!
     
-    @IBAction func settingsTapped(sender: AnyObject) {
-        
-        // 1
-        let optionMenu = UIAlertController(title: nil, message: "Options", preferredStyle: .ActionSheet)
-        
-        // 2
-        let logoutAction = UIAlertAction(title: "Logout", style: .Destructive, handler: {
-            (alert: UIAlertAction!) -> Void in
-            
-            try! FIRAuth.auth()!.signOut()
-            let loginManager = FBSDKLoginManager()
-            loginManager.logOut() // this is an instance function
-            mainStore.dispatch(UserIsUnauthenticated())
-            
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let vc = storyboard.instantiateViewControllerWithIdentifier("LoginViewController") as! LoginViewController
-            self.presentViewController(vc, animated: true, completion: nil)
-            
-        })
-        
-        //
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
-            (alert: UIAlertAction!) -> Void in
-        })
-        
-        
-        // 4
-        optionMenu.addAction(logoutAction)
-        optionMenu.addAction(cancelAction)
-        
-        // 5
-        self.presentViewController(optionMenu, animated: true, completion: nil)
+    @IBOutlet weak var postsBlock: UIView!
+    @IBOutlet weak var postsImage: UIImageView!
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        mainStore.subscribe(self)
     }
     
-
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        mainStore.unsubscribe(self)
+    }
+    
+    func newState(state: AppState) {
+        
+    }
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -127,6 +110,14 @@ class ProfileViewController: UIViewController {
         activityBlock.layer.shadowOffset = CGSize(width: 0, height: 4)
         activityBlock.layer.shadowOpacity = 0.7
         activityBlock.layer.shadowRadius = 2
+        
+        postsImage.layer.cornerRadius = 4
+        postsImage.clipsToBounds = true
+        
+        postsBlock.layer.masksToBounds = false
+        postsBlock.layer.shadowOffset = CGSize(width: 0, height: 4)
+        postsBlock.layer.shadowOpacity = 0.7
+        postsBlock.layer.shadowRadius = 2
 
         bioLabel.text = "I am drake. Drake is me. OVO. GANG GANG GANG. Murder gang. Slaughter gang. XO. Homie G 21 21 WALK 21 21 WALK LEVELUP LEVELUP LEVELUP"
 
@@ -138,6 +129,40 @@ class ProfileViewController: UIViewController {
         self.navigationController?.navigationBar.translucent = true
         self.navigationController?.navigationBar.barStyle = .BlackTranslucent
         
+    }
+    
+    @IBAction func settingsTapped(sender: AnyObject) {
+        
+        // 1
+        let optionMenu = UIAlertController(title: nil, message: "Options", preferredStyle: .ActionSheet)
+        
+        // 2
+        let logoutAction = UIAlertAction(title: "Logout", style: .Destructive, handler: {
+            (alert: UIAlertAction!) -> Void in
+            
+            try! FIRAuth.auth()!.signOut()
+            let loginManager = FBSDKLoginManager()
+            loginManager.logOut() // this is an instance function
+            mainStore.dispatch(UserIsUnauthenticated())
+            
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyboard.instantiateViewControllerWithIdentifier("LoginViewController") as! LoginViewController
+            self.presentViewController(vc, animated: true, completion: nil)
+            
+        })
+        
+        //
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
+            (alert: UIAlertAction!) -> Void in
+        })
+        
+        
+        // 4
+        optionMenu.addAction(logoutAction)
+        optionMenu.addAction(cancelAction)
+        
+        // 5
+        self.presentViewController(optionMenu, animated: true, completion: nil)
     }
     
     

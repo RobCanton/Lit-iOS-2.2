@@ -92,9 +92,6 @@ class RatingViewController: UIViewController, StoreSubscriber  {
         notHereBtn.layer.shadowOpacity = 0.4
         notHereBtn.layer.shadowRadius = 4
 
-        
-
-
         // Do any additional setup after loading the view.
     }
     
