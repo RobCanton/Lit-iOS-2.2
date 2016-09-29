@@ -286,7 +286,7 @@ extension UILabel
         self.numberOfLines = 2
         self.textAlignment = .Center
         let str = "\(count)\n\(text)"
-        let font = UIFont(name: "Avenir-Medium", size: 14)
+        let font = UIFont(name: "Avenir-Book", size: 12)
         let attributes: [String: AnyObject] = [
             NSFontAttributeName : font!,
             NSForegroundColorAttributeName : UIColor(white: 1.0, alpha: 0.7)
@@ -298,7 +298,7 @@ extension UILabel
         if let range = str.rangeOfString(countStr) {
             let index = str.startIndex.distanceTo(range.startIndex)
             let a: [String: AnyObject] = [
-                NSFontAttributeName : UIFont(name: "Avenir-Black", size: 24)!,
+                NSFontAttributeName : UIFont(name: "Avenir-Black", size: 20)!,
                 NSForegroundColorAttributeName : UIColor.whiteColor()
             ]
             title.addAttributes(a, range: NSRange(location: index, length: countStr.characters.count))
