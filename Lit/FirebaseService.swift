@@ -24,12 +24,18 @@ class FirebaseService {
     static func writeUser(user:FIRUser) {
         let userInfo: [String : AnyObject] = [
             "displayName": ((user.displayName ?? "").isEmpty ? "" : user.displayName!),
-            "email": ((user.email ?? "").isEmpty ? "" : user.email!),
             "photoUrl": ((user.photoURL?.absoluteString ?? "").isEmpty ? "" : user.photoURL!.absoluteString)
             
         ]
 
         ref.child("users").child(user.uid).updateChildValues(userInfo)
+        ref.child("users").child(user.uid).updateChildValues(userInfo, withCompletionBlock: { error, ref in
+            getUser(user.uid, completionHandler: { _user in
+                if let user = _user {
+                    mainStore.dispatch(UserIsAuthenticated( user: user))
+                }
+            })
+        })
     }
     
     static func signOut() {
@@ -40,20 +46,29 @@ class FirebaseService {
         FIRAuth.auth()?.addAuthStateDidChangeListener { auth, user in
             if let user = user {
                 // User is signed in.
-                mainStore.dispatch(UserIsAuthenticated(uid: user.uid))
+                getUser(user.uid, completionHandler: { _user in
+                    if _user != nil {
+                        mainStore.dispatch(UserIsAuthenticated( user: _user!))
+                    } else {
+                        writeUser(user)
+                    }
+                })
             } else {
                 // No user is signed in.
             }
         }
     }
     
-    static func getUser(uid:String, completionHandler: (user:User)->()) {
+    static func getUser(uid:String, completionHandler: (user:User?)->()) {
         ref.child("users/\(uid)").observeSingleEventOfType(.Value, withBlock: { (snapshot) in
-            let displayName = snapshot.value!["displayName"] as! String
-            let email       = snapshot.value!["email"] as! String
-            let imageUrl    = snapshot.value!["photoUrl"] as! String
-            
-            completionHandler(user: User(uid: uid, displayName: displayName, email: email, imageUrl: imageUrl))
+            var user:User?
+            if snapshot.exists() {
+                let displayName = snapshot.value!["displayName"] as! String
+                let imageUrl    = snapshot.value!["photoUrl"] as! String
+                user = User(uid: uid, displayName: displayName, imageUrl: imageUrl)
+            }
+
+            completionHandler(user: user)
             
         })
     }
@@ -135,7 +150,7 @@ class FirebaseService {
                         "url": downloadURL!.absoluteString,
                         "contentType": contentTypeStr,
                         "dateCreated": [".sv": "timestamp"],
-                        "length": 5
+                        "length": 4
 
                     ]
                     dataRef.setValue(obj, withCompletionBlock: { error, _ in
@@ -191,9 +206,43 @@ class FirebaseService {
         return uploadTask
     }
     
-    static func downloadLocationStory(locationIndex:Int) {
-        
-        
+    static func downloadStory(postKeys:[String], completionHandler: (story:[StoryItem])->()) {
+        var story = [StoryItem]()
+        var loadedCount = 0
+        for postKey in postKeys {
+            let postRef = FirebaseService.ref.child("uploads/\(postKey)")
+            
+            postRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+                
+                if snapshot.exists() {
+                    let key = snapshot.key
+                    let authorId = snapshot.value!["author"] as! String
+                    let locationKey = snapshot.value!["location"] as! String
+                    let downloadUrl = snapshot.value!["url"] as! String
+                    let contentTypeStr = snapshot.value!["contentType"] as! String
+                    var contentType = ContentType.Invalid
+                    if contentTypeStr == "image/jpg" {
+                        contentType = .Image
+                    } else if contentTypeStr == "video/mp4" {
+                        contentType = .Video
+                    }
+                    
+                    let dateCreated = snapshot.value!["dateCreated"] as! Double
+                    let length = snapshot.value!["length"] as! Double
+                    
+                    let storyItem = StoryItem(key: key, authorId: authorId,locationKey: locationKey, downloadUrl: downloadUrl, contentType: contentType, dateCreated: dateCreated, length: length)
+                    story.append(storyItem)
+                }
+                
+                loadedCount += 1
+                if loadedCount >= postKeys.count {
+                    
+                    dispatch_async(dispatch_get_main_queue(), {
+                        completionHandler(story: story)
+                    })
+                }
+            })
+        }
     }
     
     static func compressVideo(inputURL: NSURL, outputURL: NSURL, handler:(session: AVAssetExportSession)-> Void) {

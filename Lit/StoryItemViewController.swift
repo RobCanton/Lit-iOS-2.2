@@ -38,10 +38,16 @@ class StoryItemViewController: UIViewController, ItemDelegate {
     var delegate:ItemDelegate?
     
     func setStoryItem(_item:StoryItem, _delegate:ItemDelegate) {
+        
         delegate = _delegate
         item = _item
         item.delegate = self
         imageLayer.image = nil
+        authorImage.image = nil
+        authorName.text = ""
+        timeLabel.text = ""
+        
+        displayTime()
         
         if let _ = item.getAuthor() {
             print("Author loaded on set")
@@ -75,8 +81,12 @@ class StoryItemViewController: UIViewController, ItemDelegate {
     
     func displayLocation(_location:Location?) {
         if let location = _location {
-            locationLabel.styleLocationTitle(location.getName())
+            locationLabel.styleLocationTitle(location.getName(), size: 22.0)
         }
+    }
+    
+    func displayTime() {
+        timeLabel.text = item.getDateCreated()!.timeStringSinceNow()
     }
     
 

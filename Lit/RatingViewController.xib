@@ -9,9 +9,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RatingViewController" customModule="Lit" customModuleProvider="target">
             <connections>
-                <outlet property="cameraBtn" destination="w92-LF-RrX" id="Egz-nL-ZOb"/>
                 <outlet property="checkInBtn" destination="l4S-kp-fMY" id="BpY-ys-Gbb"/>
-                <outlet property="friendsBtn" destination="dQm-bp-Ztn" id="H29-qL-epG"/>
                 <outlet property="friendsCountLabel" destination="F3M-8U-bfL" id="j0q-wW-N8F"/>
                 <outlet property="imageContainer" destination="ErO-DG-9jA" id="KgA-kk-ov6"/>
                 <outlet property="locationTitle" destination="USe-bv-DFV" id="gMt-6W-B0B"/>
@@ -91,18 +89,6 @@
                             <color key="shadowColor" red="0.057428829229999999" green="0.058503533679999997" blue="0.060216636480000002" alpha="0.5" colorSpace="calibratedRGB"/>
                             <size key="shadowOffset" width="0.0" height="1"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w92-LF-RrX">
-                            <rect key="frame" x="560" y="560" width="32" height="32"/>
-                            <state key="normal" image="camera">
-                                <color key="titleColor" red="1" green="0.6705882353" blue="0.0039215686269999999" alpha="1" colorSpace="calibratedRGB"/>
-                            </state>
-                        </button>
-                        <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dQm-bp-Ztn">
-                            <rect key="frame" x="8" y="560" width="32" height="32"/>
-                            <state key="normal" image="friends">
-                                <color key="titleColor" red="1" green="0.6705882353" blue="0.0039215686269999999" alpha="1" colorSpace="calibratedRGB"/>
-                            </state>
-                        </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l4S-kp-fMY">
                             <rect key="frame" x="40" y="421" width="521" height="45"/>
                             <constraints>
@@ -144,19 +130,15 @@
                         <constraint firstItem="K6u-i7-7QP" firstAttribute="top" secondItem="ErO-DG-9jA" secondAttribute="bottom" constant="23" id="384-bH-ycL"/>
                         <constraint firstAttribute="trailing" secondItem="Kux-MF-FNs" secondAttribute="trailing" constant="38" id="Da9-i5-I5q"/>
                         <constraint firstItem="Kux-MF-FNs" firstAttribute="top" secondItem="l4S-kp-fMY" secondAttribute="bottom" constant="18" id="ERy-pc-rn5"/>
-                        <constraint firstItem="F3M-8U-bfL" firstAttribute="trailing" secondItem="w92-LF-RrX" secondAttribute="trailing" id="FjG-Xd-6Hv"/>
                         <constraint firstItem="USe-bv-DFV" firstAttribute="trailing" secondItem="5uq-vl-mf8" secondAttribute="trailingMargin" id="Q6i-hE-NMi"/>
                         <constraint firstItem="K6u-i7-7QP" firstAttribute="trailing" secondItem="F3M-8U-bfL" secondAttribute="trailing" id="S0B-nb-JBW"/>
                         <constraint firstItem="USe-bv-DFV" firstAttribute="leading" secondItem="5uq-vl-mf8" secondAttribute="leadingMargin" id="SLl-fM-42E"/>
-                        <constraint firstItem="dQm-bp-Ztn" firstAttribute="bottom" secondItem="5uq-vl-mf8" secondAttribute="bottomMargin" id="TQn-lZ-1D6"/>
-                        <constraint firstItem="F3M-8U-bfL" firstAttribute="leading" secondItem="dQm-bp-Ztn" secondAttribute="leading" id="Upd-Vt-83c"/>
                         <constraint firstItem="Kux-MF-FNs" firstAttribute="leading" secondItem="5uq-vl-mf8" secondAttribute="leading" constant="41" id="YGa-K5-Qhs"/>
                         <constraint firstItem="F3M-8U-bfL" firstAttribute="centerX" secondItem="l4S-kp-fMY" secondAttribute="centerX" id="haj-Lx-0MA"/>
                         <constraint firstItem="ErO-DG-9jA" firstAttribute="top" secondItem="USe-bv-DFV" secondAttribute="bottom" constant="8" id="lSu-j2-0px"/>
                         <constraint firstItem="l4S-kp-fMY" firstAttribute="top" secondItem="F3M-8U-bfL" secondAttribute="bottom" constant="12" id="oqv-qs-1hr"/>
                         <constraint firstItem="F3M-8U-bfL" firstAttribute="top" secondItem="K6u-i7-7QP" secondAttribute="bottom" constant="6" id="rfx-OG-gu5"/>
                         <constraint firstItem="ErO-DG-9jA" firstAttribute="centerX" secondItem="K6u-i7-7QP" secondAttribute="centerX" id="tCD-Vl-ehA"/>
-                        <constraint firstItem="dQm-bp-Ztn" firstAttribute="top" secondItem="w92-LF-RrX" secondAttribute="top" id="yRu-wn-PUr"/>
                         <constraint firstItem="USe-bv-DFV" firstAttribute="trailing" secondItem="K6u-i7-7QP" secondAttribute="trailing" id="zVW-f1-mfx"/>
                     </constraints>
                 </view>
@@ -170,8 +152,4 @@
             </constraints>
         </view>
     </objects>
-    <resources>
-        <image name="camera" width="32" height="32"/>
-        <image name="friends" width="32" height="32"/>
-    </resources>
 </document>

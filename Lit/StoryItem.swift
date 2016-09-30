@@ -120,10 +120,12 @@ class StoryItem: NSObject {
     
     func loadAuthor() {
         print("Fetching author: " + authorId)
-        FirebaseService.getUser(authorId, completionHandler: { user in
-            print("Fetched author: \(user.getUserId()) : \(user.getDisplayName())")
-            self.author = user
-            self.delegate?.authorLoaded()
+        FirebaseService.getUser(authorId, completionHandler: { _user in
+            if let user = _user {
+                self.author = user
+                self.delegate?.authorLoaded()
+            }
+
         })
     }
     

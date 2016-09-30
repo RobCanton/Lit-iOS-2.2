@@ -30,8 +30,6 @@ class RatingViewController: UIViewController, StoreSubscriber  {
                 checkInBtn.layer.borderWidth = 2.0
                 notHereBtn.layer.borderColor = UIColor.whiteColor().CGColor
                 notHereBtn.layer.borderWidth = 2.0
-                cameraBtn.enabled = false
-                friendsBtn.enabled = false
                 break
             case .CheckedIn:
                 checkInBtn.enabled = false
@@ -42,8 +40,6 @@ class RatingViewController: UIViewController, StoreSubscriber  {
                 checkInBtn.setTitleColor(UIColor.blackColor(), forState: .Normal)
                 notHereBtn.layer.borderColor = UIColor.grayColor().CGColor
                 notHereBtn.setTitleColor(UIColor.grayColor(), forState: .Normal)
-                cameraBtn.enabled = true
-                friendsBtn.enabled = true
                 break
             case .NotHere:
                 checkInBtn.enabled = false
@@ -53,8 +49,6 @@ class RatingViewController: UIViewController, StoreSubscriber  {
                 notHereBtn.layer.borderWidth = 0
                 notHereBtn.backgroundColor = UIColor.whiteColor()
                 notHereBtn.setTitleColor(UIColor.blackColor(), forState: .Normal)
-                cameraBtn.enabled = true
-                friendsBtn.enabled = true
                 break
             }
         }
@@ -123,7 +117,7 @@ class RatingViewController: UIViewController, StoreSubscriber  {
         activeLocation = location
         //locationTitle.styleLocationTitle(location.getName())
         
-        locationTitle.styleLocationTitleWithPreText("You are at\n\(activeLocation!.getName().uppercaseString)", size1: 26, size2: 18)
+        locationTitle.styleLocationTitleWithPreText("you are at\n\(activeLocation!.getName().lowercaseString)", size1: 28, size2: 18)
 
         imageView.alpha = 0
         imageView.loadImageUsingCacheWithURLString((activeLocation?.getImageURL())!, completion: { result in
@@ -148,8 +142,6 @@ class RatingViewController: UIViewController, StoreSubscriber  {
     @IBOutlet weak var checkInBtn: UIButton!
     @IBOutlet weak var notHereBtn: UIButton!
     
-    @IBOutlet weak var cameraBtn: UIButton!
-    @IBOutlet weak var friendsBtn: UIButton!
     
     @IBAction func checkInTapped(sender: UIButton) {
         let uid = mainStore.state.userState.uid

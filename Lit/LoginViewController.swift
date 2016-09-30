@@ -13,10 +13,13 @@ import FBSDKCoreKit
 import FBSDKLoginKit
 import IngeoSDK
 //
-class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, StoreSubscriber, IGLocationManagerDelegate {
+class LoginViewController: UIViewController, StoreSubscriber, IGLocationManagerDelegate {
     
-    @IBOutlet weak var counterLabel: UILabel!
-    
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return .LightContent
+    }
+
+    @IBOutlet weak var scrollView: UIScrollView!
     override func viewWillAppear(animated: Bool) {
         mainStore.subscribe(self)
     }
@@ -27,9 +30,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, StoreSubs
     }
     
     func newState(state: AppState) {
-        counterLabel.text = "\(mainStore.state.userState.uid)"
         if mainStore.state.userState.isAuth {
-            loginButton.enabled = false
             
             Listeners.listenToFriends()
             Listeners.listenToFriendRequests()
@@ -103,72 +104,44 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, StoreSubs
             }
         }
 
-        
     }
     
-    func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError?) {
-        if let error = error {
-            print(error.localizedDescription)
-            return
-        }
-        
-        let credential = FIRFacebookAuthProvider.credentialWithAccessToken(FBSDKAccessToken.currentAccessToken().tokenString)
-        
-        
-        FIRAuth.auth()?.signInWithCredential(credential) { (user, error) in
-            if let error = error {
-                print(error.localizedDescription)
-                return
-            }
-            
-            if let _ = user {
-                FirebaseService.writeUser(user!)
-                if let uid = user?.uid
-                {
-                    mainStore.dispatch(UserIsAuthenticated(uid: uid))
-                    let ref = FirebaseService.ref.child("users/\(mainStore.state.userState.uid)")
-                    ref.observeEventType(.Value, withBlock: { (snapshot) in
-                    })
-                }
-            }
-            
-            
-            
-        }
-    }
+
     
-    func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {
+    func logout() {
         try! FIRAuth.auth()!.signOut()
         mainStore.dispatch(UserIsUnauthenticated())
     }
     
-    func loginButtonWillLogin(loginButton: FBSDKLoginButton!) -> Bool {
-        return true
-    }
-    let loginButton = FBSDKLoginButton()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        createTree()
+        var v1 = FirstScreenViewController(nibName: "FirstScreenViewController", bundle: nil)
         
-        loginButton.loginBehavior = .Browser
-        loginButton.delegate = self
-        
-        loginButton.center = self.view.center
-        self.view.addSubview(loginButton)
-        
+        addChildViewController(v1)
+        scrollView.addSubview(v1.view)
+        v1.didMoveToParentViewController(self)
         
         IGLocationManager.initWithDelegate(self, secretAPIKey: "193ca2c61218e6f929626f6d35396341")
         
-        
-        if let user = FIRAuth.auth()?.currentUser {
-            mainStore.dispatch(UserIsAuthenticated(uid: user.uid))
-            
+        FIRAuth.auth()?.addAuthStateDidChangeListener { auth, user in
+            if let user = user {
+                // User is signed in.
+                FirebaseService.getUser(user.uid, completionHandler: { _user in
+                    if _user != nil {
+                        mainStore.dispatch(UserIsAuthenticated( user: _user!))
+                    } else {
+                        //writeUser(user)
+                    }
+                })
+            } else {
+                // No user is signed in.
+            }
         }
+        
     }
-    var retrieversStarted = false
     
+
     
     func igLocationManager(manager: IGLocationManager!, didUpdateLocation igLocation: IGLocation!) {
         print("didUpdateLocation: \(igLocation.description)")
@@ -184,11 +157,5 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate, StoreSubs
         // Dispose of any resources that can be recreated.
     }
     
-    
-    
-    
-    func createTree () {
-
-    }
 }
 

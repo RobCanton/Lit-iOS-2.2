@@ -10,7 +10,6 @@ import UIKit
 import ReSwift
 import BRYXBanner
 import CoreLocation
-import Presentr
 import LNPopupController
 import Firebase
 import FBSDKCoreKit
@@ -26,16 +25,7 @@ class MainViewController: UICollectionViewController, StoreSubscriber, CLLocatio
     
     let notification = CWStatusBarNotification()
     
-    
-    let presenter: Presentr = {
-        let presenter = Presentr(presentationType: .Alert)
-        presenter.transitionType = .CoverVerticalFromTop // Optional
-        presenter.dismissTransitionType = .CoverVertical
-        presenter.blurBackground = true
-        presenter.blurStyle = UIBlurEffectStyle.Dark
-        presenter.roundCorners = false
-        return presenter
-    }()
+
     
     @IBAction func nearMeTapped(sender: UIBarButtonItem) {
         
@@ -77,6 +67,16 @@ class MainViewController: UICollectionViewController, StoreSubscriber, CLLocatio
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let pictureRequest = FBSDKGraphRequest(graphPath: "me/picture?type=large&redirect=false", parameters: nil)
+        pictureRequest.startWithCompletionHandler({
+            (connection, result, error: NSError!) -> Void in
+            if error == nil {
+                print("\(result)")
+            } else {
+                print("\(error)")
+            }
+        })
         
         
         self.collectionView?.delegate = self

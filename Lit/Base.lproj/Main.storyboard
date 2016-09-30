@@ -19,24 +19,20 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ios-cv-g6k">
-                                <rect key="frame" x="235" y="131" width="131" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="131" id="Pc7-m2-Lja"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tBJ-LQ-NaP">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            </scrollView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="ios-cv-g6k" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="111" id="KAu-Ns-7q2"/>
-                            <constraint firstItem="ios-cv-g6k" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ZAq-3z-HUO"/>
+                            <constraint firstItem="tBJ-LQ-NaP" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="4Or-8y-bKh"/>
+                            <constraint firstItem="tBJ-LQ-NaP" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="6fn-pg-xYO"/>
+                            <constraint firstItem="tBJ-LQ-NaP" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" id="VqF-aI-86o"/>
+                            <constraint firstItem="tBJ-LQ-NaP" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="eFk-f6-YYX"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="counterLabel" destination="ios-cv-g6k" id="chN-Yt-Cxe"/>
+                        <outlet property="scrollView" destination="tBJ-LQ-NaP" id="5as-9o-qwh"/>
                         <segue destination="7CI-4W-XuA" kind="show" identifier="showLit" id="yDv-f8-GYO"/>
                     </connections>
                 </viewController>
@@ -99,7 +95,7 @@
                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AgZ-vE-uQ1">
+                                        <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AgZ-vE-uQ1">
                                             <rect key="frame" x="8" y="170" width="57" height="22"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -228,18 +224,38 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" pagingEnabled="YES" delaysContentTouches="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UCU-FR-GRQ">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" delaysContentTouches="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UCU-FR-GRQ">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                             </scrollView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X9a-ax-yLc" customClass="SnakePageControl" customModule="PageControls">
+                                <rect key="frame" x="275" y="570" width="50" height="10"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="i2I-ds-Zib"/>
+                                    <constraint firstAttribute="height" constant="10" id="kp6-N2-zKl"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="pageCount">
+                                        <integer key="value" value="3"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="progress">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
                         </subviews>
                         <constraints>
                             <constraint firstItem="UCU-FR-GRQ" firstAttribute="height" secondItem="25q-07-G2h" secondAttribute="height" id="1hr-jU-Hgo"/>
+                            <constraint firstItem="0Ii-wX-Ua8" firstAttribute="top" secondItem="X9a-ax-yLc" secondAttribute="bottom" constant="20" id="7PU-yc-WJ3"/>
                             <constraint firstItem="UCU-FR-GRQ" firstAttribute="centerX" secondItem="25q-07-G2h" secondAttribute="centerX" id="FAR-fA-Scs"/>
+                            <constraint firstItem="X9a-ax-yLc" firstAttribute="centerX" secondItem="25q-07-G2h" secondAttribute="centerX" id="G2r-V0-Cqk"/>
                             <constraint firstItem="UCU-FR-GRQ" firstAttribute="width" secondItem="25q-07-G2h" secondAttribute="width" id="bPk-ju-eBZ"/>
                             <constraint firstItem="UCU-FR-GRQ" firstAttribute="centerY" secondItem="25q-07-G2h" secondAttribute="centerY" id="fuX-Wm-T9M"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="pageControl" destination="X9a-ax-yLc" id="Yht-2s-tS1"/>
                         <outlet property="scrollView" destination="UCU-FR-GRQ" id="ugT-iy-382"/>
                     </connections>
                 </viewController>
@@ -445,7 +461,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <color key="tintColor" red="1" green="0.80148517929493224" blue="0.0025468899886618157" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="barTintColor" red="0.04876824463924137" green="0.049266778286194329" blue="0.050762379227053178" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="barTintColor" cocoaTouchSystemColor="darkTextColor"/>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
                                 <color key="value" red="1" green="0.6705882352941176" blue="0.015686274509803921" alpha="1" colorSpace="calibratedRGB"/>
@@ -550,7 +566,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="900"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="bg2" translatesAutoresizingMaskIntoConstraints="NO" id="MGz-pQ-E36">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="11" translatesAutoresizingMaskIntoConstraints="NO" id="MGz-pQ-E36">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="700"/>
                             </imageView>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XRS-C1-H0e">
@@ -754,15 +770,15 @@
                                                     <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kwb-l9-nvD">
                                                         <rect key="frame" x="8" y="202" width="200" height="200"/>
                                                         <subviews>
+                                                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1rg-0z-VF2">
+                                                                <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
+                                                            </imageView>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="No recent activity." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CBe-qE-kdd">
                                                                 <rect key="frame" x="31" y="8" width="139" height="21"/>
                                                                 <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="15"/>
                                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="bg1" translatesAutoresizingMaskIntoConstraints="NO" id="1rg-0z-VF2">
-                                                                <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
-                                                            </imageView>
                                                         </subviews>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                         <constraints>
@@ -871,6 +887,7 @@
                         <outlet property="middleLabel" destination="1F7-Ld-5nG" id="E5p-iu-xvO"/>
                         <outlet property="postsBlock" destination="Kwb-l9-nvD" id="jDn-R1-RCm"/>
                         <outlet property="postsImage" destination="1rg-0z-VF2" id="rEe-5C-V5v"/>
+                        <outlet property="postsLabel" destination="CBe-qE-kdd" id="TfQ-aX-VnK"/>
                         <outlet property="profileImage" destination="WPb-Lu-XC2" id="96f-Xz-eVh"/>
                         <outlet property="profileImageView" destination="Srq-ds-CYc" id="Bmu-M4-xoJ"/>
                         <outlet property="rightBlock" destination="EL4-R1-P6r" id="8rU-Np-biq"/>
@@ -1179,11 +1196,10 @@
         </scene>
     </scenes>
     <resources>
+        <image name="11" width="2560" height="1920"/>
         <image name="Delete" width="50" height="50"/>
         <image name="NearMe" width="25" height="25"/>
         <image name="Send" width="50" height="50"/>
-        <image name="bg1" width="1353" height="1920"/>
-        <image name="bg2" width="1353" height="1920"/>
         <image name="lit-hands" width="2500" height="2500"/>
         <image name="message" width="32" height="32"/>
         <image name="settings" width="32" height="32"/>

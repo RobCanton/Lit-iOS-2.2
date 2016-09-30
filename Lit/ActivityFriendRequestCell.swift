@@ -43,12 +43,14 @@ class ActivityFriendRequestCell: UITableViewCell {
         deleteBtn.clipsToBounds = true;
 
         
-        FirebaseService.getUser(friend_uid ,  completionHandler: {user in
-            print(user.getDisplayName())
-            self.userImage.loadImageUsingCacheWithURLString(user.getImageUrl()!, completion: { result in
-            
-            })
-            self.userNameLabel.text = user.getDisplayName()!
+        FirebaseService.getUser(friend_uid ,  completionHandler: {_user in
+            if let user = _user {
+                print(user.getDisplayName())
+                self.userImage.loadImageUsingCacheWithURLString(user.getImageUrl()!, completion: { result in
+                    
+                })
+                self.userNameLabel.text = user.getDisplayName()!
+            }
         })
     }
     @IBAction func confirmTapped(sender: AnyObject) {

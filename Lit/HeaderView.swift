@@ -26,6 +26,10 @@ class HeaderView: UIView {
         })
     }
     
+    func getImage() -> UIImageView {
+        return image
+    }
+    
     func loadStory(story:[StoryItem]) {
         self.story = story
         if story.count != 0 {

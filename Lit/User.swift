@@ -11,14 +11,12 @@ import Foundation
 class User {
     private var uid: String
     private var displayName: String?
-    private var email: String?
     private var imageUrl: String?
     
-    init(uid:String, displayName:String, email:String, imageUrl: String)
+    init(uid:String, displayName:String, imageUrl: String)
     {
         self.uid         = uid
         self.displayName = displayName
-        self.email       = email
         self.imageUrl    = imageUrl
 
     }
@@ -29,10 +27,6 @@ class User {
     
     func getDisplayName() -> String? {
         return displayName
-    }
-    
-    func getEmail() -> String? {
-        return email
     }
     
     func getImageUrl() -> String? {

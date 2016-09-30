@@ -26,14 +26,14 @@ class LocationCell: UICollectionViewCell {
                     loadLocationImage(imageURL, completion: { (notFromCache) in })
                 }
                 
-                self.titleLabel.styleLocationTitle(location.getName())
+                self.titleLabel.styleLocationTitle(location.getName(), size: 32.0)
                 
                 location.collectInfo()
                 let visitorsCount = location.getVisitorsCount()
                 let friendsCount = location.getFriendsCount()
                 
-                self.addressLabel.styleVisitorsCountLabel(visitorsCount, size: 22)
-                self.speakerLabel.styleFriendsCountLabel(friendsCount, size: 22, you: location.getKey() == mainStore.state.userState.activeLocationKey)
+                self.addressLabel.styleVisitorsCountLabel(visitorsCount, size: 20)
+                self.speakerLabel.styleFriendsCountLabel(friendsCount, size: 20, you: location.getKey() == mainStore.state.userState.activeLocationKey)
                 
                 
                 postsCountLabel.text = "\(location.getPostKeys().count)"

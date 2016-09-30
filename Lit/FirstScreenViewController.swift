@@ -1,0 +1,93 @@
+//
+//  FirstScreenViewController.swift
+//  Lit
+//
+//  Created by Robert Canton on 2016-09-30.
+//  Copyright © 2016 Robert Canton. All rights reserved.
+//
+
+import Firebase
+import UIKit
+import FBSDKCoreKit
+import FBSDKLoginKit
+
+class FirstScreenViewController: UIViewController {
+
+    @IBOutlet weak var loginButton: UIView!
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(initiateFBLogin))
+        loginButton.addGestureRecognizer(tap)
+
+        loginButton.layer.borderColor = UIColor.whiteColor().CGColor
+        loginButton.layer.borderWidth = 2.0
+
+        // Do any additional setup after loading the view.
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    func initiateFBLogin() {
+        let loginManager = FBSDKLoginManager()
+        
+        loginManager.logInWithReadPermissions(["public_profile", "user_photos"], fromViewController: self, handler: {(result:FBSDKLoginManagerLoginResult!, error:NSError!) -> Void in
+            if (error != nil) {
+                // Process error
+                self.removeFbData()
+            } else if result.isCancelled {
+                // User Cancellation
+                self.removeFbData()
+            } else {
+                //Success
+                if result.grantedPermissions.contains("user_photos") && result.grantedPermissions.contains("public_profile") {
+                    //Do work
+                    self.fetchFacebookProfile()
+                } else {
+                    //Handle error
+                }
+            }
+        })
+    }
+    
+    func removeFbData() {
+        //Remove FB Data
+        let fbManager = FBSDKLoginManager()
+        fbManager.logOut()
+        FBSDKAccessToken.setCurrentAccessToken(nil)
+    }
+    
+    func fetchFacebookProfile()
+    {
+        if FBSDKAccessToken.currentAccessToken() != nil {
+            let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me", parameters: nil)
+            graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
+                
+                if ((error) != nil) {
+                    //Handle error
+                } else {
+                    //Handle Profile Photo URL String
+                    let userId =  result["id"] as! String
+                    let profilePictureUrl = "https://graph.facebook.com/\(userId)/picture?type=large"
+                    
+                    let accessToken = FBSDKAccessToken.currentAccessToken().tokenString
+                    let fbUser = ["accessToken": accessToken, "user": result]
+                    
+                    let credential = FIRFacebookAuthProvider.credentialWithAccessToken(accessToken)
+                    
+                    
+                    FIRAuth.auth()?.signInWithCredential(credential) { (user, error) in
+                        if let error = error {
+                            print(error.localizedDescription)
+                            return
+                        }
+                    }
+                }
+            })
+        }
+    }
+
+}

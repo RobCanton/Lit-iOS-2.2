@@ -96,55 +96,22 @@ class StoryViewController: UIViewController, StoreSubscriber, ItemDelegate {
     
     var postKeys = [String]()
     
-    
     func newState(state: AppState) {
         
         locationIndex = mainStore.state.storyViewIndex
         
-        
+        story = [StoryItem]()
         if locationIndex != -1 {
             let location = mainStore.state.locations[locationIndex!]
             print("Viewing story for : \(location.getKey())")
             
             postKeys = location.getPostKeys()
             
-            
-            story = [StoryItem]()
-            var loadedCount = 0
-            for postKey in postKeys {
-                let postRef = FirebaseService.ref.child("uploads/\(postKey)")
-                
-                postRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
-                    
-                    if snapshot.exists() {
-                        let key = snapshot.key
-                        let authorId = snapshot.value!["author"] as! String
-                        let locationKey = snapshot.value!["location"] as! String
-                        let downloadUrl = snapshot.value!["url"] as! String
-                        let contentTypeStr = snapshot.value!["contentType"] as! String
-                        var contentType = ContentType.Invalid
-                        if contentTypeStr == "image/jpg" {
-                            contentType = .Image
-                        } else if contentTypeStr == "video/mp4" {
-                            contentType = .Video
-                        }
-        
-                        let dateCreated = snapshot.value!["dateCreated"] as! Double
-                        let length = snapshot.value!["length"] as! Double
-                        
-                        let storyItem = StoryItem(key: key, authorId: authorId,locationKey: locationKey, downloadUrl: downloadUrl, contentType: contentType, dateCreated: dateCreated, length: length)
-                        self.story.append(storyItem)
-                    }
-                    
-                    loadedCount += 1
-                    if loadedCount >= self.postKeys.count {
-                        
-                        dispatch_async(dispatch_get_main_queue(), {
-                            self.prepareStory()
-                        })
-                    }
-                })
-            }        }
+            FirebaseService.downloadStory(postKeys, completionHandler: { story in
+                self.story = story
+                self.prepareStory()
+            })
+        }
     }
     
     var storyItemView:StoryItemViewController!

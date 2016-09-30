@@ -78,11 +78,13 @@ class VisitorCell: UITableViewCell {
         visitorImage.clipsToBounds = true;
         
         
-        FirebaseService.getUser(visitor_uid, completionHandler: {user in
-            self.user = user
-            self.visitorImage.loadImageUsingCacheWithURLString(user.getImageUrl()!, completion: { result in
-            })
-            self.visitorName.text = user.getDisplayName()!
+        FirebaseService.getUser(visitor_uid, completionHandler: {_user in
+            if let user = _user {
+                self.user = user
+                self.visitorImage.loadImageUsingCacheWithURLString(user.getImageUrl()!, completion: { result in
+                })
+                self.visitorName.text = user.getDisplayName()!
+            }
         })
         
         /*  THIS IS VERY COSTLY */

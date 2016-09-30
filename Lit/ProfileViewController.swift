@@ -39,6 +39,8 @@ class ProfileViewController: UIViewController, StoreSubscriber {
     @IBOutlet weak var postsBlock: UIView!
     @IBOutlet weak var postsImage: UIImageView!
     
+    @IBOutlet weak var postsLabel: UILabel!
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         mainStore.subscribe(self)
@@ -50,13 +52,28 @@ class ProfileViewController: UIViewController, StoreSubscriber {
     }
     
     func newState(state: AppState) {
-        
+        retrievePostKeys()
     }
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        let pictureRequest = FBSDKGraphRequest(graphPath: "me/picture??width=1080&height=1080&redirect=false", parameters: nil)
+        pictureRequest.startWithCompletionHandler({
+            (connection, result, error: NSError!) -> Void in
+            if error == nil {
+                let dictionary = result as? NSDictionary
+                let data = dictionary?.objectForKey("data")
+                let urlPic = (data?.objectForKey("url"))! as! String
+                self.profileImage.loadImageUsingCacheWithURLString(urlPic, completion: {result in})
+            } else {
+                print("\(error)")
+            }
+        })
+        
+        //profileImage.loadImageUsingCacheWithURLString(mainStore.state.userState.user!.getImageUrl()!, completion: {result in})
         profileImage.layer.cornerRadius = profileImage.frame.width / 2
         profileImage.clipsToBounds = true
         profileImageView.layer.masksToBounds = false
@@ -121,13 +138,46 @@ class ProfileViewController: UIViewController, StoreSubscriber {
 
         bioLabel.text = "I am drake. Drake is me. OVO. GANG GANG GANG. Murder gang. Slaughter gang. XO. Homie G 21 21 WALK 21 21 WALK LEVELUP LEVELUP LEVELUP"
 
-        self.navigationController?.navigationBar.topItem!.title = "Robert Canton"
+        self.navigationController?.navigationBar.topItem!.title = mainStore.state.userState.user?.getDisplayName()
         self.navigationController?.navigationBar.titleTextAttributes =
             [NSFontAttributeName: UIFont(name: "Avenir-Medium", size: 20.0)!]
         //self.navigationController?.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: .Default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.translucent = true
         self.navigationController?.navigationBar.barStyle = .BlackTranslucent
+        
+    }
+    
+    func retrievePostKeys() {
+        
+        var postKeys = [String]()
+        
+        let postsRef = FirebaseService.ref.child("users/\(mainStore.state.userState.uid)/uploads")
+        postsRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+            if snapshot.exists() {
+                
+                for post in snapshot.children {
+                    postKeys.append(post.key!!)
+                }
+                
+                FirebaseService.downloadStory(postKeys, completionHandler: { story in
+                    self.setupPostsBlock(story)
+                })
+            }
+        })
+    }
+    
+    func setupPostsBlock(story:[StoryItem]) {
+        if story.count > 0 {
+            if story.count == 1 {
+                postsLabel.text = "\(story.count) recent post"
+            } else {
+               postsLabel.text = "\(story.count) recent posts"
+            }
+
+            postsImage.hidden = false
+            postsImage.loadImageUsingCacheWithURLString(story[0].getDownloadUrl()!.absoluteString, completion: { notFromCache in })
+        }
         
     }
     

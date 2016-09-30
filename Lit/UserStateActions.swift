@@ -12,7 +12,7 @@ import ReSwift
 
 
 struct UserIsAuthenticated: Action {
-    let uid: String
+    let user: User
 }
 
 struct UserIsUnauthenticated: Action {}

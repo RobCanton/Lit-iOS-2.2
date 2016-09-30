@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import ReSwift
+import PageControls
 
 class PopupViewController: UIViewController, UIScrollViewDelegate, StoreSubscriber {
     
@@ -47,11 +48,15 @@ class PopupViewController: UIViewController, UIScrollViewDelegate, StoreSubscrib
     var ratingViewController: RatingViewController!
     var cameraViewController: CameraViewController!
     var visitorsViewController: VisitorsViewController!
+    
+
+    @IBOutlet weak var pageControl: FilledPageControl!
     var locked = true
     override func viewDidLoad() {
         super.viewDidLoad()
         scrollView.delegate = self
      
+        
        
         ratingViewController = RatingViewController(nibName: "RatingViewController", bundle: nil)
         cameraViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("CameraViewController") as! CameraViewController
@@ -85,7 +90,8 @@ class PopupViewController: UIViewController, UIScrollViewDelegate, StoreSubscrib
         self.scrollView.setContentOffset(CGPoint(x: self.view.frame.width / 3, y: 0), animated: false)
         
         ratingViewController.view.alpha = 1.0
-
+        
+        pageControl.progress = 1.0
         
     }
     
@@ -108,6 +114,10 @@ class PopupViewController: UIViewController, UIScrollViewDelegate, StoreSubscrib
         
         ratingViewController.view.alpha = alpha
         
+        let page = scrollView.contentOffset.x / scrollView.bounds.width
+        let progressInPage = scrollView.contentOffset.x - (page * scrollView.bounds.width)
+        let progress = CGFloat(page) + progressInPage
+        pageControl.progress = progress
 
     }
 }

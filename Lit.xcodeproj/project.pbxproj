@@ -50,6 +50,10 @@
 		A04261A9603119500B5BD1FA /* Pods_Lit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B94CEED3E5EDAB7563AD9187 /* Pods_Lit.framework */; };
 		B00BA91D1D9D6DB600F5EA30 /* StoryItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00BA91B1D9D6DB600F5EA30 /* StoryItemViewController.swift */; };
 		B00BA91E1D9D6DB600F5EA30 /* StoryItemViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B00BA91C1D9D6DB600F5EA30 /* StoryItemViewController.xib */; };
+		B00BA9221D9E4E0700F5EA30 /* FirstScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00BA9201D9E4E0700F5EA30 /* FirstScreenViewController.swift */; };
+		B00BA9231D9E4E0700F5EA30 /* FirstScreenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B00BA9211D9E4E0700F5EA30 /* FirstScreenViewController.xib */; };
+		B00BA9261D9E4E1D00F5EA30 /* CreateProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00BA9241D9E4E1D00F5EA30 /* CreateProfileViewController.swift */; };
+		B00BA9271D9E4E1D00F5EA30 /* CreateProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B00BA9251D9E4E1D00F5EA30 /* CreateProfileViewController.xib */; };
 		B01783901D98EF040088AD33 /* FriendRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B017838F1D98EF040088AD33 /* FriendRequest.swift */; };
 		B01783921D9A20F10088AD33 /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01783911D9A20F10088AD33 /* Friend.swift */; };
 		B05ABCF91D41178D00364322 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05ABCF81D41178D00364322 /* AppState.swift */; };
@@ -128,6 +132,10 @@
 		76FF2E6A1D566D6A00E04EE3 /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		B00BA91B1D9D6DB600F5EA30 /* StoryItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryItemViewController.swift; sourceTree = "<group>"; };
 		B00BA91C1D9D6DB600F5EA30 /* StoryItemViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StoryItemViewController.xib; sourceTree = "<group>"; };
+		B00BA9201D9E4E0700F5EA30 /* FirstScreenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstScreenViewController.swift; sourceTree = "<group>"; };
+		B00BA9211D9E4E0700F5EA30 /* FirstScreenViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FirstScreenViewController.xib; sourceTree = "<group>"; };
+		B00BA9241D9E4E1D00F5EA30 /* CreateProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateProfileViewController.swift; sourceTree = "<group>"; };
+		B00BA9251D9E4E1D00F5EA30 /* CreateProfileViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreateProfileViewController.xib; sourceTree = "<group>"; };
 		B017838F1D98EF040088AD33 /* FriendRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendRequest.swift; sourceTree = "<group>"; };
 		B01783911D9A20F10088AD33 /* Friend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
 		B05ABCF81D41178D00364322 /* AppState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
@@ -213,6 +221,18 @@
 				B94CEED3E5EDAB7563AD9187 /* Pods_Lit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B00BA91F1D9E3B5700F5EA30 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				B0FF11461D3EB32100D709CE /* LoginViewController.swift */,
+				B00BA9201D9E4E0700F5EA30 /* FirstScreenViewController.swift */,
+				B00BA9211D9E4E0700F5EA30 /* FirstScreenViewController.xib */,
+				B00BA9241D9E4E1D00F5EA30 /* CreateProfileViewController.swift */,
+				B00BA9251D9E4E1D00F5EA30 /* CreateProfileViewController.xib */,
+			);
+			name = Login;
 			sourceTree = "<group>";
 		};
 		B05ABCF61D41177500364322 /* Reducers */ = {
@@ -302,7 +322,8 @@
 		B087E9BD1D9B45120079E2BF /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				B0FF11461D3EB32100D709CE /* LoginViewController.swift */,
+				76173B791D5784AC0093A137 /* Main.storyboard */,
+				B00BA91F1D9E3B5700F5EA30 /* Login */,
 				76A5166B1D6103AF005E2815 /* ProfileViewController.swift */,
 				76A516661D60C69D005E2815 /* ChatViewController.swift */,
 				76B361D41D6517A50024CDC7 /* PopUpTabBarController.swift */,
@@ -345,7 +366,6 @@
 			children = (
 				B0FF114B1D3EB32100D709CE /* Assets.xcassets */,
 				B0FF11441D3EB32100D709CE /* AppDelegate.swift */,
-				76173B791D5784AC0093A137 /* Main.storyboard */,
 				B0FF114D1D3EB32100D709CE /* LaunchScreen.storyboard */,
 				B0FF11501D3EB32100D709CE /* Info.plist */,
 				B0FF11561D3EB33100D709CE /* GoogleService-Info.plist */,
@@ -437,11 +457,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B00BA9271D9E4E1D00F5EA30 /* CreateProfileViewController.xib in Resources */,
 				76C0E7541D80D770004EFA4C /* VisitorCell.xib in Resources */,
 				76EE2B981D8766ED00EDB4CB /* ActivityFriendRequestCell.xib in Resources */,
 				B0FF114F1D3EB32100D709CE /* LaunchScreen.storyboard in Resources */,
 				B00BA91E1D9D6DB600F5EA30 /* StoryItemViewController.xib in Resources */,
 				B0FF11571D3EB33100D709CE /* GoogleService-Info.plist in Resources */,
+				B00BA9231D9E4E0700F5EA30 /* FirstScreenViewController.xib in Resources */,
 				76C0E7501D80D4BA004EFA4C /* VisitorsViewController.xib in Resources */,
 				B0FF114C1D3EB32100D709CE /* Assets.xcassets in Resources */,
 				76B361CB1D64E8160024CDC7 /* RatingViewController.xib in Resources */,
@@ -521,6 +543,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				768C67681D586C26003A76D5 /* StoryViewController.swift in Sources */,
+				B00BA9221D9E4E0700F5EA30 /* FirstScreenViewController.swift in Sources */,
 				B00BA91D1D9D6DB600F5EA30 /* StoryItemViewController.swift in Sources */,
 				76D2E46B1D7F50AF00B7C939 /* City.swift in Sources */,
 				B0FF11471D3EB32100D709CE /* LoginViewController.swift in Sources */,
@@ -535,6 +558,7 @@
 				76A5166C1D6103AF005E2815 /* ProfileViewController.swift in Sources */,
 				76A5166E1D618CAD005E2815 /* LocationViewController.swift in Sources */,
 				76C0E74F1D80D4BA004EFA4C /* VisitorsViewController.swift in Sources */,
+				B00BA9261D9E4E1D00F5EA30 /* CreateProfileViewController.swift in Sources */,
 				B01783921D9A20F10088AD33 /* Friend.swift in Sources */,
 				B087E9CA1D9B7CDD0079E2BF /* Tree.swift in Sources */,
 				76B361D71D6519ED0024CDC7 /* LocationService.swift in Sources */,

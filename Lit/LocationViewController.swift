@@ -46,7 +46,7 @@ class LocationViewController: MXSegmentedPagerController, StoreSubscriber {
             if let story = location?.getStory() {
                 header.loadStory(story)
             } else {
-                FirebaseService.downloadLocationStory(index!)
+                //FirebaseService.downloadLocationStory(index!)
             }
         }
     }
@@ -99,19 +99,21 @@ class LocationViewController: MXSegmentedPagerController, StoreSubscriber {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: "tappedHeader:")
         self.segmentedPager.parallaxHeader.view!.addGestureRecognizer(tapGestureRecognizer)
     }
+
     
     func tappedHeader(gesture:UIGestureRecognizer) {
-        self.performSegueWithIdentifier("toStoryView", sender: self)
-        
-        let header = self.segmentedPager.parallaxHeader.view as! HeaderView
-        header.killTimer()
-        
-        mainStore.dispatch(ViewStory(index: index!))
-        mainStore.unsubscribe(self)
+        if mainStore.state.locations[index!].getPostKeys().count > 0 {
+            self.performSegueWithIdentifier("toStoryView", sender: self)
+            
+            let header = self.segmentedPager.parallaxHeader.view as! HeaderView
+            header.killTimer()
+            
+            mainStore.dispatch(ViewStory(index: index!))
+            mainStore.unsubscribe(self)
+        }
     }
     
 
-    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

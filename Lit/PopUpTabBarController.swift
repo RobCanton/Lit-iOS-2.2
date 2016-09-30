@@ -134,7 +134,7 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, PopUpProtocolD
         progressView.trackTintColor = UIColor.clearColor()
         barTitleView.addSubview(progressView)
         
-        barTitle.styleLocationTitleWithPreText("You are at\n\(activeLocation!.getName().uppercaseString)", size1: 24.0, size2: 11.0)
+        barTitle.styleLocationTitleWithPreText("you are at\n\(activeLocation!.getName().lowercaseString)", size1: 24.0, size2: 11.0)
 
         barTitleView.addSubview(barTitle)
         popupBar?.addSubview(barTitleView)
@@ -168,7 +168,7 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, PopUpProtocolD
                 print("Progress: \(percentComplete)")
                 self.progressView.setProgress(percentComplete, animated: true)
                 //self.barTitle.text = "Uploading - \(round(min(100, percentComplete * 100)))%"
-                self.barTitle.styleLocationTitleWithPreText("Uploading to\n\(self.activeLocation!.getName().uppercaseString)", size1: 24.0, size2: 11.0)
+                self.barTitle.styleLocationTitleWithPreText("uploading to\n\(self.activeLocation!.getName().lowercaseString)", size1: 24.0, size2: 11.0)
             }
         }
         
@@ -188,7 +188,7 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, PopUpProtocolD
     }
     
     func resetUploadBar() {
-        barTitle.styleLocationTitleWithPreText("You are at\n\(activeLocation!.getName().uppercaseString)", size1: 24.0, size2: 11.0)
+        barTitle.styleLocationTitleWithPreText("you are at\n\(activeLocation!.getName().lowercaseString)", size1: 24.0, size2: 11.0)
         self.progressView.progress = 0.0
     }
 }

@@ -124,9 +124,9 @@ extension NSDate
 
 extension UILabel
 {
-    func styleLocationTitle(_str:String) {
-        let str = _str.uppercaseString
-        let font = UIFont(name: "Avenir-Black", size: 30.0)
+    func styleLocationTitle(_str:String, size: CGFloat) {
+        let str = _str.lowercaseString
+        let font = UIFont(name: "Avenir-Black", size: size)
         let attributes: [String: AnyObject] = [
             NSFontAttributeName : font!,
             NSForegroundColorAttributeName : UIColor.whiteColor()
@@ -134,14 +134,14 @@ extension UILabel
         
         let title = NSMutableAttributedString(string: str, attributes: attributes) //1
         
-        let searchStrings = ["THE ", " THE ", " & ", "NIGHTCLUB", " NIGHTCLUB ", "CLUB", " CLUB", "YOU ARE NEAR"]
+        let searchStrings = ["the ", " the ", " & ", "nightclub", " nightclub ", "club", " club", "you are near"]
         for string in searchStrings {
             if let range = str.rangeOfString(string) {
                 
                 let index: Int = str.startIndex.distanceTo(range.startIndex)
                 
                 let a2: [String: AnyObject] = [
-                    NSFontAttributeName : UIFont(name: "Avenir-Light", size: 30.0)!,
+                    NSFontAttributeName : UIFont(name: "Avenir-Light", size: size)!,
                 ]
                 
                 title.addAttributes(a2, range: NSRange(location: index, length: string.characters.count))
@@ -162,7 +162,7 @@ extension UILabel
         
         let title = NSMutableAttributedString(string: str, attributes: attributes) //1
         
-        let preStrings = ["You are at", "Uploading to"]
+        let preStrings = ["you are at", "uploading to"]
         for string in preStrings {
             if let range = str.rangeOfString(string) {
                 let index = str.startIndex.distanceTo(range.startIndex)
@@ -174,7 +174,7 @@ extension UILabel
             }
         }
         
-        let searchStrings = ["THE ", " THE ", " & ", "NIGHTCLUB", " NIGHTCLUB ", "CLUB", " CLUB"]
+        let searchStrings = ["the ", " the ", " & ", "nightclub", " nightclub ", "club", " club"]
         for string in searchStrings {
             if let range = str.rangeOfString(string) {
                 
@@ -206,7 +206,7 @@ extension UILabel
             str = "\(count) people are here"
         }
         
-        let font = UIFont(name: "Avenir-Medium", size: size)
+        let font = UIFont(name: "Avenir-Book", size: size)
         let attributes: [String: AnyObject] = [
             NSFontAttributeName : font!,
             NSForegroundColorAttributeName : UIColor.whiteColor()
@@ -219,7 +219,7 @@ extension UILabel
             let index = str.startIndex.distanceTo(range.startIndex)
             let a: [String: AnyObject] = [
                 NSFontAttributeName : UIFont(name: "Avenir-Black", size: size)!,
-                NSForegroundColorAttributeName : accentColor
+                NSForegroundColorAttributeName : UIColor.whiteColor()
             ]
             title.addAttributes(a, range: NSRange(location: index, length: countStr.characters.count))
         }
@@ -238,18 +238,18 @@ extension UILabel
         var str = ""
         
         if count == 0 && you {
-            str = "You are here"
+            str = "you are here"
         } else if count == 1 && !you {
             str = "\(1) of your friends is here"
         } else if count == 1 && you{
-            str = "You and a friend are here"
+            str = "you and a friend are here"
         } else if count > 1 && !you {
             str = "\(count) of your friends are here"
         } else if count > 1 && you {
-            str = "You and \(count) friends are here"
+            str = "you and \(count) friends are here"
         }
         
-        let font = UIFont(name: "Avenir-Medium", size: size)
+        let font = UIFont(name: "Avenir-Book", size: size)
         let attributes: [String: AnyObject] = [
             NSFontAttributeName : font!,
             NSForegroundColorAttributeName : UIColor.whiteColor()
@@ -257,7 +257,7 @@ extension UILabel
         
         let title = NSMutableAttributedString(string: str, attributes: attributes) //1
         
-        let searchStrings = ["\(count)", "You", "friend", "friends"]
+        let searchStrings = ["\(count)", "you ", "friend", "friends"]
         for string in searchStrings {
             if let range = str.rangeOfString(string) {
                 
@@ -265,7 +265,7 @@ extension UILabel
                 
                 let a: [String: AnyObject] = [
                     NSFontAttributeName : UIFont(name: "Avenir-Black", size: size )!,
-                    NSForegroundColorAttributeName : accentColor
+                    NSForegroundColorAttributeName : UIColor.whiteColor()
                 ]
                 
                 title.addAttributes(a, range: NSRange(location: index, length: string.characters.count))
