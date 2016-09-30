@@ -14,7 +14,8 @@ class Location {
     private var key:String                    // Key in database
     private var name:String
     private var coordinates:CLLocation
-    private var imageURL:String?
+    private var imageURL:String
+    
     private var address:String
     private var description:String
     private var number:String
@@ -29,6 +30,8 @@ class Location {
     private var postKeys = [String]()
 
     private var friendsCount = 0
+    
+    var imageOnDiskURL:NSURL?
     
     
     init(key:String, name:String, coordinates:CLLocation, imageURL:String, address:String, description:String, number:String, website:String,storyCount: Int)
@@ -62,12 +65,12 @@ class Location {
         return coordinates
     }
     
-    func getImageURL() -> String?
+    func getImageURL() -> String
     {
         return imageURL
     }
     
-    func getAddress() -> String?
+    func getAddress() -> String
     {
         return address
     }

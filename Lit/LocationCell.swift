@@ -18,13 +18,14 @@ class LocationCell: UICollectionViewCell {
     @IBOutlet private weak var speakerLabel: UILabel!
     
     @IBOutlet weak var postsCountLabel: UILabel!
+    
+    
     var location: Location? {
         didSet {
             if let location = location {
                 imageView.image = nil
-                if let imageURL = location.getImageURL() {
-                    loadLocationImage(imageURL, completion: { (notFromCache) in })
-                }
+                loadLocationImage(location.getImageURL() , completion: { (notFromCache) in})
+
                 
                 self.titleLabel.styleLocationTitle(location.getName(), size: 32.0)
                 
@@ -98,42 +99,46 @@ class LocationCell: UICollectionViewCell {
             
         }
         
-        // Check for cached image
-        if let cachedImage = imageCache.objectForKey(_url) as? UIImage {
-            imageView.image = cachedImage
-            return completion(result: false)
-        }
-        
-        // Otherwise, download image
-        let url = NSURL(string: _url)
-        
-        
-        task = NSURLSession.sharedSession().dataTaskWithURL(url!, completionHandler:
-            { (data, response, error) in
-                
-                //error
-                if error != nil {
-                    if error?.code == -999 {
+        if let file = location!.imageOnDiskURL {
+            print("loaded \(location!.getKey()) from file")
+            self.imageView.image = UIImage(contentsOfFile: file.path!)
+            completion(result: false)
+        } else {
+            // Otherwise, download image
+            let url = NSURL(string: _url)
+            
+            task = NSURLSession.sharedSession().dataTaskWithURL(url!, completionHandler:
+                { (data, response, error) in
+                    
+                    //error
+                    if error != nil {
+                        if error?.code == -999 {
+                            return
+                        }
+                        print(error?.code)
                         return
                     }
-                    print(error?.code)
-                    return
-                }
-                
-                dispatch_async(dispatch_get_main_queue(), {
                     
-                    if let downloadedImage = UIImage(data: data!) {
-                        imageCache.setObject(downloadedImage, forKey: _url)
+                    let  documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
+                    if let image = UIImage(data: data!) {
+                        let fileURL = documentsURL.URLByAppendingPathComponent("\(self.location!.getKey()).jpg")
+                        if let jpgData = UIImageJPEGRepresentation(image, 1.0) {
+                            jpgData.writeToURL(fileURL, atomically: false)
+                            self.location!.imageOnDiskURL = fileURL
+                        
+                        }
                     }
                     
-                    self.imageView.image = UIImage(data: data!)
-                    completion(result: true)
-                })
-                
-        })
-        
-        task?.resume()
-        
+                    dispatch_async(dispatch_get_main_queue(), {
+                        print("downloaded \(self.location!.getKey())")
+                        self.imageView.image = UIImage(data: data!)
+                        completion(result: true)
+                    })
+                    
+            })
+            
+            task?.resume()
+        }
     }
     
 }

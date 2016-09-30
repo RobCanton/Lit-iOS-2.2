@@ -3,10 +3,12 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CreateProfileViewController" customModule="Lit" customModuleProvider="target">
             <connections>
+                <outlet property="imageView" destination="rF5-U3-r6O" id="lFa-DO-3Ic"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -14,7 +16,21 @@
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-            <color key="backgroundColor" red="1" green="0.70634085339999997" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rF5-U3-r6O">
+                    <rect key="frame" x="200" y="51" width="200" height="200"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="200" id="2an-GQ-jn8"/>
+                        <constraint firstAttribute="width" secondItem="rF5-U3-r6O" secondAttribute="height" multiplier="1:1" id="JiY-zl-OJ4"/>
+                        <constraint firstAttribute="height" constant="200" id="ZQS-4q-3Vy"/>
+                    </constraints>
+                </imageView>
+            </subviews>
+            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="rF5-U3-r6O" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="51" id="CB3-pe-mi0"/>
+                <constraint firstItem="rF5-U3-r6O" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Zln-8R-5DS"/>
+            </constraints>
         </view>
     </objects>
 </document>

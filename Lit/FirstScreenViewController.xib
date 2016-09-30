@@ -8,6 +8,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FirstScreenViewController" customModule="Lit" customModuleProvider="target">
             <connections>
                 <outlet property="loginButton" destination="Pdr-Wr-iuZ" id="3eg-iv-kq8"/>
+                <outlet property="videoLayer" destination="oaq-kf-Cof" id="kFr-fT-K80"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -16,6 +17,10 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oaq-kf-Cof">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                    <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="lit." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G0o-2M-8Jj">
                     <rect key="frame" x="275" y="269" width="50" height="62"/>
                     <fontDescription key="fontDescription" name="AvenirNextCondensed-BoldItalic" family="Avenir Next Condensed" pointSize="45"/>
@@ -54,10 +59,14 @@
             </subviews>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
+                <constraint firstItem="oaq-kf-Cof" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="0cl-k2-BjQ"/>
                 <constraint firstAttribute="trailing" secondItem="Pdr-Wr-iuZ" secondAttribute="trailing" constant="62" id="2QM-xr-5XM"/>
                 <constraint firstItem="Pdr-Wr-iuZ" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="62" id="BxU-a6-9uc"/>
                 <constraint firstItem="Pdr-Wr-iuZ" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Eei-Oo-6oV"/>
+                <constraint firstItem="oaq-kf-Cof" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="width" id="HOd-Id-uYe"/>
                 <constraint firstItem="G0o-2M-8Jj" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="U6b-L4-tU7"/>
+                <constraint firstItem="oaq-kf-Cof" firstAttribute="height" secondItem="i5M-Pr-FkT" secondAttribute="height" id="btU-fg-hUc"/>
+                <constraint firstItem="oaq-kf-Cof" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="cl8-En-CCa"/>
                 <constraint firstItem="G0o-2M-8Jj" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="jIl-6Y-Fxd"/>
                 <constraint firstAttribute="bottom" secondItem="Pdr-Wr-iuZ" secondAttribute="bottom" constant="31" id="uLS-DL-Ywj"/>
             </constraints>

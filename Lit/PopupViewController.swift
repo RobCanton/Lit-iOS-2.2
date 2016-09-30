@@ -57,7 +57,7 @@ class PopupViewController: UIViewController, UIScrollViewDelegate, StoreSubscrib
         scrollView.delegate = self
      
         
-       
+       self.view.backgroundColor = UIColor.blackColor()
         ratingViewController = RatingViewController(nibName: "RatingViewController", bundle: nil)
         cameraViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("CameraViewController") as! CameraViewController
         visitorsViewController = VisitorsViewController(nibName: "VisitorsViewController", bundle: nil)

@@ -12,7 +12,8 @@ import ReSwift
 
 
 struct UserIsAuthenticated: Action {
-    let user: User
+    let user: User?
+    let flow: FlowState
 }
 
 struct UserIsUnauthenticated: Action {}

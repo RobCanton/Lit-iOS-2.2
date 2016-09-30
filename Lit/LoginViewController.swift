@@ -18,6 +18,8 @@ class LoginViewController: UIViewController, StoreSubscriber, IGLocationManagerD
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return .LightContent
     }
+    
+    var flowState:FlowState = .None
 
     @IBOutlet weak var scrollView: UIScrollView!
     override func viewWillAppear(animated: Bool) {
@@ -29,16 +31,102 @@ class LoginViewController: UIViewController, StoreSubscriber, IGLocationManagerD
         print("Unsubscribed")
     }
     
-    func newState(state: AppState) {
-        if mainStore.state.userState.isAuth {
+    func newState(state:AppState) {
+        
+        if flowState != state.userState.flow {
+            flowState = state.userState.flow
             
-            Listeners.listenToFriends()
-            Listeners.listenToFriendRequests()
+            switch flowState {
+            case .CreateNewUser:
+                toNextStep()
+                break
+            case .ReturningUser:
+                Listeners.listenToFriends()
+                Listeners.listenToFriendRequests()
+                DEPRECATED_LOGIN()
+                break
+            default:
+                break
+            }
+        } else {
+            DEPRECATED_LOGIN()
+        }
+
+    }
+    
+
+    
+    func logout() {
+        try! FIRAuth.auth()!.signOut()
+        mainStore.dispatch(UserIsUnauthenticated())
+    }
+    
+    func toNextStep() {
+        scrollView.setContentOffset(CGPoint(x: v1.view.frame.width, y: 0), animated: true)
+        v2.doSet()
+    }
+    
+    var v1:FirstScreenViewController!
+    var v2:CreateProfileViewController!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        v1 = FirstScreenViewController(nibName: "FirstScreenViewController", bundle: nil)
+        
+        addChildViewController(v1)
+        scrollView.addSubview(v1.view)
+        v1.didMoveToParentViewController(self)
+        
+        v2 = CreateProfileViewController(nibName: "CreateProfileViewController", bundle: nil)
+        
+        addChildViewController(v2)
+        scrollView.addSubview(v2.view)
+        v2.didMoveToParentViewController(self)
+        
+        var v2Frame = v1.view.frame
+        v2Frame.origin.x = self.view.frame.width
+        v2.view.frame = v2Frame
+        
+        self.scrollView.contentSize = CGSizeMake(self.view.frame.width * 2, self.view.frame.height)
+        scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
+        
+        IGLocationManager.initWithDelegate(self, secretAPIKey: "193ca2c61218e6f929626f6d35396341")
+        
+        if let user = FIRAuth.auth()?.currentUser {
+            FirebaseService.getUser(user.uid, completionHandler: { _user in
+                if _user != nil {
+                    mainStore.dispatch(UserIsAuthenticated( user: _user!, flow: .ReturningUser))
+                } else {
+                   // Do nothing
+                }
+            })
+        }
+    }
+    
+
+    
+    func igLocationManager(manager: IGLocationManager!, didUpdateLocation igLocation: IGLocation!) {
+        print("didUpdateLocation: \(igLocation.description)")
+        //mainStore.dispatch(UpdateUserLocaiton(igLocation))
+    }
+    
+    func igLocationManager(manager: IGLocationManager!, didDetectMotionState motionState: IGMotionState) {
+        print("didDetectMotionState: \(IGLocation.stringForMotionState(motionState))")
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+        
+        func DEPRECATED_LOGIN() {
+            
             let cities = mainStore.state.cities
             if cities.count == 0 {
                 FirebaseService.retrieveCities()
             } else {
-
+                
                 if mainStore.state.userState.coordinates == nil{
                     let loc = IGLocationManager.currentLocation()
                     mainStore.dispatch(UpdateUserLocation(location: loc))
@@ -103,59 +191,10 @@ class LoginViewController: UIViewController, StoreSubscriber, IGLocationManagerD
                 }
             }
         }
-
-    }
-    
-
-    
-    func logout() {
-        try! FIRAuth.auth()!.signOut()
-        mainStore.dispatch(UserIsUnauthenticated())
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        var v1 = FirstScreenViewController(nibName: "FirstScreenViewController", bundle: nil)
-        
-        addChildViewController(v1)
-        scrollView.addSubview(v1.view)
-        v1.didMoveToParentViewController(self)
-        
-        IGLocationManager.initWithDelegate(self, secretAPIKey: "193ca2c61218e6f929626f6d35396341")
-        
-        FIRAuth.auth()?.addAuthStateDidChangeListener { auth, user in
-            if let user = user {
-                // User is signed in.
-                FirebaseService.getUser(user.uid, completionHandler: { _user in
-                    if _user != nil {
-                        mainStore.dispatch(UserIsAuthenticated( user: _user!))
-                    } else {
-                        //writeUser(user)
-                    }
-                })
-            } else {
-                // No user is signed in.
-            }
-        }
-        
-    }
-    
-
-    
-    func igLocationManager(manager: IGLocationManager!, didUpdateLocation igLocation: IGLocation!) {
-        print("didUpdateLocation: \(igLocation.description)")
-        //mainStore.dispatch(UpdateUserLocaiton(igLocation))
-    }
-    
-    func igLocationManager(manager: IGLocationManager!, didDetectMotionState motionState: IGMotionState) {
-        print("didDetectMotionState: \(IGLocation.stringForMotionState(motionState))")
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
 }
+
+
+
+
 

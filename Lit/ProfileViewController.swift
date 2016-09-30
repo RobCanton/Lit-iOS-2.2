@@ -73,60 +73,30 @@ class ProfileViewController: UIViewController, StoreSubscriber {
             }
         })
         
+        profileImageView.layer.cornerRadius = profileImageView.frame.width / 2
+        profileImageView.clipsToBounds = true
+        profileImageView.layer.borderWidth = 1.5
+        profileImageView.layer.borderColor = UIColor.whiteColor().CGColor
+        
         //profileImage.loadImageUsingCacheWithURLString(mainStore.state.userState.user!.getImageUrl()!, completion: {result in})
-        profileImage.layer.cornerRadius = profileImage.frame.width / 2
-        profileImage.clipsToBounds = true
-        profileImageView.layer.masksToBounds = false
-        profileImageView.layer.shadowOffset = CGSize(width: 0, height: 4)
-        profileImageView.layer.shadowOpacity = 0.7
-        profileImageView.layer.shadowRadius = 2
         
-        bioInnerBlock.layer.cornerRadius = 4
-        bioInnerBlock.clipsToBounds = true
-        
-        bioBlock.layer.masksToBounds = false
-        bioBlock.layer.shadowOffset = CGSize(width: 0, height: 2)
-        bioBlock.layer.shadowOpacity = 0.4
-        bioBlock.layer.shadowRadius = 1
-//        
-        leftInnerBlock.layer.cornerRadius = 4
-        leftInnerBlock.clipsToBounds = true
-        
-        leftBlock.layer.masksToBounds = false
-        leftBlock.layer.shadowOffset = CGSize(width: 0, height: 4)
-        leftBlock.layer.shadowOpacity = 0.7
-        leftBlock.layer.shadowRadius = 2
+        //leftBlock.layer.borderWidth = 2.0
+        //leftBlock.layer.borderColor = UIColor.whiteColor().CGColor
         
         leftLabel.styleProfileBlockText(4, text: "Posts", size1: 12, size2: 18)
-//
-        
-        middleInnerBlock.layer.cornerRadius = 4
-        middleInnerBlock.clipsToBounds = true
-        
-        middleBlock.layer.masksToBounds = false
-        middleBlock.layer.shadowOffset = CGSize(width: 0, height: 4)
-        middleBlock.layer.shadowOpacity = 0.7
-        middleBlock.layer.shadowRadius = 2
+
+        //middleBlock.layer.borderWidth = 2.0
+        //middleBlock.layer.borderColor = UIColor.whiteColor().CGColor
         
         middleLabel.styleProfileBlockText(453, text: "Friends", size1: 12, size2: 18)
         
-        rightInnerBlock.layer.cornerRadius = 4
-        rightInnerBlock.clipsToBounds = true
-        
-        rightBlock.layer.masksToBounds = false
-        rightBlock.layer.shadowOffset = CGSize(width: 0, height: 4)
-        rightBlock.layer.shadowOpacity = 0.7
-        rightBlock.layer.shadowRadius = 2
+        //rightBlock.layer.borderWidth = 2.0
+        //rightBlock.layer.borderColor = UIColor.whiteColor().CGColor
         
         //rightLabel.styleProfileBlockText(140, text: "Reputation", size1: 12, size2: 18)
         
-        activityInnerBlock.layer.cornerRadius = 4
-        activityInnerBlock.clipsToBounds = true
-        
-        activityBlock.layer.masksToBounds = false
-        activityBlock.layer.shadowOffset = CGSize(width: 0, height: 4)
-        activityBlock.layer.shadowOpacity = 0.7
-        activityBlock.layer.shadowRadius = 2
+        //activityBlock.layer.borderWidth = 2.0
+        //activityBlock.layer.borderColor = UIColor.whiteColor().CGColor
         
         postsImage.layer.cornerRadius = 4
         postsImage.clipsToBounds = true
@@ -136,7 +106,7 @@ class ProfileViewController: UIViewController, StoreSubscriber {
         postsBlock.layer.shadowOpacity = 0.7
         postsBlock.layer.shadowRadius = 2
 
-        bioLabel.text = "I am drake. Drake is me. OVO. GANG GANG GANG. Murder gang. Slaughter gang. XO. Homie G 21 21 WALK 21 21 WALK LEVELUP LEVELUP LEVELUP"
+        bioLabel.text = "I am drake. Drake is me. OVO. GANG GANG GANG. Murder gang."
 
         self.navigationController?.navigationBar.topItem!.title = mainStore.state.userState.user?.getDisplayName()
         self.navigationController?.navigationBar.titleTextAttributes =

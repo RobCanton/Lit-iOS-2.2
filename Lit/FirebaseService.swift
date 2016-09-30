@@ -21,43 +21,43 @@ class FirebaseService {
     
     // Get a reference to the storage service, using the default Firebase App
     
-    static func writeUser(user:FIRUser) {
-        let userInfo: [String : AnyObject] = [
-            "displayName": ((user.displayName ?? "").isEmpty ? "" : user.displayName!),
-            "photoUrl": ((user.photoURL?.absoluteString ?? "").isEmpty ? "" : user.photoURL!.absoluteString)
-            
-        ]
-
-        ref.child("users").child(user.uid).updateChildValues(userInfo)
-        ref.child("users").child(user.uid).updateChildValues(userInfo, withCompletionBlock: { error, ref in
-            getUser(user.uid, completionHandler: { _user in
-                if let user = _user {
-                    mainStore.dispatch(UserIsAuthenticated( user: user))
-                }
-            })
-        })
-    }
-    
+//    static func writeUser(user:FIRUser) {
+//        let userInfo: [String : AnyObject] = [
+//            "displayName": ((user.displayName ?? "").isEmpty ? "" : user.displayName!),
+//            "photoUrl": ((user.photoURL?.absoluteString ?? "").isEmpty ? "" : user.photoURL!.absoluteString)
+//            
+//        ]
+//
+//        ref.child("users").child(user.uid).updateChildValues(userInfo)
+//        ref.child("users").child(user.uid).updateChildValues(userInfo, withCompletionBlock: { error, ref in
+//            getUser(user.uid, completionHandler: { _user in
+//                if let user = _user {
+//                    mainStore.dispatch(UserIsAuthenticated( user: user))
+//                }
+//            })
+//        })
+//    }
+//    
     static func signOut() {
         try! FIRAuth.auth()!.signOut()
     }
     
-    static func listenToAuth() {
-        FIRAuth.auth()?.addAuthStateDidChangeListener { auth, user in
-            if let user = user {
-                // User is signed in.
-                getUser(user.uid, completionHandler: { _user in
-                    if _user != nil {
-                        mainStore.dispatch(UserIsAuthenticated( user: _user!))
-                    } else {
-                        writeUser(user)
-                    }
-                })
-            } else {
-                // No user is signed in.
-            }
-        }
-    }
+//    static func listenToAuth() {
+//        FIRAuth.auth()?.addAuthStateDidChangeListener { auth, user in
+//            if let user = user {
+//                // User is signed in.
+//                getUser(user.uid, completionHandler: { _user in
+//                    if _user != nil {
+//                        mainStore.dispatch(UserIsAuthenticated( user: _user!))
+//                    } else {
+//                        writeUser(user)
+//                    }
+//                })
+//            } else {
+//                // No user is signed in.
+//            }
+//        }
+//    }
     
     static func getUser(uid:String, completionHandler: (user:User?)->()) {
         ref.child("users/\(uid)").observeSingleEventOfType(.Value, withBlock: { (snapshot) in

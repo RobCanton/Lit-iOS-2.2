@@ -10,6 +10,7 @@ import Firebase
 import UIKit
 import FBSDKCoreKit
 import FBSDKLoginKit
+import AVFoundation
 
 class FirstScreenViewController: UIViewController {
 
@@ -24,6 +25,8 @@ class FirstScreenViewController: UIViewController {
         loginButton.layer.borderWidth = 2.0
 
         // Do any additional setup after loading the view.
+        
+        setupVideoBackground()
     }
 
     override func didReceiveMemoryWarning() {
@@ -84,9 +87,44 @@ class FirstScreenViewController: UIViewController {
                             print(error.localizedDescription)
                             return
                         }
+                        
+                        FirebaseService.getUser(user!.uid, completionHandler: { _user in
+                            if _user != nil {
+                                mainStore.dispatch(UserIsAuthenticated( user: _user!, flow: .ReturningUser))
+                            } else {
+                                // Do nothing
+                                mainStore.dispatch(UserIsAuthenticated( user: nil, flow: .CreateNewUser))
+                            }
+                        })
                     }
                 }
             })
+        }
+    }
+    
+    
+    @IBOutlet weak var videoLayer: UIView!
+    var videoPlayer: AVPlayer = AVPlayer()
+    var playerLayer: AVPlayerLayer?
+    func setupVideoBackground() {
+        let filePath = NSURL.fileURLWithPath(NSBundle.mainBundle().pathForResource("intro4", ofType: "mp4")!)
+        videoPlayer = AVPlayer()
+        playerLayer = AVPlayerLayer(player: videoPlayer)
+        playerLayer!.videoGravity = AVLayerVideoGravityResizeAspectFill;
+        
+        playerLayer!.frame = self.view.bounds
+        self.videoLayer.layer.addSublayer(playerLayer!)
+        let item = AVPlayerItem(URL: filePath)
+        videoPlayer.replaceCurrentItemWithPlayerItem(item)
+        videoPlayer.play()
+        loopVideo(videoPlayer)
+    
+    }
+    
+    func loopVideo(videoPlayer: AVPlayer) {
+        NSNotificationCenter.defaultCenter().addObserverForName(AVPlayerItemDidPlayToEndTimeNotification, object: nil, queue: nil) { notification in
+            videoPlayer.seekToTime(kCMTimeZero)
+            videoPlayer.play()
         }
     }
 

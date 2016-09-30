@@ -67,16 +67,7 @@ class MainViewController: UICollectionViewController, StoreSubscriber, CLLocatio
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let pictureRequest = FBSDKGraphRequest(graphPath: "me/picture?type=large&redirect=false", parameters: nil)
-        pictureRequest.startWithCompletionHandler({
-            (connection, result, error: NSError!) -> Void in
-            if error == nil {
-                print("\(result)")
-            } else {
-                print("\(error)")
-            }
-        })
+    
         
         
         self.collectionView?.delegate = self

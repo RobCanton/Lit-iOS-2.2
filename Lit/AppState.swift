@@ -11,6 +11,9 @@ import ReSwift
 import CoreLocation
 import IngeoSDK
 
+enum FlowState {
+    case None, ReturningUser, CreateNewUser, Permissions
+}
 
 struct AppState: StateType {
     var userState: UserState
@@ -30,6 +33,7 @@ struct AppState: StateType {
 }
 
 struct UserState {
+    var flow: FlowState = .None
     var isAuth: Bool = false
     var uid: String = ""
     var user:User?

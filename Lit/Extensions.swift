@@ -289,7 +289,7 @@ extension UILabel
         let font = UIFont(name: "Avenir-Book", size: 12)
         let attributes: [String: AnyObject] = [
             NSFontAttributeName : font!,
-            NSForegroundColorAttributeName : UIColor(white: 1.0, alpha: 0.7)
+            NSForegroundColorAttributeName : UIColor(white: 0, alpha: 0.7)
         ]
         
         let title = NSMutableAttributedString(string: str, attributes: attributes) //1
@@ -299,7 +299,7 @@ extension UILabel
             let index = str.startIndex.distanceTo(range.startIndex)
             let a: [String: AnyObject] = [
                 NSFontAttributeName : UIFont(name: "Avenir-Black", size: 20)!,
-                NSForegroundColorAttributeName : UIColor.whiteColor()
+                NSForegroundColorAttributeName : UIColor.blackColor()
             ]
             title.addAttributes(a, range: NSRange(location: index, length: countStr.characters.count))
         }

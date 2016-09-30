@@ -28,41 +28,7 @@ struct AppReducer: Reducer {
     
 }
 
-func UserStateReducer(action: Action, state: UserState?) -> UserState {
-    var state = state ?? UserState()
-    switch action {
-    case _ as UserIsAuthenticated:
-        let a = action as! UserIsAuthenticated
-        state.isAuth = true
-        state.uid = a.user.getUserId()
-        state.user = a.user
-        break
-    case _ as UserIsUnauthenticated:
-        state.isAuth = false
-        state.uid = ""
-        break
-    case _ as UpdateUserLocation:
-        let a = action as! UpdateUserLocation
-        state.coordinates = a.location
-        break
-    case _ as SetActiveCity:
-        let a = action as! SetActiveCity
-        state.activeCity = a.city
-        break
-    case _ as SetActiveLocation:
-        let a = action as! SetActiveLocation
-        state.activeLocationKey = a.locationKey
-        break
-    case _ as Vote:
-        let a = action as! Vote
-        state.vote = a.state
-        break
-    default:
-        break
-    }
-    
-    return state
-}
+
 
 func CitiesReducer(action: Action, state:[City]?) -> [City] {
     var state = state ?? []

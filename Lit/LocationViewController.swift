@@ -40,7 +40,7 @@ class LocationViewController: MXSegmentedPagerController, StoreSubscriber {
     {
         didSet {
             let header = self.segmentedPager.parallaxHeader.view as! HeaderView
-            header.loadImage(location!.getImageURL()!)
+            header.loadImage(location!.getImageURL())
             header.setTitle(location!.getName().uppercaseString)
             
             if let story = location?.getStory() {
@@ -79,6 +79,7 @@ class LocationViewController: MXSegmentedPagerController, StoreSubscriber {
         // Parallax Header
         let header = UINib(nibName: "HeaderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! HeaderView
         
+        //self.segmentedPager
         self.segmentedPager.parallaxHeader.view = header
         self.segmentedPager.parallaxHeader.mode = MXParallaxHeaderMode.Fill;
         self.segmentedPager.parallaxHeader.height = UltravisualLayoutConstants.Cell.featuredHeight;
