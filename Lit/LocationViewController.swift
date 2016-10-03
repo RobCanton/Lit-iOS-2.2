@@ -41,7 +41,7 @@ class LocationViewController: MXSegmentedPagerController, StoreSubscriber {
         didSet {
             let header = self.segmentedPager.parallaxHeader.view as! HeaderView
             header.loadImage(location!.getImageURL())
-            header.setTitle(location!.getName().uppercaseString)
+            header.setTitle(location!.getName().lowercaseString)
             
             if let story = location?.getStory() {
                 header.loadStory(story)
@@ -87,7 +87,7 @@ class LocationViewController: MXSegmentedPagerController, StoreSubscriber {
         
         // Segmented Control customization
         self.segmentedPager.segmentedControl.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationDown;
-        self.segmentedPager.segmentedControl.backgroundColor = UIColor(white: 0.15, alpha: 1.0)
+        self.segmentedPager.segmentedControl.backgroundColor = UIColor(white: 0, alpha: 1.0)
         self.segmentedPager.segmentedControl.titleTextAttributes = [NSForegroundColorAttributeName : UIColor.whiteColor(),
         NSFontAttributeName: UIFont(name: "Avenir", size: 16.0)!];
         self.segmentedPager.segmentedControl.selectedTitleTextAttributes = [
@@ -95,7 +95,7 @@ class LocationViewController: MXSegmentedPagerController, StoreSubscriber {
             NSFontAttributeName: UIFont(name: "Avenir", size: 16.0)!
         ]
         self.segmentedPager.segmentedControl.selectionStyle = HMSegmentedControlSelectionStyleArrow
-        self.segmentedPager.segmentedControl.selectionIndicatorColor = UIColor(white: 0.10, alpha: 1.0)
+        self.segmentedPager.segmentedControl.selectionIndicatorColor = UIColor(white: 0, alpha: 1.0)
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: "tappedHeader:")
         self.segmentedPager.parallaxHeader.view!.addGestureRecognizer(tapGestureRecognizer)
@@ -122,7 +122,7 @@ class LocationViewController: MXSegmentedPagerController, StoreSubscriber {
     }
     
     override func segmentedPager(segmentedPager: MXSegmentedPager, titleForSectionAtIndex index: Int) -> String {
-        return ["About", "Friends", "Trends"][index];
+        return ["about", "friends", "trends"][index];
     }
     
     override func segmentedPager(segmentedPager: MXSegmentedPager, didScrollWithParallaxHeader parallaxHeader: MXParallaxHeader) {

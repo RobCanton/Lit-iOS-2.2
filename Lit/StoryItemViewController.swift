@@ -29,10 +29,9 @@ class StoryItemViewController: UIViewController, ItemDelegate {
         authorImage.layer.cornerRadius = authorImage.frame.width / 2
         authorImage.clipsToBounds = true
         
-        //progressIndicator = StoryProgressIndicator(frame: CGRect(x: 12, y: 18, width: self.view.frame.width - 24, height: 2.0))
-        
-
-        // Do any additional setup after loading the view.
+        authorName.applyShadow(2, opacity: 0.7, height: 2, shouldRasterize: false)
+        timeLabel.applyShadow(2, opacity: 0.7, height: 2, shouldRasterize: false)
+        timeLabel.applyShadow(2, opacity: 0.7, height: 2, shouldRasterize: false)
     }
     
     var delegate:ItemDelegate?

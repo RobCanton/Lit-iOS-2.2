@@ -62,29 +62,29 @@ class RatingViewController: UIViewController, StoreSubscriber  {
         imageContainer.addSubview(imageView)
 
         imageView.contentMode = .ScaleAspectFill
-        imageView.layer.cornerRadius = imageContainer.frame.size.width / 20;
+        imageView.layer.cornerRadius = 4;
         imageView.clipsToBounds = true;
         //imageView.layer.borderWidth = 2.0
         //imageView.layer.borderColor = UIColor(white: 0.7, alpha: 1.0).CGColor
         
         
         imageContainer.layer.masksToBounds = false
-        imageContainer.layer.shadowOffset = CGSize(width: 0, height: 6)
+        imageContainer.layer.shadowOffset = CGSize(width: 0, height: 4)
         imageContainer.layer.shadowOpacity = 0.4
-        imageContainer.layer.shadowRadius = 4
+        imageContainer.layer.shadowRadius = 2
         
-        checkInBtn.layer.cornerRadius = 4
-        notHereBtn.layer.cornerRadius = 4
+//        checkInBtn.layer.cornerRadius = 4
+//        notHereBtn.layer.cornerRadius = 4
         
         checkInBtn.layer.masksToBounds = false
-        checkInBtn.layer.shadowOffset = CGSize(width: 0, height: 6)
+        checkInBtn.layer.shadowOffset = CGSize(width: 0, height: 4)
         checkInBtn.layer.shadowOpacity = 0.4
-        checkInBtn.layer.shadowRadius = 4
+        checkInBtn.layer.shadowRadius = 2
         
         notHereBtn.layer.masksToBounds = false
-        notHereBtn.layer.shadowOffset = CGSize(width: 0, height: 6)
+        notHereBtn.layer.shadowOffset = CGSize(width: 0, height: 4)
         notHereBtn.layer.shadowOpacity = 0.4
-        notHereBtn.layer.shadowRadius = 4
+        notHereBtn.layer.shadowRadius = 2
 
         // Do any additional setup after loading the view.
     }

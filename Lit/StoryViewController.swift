@@ -63,7 +63,10 @@ class StoryViewController: UIViewController, StoreSubscriber, ItemDelegate {
         self.videoView!.layer.addSublayer(playerLayer!)
    
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(mainViewTapped))
+        
         mainView?.addGestureRecognizer(tapGestureRecognizer)
+        
+    
         
         let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(swipedDown))
         swipeDown.direction = UISwipeGestureRecognizerDirection.Down

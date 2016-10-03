@@ -25,7 +25,6 @@ class LocationCell: UICollectionViewCell {
             if let location = location {
                 imageView.image = nil
                 loadLocationImage(location.getImageURL() , completion: { (notFromCache) in})
-
                 
                 self.titleLabel.styleLocationTitle(location.getName(), size: 32.0)
                 
@@ -35,7 +34,6 @@ class LocationCell: UICollectionViewCell {
                 
                 self.addressLabel.styleVisitorsCountLabel(visitorsCount, size: 20)
                 self.speakerLabel.styleFriendsCountLabel(friendsCount, size: 20, you: location.getKey() == mainStore.state.userState.activeLocationKey)
-                
                 
                 postsCountLabel.text = "\(location.getPostKeys().count)"
             }
@@ -67,20 +65,13 @@ class LocationCell: UICollectionViewCell {
         titleLabel.alpha = 0.7 + delta
         addressLabel.alpha = delta
         speakerLabel.alpha = delta
-//        titleLabel.backgroundColor = UIColor(white: 0, alpha: delta - 0.5)
-//        addressLabel.backgroundColor = UIColor(white: 0, alpha: delta - 0.5)
         
         imageCoverView.alpha = getImageCoverAlpha()
         
         if delta > 0 {
-            titleLabel.layer.masksToBounds = false
-            titleLabel.layer.shadowOffset = CGSize(width: 0, height: 4)
-            titleLabel.layer.shadowOpacity = 0.8
-            titleLabel.layer.shadowRadius = 4
+            titleLabel.applyShadow(4, opacity: 0.8, height: 4, shouldRasterize: false)
         } else {
-            titleLabel.layer.masksToBounds = true
-            titleLabel.layer.shadowOpacity = 0
-            titleLabel.layer.shadowRadius = 0
+            titleLabel.applyShadow(0, opacity: 0, height: 0, shouldRasterize: false)
         }
         
     }
