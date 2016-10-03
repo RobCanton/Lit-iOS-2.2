@@ -60,6 +60,7 @@
 		B05ABCFB1D4117CB00364322 /* UserStateActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05ABCFA1D4117CB00364322 /* UserStateActions.swift */; };
 		B05ABCFD1D41185200364322 /* Reducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05ABCFC1D41185200364322 /* Reducer.swift */; };
 		B05ABD041D41211100364322 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05ABD031D41211100364322 /* MainViewController.swift */; };
+		B05DB12A1DA22D9600567996 /* LocationFriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05DB1291DA22D9600567996 /* LocationFriendsViewController.swift */; };
 		B06D54BF1D9ECB6D00F6A4A7 /* AkiraTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06D54B31D9ECB6D00F6A4A7 /* AkiraTextField.swift */; };
 		B06D54C01D9ECB6D00F6A4A7 /* HoshiTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06D54B41D9ECB6D00F6A4A7 /* HoshiTextField.swift */; };
 		B06D54C11D9ECB6D00F6A4A7 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B06D54B51D9ECB6D00F6A4A7 /* Info.plist */; };
@@ -155,6 +156,7 @@
 		B05ABCFA1D4117CB00364322 /* UserStateActions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserStateActions.swift; sourceTree = "<group>"; };
 		B05ABCFC1D41185200364322 /* Reducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reducer.swift; sourceTree = "<group>"; };
 		B05ABD031D41211100364322 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		B05DB1291DA22D9600567996 /* LocationFriendsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationFriendsViewController.swift; sourceTree = "<group>"; };
 		B06D54B31D9ECB6D00F6A4A7 /* AkiraTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AkiraTextField.swift; sourceTree = "<group>"; };
 		B06D54B41D9ECB6D00F6A4A7 /* HoshiTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HoshiTextField.swift; sourceTree = "<group>"; };
 		B06D54B51D9ECB6D00F6A4A7 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -362,6 +364,7 @@
 				76B361C01D629F910024CDC7 /* HeaderView.swift */,
 				76B361C21D629FAD0024CDC7 /* HeaderView.xib */,
 				762F82911D6256E200549E1B /* MXTableViewController.swift */,
+				B05DB1291DA22D9600567996 /* LocationFriendsViewController.swift */,
 				762F82931D62573300549E1B /* AboutViewController.swift */,
 				762F82951D62574300549E1B /* MXTextViewController.swift */,
 			);
@@ -612,6 +615,7 @@
 				B087E9C61D9B531A0079E2BF /* FriendsReducer.swift in Sources */,
 				76B361D51D6517A50024CDC7 /* PopUpTabBarController.swift in Sources */,
 				76A5166C1D6103AF005E2815 /* ProfileViewController.swift in Sources */,
+				B05DB12A1DA22D9600567996 /* LocationFriendsViewController.swift in Sources */,
 				76A5166E1D618CAD005E2815 /* LocationViewController.swift in Sources */,
 				76C0E74F1D80D4BA004EFA4C /* VisitorsViewController.swift in Sources */,
 				B00BA9261D9E4E1D00F5EA30 /* CreateProfileViewController.swift in Sources */,

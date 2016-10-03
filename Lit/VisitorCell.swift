@@ -144,5 +144,4 @@ class VisitorCell: UITableViewCell {
 
     }
     
-    
 }

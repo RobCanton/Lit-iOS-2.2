@@ -137,6 +137,7 @@ class MainViewController: UICollectionViewController, StoreSubscriber, CLLocatio
             // search and reload data source
             self.searchBarActive    = true
             self.filterContentForSearchText(searchText)
+            self.collectionView?.contentOffset = CGPoint(x: 0, y: 0)
             self.collectionView?.reloadData()
         }else{
             // if text lenght == 0
@@ -162,6 +163,7 @@ class MainViewController: UICollectionViewController, StoreSubscriber, CLLocatio
         // but we'll not do that any more... it made problems
         // it's better to set self.searchBarActive = YES when user typed something
         //self.searchBar!.setShowsCancelButton(true, animated: false)
+        
     }
     
     func searchBarTextDidEndEditing(searchBar: UISearchBar) {
