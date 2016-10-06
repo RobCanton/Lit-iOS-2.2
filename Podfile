@@ -21,6 +21,7 @@ pod "PageControls/FilledPageControl", '0.1.2'
 pod "PageControls/SnakePageControl", '0.1.2'
 pod "PageControls/PillPageControl", '0.1.2'
 pod "PageControls/ScrollingPageControl", '0.1.2'
+pod "ARNTransitionAnimator"
 
 end
 

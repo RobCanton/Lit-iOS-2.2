@@ -120,7 +120,7 @@ class RatingViewController: UIViewController, StoreSubscriber  {
         locationTitle.styleLocationTitleWithPreText("you are at\n\(activeLocation!.getName().lowercaseString)", size1: 28, size2: 18)
 
         imageView.alpha = 0
-        imageView.loadImageUsingCacheWithURLString((activeLocation?.getImageURL())!, completion: { result in
+        imageView.loadImageUsingFileWithURLString(activeLocation!, completion: { result in
             if result {
                 UIView.animateWithDuration(1.0, animations: {
                     self.imageView.alpha = 1.0

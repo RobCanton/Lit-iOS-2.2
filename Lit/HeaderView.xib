@@ -44,6 +44,15 @@
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u1s-XL-RgK">
+                    <rect key="frame" x="0.0" y="353" width="600" height="24"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="24" id="213-3J-Pxv"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
@@ -51,8 +60,11 @@
                 <constraint firstItem="3o7-yh-2eP" firstAttribute="trailing" secondItem="Sg2-Hu-DTD" secondAttribute="trailing" id="6E3-Lz-2Lf"/>
                 <constraint firstItem="Sg2-Hu-DTD" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="BRw-Ks-Vq4"/>
                 <constraint firstItem="Fbd-31-jfe" firstAttribute="centerX" secondItem="3o7-yh-2eP" secondAttribute="centerX" id="GhH-nf-VkQ"/>
+                <constraint firstItem="u1s-XL-RgK" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="OXL-zV-FSG"/>
+                <constraint firstItem="u1s-XL-RgK" firstAttribute="top" secondItem="FgO-jH-nWc" secondAttribute="bottom" constant="7" id="RJo-e3-sgw"/>
                 <constraint firstAttribute="trailing" secondItem="FgO-jH-nWc" secondAttribute="trailing" id="Ved-Es-ipo"/>
                 <constraint firstItem="FgO-jH-nWc" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="atc-3v-j23"/>
+                <constraint firstAttribute="trailing" secondItem="u1s-XL-RgK" secondAttribute="trailing" id="csz-j6-ubA"/>
                 <constraint firstItem="3o7-yh-2eP" firstAttribute="centerY" secondItem="Sg2-Hu-DTD" secondAttribute="centerY" id="dsF-UV-rik"/>
                 <constraint firstItem="Sg2-Hu-DTD" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="ehR-Zx-1vq"/>
                 <constraint firstItem="FgO-jH-nWc" firstAttribute="top" secondItem="3o7-yh-2eP" secondAttribute="bottom" id="raV-tO-6uV"/>
@@ -61,10 +73,13 @@
                 <constraint firstItem="Fbd-31-jfe" firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottomMargin" id="xro-Mw-BRZ"/>
             </constraints>
             <connections>
+                <outlet property="friendsLabel" destination="u1s-XL-RgK" id="gYZ-0b-YEk"/>
                 <outlet property="image" destination="Sg2-Hu-DTD" id="4UL-lh-F9D"/>
                 <outlet property="photosTag" destination="Fbd-31-jfe" id="9mu-Xg-CyT"/>
                 <outlet property="titleLabel" destination="3o7-yh-2eP" id="19B-tX-fID"/>
+                <outlet property="visitorsLabel" destination="FgO-jH-nWc" id="KKe-Sl-1Rl"/>
             </connections>
+            <point key="canvasLocation" x="514" y="417"/>
         </view>
     </objects>
 </document>

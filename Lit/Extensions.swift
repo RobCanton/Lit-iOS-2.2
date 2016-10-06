@@ -50,6 +50,49 @@ extension UIImageView {
         
     }
     
+    func loadImageUsingFileWithURLString(location:Location, completion: (result: Bool)->()) {
+        
+        if let file = location.imageOnDiskURL {
+            print("loaded \(location.getKey()) from file")
+            self.image = UIImage(contentsOfFile: file.path!)
+            completion(result: false)
+        } else {
+            // Otherwise, download image
+            let url = NSURL(string: location.getImageURL())
+            
+            NSURLSession.sharedSession().dataTaskWithURL(url!, completionHandler:
+                { (data, response, error) in
+                    
+                    //error
+                    if error != nil {
+                        if error?.code == -999 {
+                            return
+                        }
+                        print(error?.code)
+                        return
+                    }
+                    
+                    let  documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
+                    if let image = UIImage(data: data!) {
+                        let fileURL = documentsURL.URLByAppendingPathComponent("\(location.getKey()).jpg")
+                        if let jpgData = UIImageJPEGRepresentation(image, 1.0) {
+                            jpgData.writeToURL(fileURL, atomically: false)
+                            location.imageOnDiskURL = fileURL
+                            
+                        }
+                    }
+                    
+                    dispatch_async(dispatch_get_main_queue(), {
+                        print("downloaded \(location.getKey())")
+                        self.image = UIImage(data: data!)
+                        completion(result: true)
+                    })
+                    
+            }).resume()
+        }
+        
+    }
+    
 }
 
 extension UIImage {
@@ -148,9 +191,7 @@ extension UILabel
             }
         }
         
-        self.attributedText = title //3
-
-
+        self.attributedText = title
     }
     
     func styleLocationTitleWithPreText(str:String, size1: CGFloat, size2: CGFloat) {
@@ -189,11 +230,6 @@ extension UILabel
         }
         
         self.attributedText = title //3
-        self.layer.masksToBounds = false
-        self.layer.shadowOffset = CGSize(width: 0, height: 4)
-        self.layer.shadowOpacity = 0.8
-        self.layer.shadowRadius = 4
-        self.layer.shouldRasterize = true
     }
     
     func styleVisitorsCountLabel(count:Int, size: CGFloat) {
@@ -307,9 +343,31 @@ extension UILabel
         
         self.attributedText = title
     }
-    
-    
-    
 }
 
+public extension UISearchBar {
+    
+    public func setTextColor(color: UIColor) {
+        let svs = subviews.flatMap { $0.subviews }
+        guard let tf = (svs.filter { $0 is UITextField }).first as? UITextField else { return }
+        tf.textColor = color
+    }
+}
+
+public extension String {
+    func containsIgnoringCase(find: String) -> Bool{
+        return self.rangeOfString(find, options: NSStringCompareOptions.CaseInsensitiveSearch) != nil
+    }
+}
+
+public extension UIView {
+    func applyShadow(radius:CGFloat, opacity:Float, height:CGFloat, shouldRasterize:Bool) {
+        self.layer.masksToBounds = false
+        self.layer.shadowOffset = CGSize(width: 0, height: height)
+        self.layer.shadowOpacity = opacity
+        self.layer.shadowRadius = radius
+        self.layer.shouldRasterize = shouldRasterize
+
+    }
+}
 

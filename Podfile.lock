@@ -1,4 +1,5 @@
 PODS:
+  - ARNTransitionAnimator (1.1.0)
   - Bolts (1.8.4):
     - Bolts/AppLinks (= 1.8.4)
     - Bolts/Tasks (= 1.8.4)
@@ -69,6 +70,7 @@ PODS:
   - Whisper (3.1.1)
 
 DEPENDENCIES:
+  - ARNTransitionAnimator
   - Bolts
   - BRYXBanner
   - Firebase
@@ -87,6 +89,7 @@ DEPENDENCIES:
   - Whisper
 
 SPEC CHECKSUMS:
+  ARNTransitionAnimator: b8b35ce733d08f137eadb0e0c6e53011ea3fb28d
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
   BRYXBanner: 5f0911d52e0a77e088f7ea7ddcdebd02afb7828a
   Firebase: 754562547af419cc2f4b15247fee419081924bc2

@@ -36,13 +36,13 @@ class LocationFriendsViewController: UITableViewController {
             }
         }
         
-        visitors = ["OIuO11QAAlN4ID2VjF4VhF7dd8X2","OIuO11QAAlN4ID2VjF4VhF7dd8X2","OIuO11QAAlN4ID2VjF4VhF7dd8X2","OIuO11QAAlN4ID2VjF4VhF7dd8X2",
-                    "OIuO11QAAlN4ID2VjF4VhF7dd8X2","OIuO11QAAlN4ID2VjF4VhF7dd8X2","OIuO11QAAlN4ID2VjF4VhF7dd8X2","OIuO11QAAlN4ID2VjF4VhF7dd8X2",
-                    "OIuO11QAAlN4ID2VjF4VhF7dd8X2","OIuO11QAAlN4ID2VjF4VhF7dd8X2","OIuO11QAAlN4ID2VjF4VhF7dd8X2","OIuO11QAAlN4ID2VjF4VhF7dd8X2",
-                    "OIuO11QAAlN4ID2VjF4VhF7dd8X2","OIuO11QAAlN4ID2VjF4VhF7dd8X2","OIuO11QAAlN4ID2VjF4VhF7dd8X2","OIuO11QAAlN4ID2VjF4VhF7dd8X2",
-                    "OIuO11QAAlN4ID2VjF4VhF7dd8X2","OIuO11QAAlN4ID2VjF4VhF7dd8X2","OIuO11QAAlN4ID2VjF4VhF7dd8X2","OIuO11QAAlN4ID2VjF4VhF7dd8X2",
-                    "OIuO11QAAlN4ID2VjF4VhF7dd8X2","OIuO11QAAlN4ID2VjF4VhF7dd8X2","OIuO11QAAlN4ID2VjF4VhF7dd8X2","OIuO11QAAlN4ID2VjF4VhF7dd8X2",
-                    "OIuO11QAAlN4ID2VjF4VhF7dd8X2","OIuO11QAAlN4ID2VjF4VhF7dd8X2","OIuO11QAAlN4ID2VjF4VhF7dd8X2","OIuO11QAAlN4ID2VjF4VhF7dd8X2"]
+//        visitors = ["OIuO11QAAlN4ID2VjF4VhF7dd8X2","OIuO11QAAlN4ID2VjF4VhF7dd8X2","OIuO11QAAlN4ID2VjF4VhF7dd8X2","OIuO11QAAlN4ID2VjF4VhF7dd8X2",
+//                    "OIuO11QAAlN4ID2VjF4VhF7dd8X2","OIuO11QAAlN4ID2VjF4VhF7dd8X2","OIuO11QAAlN4ID2VjF4VhF7dd8X2","OIuO11QAAlN4ID2VjF4VhF7dd8X2",
+//                    "OIuO11QAAlN4ID2VjF4VhF7dd8X2","OIuO11QAAlN4ID2VjF4VhF7dd8X2","OIuO11QAAlN4ID2VjF4VhF7dd8X2","OIuO11QAAlN4ID2VjF4VhF7dd8X2",
+//                    "OIuO11QAAlN4ID2VjF4VhF7dd8X2","OIuO11QAAlN4ID2VjF4VhF7dd8X2","OIuO11QAAlN4ID2VjF4VhF7dd8X2","OIuO11QAAlN4ID2VjF4VhF7dd8X2",
+//                    "OIuO11QAAlN4ID2VjF4VhF7dd8X2","OIuO11QAAlN4ID2VjF4VhF7dd8X2","OIuO11QAAlN4ID2VjF4VhF7dd8X2","OIuO11QAAlN4ID2VjF4VhF7dd8X2",
+//                    "OIuO11QAAlN4ID2VjF4VhF7dd8X2","OIuO11QAAlN4ID2VjF4VhF7dd8X2","OIuO11QAAlN4ID2VjF4VhF7dd8X2","OIuO11QAAlN4ID2VjF4VhF7dd8X2",
+//                    "OIuO11QAAlN4ID2VjF4VhF7dd8X2","OIuO11QAAlN4ID2VjF4VhF7dd8X2","OIuO11QAAlN4ID2VjF4VhF7dd8X2","OIuO11QAAlN4ID2VjF4VhF7dd8X2"]
         tableView.reloadData()
     }
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int)->Int {
@@ -50,7 +50,28 @@ class LocationFriendsViewController: UITableViewController {
     }
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        var numOfSections = 0
+        if visitors.count > 0
+        {
+            tableView.separatorStyle = .SingleLine
+            numOfSections                = 1
+            tableView.backgroundView = nil
+        }
+        else
+        {
+            let bgView = UIView(frame: CGRectMake(0, 0, tableView.bounds.size.width, tableView.bounds.size.height))
+            let noDataLabel: UILabel     = UILabel(frame: CGRectMake(0, 0, tableView.bounds.size.width, tableView.bounds.size.height / 4
+                ))
+            noDataLabel.text             = "No friends are here."
+            noDataLabel.textColor        = UIColor.whiteColor()
+            noDataLabel.textAlignment    = .Center
+            noDataLabel.center = CGPoint(x: bgView.frame.width/2, y: 30)
+            bgView.addSubview(noDataLabel)
+            tableView.backgroundView = bgView
+            tableView.separatorStyle = .None
+        }
+        
+        return numOfSections
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

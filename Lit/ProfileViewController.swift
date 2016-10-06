@@ -106,7 +106,7 @@ class ProfileViewController: UIViewController, StoreSubscriber {
         postsBlock.layer.shadowOpacity = 0.7
         postsBlock.layer.shadowRadius = 2
 
-        bioLabel.text = "I am drake. Drake is me. OVO. GANG GANG GANG. Murder gang."
+        bioLabel.text = "I'm 21. I enjoy short walks on the beach. The shorter the better. In fact I'd rather be walking home. Or just not walking in general. I'd rather be eating."
 
         self.navigationController?.navigationBar.topItem!.title = mainStore.state.userState.user?.getDisplayName()
         self.navigationController?.navigationBar.titleTextAttributes =

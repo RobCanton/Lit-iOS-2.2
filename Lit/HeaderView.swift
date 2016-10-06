@@ -13,6 +13,9 @@ class HeaderView: UIView {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var photosTag: UILabel!
     
+    @IBOutlet weak var visitorsLabel: UILabel!
+    @IBOutlet weak var friendsLabel: UILabel!
+    
     var location: Location!
     var timer:NSTimer?
     
@@ -20,7 +23,7 @@ class HeaderView: UIView {
     
     func loadImage() {
         self.photosTag.hidden = true
-        image.loadImageUsingCacheWithURLString(location.getImageURL(), completion: { result in
+        image.loadImageUsingFileWithURLString(location, completion: { result in
         
         })
     }
@@ -35,6 +38,12 @@ class HeaderView: UIView {
         titleLabel.styleLocationTitle(_location.getName().lowercaseString, size: 32.0)
         titleLabel.applyShadow(4, opacity: 0.8, height: 4, shouldRasterize: false)
         loadImage()
+        location.collectInfo()
+        let visitorsCount = location.getVisitorsCount()
+        let friendsCount = location.getFriendsCount()
+        
+        visitorsLabel.styleVisitorsCountLabel(visitorsCount, size: 20)
+        friendsLabel.styleFriendsCountLabel(friendsCount, size: 20, you: location.getKey() == mainStore.state.userState.activeLocationKey)
     }
     
     
@@ -43,6 +52,8 @@ class HeaderView: UIView {
             let alpha = 1 + progress * 1.25
             //titleLabel.alpha = alpha
             image.alpha = alpha
+            visitorsLabel.alpha = alpha
+            friendsLabel.alpha = alpha
             
         }
     }

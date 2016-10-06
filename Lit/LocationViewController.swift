@@ -81,21 +81,25 @@ class LocationViewController: MXSegmentedPagerController, StoreSubscriber {
         self.segmentedPager.segmentedControl.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationDown;
         self.segmentedPager.segmentedControl.backgroundColor = UIColor.blackColor()
         self.segmentedPager.segmentedControl.titleTextAttributes = [NSForegroundColorAttributeName : UIColor.whiteColor(),
-        NSFontAttributeName: UIFont(name: "Avenir", size: 16.0)!];
+        NSFontAttributeName: UIFont(name: "Avenir-Medium", size: 18.0)!];
         self.segmentedPager.segmentedControl.selectedTitleTextAttributes = [
-            NSForegroundColorAttributeName : UIColor.blackColor(),
-            NSFontAttributeName: UIFont(name: "Avenir", size: 16.0)!
+            NSForegroundColorAttributeName : UIColor.whiteColor(),
+            NSFontAttributeName: UIFont(name: "Avenir-Medium", size: 18.0)!
         ]
         
         self.segmentedPager.segmentedControl.backgroundColor = UIColor.blackColor()
 
         self.segmentedPager.segmentedControl.selectionStyle = HMSegmentedControlSelectionStyleBox
         self.segmentedPager.segmentedControl.selectionIndicatorColor = UIColor(white: 1.0, alpha: 1.0)
-        self.segmentedPager.segmentedControl.selectionIndicatorBoxOpacity = 1.0
-        self.segmentedPager.bounces = false
+        self.segmentedPager.segmentedControl.selectionIndicatorBoxOpacity = 0
+        self.segmentedPager.segmentedControl.shouldAnimateUserSelection = false
+        self.segmentedPager.segmentedControl.borderType = .Left
+        self.segmentedPager.bounces = true
         self.segmentedPager.backgroundColor = UIColor.blackColor()
         self.segmentedPager.pager.backgroundColor = UIColor.blackColor()
         self.segmentedPager.pager.scrollEnabled = false
+        self.segmentedPager.pager.transitionStyle = .Tab
+
 
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: "tappedHeader:")
@@ -111,7 +115,7 @@ class LocationViewController: MXSegmentedPagerController, StoreSubscriber {
             mainStore.unsubscribe(self)
         }
     }
-    
+
 
     
     override func didReceiveMemoryWarning() {
@@ -120,11 +124,19 @@ class LocationViewController: MXSegmentedPagerController, StoreSubscriber {
     }
     
     override func segmentedPager(segmentedPager: MXSegmentedPager, titleForSectionAtIndex index: Int) -> String {
-        return ["details", "friends"][index];
+        return ["tonight", "friends"][index];
     }
     
     override func segmentedPager(segmentedPager: MXSegmentedPager, didScrollWithParallaxHeader parallaxHeader: MXParallaxHeader) {
         let header = self.segmentedPager.parallaxHeader.view as! HeaderView
         header.setProgress(parallaxHeader.progress)
     }
+    
+    override func segmentedPager(segmentedPager: MXSegmentedPager, didEndDraggingWithParallaxHeader parallaxHeader: MXParallaxHeader) {
+        
+    }
+    
+    
+    
+
 }

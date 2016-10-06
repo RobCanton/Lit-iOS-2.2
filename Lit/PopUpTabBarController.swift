@@ -118,7 +118,6 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, PopUpProtocolD
         let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .Dark))
         let bounds = popupBar!.bounds
         blurView.frame = CGRect(x: 0, y: -bounds.height / 2, width: bounds.width, height: bounds.height * 1.5)
-        
 
         popupBar?.addSubview(blurView)
         popupBar?.layer.borderColor = UIColor.clearColor().CGColor
