@@ -21,7 +21,6 @@ class StoryViewController: UIViewController, StoreSubscriber, ItemDelegate {
     var videoView:UIView?
     var mainView:UIView?
     
-    var authorInfoView: AuthorInfoView?
     var titleView: UILabel?
     var messageView: UIView?
     
@@ -200,7 +199,7 @@ class StoryViewController: UIViewController, StoreSubscriber, ItemDelegate {
         currentStoryItem += 1
         
         if story.count > 0 && currentStoryItem < story.count {
-            authorInfoView?.setTime(story[currentStoryItem].getDateCreated()!)
+
             
             print("Content loaded already")
             presentContent()

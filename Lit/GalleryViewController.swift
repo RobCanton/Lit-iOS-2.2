@@ -23,9 +23,9 @@
 import UIKit
 import ARNTransitionAnimator
 
-class AboutViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, ARNImageTransitionZoomable {
+class GalleryViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, ARNImageTransitionZoomable {
     
-
+    let cellIdentifier = "photoCell"
     var screenSize: CGRect!
     var screenWidth: CGFloat!
     var screenHeight: CGFloat!
@@ -49,14 +49,14 @@ class AboutViewController: UIViewController, UICollectionViewDelegate, UICollect
         screenHeight = screenSize.height
         
         let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 10, right: 0)
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 200, right: 0)
         layout.itemSize = CGSize(width: screenWidth/3, height: screenWidth/3)
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
         
         collectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
         let nib = UINib(nibName: "PhotoCell", bundle: nil)
-        collectionView!.registerNib(nib, forCellWithReuseIdentifier: "photoCell")
+        collectionView!.registerNib(nib, forCellWithReuseIdentifier: cellIdentifier)
         collectionView!.dataSource = self
         collectionView!.delegate = self
 
@@ -88,7 +88,7 @@ class AboutViewController: UIViewController, UICollectionViewDelegate, UICollect
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
-        let cellIdentifier = "photoCell"
+        
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(cellIdentifier, forIndexPath: indexPath) as! PhotoCell
         
         cell.setPhoto(photos[indexPath.item])
@@ -98,27 +98,13 @@ class AboutViewController: UIViewController, UICollectionViewDelegate, UICollect
 
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        if photos.count == 1 {
-            return CGSize(width: screenWidth, height: screenWidth);
-        }
-        else if photos.count < 6 {
-            if indexPath.item == 0 {
-                return CGSize(width: screenWidth, height: screenWidth/2);
-            }
-            return CGSize(width: screenWidth/2, height: screenWidth/2);
-        }
         
-        if indexPath.item == 0 {
-            return CGSize(width: screenWidth, height: screenWidth/3);
-        }
-
-        return CGSize(width: screenWidth/3, height: screenWidth/3);
-        
+        return getItemSize(indexPath)
     }
     
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("photoCell", forIndexPath: indexPath) as! PhotoCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(cellIdentifier, forIndexPath: indexPath) as! PhotoCell
         selectedImageView = cell.imageView
         selectedIndexPath = indexPath
         
@@ -136,13 +122,13 @@ class AboutViewController: UIViewController, UICollectionViewDelegate, UICollect
     func showInteractive() {
         let storyboard = UIStoryboard(name: "ModalViewController", bundle: nil)
         let controller = storyboard.instantiateViewControllerWithIdentifier("ModalViewController") as! ModalViewController
-        
+        controller.item = self.photos[self.selectedIndexPath!.item]
         let operationType: ARNTransitionAnimatorOperation = .Present
         let animator = ARNTransitionAnimator(operationType: operationType, fromVC: self, toVC: controller)
         
         animator.presentationBeforeHandler = { [weak self] containerView, transitionContext in
             containerView.addSubview(controller.view)
-            controller.item = self!.photos[self!.selectedIndexPath!.item]
+
             
             controller.view.layoutIfNeeded()
             
@@ -209,15 +195,6 @@ class AboutViewController: UIViewController, UICollectionViewDelegate, UICollect
                 self!.dismissalCompletionAction(completeTransition)
                 controller.dismissalCompletionAction(completeTransition)
                 sourceImageView.removeFromSuperview()
-//                UIApplication.sharedApplication().keyWindow!.addSubview(self!.tabBarController!.view)
-//                self!.tabBarController!.view.addSubview(self!.parentViewController!.parentViewController!.view)
-//                let tab = self!.tabBarController as! PopUpTabBarController
-//                tab.view.bringSubviewToFront(tab.popupVC!.view)
-//                tab.view.bringSubviewToFront(tab.popupBar!)
-//                tab.view.bringSubviewToFront(tab.tabBar)
-
-
-
             }
         }
         
@@ -234,14 +211,15 @@ class AboutViewController: UIViewController, UICollectionViewDelegate, UICollect
     
     
     func createTransitionImageView() -> UIImageView {
+        
         let imageView = UIImageView()
         imageView.loadImageUsingCacheWithURLString(photos[selectedIndexPath!.item].getDownloadUrl()!.absoluteString, completion: { result in})
         imageView.contentMode = self.selectedImageView!.contentMode
         imageView.clipsToBounds = true
         imageView.userInteractionEnabled = false
         let attr = collectionView?.layoutAttributesForItemAtIndexPath(selectedIndexPath!)
-        imageView.frame = CGRect(x: 0, y: 0, width: screenWidth/3, height: screenWidth/3)
-        //imageView.center = self.selectedImageView!.convertPoint(self.selectedImageView!.center, toView: self.view)
+        let size = getItemSize(selectedIndexPath!)
+        imageView.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
         imageView.center = self.parentViewController!.view.convertPoint(attr!.center, fromView: self.view)
         
         
@@ -257,6 +235,23 @@ class AboutViewController: UIViewController, UICollectionViewDelegate, UICollect
         self.selectedImageView?.hidden = false
     }
 
+    func getItemSize(indexPath:NSIndexPath) -> CGSize {
+        if photos.count == 1 {
+            return CGSize(width: screenWidth, height: screenWidth);
+        }
+        else if photos.count < 6 {
+            if indexPath.item == 0 {
+                return CGSize(width: screenWidth, height: screenWidth/2);
+            }
+            return CGSize(width: screenWidth/2, height: screenWidth/2);
+        }
+        
+        if indexPath.item == 0 {
+            return CGSize(width: screenWidth, height: screenWidth/3);
+        }
+        
+        return CGSize(width: screenWidth/3, height: screenWidth/3);
+    }
 
 
 }

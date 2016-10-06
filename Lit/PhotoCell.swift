@@ -12,6 +12,7 @@ class PhotoCell: UICollectionViewCell {
 
     @IBOutlet weak var authorImage: UIImageView!
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var authorLabel: UILabel!
     
     @IBOutlet weak var timeLabel: UILabel!
     override func awakeFromNib() {
@@ -26,18 +27,7 @@ class PhotoCell: UICollectionViewCell {
         
         self.layer.borderColor = UIColor.blackColor().CGColor
         self.layer.borderWidth = 1.5
-        
-        //timeLabel.text = item.getDateCreated()!.timeStringSinceNow()
-        authorImage.layer.cornerRadius = authorImage.frame.width/2
-        authorImage.clipsToBounds = true
-        
-        FirebaseService.getUser(item.getAuthorId(), completionHandler: { _user in
-            if let user = _user {
-                self.authorImage.loadImageUsingCacheWithURLString(user.getImageUrl()!, completion: {
-                    result in
-                })
-            }
-        })
+
     }
 
 }

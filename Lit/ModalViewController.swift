@@ -9,29 +9,77 @@
 import UIKit
 
 class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransitionZoomable {
-
+    
     var item:StoryItem?
     @IBOutlet weak var imageView : UIImageView!
-//    @IBOutlet weak var closeButton : UIButton!
-//    
-//    @IBAction func tapCloseButton(sender: UIButton) {
-//        //self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
-//    }
-//    
+    @IBOutlet weak var timeLabel: UILabel!
+    @IBOutlet weak var authorLabel: UILabel!
+    @IBOutlet weak var authorImage: UIImageView!
+    @IBOutlet weak var locationLabel: UILabel!
+    
+    
+    
     deinit {
-        print("deinit ModalViewController")
+
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        print("ModalViewController viewWillAppear")
         
+        self.authorImage.layer.opacity = 0
+        self.authorLabel.layer.opacity = 0
+        self.timeLabel.layer.opacity = 0
+        self.locationLabel.layer.opacity = 0
+        
+        UIView.animateWithDuration(0.75, animations: {
+            self.authorImage.layer.opacity = 1.0
+            self.authorLabel.layer.opacity = 1.0
+            self.timeLabel.layer.opacity = 1.0
+            self.locationLabel.layer.opacity = 1.0
+        })
+        
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        let key = mainStore.state.viewLocationKey
+        let locations = mainStore.state.locations
 
+        for location in locations {
+            if key == location.getKey() {
+                self.locationLabel.styleLocationTitle(location.getName().lowercaseString, size: 32)
+            }
+        }
+        
+        authorImage.layer.cornerRadius = authorImage.frame.width/2
+        authorImage.clipsToBounds = true
+        authorImage.layer.opacity = 0
+        authorLabel.layer.opacity = 0
+        timeLabel.layer.opacity = 0
+        locationLabel.layer.opacity = 0
+        
+        FirebaseService.getUser(item!.getAuthorId(), completionHandler: { _user in
+            if let user = _user {
+                self.authorLabel.text = user.getDisplayName()
+                self.timeLabel.text = self.item!.getDateCreated()!.timeStringSinceNow()
+                self.authorImage.loadImageUsingCacheWithURLString(user.getImageUrl()!, completion: { result in
+                })
+                
+            }
+            
+        })
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        print("ModalViewController viewWillDisappear")
+        
+        UIView.animateWithDuration(0.75, animations: {
+            self.authorImage.layer.opacity = 0
+            self.authorLabel.layer.opacity = 0
+            self.timeLabel.layer.opacity = 0
+            self.locationLabel.layer.opacity = 0
+        })
     }
     
     // MARK: - ARNImageTransitionZoomable
