@@ -48,9 +48,10 @@ class LoginViewController: UIViewController, StoreSubscriber, IGLocationManagerD
             default:
                 break
             }
-        } else {
-            DEPRECATED_LOGIN()
         }
+//        else {
+//            DEPRECATED_LOGIN()
+//        }
 
     }
     

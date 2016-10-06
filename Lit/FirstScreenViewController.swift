@@ -15,18 +15,18 @@ import AVFoundation
 class FirstScreenViewController: UIViewController {
 
     @IBOutlet weak var loginButton: UIView!
+    var tap: UITapGestureRecognizer!
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let tap = UITapGestureRecognizer(target: self, action: #selector(initiateFBLogin))
-        loginButton.addGestureRecognizer(tap)
-
+        setupVideoBackground()
+        
         loginButton.layer.borderColor = UIColor.whiteColor().CGColor
         loginButton.layer.borderWidth = 2.0
-
-        // Do any additional setup after loading the view.
         
-        setupVideoBackground()
+        tap = UITapGestureRecognizer(target: self, action: #selector(initiateFBLogin))
+        activateLoginButton()
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -34,16 +34,27 @@ class FirstScreenViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    func activateLoginButton() {
+        loginButton.addGestureRecognizer(tap)
+        loginButton.layer.opacity = 1.0
+    }
+    
+    
+    
     func initiateFBLogin() {
+        loginButton.layer.opacity = 0.4
+        loginButton.removeGestureRecognizer(tap)
         let loginManager = FBSDKLoginManager()
         
         loginManager.logInWithReadPermissions(["public_profile", "user_photos"], fromViewController: self, handler: {(result:FBSDKLoginManagerLoginResult!, error:NSError!) -> Void in
             if (error != nil) {
                 // Process error
                 self.removeFbData()
+                self.activateLoginButton()
             } else if result.isCancelled {
                 // User Cancellation
                 self.removeFbData()
+                self.activateLoginButton()
             } else {
                 //Success
                 if result.grantedPermissions.contains("user_photos") && result.grantedPermissions.contains("public_profile") {
@@ -51,6 +62,8 @@ class FirstScreenViewController: UIViewController {
                     self.fetchFacebookProfile()
                 } else {
                     //Handle error
+                    self.removeFbData()
+                    self.activateLoginButton()
                 }
             }
         })

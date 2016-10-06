@@ -217,10 +217,14 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
         imageView.contentMode = self.selectedImageView!.contentMode
         imageView.clipsToBounds = true
         imageView.userInteractionEnabled = false
-        let attr = collectionView?.layoutAttributesForItemAtIndexPath(selectedIndexPath!)
+        let attr = collectionView!.layoutAttributesForItemAtIndexPath(selectedIndexPath!)
         let size = getItemSize(selectedIndexPath!)
+        
+        let offset = collectionView!.contentOffset.y
+        print("OFFSET: \(offset)")
         imageView.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
-        imageView.center = self.parentViewController!.view.convertPoint(attr!.center, fromView: self.view)
+        let imagePoint = CGPoint(x: attr!.center.x, y: attr!.center.y - offset)
+        imageView.center = self.parentViewController!.view.convertPoint(imagePoint, fromView: self.view)
         
         
         
