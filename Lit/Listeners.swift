@@ -22,7 +22,7 @@ class Listeners {
         if !listeningToFriends {
             listeningToFriends = true
             
-            let friendsRef = ref.child("users/\(mainStore.state.userState.uid)/friends")
+            let friendsRef = ref.child("users_public/\(mainStore.state.userState.uid)/friends")
             
             /**
              Listen for a Friend Added
@@ -88,7 +88,7 @@ class Listeners {
         if !listeningToFriendRequests {
             listeningToFriendRequests = true
             
-            let requestsInRef = ref.child("users/\(mainStore.state.userState.uid)/friendRequestsIn")
+            let requestsInRef = ref.child("users_public/\(mainStore.state.userState.uid)/friendRequestsIn")
             
             /**
              Listen for a Friend Request In Added
@@ -128,7 +128,7 @@ class Listeners {
                 }
             })
             
-            let requestsOutRef = ref.child("users/\(mainStore.state.userState.uid)/friendRequestsOut")
+            let requestsOutRef = ref.child("users_public/\(mainStore.state.userState.uid)/friendRequestsOut")
             
             /**
              Listen for a Friend Request Out Added

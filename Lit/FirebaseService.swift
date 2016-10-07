@@ -17,47 +17,11 @@ class FirebaseService {
     // Get a reference to the storage service, using the default Firebase App
     static let storage = FIRStorage.storage()
     static let storageRef = storage.referenceForURL("gs://lit-data.appspot.com")
-    // Create a storage reference from our storage service
-    
-    // Get a reference to the storage service, using the default Firebase App
-    
-//    static func writeUser(user:FIRUser) {
-//        let userInfo: [String : AnyObject] = [
-//            "displayName": ((user.displayName ?? "").isEmpty ? "" : user.displayName!),
-//            "photoUrl": ((user.photoURL?.absoluteString ?? "").isEmpty ? "" : user.photoURL!.absoluteString)
-//            
-//        ]
-//
-//        ref.child("users").child(user.uid).updateChildValues(userInfo)
-//        ref.child("users").child(user.uid).updateChildValues(userInfo, withCompletionBlock: { error, ref in
-//            getUser(user.uid, completionHandler: { _user in
-//                if let user = _user {
-//                    mainStore.dispatch(UserIsAuthenticated( user: user))
-//                }
-//            })
-//        })
-//    }
-//    
+
     static func signOut() {
         try! FIRAuth.auth()!.signOut()
     }
     
-//    static func listenToAuth() {
-//        FIRAuth.auth()?.addAuthStateDidChangeListener { auth, user in
-//            if let user = user {
-//                // User is signed in.
-//                getUser(user.uid, completionHandler: { _user in
-//                    if _user != nil {
-//                        mainStore.dispatch(UserIsAuthenticated( user: _user!))
-//                    } else {
-//                        writeUser(user)
-//                    }
-//                })
-//            } else {
-//                // No user is signed in.
-//            }
-//        }
-//    }
     
     static func getUser(uid:String, completionHandler: (user:User?)->()) {
         ref.child("users_public/\(uid)").observeSingleEventOfType(.Value, withBlock: { (snapshot) in
@@ -73,63 +37,14 @@ class FirebaseService {
         })
     }
     
-    static func retrieveCities() {
-        let refHandle = ref.child("cities")
-            .observeSingleEventOfType(.Value, withBlock: {(snapshot) in
-                var cities = [City]()
-                for city in snapshot.children {
-                    let key = city.key!!
-                    let name = city.value["name"] as! String
-                    let lat = city.childSnapshotForPath("coordinates").value!["latitude"] as! Double
-                    let lon = city.childSnapshotForPath("coordinates").value!["longitude"] as! Double
-                    let coord = IGLocation(latitude: lat, longitude: lon)
-                    let country = city.value["country"] as! String
-                    let region = city.value["region"] as! String
-                    
-                    let city = City(key: key, name: name, coordinates: coord, country: country, region: region)
-                    cities.append(city)
-                }
-                
-                mainStore.dispatch(CitiesRetrieved(cities: cities))
-            
-        })
-    }
-    
-    static func retrieveLocationsForCity(city:String) {
-        let refHandle = ref.child("locations/\(city)").observeSingleEventOfType(FIRDataEventType.Value, withBlock: { (snapshot) in
-            var locations = [Location]()
-            for child in snapshot.children {
-                let key = child.key!!
-                let name = child.value["name"] as! String
-                let lat = child.childSnapshotForPath("coordinates").value!["latitude"] as! Double
-                let lon = child.childSnapshotForPath("coordinates").value!["longitude"] as! Double
-                let coord = CLLocation(latitude: lat, longitude: lon)
-                let imageURL = child.value["imageURL"] as! String
-                let address = child.value["address"] as! String
-                let description = child.value["description"] as! String
-                let number = child.value["number"] as! String
-                let website = child.value["website"] as! String
-                let storyCount = child.value["story_count"] as! Int
 
-                let loc = Location(key: key, name: name, coordinates: coord, imageURL: imageURL, address: address, description: description, number: number, website: website, storyCount: storyCount)
-                
-                locations.append(loc)
-            }
-            mainStore.dispatch(LocationsRetrieved(locations: locations))
-            
-        })
-    }
-
-    
     internal static func sendImage(image:UIImage) -> FIRStorageUploadTask? {
         // Data in memory
         let city = mainStore.state.userState.activeCity!
         let activeLocationKey = mainStore.state.userState.activeLocationKey
         
         let dataRef = ref.child("uploads").childByAutoId()
-        
 
-        
         if let data = UIImageJPEGRepresentation(image, 0.5) {
             // Create a reference to the file you want to upload
             // Create the file metadata
@@ -157,7 +72,7 @@ class FirebaseService {
                         if error == nil {
                             let locationRef = ref.child("locations/\(city.getKey())/\(activeLocationKey)/uploads/\(dataRef.key)")
                             locationRef.setValue([dataRef.key:true])
-                            let userRef = ref.child("users/\(mainStore.state.userState.uid)/uploads/\(dataRef.key)")
+                            let userRef = ref.child("users_public/\(mainStore.state.userState.uid)/uploads/\(dataRef.key)")
                             userRef.setValue([dataRef.key:true])
                         }
                     })

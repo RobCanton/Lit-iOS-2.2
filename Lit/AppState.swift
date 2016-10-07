@@ -11,9 +11,6 @@ import ReSwift
 import CoreLocation
 import IngeoSDK
 
-enum FlowState {
-    case None, ReturningUser, CreateNewUser, Permissions
-}
 
 struct AppState: StateType {
     var userState: UserState
@@ -42,3 +39,4 @@ struct UserState {
     var activeLocationKey:String=""
     var vote:RatingState = .Selection
 }
+

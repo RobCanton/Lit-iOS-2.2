@@ -75,18 +75,18 @@ class CreateProfileViewController: UIViewController, UITextFieldDelegate {
         fullnameField.font = UIFont(name: "Avenir-Book", size: 26.0)
         fullnameField.textAlignment = .Center
         
-        fullnameField.center = CGPoint(x: bodyView.frame.width/2, y: fullnameField.frame.height * 0.75)
+        fullnameField.center = CGPoint(x: bodyView.frame.width/2, y: fullnameField.frame.height)
         bodyView.addSubview(fullnameField)
         
         usernameField.center = CGPoint(x: bodyView.frame.width/2, y: fullnameField.center.y + usernameField.frame.height + 15)
         bodyView.addSubview(usernameField)
         
-        continueButton = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width * 0.75, height: 50))
-        continueButton.center = CGPointMake(view.frame.width/2, view.frame.height - (continueButton.frame.height + 15))
+        continueButton = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 60))
+        continueButton.center = CGPointMake(view.frame.width/2, view.frame.height - (continueButton.frame.height/2))
         continueButton.backgroundColor = UIColor(red: 0.15, green: 0.15, blue: 0.15, alpha: 1.0)
         let label = UILabel(frame: continueButton.bounds)
-        label.text = "Create Profile"
-        label.font = UIFont(name: "Avenir-Book", size: 24.0)
+        label.text = "create profile"
+        label.font = UIFont(name: "Avenir-Medium", size: 22.0)
         label.textAlignment = .Center
         label.textColor = UIColor.blackColor()
         continueButton.addSubview(label)
@@ -101,7 +101,7 @@ class CreateProfileViewController: UIViewController, UITextFieldDelegate {
     
     func doSet() {
         
-        if let user = FIRAuth.auth()?.currentUser {
+        if let user = FIRAuth.auth()!.currentUser {
             userInfo["displayName"] = ((user.displayName ?? "").isEmpty ? "" : user.displayName!)
             userInfo["photoURL"] = ((user.photoURL?.absoluteString ?? "").isEmpty ? "" : user.photoURL!.absoluteString)
         }
@@ -136,7 +136,7 @@ class CreateProfileViewController: UIViewController, UITextFieldDelegate {
         
         let imageRef = FirebaseService.storageRef.child("user_profiles/\(user.uid)/large")
         let image = headerView.imageView.image
-        if let picData = UIImageJPEGRepresentation(image!, 1.0) {
+        if let picData = UIImageJPEGRepresentation(image!, 0.6) {
             let contentTypeStr = "image/jpg"
             let metadata = FIRStorageMetadata()
             metadata.contentType = contentTypeStr

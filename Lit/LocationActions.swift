@@ -28,6 +28,12 @@ struct LocationStoryLoaded: Action {
     let story: [StoryItem]
 }
 
+struct LocationSetupComplete: Action {
+    let cities: [City]
+    let activeCity:City
+    let locations:[Location]
+}
+
 struct ViewStory: Action {
     let index: Int
 }

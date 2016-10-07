@@ -164,10 +164,10 @@ class ProfileViewController: UIViewController, StoreSubscriber {
             let loginManager = FBSDKLoginManager()
             loginManager.logOut() // this is an instance function
             mainStore.dispatch(UserIsUnauthenticated())
-            
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let vc = storyboard.instantiateViewControllerWithIdentifier("LoginViewController") as! LoginViewController
-            self.presentViewController(vc, animated: true, completion: nil)
+            self.dismissViewControllerAnimated(true, completion: {})
+//            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//            let vc = storyboard.instantiateViewControllerWithIdentifier("LoginViewController") as! LoginViewController
+//            self.presentViewController(vc, animated: true, completion: nil)
             
         })
         

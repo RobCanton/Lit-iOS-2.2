@@ -150,7 +150,7 @@ class RatingViewController: UIViewController, StoreSubscriber  {
         let ref = FirebaseService.ref.child("locations/\(city)/\(location)")
         ref.child("visitors/\(uid)").setValue(true)
         
-        let userRef = FirebaseService.ref.child("users/\(uid)/visits")
+        let userRef = FirebaseService.ref.child("users_public/\(uid)/visits")
         userRef.child("\(city)/\(location)").setValue([".sv": "timestamp"])
     }
     
@@ -159,7 +159,7 @@ class RatingViewController: UIViewController, StoreSubscriber  {
         let uid = mainStore.state.userState.uid
         let city = mainStore.state.userState.activeCity!.getKey()
         let location = mainStore.state.userState.activeLocationKey
-        let ref = FirebaseService.ref.child("users/\(uid)/ignores")
+        let ref = FirebaseService.ref.child("users_public/\(uid)/ignores")
         ref.child("\(city)/\(location)").setValue([".sv": "timestamp"])
     }
     
@@ -168,7 +168,7 @@ class RatingViewController: UIViewController, StoreSubscriber  {
         let uid = mainStore.state.userState.uid
         let city = mainStore.state.userState.activeCity!.getKey()
         let location = mainStore.state.userState.activeLocationKey
-        let ref = FirebaseService.ref.child("users/\(uid)")
+        let ref = FirebaseService.ref.child("users_public/\(uid)")
         
         ref.child("visits/\(city)/\(location)").observeEventType(.Value, withBlock: { (snapshot) in
             if snapshot.exists() {

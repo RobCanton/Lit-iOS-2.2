@@ -22,10 +22,10 @@ class VisitorCell: UITableViewCell {
             
             let uid = mainStore.state.userState.uid
             if friendStatus == .NOT_FRIENDS {
-                let userRef = FirebaseService.ref.child("users/\(uid)/friendRequestsOut")
+                let userRef = FirebaseService.ref.child("users_public/\(uid)/friendRequestsOut")
                 userRef.child(_user.getUserId())
                     .setValue(false)
-                let friendRef = FirebaseService.ref.child("users/\(_user.getUserId())/friendRequestsIn/\(uid)")
+                let friendRef = FirebaseService.ref.child("users_public/\(_user.getUserId())/friendRequestsIn/\(uid)")
                 friendRef.setValue(false, withCompletionBlock: {
                         error, ref in
                         
@@ -41,10 +41,10 @@ class VisitorCell: UITableViewCell {
                         }
                 })
             } else if friendStatus == .PENDING_INCOMING {
-                FirebaseService.ref.child("users/\(uid)/friendRequestsIn/\(_user.getUserId())").removeValue()
-                FirebaseService.ref.child("users/\(_user.getUserId())/friendRequestsOut/\(uid)").removeValue()
-                FirebaseService.ref.child("users/\(uid)/friends/\(_user.getUserId())").setValue(true)
-                FirebaseService.ref.child("users/\(_user.getUserId())/friends/\(uid)").setValue(true)
+                FirebaseService.ref.child("users_public/\(uid)/friendRequestsIn/\(_user.getUserId())").removeValue()
+                FirebaseService.ref.child("users_public/\(_user.getUserId())/friendRequestsOut/\(uid)").removeValue()
+                FirebaseService.ref.child("users_public/\(uid)/friends/\(_user.getUserId())").setValue(true)
+                FirebaseService.ref.child("users_public/\(_user.getUserId())/friends/\(uid)").setValue(true)
             }
             
         }
