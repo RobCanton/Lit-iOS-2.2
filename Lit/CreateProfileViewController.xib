@@ -3,14 +3,10 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CreateProfileViewController" customModule="Lit" customModuleProvider="target">
             <connections>
-                <outlet property="editorArea" destination="7EF-1c-iei" id="dTd-R5-qS5"/>
-                <outlet property="imageGradient" destination="Cgn-P6-1u4" id="PcC-Fi-Kzq"/>
-                <outlet property="imageView" destination="rF5-U3-r6O" id="lFa-DO-3Ic"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -18,57 +14,7 @@
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-            <subviews>
-                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Agu-pE-R6v">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                </scrollView>
-                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HMP-Jz-Sv4">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="300"/>
-                    <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rF5-U3-r6O">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="300"/>
-                        </imageView>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cgn-P6-1u4">
-                            <rect key="frame" x="0.0" y="225" width="375" height="75"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="75" id="GP9-NN-hKq"/>
-                            </constraints>
-                        </view>
-                    </subviews>
-                    <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <constraints>
-                        <constraint firstItem="rF5-U3-r6O" firstAttribute="top" secondItem="HMP-Jz-Sv4" secondAttribute="top" id="51p-qT-cN5"/>
-                        <constraint firstAttribute="trailing" secondItem="rF5-U3-r6O" secondAttribute="trailing" id="Ie1-4k-dLd"/>
-                        <constraint firstAttribute="bottom" secondItem="rF5-U3-r6O" secondAttribute="bottom" id="ItK-Zz-fOO"/>
-                        <constraint firstAttribute="bottom" secondItem="Cgn-P6-1u4" secondAttribute="bottom" id="KBZ-BI-Rs6"/>
-                        <constraint firstItem="rF5-U3-r6O" firstAttribute="centerY" secondItem="HMP-Jz-Sv4" secondAttribute="centerY" id="M2M-WA-Rcq"/>
-                        <constraint firstItem="Cgn-P6-1u4" firstAttribute="leading" secondItem="HMP-Jz-Sv4" secondAttribute="leading" id="V6f-lc-etA"/>
-                        <constraint firstAttribute="trailing" secondItem="Cgn-P6-1u4" secondAttribute="trailing" id="X3U-Il-T1p"/>
-                        <constraint firstAttribute="width" secondItem="HMP-Jz-Sv4" secondAttribute="height" multiplier="5:4" id="cqe-sk-o0q"/>
-                        <constraint firstItem="rF5-U3-r6O" firstAttribute="leading" secondItem="HMP-Jz-Sv4" secondAttribute="leading" id="sMN-L8-GAs"/>
-                        <constraint firstItem="rF5-U3-r6O" firstAttribute="centerX" secondItem="HMP-Jz-Sv4" secondAttribute="centerX" id="uhu-Sl-Uhi"/>
-                    </constraints>
-                </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7EF-1c-iei">
-                    <rect key="frame" x="0.0" y="308" width="375" height="359"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                </view>
-            </subviews>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-            <constraints>
-                <constraint firstAttribute="trailing" secondItem="HMP-Jz-Sv4" secondAttribute="trailing" id="AlO-FA-sqN"/>
-                <constraint firstItem="HMP-Jz-Sv4" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="I6g-se-PqI"/>
-                <constraint firstItem="Agu-pE-R6v" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="QJp-b2-kZj"/>
-                <constraint firstAttribute="trailing" secondItem="7EF-1c-iei" secondAttribute="trailing" id="QNv-95-dh0"/>
-                <constraint firstAttribute="bottom" secondItem="Agu-pE-R6v" secondAttribute="bottom" id="far-JC-u4b"/>
-                <constraint firstItem="Agu-pE-R6v" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="fcr-ud-daT"/>
-                <constraint firstItem="HMP-Jz-Sv4" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="jfp-5Y-iXN"/>
-                <constraint firstAttribute="trailing" secondItem="Agu-pE-R6v" secondAttribute="trailing" id="kju-oF-n1j"/>
-                <constraint firstAttribute="bottom" secondItem="7EF-1c-iei" secondAttribute="bottom" id="q5o-jE-7FT"/>
-                <constraint firstItem="7EF-1c-iei" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="uag-e0-Rlq"/>
-                <constraint firstItem="7EF-1c-iei" firstAttribute="top" secondItem="HMP-Jz-Sv4" secondAttribute="bottom" constant="8" id="v4A-zF-Azh"/>
-            </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
             <point key="canvasLocation" x="430.5" y="337.5"/>
         </view>

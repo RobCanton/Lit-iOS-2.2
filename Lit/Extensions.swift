@@ -367,7 +367,14 @@ public extension UIView {
         self.layer.shadowOpacity = opacity
         self.layer.shadowRadius = radius
         self.layer.shouldRasterize = shouldRasterize
-
+    }
+    
+    func shake() {
+        let animation = CAKeyframeAnimation(keyPath: "transform.translation.x")
+        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+        animation.duration = 0.3
+        animation.values = [-5.0, 5.0, -2.0, 2.0, 0.0 ]
+        layer.addAnimation(animation, forKey: "shake")
     }
 }
 

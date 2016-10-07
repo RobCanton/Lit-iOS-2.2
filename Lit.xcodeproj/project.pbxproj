@@ -24,8 +24,6 @@
 		76A516691D60C721005E2815 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A516681D60C721005E2815 /* Message.swift */; };
 		76A5166C1D6103AF005E2815 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A5166B1D6103AF005E2815 /* ProfileViewController.swift */; };
 		76A5166E1D618CAD005E2815 /* LocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A5166D1D618CAD005E2815 /* LocationViewController.swift */; };
-		76B361C11D629F910024CDC7 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B361C01D629F910024CDC7 /* HeaderView.swift */; };
-		76B361C31D629FAD0024CDC7 /* HeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76B361C21D629FAD0024CDC7 /* HeaderView.xib */; };
 		76B361CA1D64E8160024CDC7 /* RatingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B361C81D64E8160024CDC7 /* RatingViewController.swift */; };
 		76B361CB1D64E8160024CDC7 /* RatingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76B361C91D64E8160024CDC7 /* RatingViewController.xib */; };
 		76B361CD1D64E85F0024CDC7 /* PopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B361CC1D64E85F0024CDC7 /* PopupViewController.swift */; };
@@ -86,6 +84,12 @@
 		B09D5FCF1DA57C80004A188E /* ARNModalImageTransitionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09D5FCC1DA57C80004A188E /* ARNModalImageTransitionViewController.swift */; };
 		B09D5FD21DA57CE9004A188E /* ModalViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B09D5FD01DA57CE9004A188E /* ModalViewController.storyboard */; };
 		B09D5FD31DA57CE9004A188E /* ModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09D5FD11DA57CE9004A188E /* ModalViewController.swift */; };
+		B0BA32691DA7158B004352A7 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0BA32671DA7158B004352A7 /* HeaderView.swift */; };
+		B0BA326A1DA7158B004352A7 /* HeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0BA32681DA7158B004352A7 /* HeaderView.xib */; };
+		B0BA326C1DA7163D004352A7 /* CreateProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0BA326B1DA7163D004352A7 /* CreateProfileHeaderView.xib */; };
+		B0BA326E1DA7165A004352A7 /* CreateProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0BA326D1DA7165A004352A7 /* CreateProfileHeaderView.swift */; };
+		B0BA32701DA71A5C004352A7 /* CreateProfileBodyView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0BA326F1DA71A5C004352A7 /* CreateProfileBodyView.xib */; };
+		B0BA32721DA71A69004352A7 /* CreateProfileBodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0BA32711DA71A69004352A7 /* CreateProfileBodyView.swift */; };
 		B0FF11451D3EB32100D709CE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FF11441D3EB32100D709CE /* AppDelegate.swift */; };
 		B0FF11471D3EB32100D709CE /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FF11461D3EB32100D709CE /* LoginViewController.swift */; };
 		B0FF114C1D3EB32100D709CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B0FF114B1D3EB32100D709CE /* Assets.xcassets */; };
@@ -126,8 +130,6 @@
 		76A516681D60C721005E2815 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		76A5166B1D6103AF005E2815 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		76A5166D1D618CAD005E2815 /* LocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationViewController.swift; sourceTree = "<group>"; };
-		76B361C01D629F910024CDC7 /* HeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
-		76B361C21D629FAD0024CDC7 /* HeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeaderView.xib; sourceTree = "<group>"; };
 		76B361C81D64E8160024CDC7 /* RatingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatingViewController.swift; sourceTree = "<group>"; };
 		76B361C91D64E8160024CDC7 /* RatingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RatingViewController.xib; sourceTree = "<group>"; };
 		76B361CC1D64E85F0024CDC7 /* PopupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopupViewController.swift; sourceTree = "<group>"; };
@@ -188,6 +190,12 @@
 		B09D5FCC1DA57C80004A188E /* ARNModalImageTransitionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ARNModalImageTransitionViewController.swift; sourceTree = "<group>"; };
 		B09D5FD01DA57CE9004A188E /* ModalViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ModalViewController.storyboard; sourceTree = "<group>"; };
 		B09D5FD11DA57CE9004A188E /* ModalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModalViewController.swift; sourceTree = "<group>"; };
+		B0BA32671DA7158B004352A7 /* HeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
+		B0BA32681DA7158B004352A7 /* HeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeaderView.xib; sourceTree = "<group>"; };
+		B0BA326B1DA7163D004352A7 /* CreateProfileHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreateProfileHeaderView.xib; sourceTree = "<group>"; };
+		B0BA326D1DA7165A004352A7 /* CreateProfileHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateProfileHeaderView.swift; sourceTree = "<group>"; };
+		B0BA326F1DA71A5C004352A7 /* CreateProfileBodyView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreateProfileBodyView.xib; sourceTree = "<group>"; };
+		B0BA32711DA71A69004352A7 /* CreateProfileBodyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateProfileBodyView.swift; sourceTree = "<group>"; };
 		B0FF11411D3EB32000D709CE /* Lit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0FF11441D3EB32100D709CE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B0FF11461D3EB32100D709CE /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -271,8 +279,7 @@
 				B0FF11461D3EB32100D709CE /* LoginViewController.swift */,
 				B00BA9201D9E4E0700F5EA30 /* FirstScreenViewController.swift */,
 				B00BA9211D9E4E0700F5EA30 /* FirstScreenViewController.xib */,
-				B00BA9241D9E4E1D00F5EA30 /* CreateProfileViewController.swift */,
-				B00BA9251D9E4E1D00F5EA30 /* CreateProfileViewController.xib */,
+				B0BA32731DA71A71004352A7 /* CreateProfile */,
 			);
 			name = Login;
 			sourceTree = "<group>";
@@ -366,13 +373,13 @@
 			isa = PBXGroup;
 			children = (
 				76A5166D1D618CAD005E2815 /* LocationViewController.swift */,
+				B0BA32671DA7158B004352A7 /* HeaderView.swift */,
+				B0BA32681DA7158B004352A7 /* HeaderView.xib */,
 				768C67671D586C26003A76D5 /* StoryViewController.swift */,
 				B00BA91B1D9D6DB600F5EA30 /* StoryItemViewController.swift */,
 				B00BA91C1D9D6DB600F5EA30 /* StoryItemViewController.xib */,
 				76EC36031D58EB600056D4CF /* CircleProgressView.swift */,
 				76B7212A1D5E377D002B4491 /* StoryProgressIndicator.swift */,
-				76B361C01D629F910024CDC7 /* HeaderView.swift */,
-				76B361C21D629FAD0024CDC7 /* HeaderView.xib */,
 				B05DB1291DA22D9600567996 /* LocationFriendsViewController.swift */,
 				762F82931D62573300549E1B /* GalleryViewController.swift */,
 				B079BE841DA557B00042B586 /* PhotoCell.swift */,
@@ -405,6 +412,19 @@
 				B087E9C91D9B7CDD0079E2BF /* Tree.swift */,
 			);
 			name = DataStructures;
+			sourceTree = "<group>";
+		};
+		B0BA32731DA71A71004352A7 /* CreateProfile */ = {
+			isa = PBXGroup;
+			children = (
+				B00BA9241D9E4E1D00F5EA30 /* CreateProfileViewController.swift */,
+				B00BA9251D9E4E1D00F5EA30 /* CreateProfileViewController.xib */,
+				B0BA326D1DA7165A004352A7 /* CreateProfileHeaderView.swift */,
+				B0BA326B1DA7163D004352A7 /* CreateProfileHeaderView.xib */,
+				B0BA32711DA71A69004352A7 /* CreateProfileBodyView.swift */,
+				B0BA326F1DA71A5C004352A7 /* CreateProfileBodyView.xib */,
+			);
+			name = CreateProfile;
 			sourceTree = "<group>";
 		};
 		B0FF11381D3EB32000D709CE = {
@@ -526,18 +546,20 @@
 				B06D54D81D9EEFD700F6A4A7 /* intro4.mp4 in Resources */,
 				B09D5FD21DA57CE9004A188E /* ModalViewController.storyboard in Resources */,
 				B00BA9271D9E4E1D00F5EA30 /* CreateProfileViewController.xib in Resources */,
+				B0BA326A1DA7158B004352A7 /* HeaderView.xib in Resources */,
 				76C0E7541D80D770004EFA4C /* VisitorCell.xib in Resources */,
 				76EE2B981D8766ED00EDB4CB /* ActivityFriendRequestCell.xib in Resources */,
+				B0BA326C1DA7163D004352A7 /* CreateProfileHeaderView.xib in Resources */,
 				B0FF114F1D3EB32100D709CE /* LaunchScreen.storyboard in Resources */,
 				B00BA91E1D9D6DB600F5EA30 /* StoryItemViewController.xib in Resources */,
 				B0FF11571D3EB33100D709CE /* GoogleService-Info.plist in Resources */,
 				B00BA9231D9E4E0700F5EA30 /* FirstScreenViewController.xib in Resources */,
 				76C0E7501D80D4BA004EFA4C /* VisitorsViewController.xib in Resources */,
+				B0BA32701DA71A5C004352A7 /* CreateProfileBodyView.xib in Resources */,
 				B079BE871DA557B00042B586 /* PhotoCell.xib in Resources */,
 				B0FF114C1D3EB32100D709CE /* Assets.xcassets in Resources */,
 				76B361CB1D64E8160024CDC7 /* RatingViewController.xib in Resources */,
 				76173B7B1D5784AC0093A137 /* Main.storyboard in Resources */,
-				76B361C31D629FAD0024CDC7 /* HeaderView.xib in Resources */,
 				B06D54C11D9ECB6D00F6A4A7 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -616,6 +638,7 @@
 				B00BA9221D9E4E0700F5EA30 /* FirstScreenViewController.swift in Sources */,
 				B00BA91D1D9D6DB600F5EA30 /* StoryItemViewController.swift in Sources */,
 				B09D5FCD1DA57C80004A188E /* ARNImageTransitionNavigationController.swift in Sources */,
+				B0BA32721DA71A69004352A7 /* CreateProfileBodyView.swift in Sources */,
 				76D2E46B1D7F50AF00B7C939 /* City.swift in Sources */,
 				B0FF11471D3EB32100D709CE /* LoginViewController.swift in Sources */,
 				76136D3F1D493786003DB433 /* Location.swift in Sources */,
@@ -631,6 +654,7 @@
 				76B361D51D6517A50024CDC7 /* PopUpTabBarController.swift in Sources */,
 				76A5166C1D6103AF005E2815 /* ProfileViewController.swift in Sources */,
 				B05DB12A1DA22D9600567996 /* LocationFriendsViewController.swift in Sources */,
+				B0BA32691DA7158B004352A7 /* HeaderView.swift in Sources */,
 				76A5166E1D618CAD005E2815 /* LocationViewController.swift in Sources */,
 				76C0E74F1D80D4BA004EFA4C /* VisitorsViewController.swift in Sources */,
 				B00BA9261D9E4E1D00F5EA30 /* CreateProfileViewController.swift in Sources */,
@@ -642,7 +666,6 @@
 				76B361CA1D64E8160024CDC7 /* RatingViewController.swift in Sources */,
 				76136D391D4933F6003DB433 /* UltravisualLayout.swift in Sources */,
 				76A516691D60C721005E2815 /* Message.swift in Sources */,
-				76B361C11D629F910024CDC7 /* HeaderView.swift in Sources */,
 				B06D54C41D9ECB6D00F6A4A7 /* KaedeTextField.swift in Sources */,
 				76B7212B1D5E377D002B4491 /* StoryProgressIndicator.swift in Sources */,
 				B06D54C21D9ECB6D00F6A4A7 /* IsaoTextField.swift in Sources */,
@@ -674,6 +697,7 @@
 				76FF2E6B1D566D6A00E04EE3 /* CameraViewController.swift in Sources */,
 				B06D54C01D9ECB6D00F6A4A7 /* HoshiTextField.swift in Sources */,
 				B06D54C31D9ECB6D00F6A4A7 /* JiroTextField.swift in Sources */,
+				B0BA326E1DA7165A004352A7 /* CreateProfileHeaderView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

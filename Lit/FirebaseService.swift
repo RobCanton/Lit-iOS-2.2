@@ -60,11 +60,11 @@ class FirebaseService {
 //    }
     
     static func getUser(uid:String, completionHandler: (user:User?)->()) {
-        ref.child("users/\(uid)").observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+        ref.child("users_public/\(uid)").observeSingleEventOfType(.Value, withBlock: { (snapshot) in
             var user:User?
             if snapshot.exists() {
-                let displayName = snapshot.value!["displayName"] as! String
-                let imageUrl    = snapshot.value!["photoUrl"] as! String
+                let displayName = snapshot.value!["username"] as! String
+                let imageUrl    = snapshot.value!["smallProfilePicURL"] as! String
                 user = User(uid: uid, displayName: displayName, imageUrl: imageUrl)
             }
 

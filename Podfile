@@ -5,11 +5,11 @@ use_frameworks!
 
 target 'Lit' do
 
-pod 'ReSwift'
-pod 'Bolts'
-pod 'Firebase'
-pod 'Firebase/Auth'
-pod 'Firebase/Database'
+pod 'ReSwift', '2.0.0'
+pod 'Bolts', '1.8.4'
+pod 'Firebase', '3.4.0'
+pod 'Firebase/Auth', '3.0.4'
+pod 'Firebase/Database', '3.0.2'
 pod 'Firebase/Storage'
 pod 'BRYXBanner'
 pod 'RecordButton'

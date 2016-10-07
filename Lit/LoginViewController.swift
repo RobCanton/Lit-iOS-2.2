@@ -41,6 +41,7 @@ class LoginViewController: UIViewController, StoreSubscriber, IGLocationManagerD
                 toNextStep()
                 break
             case .ReturningUser:
+                print("dis")
                 Listeners.listenToFriends()
                 Listeners.listenToFriendRequests()
                 DEPRECATED_LOGIN()
@@ -48,6 +49,8 @@ class LoginViewController: UIViewController, StoreSubscriber, IGLocationManagerD
             default:
                 break
             }
+        } else if flowState == .ReturningUser {
+            DEPRECATED_LOGIN()
         }
 //        else {
 //            DEPRECATED_LOGIN()
@@ -103,6 +106,7 @@ class LoginViewController: UIViewController, StoreSubscriber, IGLocationManagerD
                 }
             })
         }
+        
     }
     
 
