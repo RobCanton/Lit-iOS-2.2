@@ -108,7 +108,7 @@ class ProfileViewController: UIViewController, StoreSubscriber {
 
         bioLabel.text = "I'm 21. I enjoy short walks on the beach. The shorter the better. In fact I'd rather be walking home. Or just not walking in general. I'd rather be eating."
 
-        self.navigationController?.navigationBar.topItem!.title = mainStore.state.userState.user?.getDisplayName()
+        //self.navigationController?.navigationBar.topItem!.title = mainStore.state.userState.user?.getDisplayName()
         self.navigationController?.navigationBar.titleTextAttributes =
             [NSFontAttributeName: UIFont(name: "Avenir-Medium", size: 20.0)!]
         //self.navigationController?.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: .Default)

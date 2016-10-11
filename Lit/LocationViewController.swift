@@ -55,6 +55,11 @@ class LocationViewController: MXSegmentedPagerController, StoreSubscriber {
             }
             count += 1
         }
+        
+        if state.viewUser != "" {
+            mainStore.dispatch(UserViewed())
+            push(state.viewUser)
+        }
     }
     
     override func prefersStatusBarHidden() -> Bool {
@@ -72,6 +77,7 @@ class LocationViewController: MXSegmentedPagerController, StoreSubscriber {
         let header = UINib(nibName: "HeaderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! HeaderView
         
         //self.segmentedPager
+
         self.segmentedPager.parallaxHeader.view = header
         self.segmentedPager.parallaxHeader.mode = MXParallaxHeaderMode.Fill;
         self.segmentedPager.parallaxHeader.height = UltravisualLayoutConstants.Cell.featuredHeight;
@@ -92,28 +98,32 @@ class LocationViewController: MXSegmentedPagerController, StoreSubscriber {
         self.segmentedPager.segmentedControl.selectionStyle = HMSegmentedControlSelectionStyleBox
         self.segmentedPager.segmentedControl.selectionIndicatorColor = UIColor(white: 1.0, alpha: 1.0)
         self.segmentedPager.segmentedControl.selectionIndicatorBoxOpacity = 0
-        self.segmentedPager.segmentedControl.shouldAnimateUserSelection = false
         self.segmentedPager.segmentedControl.borderType = .Left
-        self.segmentedPager.bounces = true
+
         self.segmentedPager.backgroundColor = UIColor.blackColor()
         self.segmentedPager.pager.backgroundColor = UIColor.blackColor()
-        self.segmentedPager.pager.scrollEnabled = false
-        self.segmentedPager.pager.transitionStyle = .Tab
-
-
+        self.segmentedPager.pager.transitionStyle = .Scroll
         
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: "tappedHeader:")
+
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tappedHeader))
         self.segmentedPager.parallaxHeader.view!.addGestureRecognizer(tapGestureRecognizer)
     }
 
     
     func tappedHeader(gesture:UIGestureRecognizer) {
-        if mainStore.state.locations[index!].getPostKeys().count > 0 {
-            self.performSegueWithIdentifier("toStoryView", sender: self)
 
-            mainStore.dispatch(ViewStory(index: index!))
-            mainStore.unsubscribe(self)
-        }
+//        if mainStore.state.locations[index!].getPostKeys().count > 0 {
+//            self.performSegueWithIdentifier("toStoryView", sender: self)
+//
+//            mainStore.dispatch(ViewStory(index: index!))
+//            mainStore.unsubscribe(self)
+//        }
+    }
+    
+    func push(uid:String) {
+        let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("ProfileViewController")
+        controller.navigationItem.title = ""
+        navigationController?.pushViewController(controller, animated: true)
     }
 
 
@@ -124,7 +134,7 @@ class LocationViewController: MXSegmentedPagerController, StoreSubscriber {
     }
     
     override func segmentedPager(segmentedPager: MXSegmentedPager, titleForSectionAtIndex index: Int) -> String {
-        return ["tonight","friends", "info"][index];
+        return ["stories","friends", "friends"][index];
     }
     
     override func segmentedPager(segmentedPager: MXSegmentedPager, didScrollWithParallaxHeader parallaxHeader: MXParallaxHeader) {

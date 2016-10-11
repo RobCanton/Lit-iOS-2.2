@@ -29,15 +29,25 @@
                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="24F-Lj-LPE">
                         <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
                     </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FZs-dU-jtY">
+                        <rect key="frame" x="8" y="133" width="284" height="33"/>
+                        <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="26"/>
+                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
             <constraints>
+                <constraint firstItem="FZs-dU-jtY" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="8" id="0dw-EC-lPh"/>
                 <constraint firstItem="24F-Lj-LPE" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="FuU-ka-5Av"/>
                 <constraint firstItem="oO1-PZ-pll" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="8" id="Odm-jn-IbQ"/>
                 <constraint firstAttribute="bottom" secondItem="oO1-PZ-pll" secondAttribute="bottom" constant="8" id="PER-16-v3r"/>
                 <constraint firstAttribute="bottom" secondItem="UZ5-k5-KDw" secondAttribute="bottom" constant="8" id="Xw3-gE-XRE"/>
+                <constraint firstItem="FZs-dU-jtY" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="i9d-9Z-7uX"/>
+                <constraint firstAttribute="trailing" secondItem="FZs-dU-jtY" secondAttribute="trailing" constant="8" id="l4T-3t-BxC"/>
+                <constraint firstItem="FZs-dU-jtY" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="mrw-Z2-kHe"/>
                 <constraint firstAttribute="trailing" secondItem="24F-Lj-LPE" secondAttribute="trailing" id="rr8-KB-wxM"/>
                 <constraint firstItem="24F-Lj-LPE" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="s5n-8b-elu"/>
                 <constraint firstAttribute="bottom" secondItem="24F-Lj-LPE" secondAttribute="bottom" id="sV3-wV-JZn"/>
@@ -48,6 +58,7 @@
                 <outlet property="authorImage" destination="oO1-PZ-pll" id="cUA-7c-Dku"/>
                 <outlet property="imageView" destination="24F-Lj-LPE" id="8pI-qO-CK9"/>
                 <outlet property="timeLabel" destination="UZ5-k5-KDw" id="Syj-Tc-E01"/>
+                <outlet property="titleLabel" destination="FZs-dU-jtY" id="Pti-4o-hBK"/>
             </connections>
             <point key="canvasLocation" x="570" y="450"/>
         </collectionViewCell>

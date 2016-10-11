@@ -14,6 +14,12 @@ class LocationFriendsViewController: UITableViewController {
     
     var visitors = [String]()
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        
+    }
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,6 +41,12 @@ class LocationFriendsViewController: UITableViewController {
                 self.location = location
             }
         }
+        
+        visitors = [String]()
+        mainStore.state.friends.forEach({ friend in
+            print("FRIEND: \(friend)")
+            visitors.append(friend)
+        })
         
         tableView.reloadData()
     }

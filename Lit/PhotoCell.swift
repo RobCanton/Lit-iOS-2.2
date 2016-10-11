@@ -15,6 +15,9 @@ class PhotoCell: UICollectionViewCell {
     @IBOutlet weak var authorLabel: UILabel!
     
     @IBOutlet weak var timeLabel: UILabel!
+    
+    @IBOutlet weak var titleLabel: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -27,7 +30,13 @@ class PhotoCell: UICollectionViewCell {
         
         self.layer.borderColor = UIColor.blackColor().CGColor
         self.layer.borderWidth = 1.5
-
     }
+    
+    func setTitle(titleStr:String) {
+        titleLabel.text = titleStr
+    }
+    
+    
+    
 
 }

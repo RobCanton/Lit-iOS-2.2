@@ -60,6 +60,8 @@ class LoginViewController: UIViewController, StoreSubscriber {
             self.performSegueWithIdentifier("showLit", sender: self)
             
         }
+        
+    
 
     }
     

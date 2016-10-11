@@ -20,6 +20,7 @@ struct AppReducer: Reducer {
             activeLocationIndex: ActiveLocationIndexReducer(action, state: state?.activeLocationIndex),
             storyViewIndex:StoryViewIndexReducer(action, state: state?.storyViewIndex),
             viewLocationKey: ViewLocationReducer(action, state: state?.viewLocationKey),
+            viewUser: ViewUserReducer(action, state: state?.viewUser),
             friends: FriendsReducer(action, state: state?.friends),
             friendRequestsIn: FriendRequestsInReducer(action, state: state?.friendRequestsIn),
             friendRequestsOut: FriendRequestsOutReducer(action, state: state?.friendRequestsOut)
@@ -28,7 +29,22 @@ struct AppReducer: Reducer {
     
 }
 
-
+func ViewUserReducer(action: Action, state:String?) -> String {
+    var state = state ?? ""
+    
+    switch action {
+    case _ as ViewUser:
+        let a = action as! ViewUser
+        state = a.uid
+        break
+    case _ as UserViewed:
+        state = ""
+        break
+    default:
+        break
+    }
+    return state
+}
 
 func CitiesReducer(action: Action, state:[City]?) -> [City] {
     var state = state ?? []

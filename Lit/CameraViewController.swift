@@ -383,6 +383,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     func didPressTakePhoto()
     {
         cameraState = .PhotoTaken
+        self.imageView.image = nil
         AudioServicesPlayAlertSound(1108)
         if let videoConnection = stillImageOutput?.connectionWithMediaType(AVMediaTypeVideo)
         {
@@ -395,7 +396,12 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
                     let dataProvider = CGDataProviderCreateWithCFData(imageData)
                     let cgImageRef = CGImageCreateWithJPEGDataProvider(dataProvider, nil, true, .RenderingIntentDefault)
                     
-                    let image = UIImage(CGImage: cgImageRef!, scale: 1.0, orientation: UIImageOrientation.Right)
+                    var image:UIImage!
+                    if self.cameraMode == .Front {
+                        image = UIImage(CGImage: cgImageRef!, scale: 1.0, orientation: UIImageOrientation.LeftMirrored)
+                    } else {
+                        image = UIImage(CGImage: cgImageRef!, scale: 1.0, orientation: UIImageOrientation.Right)
+                    }
                     self.imageView.image = image
                 }
             })

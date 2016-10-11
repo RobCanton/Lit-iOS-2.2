@@ -38,10 +38,25 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
             self.locationLabel.layer.opacity = 1.0
         })
         
+        
+    }
+    
+    var tap: UITapGestureRecognizer!
+    
+    func profileTapped(gesture:UITapGestureRecognizer) {
+        print("profile tapped")
+        let uid = item!.getAuthorId()
+        self.presentingViewController?.dismissViewControllerAnimated(false, completion: {
+            mainStore.dispatch(ViewUser(uid: uid))
+        })
+
+
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tap = UITapGestureRecognizer(target: self, action: #selector(profileTapped))
         
         let key = mainStore.state.viewLocationKey
         let locations = mainStore.state.locations
@@ -55,6 +70,8 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
         authorImage.layer.cornerRadius = authorImage.frame.width/2
         authorImage.clipsToBounds = true
         authorImage.layer.opacity = 0
+        authorImage.userInteractionEnabled = true
+        authorImage.addGestureRecognizer(tap)
         authorLabel.layer.opacity = 0
         timeLabel.layer.opacity = 0
         locationLabel.layer.opacity = 0
@@ -73,13 +90,11 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        
-        UIView.animateWithDuration(0.75, animations: {
-            self.authorImage.layer.opacity = 0
-            self.authorLabel.layer.opacity = 0
-            self.timeLabel.layer.opacity = 0
-            self.locationLabel.layer.opacity = 0
-        })
+        self.authorImage.layer.opacity = 0
+        self.authorLabel.layer.opacity = 0
+        self.timeLabel.layer.opacity = 0
+        self.locationLabel.layer.opacity = 0
+
     }
     
     // MARK: - ARNImageTransitionZoomable
@@ -95,6 +110,7 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
         imageView.frame = self.imageView!.frame
         return imageView
     }
+    
     
     func presentationBeforeAction() {
         self.imageView.hidden = true

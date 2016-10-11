@@ -92,6 +92,7 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(cellIdentifier, forIndexPath: indexPath) as! PhotoCell
         
         cell.setPhoto(photos[indexPath.item])
+
         
         return cell
     }
@@ -109,7 +110,6 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
         selectedIndexPath = indexPath
         
         showInteractive()
-        
     }
     
     
@@ -124,7 +124,7 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
         let controller = storyboard.instantiateViewControllerWithIdentifier("ModalViewController") as! ModalViewController
         controller.item = self.photos[self.selectedIndexPath!.item]
         let operationType: ARNTransitionAnimatorOperation = .Present
-        let animator = ARNTransitionAnimator(operationType: operationType, fromVC: self, toVC: controller)
+        let animator = ARNTransitionAnimator(operationType: operationType, fromVC: self.navigationController!, toVC: controller)
         
         animator.presentationBeforeHandler = { [weak self] containerView, transitionContext in
             containerView.addSubview(controller.view)
@@ -203,12 +203,10 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
         
         self.animator!.interactiveType = .Dismiss
         controller.transitioningDelegate = self.animator
-        self.presentViewController(controller, animated: true, completion: nil)
+        self.navigationController!.presentViewController(controller, animated: true, completion: nil)
         
         
     }
-    
-    
     
     func createTransitionImageView() -> UIImageView {
         
@@ -242,12 +240,6 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
     func getItemSize(indexPath:NSIndexPath) -> CGSize {
         if photos.count == 1 {
             return CGSize(width: screenWidth, height: screenWidth);
-        }
-        else if photos.count < 6 {
-            if indexPath.item == 0 {
-                return CGSize(width: screenWidth, height: screenWidth/2);
-            }
-            return CGSize(width: screenWidth/2, height: screenWidth/2);
         }
         
         if indexPath.item == 0 {

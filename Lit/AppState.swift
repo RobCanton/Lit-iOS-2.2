@@ -20,6 +20,8 @@ struct AppState: StateType {
     var storyViewIndex:Int
     var viewLocationKey:String = ""
     
+    var viewUser:String = ""
+    
     var friends = Tree<String>()
     var friendRequestsIn = [String:Bool]()
     var friendRequestsOut = [String:Bool]()
