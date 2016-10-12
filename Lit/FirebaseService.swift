@@ -29,7 +29,8 @@ class FirebaseService {
             if snapshot.exists() {
                 let displayName = snapshot.value!["username"] as! String
                 let imageUrl    = snapshot.value!["smallProfilePicURL"] as! String
-                user = User(uid: uid, displayName: displayName, imageUrl: imageUrl)
+                let largeImageUrl    = snapshot.value!["largeProfilePicURL"] as! String
+                user = User(uid: uid, displayName: displayName, imageUrl: imageUrl, largeImageUrl: largeImageUrl)
             }
 
             completionHandler(user: user)
@@ -159,6 +160,7 @@ class FirebaseService {
             })
         }
     }
+    
     
     static func compressVideo(inputURL: NSURL, outputURL: NSURL, handler:(session: AVAssetExportSession)-> Void) {
         let urlAsset = AVURLAsset(URL: inputURL, options: nil)

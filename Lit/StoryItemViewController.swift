@@ -68,7 +68,7 @@ class StoryItemViewController: UIViewController, ItemDelegate {
     }
     
     func displayAuthor() {
-        authorImage.loadImageUsingCacheWithURLString(item.getAuthor()!.getImageUrl()!, completion: { result in})
+        authorImage.loadImageUsingCacheWithURLString(item.getAuthor()!.getImageUrl(), completion: { result in})
         authorName.text = item.getAuthor()!.getDisplayName()
     }
     

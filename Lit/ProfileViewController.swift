@@ -83,12 +83,7 @@ class ProfileViewController: UIViewController, StoreSubscriber {
         //leftBlock.layer.borderWidth = 2.0
         //leftBlock.layer.borderColor = UIColor.whiteColor().CGColor
         
-        leftLabel.styleProfileBlockText(4, text: "Posts", size1: 12, size2: 18)
 
-        //middleBlock.layer.borderWidth = 2.0
-        //middleBlock.layer.borderColor = UIColor.whiteColor().CGColor
-        
-        middleLabel.styleProfileBlockText(453, text: "Friends", size1: 12, size2: 18)
         
         //rightBlock.layer.borderWidth = 2.0
         //rightBlock.layer.borderColor = UIColor.whiteColor().CGColor

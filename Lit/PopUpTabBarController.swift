@@ -32,17 +32,17 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, PopUpProtocolD
     }
     
     func newState(state: UserState) {
-        
-        let key = state.activeLocationKey
-        if key != activeLocation?.getKey() {
-            for location in mainStore.state.locations {
-                if key == location.getKey() {
-                    print("PopUpTabBarController: New Active Location \(location.getKey())")
-                    activeLocation = location
-                    presentPopupBar()
-                }
-            }
-        }
+//        
+//        let key = state.activeLocationKey
+//        if key != activeLocation?.getKey() {
+//            for location in mainStore.state.locations {
+//                if key == location.getKey() {
+//                    print("PopUpTabBarController: New Active Location \(location.getKey())")
+//                    activeLocation = location
+//                    presentPopupBar()
+//                }
+//            }
+//        }
         
         var unseenActivity = 0
         for (_, seen) in mainStore.state.friendRequestsIn {

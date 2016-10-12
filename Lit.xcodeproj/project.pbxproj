@@ -51,6 +51,11 @@
 		B00BA9271D9E4E1D00F5EA30 /* CreateProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B00BA9251D9E4E1D00F5EA30 /* CreateProfileViewController.xib */; };
 		B01783901D98EF040088AD33 /* FriendRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B017838F1D98EF040088AD33 /* FriendRequest.swift */; };
 		B01783921D9A20F10088AD33 /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01783911D9A20F10088AD33 /* Friend.swift */; };
+		B026A84A1DAD76FB00DD2CCD /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B026A8481DAD76FB00DD2CCD /* UserProfileViewController.swift */; };
+		B026A84E1DAD9D3400DD2CCD /* UserProfileBodyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B026A84C1DAD9D3400DD2CCD /* UserProfileBodyViewController.swift */; };
+		B026A84F1DAD9D3400DD2CCD /* UserProfileBodyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B026A84D1DAD9D3400DD2CCD /* UserProfileBodyViewController.xib */; };
+		B026A8531DADC61700DD2CCD /* PostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B026A8511DADC61700DD2CCD /* PostsViewController.swift */; };
+		B026A8541DADC61700DD2CCD /* PostsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B026A8521DADC61700DD2CCD /* PostsViewController.xib */; };
 		B032C9921DA807C000811779 /* SetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B032C9901DA807C000811779 /* SetupViewController.swift */; };
 		B032C9931DA807C000811779 /* SetupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B032C9911DA807C000811779 /* SetupViewController.xib */; };
 		B05ABCF91D41178D00364322 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05ABCF81D41178D00364322 /* AppState.swift */; };
@@ -155,6 +160,11 @@
 		B00BA9251D9E4E1D00F5EA30 /* CreateProfileViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreateProfileViewController.xib; sourceTree = "<group>"; };
 		B017838F1D98EF040088AD33 /* FriendRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendRequest.swift; sourceTree = "<group>"; };
 		B01783911D9A20F10088AD33 /* Friend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
+		B026A8481DAD76FB00DD2CCD /* UserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
+		B026A84C1DAD9D3400DD2CCD /* UserProfileBodyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileBodyViewController.swift; sourceTree = "<group>"; };
+		B026A84D1DAD9D3400DD2CCD /* UserProfileBodyViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserProfileBodyViewController.xib; sourceTree = "<group>"; };
+		B026A8511DADC61700DD2CCD /* PostsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsViewController.swift; sourceTree = "<group>"; };
+		B026A8521DADC61700DD2CCD /* PostsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostsViewController.xib; sourceTree = "<group>"; };
 		B032C9901DA807C000811779 /* SetupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetupViewController.swift; sourceTree = "<group>"; };
 		B032C9911DA807C000811779 /* SetupViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SetupViewController.xib; sourceTree = "<group>"; };
 		B05ABCF81D41178D00364322 /* AppState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
@@ -286,6 +296,18 @@
 			name = Login;
 			sourceTree = "<group>";
 		};
+		B026A8501DAD9D3800DD2CCD /* UserProfile */ = {
+			isa = PBXGroup;
+			children = (
+				B026A8481DAD76FB00DD2CCD /* UserProfileViewController.swift */,
+				B026A84C1DAD9D3400DD2CCD /* UserProfileBodyViewController.swift */,
+				B026A84D1DAD9D3400DD2CCD /* UserProfileBodyViewController.xib */,
+				B026A8511DADC61700DD2CCD /* PostsViewController.swift */,
+				B026A8521DADC61700DD2CCD /* PostsViewController.xib */,
+			);
+			name = UserProfile;
+			sourceTree = "<group>";
+		};
 		B05ABCF61D41177500364322 /* Reducers */ = {
 			isa = PBXGroup;
 			children = (
@@ -399,6 +421,7 @@
 				76A5166B1D6103AF005E2815 /* ProfileViewController.swift */,
 				76A516661D60C69D005E2815 /* ChatViewController.swift */,
 				76B361D41D6517A50024CDC7 /* PopUpTabBarController.swift */,
+				B026A8501DAD9D3800DD2CCD /* UserProfile */,
 				B087E9B91D9B42880079E2BF /* Activity */,
 				B087E9BC1D9B43DC0079E2BF /* Location */,
 				B00BA91F1D9E3B5700F5EA30 /* Login */,
@@ -547,9 +570,11 @@
 				B09D5FD21DA57CE9004A188E /* ModalViewController.storyboard in Resources */,
 				B00BA9271D9E4E1D00F5EA30 /* CreateProfileViewController.xib in Resources */,
 				B0BA326A1DA7158B004352A7 /* HeaderView.xib in Resources */,
+				B026A84F1DAD9D3400DD2CCD /* UserProfileBodyViewController.xib in Resources */,
 				76C0E7541D80D770004EFA4C /* VisitorCell.xib in Resources */,
 				76EE2B981D8766ED00EDB4CB /* ActivityFriendRequestCell.xib in Resources */,
 				B0BA326C1DA7163D004352A7 /* CreateProfileHeaderView.xib in Resources */,
+				B026A8541DADC61700DD2CCD /* PostsViewController.xib in Resources */,
 				B0FF114F1D3EB32100D709CE /* LaunchScreen.storyboard in Resources */,
 				B00BA91E1D9D6DB600F5EA30 /* StoryItemViewController.xib in Resources */,
 				B0FF11571D3EB33100D709CE /* GoogleService-Info.plist in Resources */,
@@ -655,9 +680,11 @@
 				76A5166C1D6103AF005E2815 /* ProfileViewController.swift in Sources */,
 				B05DB12A1DA22D9600567996 /* LocationFriendsViewController.swift in Sources */,
 				B0BA32691DA7158B004352A7 /* HeaderView.swift in Sources */,
+				B026A84A1DAD76FB00DD2CCD /* UserProfileViewController.swift in Sources */,
 				76A5166E1D618CAD005E2815 /* LocationViewController.swift in Sources */,
 				76C0E74F1D80D4BA004EFA4C /* VisitorsViewController.swift in Sources */,
 				B00BA9261D9E4E1D00F5EA30 /* CreateProfileViewController.swift in Sources */,
+				B026A84E1DAD9D3400DD2CCD /* UserProfileBodyViewController.swift in Sources */,
 				B01783921D9A20F10088AD33 /* Friend.swift in Sources */,
 				B087E9CA1D9B7CDD0079E2BF /* Tree.swift in Sources */,
 				76B361D71D6519ED0024CDC7 /* LocationService.swift in Sources */,
@@ -689,6 +716,7 @@
 				B01783901D98EF040088AD33 /* FriendRequest.swift in Sources */,
 				B05ABCFB1D4117CB00364322 /* UserStateActions.swift in Sources */,
 				76136D451D495E8E003DB433 /* FirebaseService.swift in Sources */,
+				B026A8531DADC61700DD2CCD /* PostsViewController.swift in Sources */,
 				B09D5FD31DA57CE9004A188E /* ModalViewController.swift in Sources */,
 				76EE2B941D87653700EDB4CB /* ActivityViewController.swift in Sources */,
 				76EC36041D58EB600056D4CF /* CircleProgressView.swift in Sources */,

@@ -8,6 +8,10 @@
 
 import UIKit
 
+enum ModalMode {
+    case Location, User
+}
+
 class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransitionZoomable {
     
     var item:StoryItem?
@@ -16,6 +20,8 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
     @IBOutlet weak var authorLabel: UILabel!
     @IBOutlet weak var authorImage: UIImageView!
     @IBOutlet weak var locationLabel: UILabel!
+    
+    var mode:ModalMode = .Location
     
     
     
@@ -70,8 +76,10 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
         authorImage.layer.cornerRadius = authorImage.frame.width/2
         authorImage.clipsToBounds = true
         authorImage.layer.opacity = 0
-        authorImage.userInteractionEnabled = true
-        authorImage.addGestureRecognizer(tap)
+        if mode == .Location {
+            authorImage.userInteractionEnabled = true
+            authorImage.addGestureRecognizer(tap)
+        }
         authorLabel.layer.opacity = 0
         timeLabel.layer.opacity = 0
         locationLabel.layer.opacity = 0
@@ -80,7 +88,7 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
             if let user = _user {
                 self.authorLabel.text = user.getDisplayName()
                 self.timeLabel.text = self.item!.getDateCreated()!.timeStringSinceNow()
-                self.authorImage.loadImageUsingCacheWithURLString(user.getImageUrl()!, completion: { result in
+                self.authorImage.loadImageUsingCacheWithURLString(user.getImageUrl(), completion: { result in
                 })
                 
             }

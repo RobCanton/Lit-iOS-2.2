@@ -28,10 +28,12 @@ class LocationViewController: MXSegmentedPagerController, StoreSubscriber {
     
     override func viewWillAppear(animated: Bool) {
         mainStore.subscribe(self)
+        print("LocationViewController Subscribed")
     }
     
     override func viewWillDisappear(animated: Bool) {
         mainStore.unsubscribe(self)
+        print("LocationViewController Unsubscribed")
     }
     var index: Int?
     var location: Location?
@@ -57,7 +59,6 @@ class LocationViewController: MXSegmentedPagerController, StoreSubscriber {
         }
         
         if state.viewUser != "" {
-            mainStore.dispatch(UserViewed())
             push(state.viewUser)
         }
     }
@@ -69,7 +70,7 @@ class LocationViewController: MXSegmentedPagerController, StoreSubscriber {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.navigationItem.title = " "
         
         self.segmentedPager.backgroundColor = UIColor.blackColor()
         
@@ -121,8 +122,7 @@ class LocationViewController: MXSegmentedPagerController, StoreSubscriber {
     }
     
     func push(uid:String) {
-        let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("ProfileViewController")
-        controller.navigationItem.title = ""
+        let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("UserProfileViewController")
         navigationController?.pushViewController(controller, animated: true)
     }
 

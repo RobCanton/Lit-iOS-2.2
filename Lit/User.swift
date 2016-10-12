@@ -10,27 +10,32 @@ import Foundation
 
 class User {
     private var uid: String
-    private var displayName: String?
-    private var imageUrl: String?
+    private var displayName: String
+    private var imageUrl: String
+    private var largeImageUrl: String
     
-    init(uid:String, displayName:String, imageUrl: String)
+    init(uid:String, displayName:String, imageUrl: String, largeImageUrl:String)
     {
-        self.uid         = uid
-        self.displayName = displayName
-        self.imageUrl    = imageUrl
-
+        self.uid           = uid
+        self.displayName   = displayName
+        self.imageUrl      = imageUrl
+        self.largeImageUrl = largeImageUrl
     }
     
     func getUserId() -> String {
         return uid
     }
     
-    func getDisplayName() -> String? {
+    func getDisplayName() -> String {
         return displayName
     }
     
-    func getImageUrl() -> String? {
+    func getImageUrl() -> String {
         return imageUrl
+    }
+    
+    func getLargeImageUrl() -> String {
+        return largeImageUrl
     }
     
 }
