@@ -318,14 +318,16 @@ extension UILabel
     }
     
     
-    func styleProfileBlockText(count:Int, text:String, size1: CGFloat, size2: CGFloat) {
+    func styleProfileBlockText(count:Int, text:String, color:UIColor) {
         self.numberOfLines = 2
         self.textAlignment = .Center
+
         let str = "\(count)\n\(text)"
         let font = UIFont(name: "Avenir-Book", size: 12)
+        
         let attributes: [String: AnyObject] = [
             NSFontAttributeName : font!,
-            NSForegroundColorAttributeName : UIColor(white: 0, alpha: 0.7)
+            NSForegroundColorAttributeName : color,
         ]
         
         let title = NSMutableAttributedString(string: str, attributes: attributes) //1
@@ -334,8 +336,8 @@ extension UILabel
         if let range = str.rangeOfString(countStr) {
             let index = str.startIndex.distanceTo(range.startIndex)
             let a: [String: AnyObject] = [
-                NSFontAttributeName : UIFont(name: "Avenir-Black", size: 20)!,
-                NSForegroundColorAttributeName : UIColor.blackColor()
+                NSFontAttributeName : UIFont(name: "Avenir-Book", size: 20)!,
+                NSForegroundColorAttributeName : color
             ]
             title.addAttributes(a, range: NSRange(location: index, length: countStr.characters.count))
         }

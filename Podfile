@@ -7,9 +7,9 @@ target 'Lit' do
 
 pod 'ReSwift', '2.0.0'
 pod 'Bolts', '1.8.4'
-pod 'Firebase', '3.4.0'
-pod 'Firebase/Auth', '3.0.4'
-pod 'Firebase/Database', '3.0.2'
+pod 'Firebase'
+pod 'Firebase/Auth'
+pod 'Firebase/Database'
 pod 'Firebase/Storage'
 pod 'BRYXBanner'
 pod 'RecordButton'
@@ -22,6 +22,7 @@ pod "PageControls/SnakePageControl", '0.1.2'
 pod "PageControls/PillPageControl", '0.1.2'
 pod "PageControls/ScrollingPageControl", '0.1.2'
 pod "ARNTransitionAnimator"
+pod 'NVActivityIndicatorView', '2.0'
 
 end
 

@@ -134,7 +134,7 @@ class LocationViewController: MXSegmentedPagerController, StoreSubscriber {
     }
     
     override func segmentedPager(segmentedPager: MXSegmentedPager, titleForSectionAtIndex index: Int) -> String {
-        return ["stories","friends", "friends"][index];
+        return ["recent","friends", "friends"][index];
     }
     
     override func segmentedPager(segmentedPager: MXSegmentedPager, didScrollWithParallaxHeader parallaxHeader: MXParallaxHeader) {

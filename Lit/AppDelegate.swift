@@ -17,7 +17,7 @@ let mainStore = Store<AppState>(
     state: nil
 )
 
-let accentColor:UIColor = UIColor(red: 1, green: 171/255, blue: 0, alpha: 1) // #FFAB00
+let accentColor:UIColor = UIColor(red: 0, green: 171/255, blue: 1, alpha: 1) // #FFAB00
 let errorColor:UIColor = UIColor(red: 1, green: 80/255, blue: 80/255, alpha: 1)
 
 @UIApplicationMain

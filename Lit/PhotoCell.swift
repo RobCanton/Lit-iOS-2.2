@@ -24,6 +24,7 @@ class PhotoCell: UICollectionViewCell {
     }
     
     func setPhoto(item:StoryItem) {
+        imageView.image = nil
         imageView.loadImageUsingCacheWithURLString(item.getDownloadUrl()!.absoluteString, completion: {_ in 
         
         })

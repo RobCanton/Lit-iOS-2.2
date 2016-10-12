@@ -16,7 +16,6 @@ class PostsViewController: UIViewController, UICollectionViewDelegate, UICollect
     var screenWidth: CGFloat!
     var screenHeight: CGFloat!
     
-    var location:Location!
     var photos = [StoryItem]()
     var collectionView:UICollectionView?
     override func viewDidLoad() {
@@ -27,14 +26,7 @@ class PostsViewController: UIViewController, UICollectionViewDelegate, UICollect
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        let key = mainStore.state.viewLocationKey
-        
-        for _location in mainStore.state.locations {
-            if _location.getKey() == key {
-                location = _location
-            }
-        }
-        
+
         screenSize = self.view.frame
         screenWidth = screenSize.width
         screenHeight = screenSize.height
@@ -45,7 +37,7 @@ class PostsViewController: UIViewController, UICollectionViewDelegate, UICollect
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
         
-        collectionView = UICollectionView(frame: CGRectMake(0, 0, view.frame.width, view.frame.height-50), collectionViewLayout: layout)
+        collectionView = UICollectionView(frame: CGRectMake(0, 0, view.frame.width, view.frame.height), collectionViewLayout: layout)
         
         let nib = UINib(nibName: "PhotoCell", bundle: nil)
         collectionView!.registerNib(nib, forCellWithReuseIdentifier: cellIdentifier)
@@ -56,6 +48,7 @@ class PostsViewController: UIViewController, UICollectionViewDelegate, UICollect
         collectionView!.backgroundColor = UIColor.blackColor()
         self.view.addSubview(collectionView!)
         
+        collectionView!.scrollEnabled = false
         
         let uid = mainStore.state.viewUser
         let ref = FirebaseService.ref.child("users_public/\(uid)/uploads")
@@ -64,14 +57,10 @@ class PostsViewController: UIViewController, UICollectionViewDelegate, UICollect
         var postKeys = [String]()
         ref.observeSingleEventOfType(.Value, withBlock: { snapshot in
             if snapshot.exists() {
-                print("Exists")
                 for child in snapshot.children {
-                    print("KEY: \(child.key!!)")
                     postKeys.append(child.key!!)
                 }
                 self.downloadStory(postKeys)
-            } else {
-                print("DNE")
             }
 
         })
@@ -231,9 +220,9 @@ class PostsViewController: UIViewController, UICollectionViewDelegate, UICollect
         let size = getItemSize(selectedIndexPath!)
         
         let v = parentViewController!.parentViewController! as! UserProfileViewController
-        let parentOffset = v.scrollView.contentOffset.y
+        let parentOffset = 0.0
         
-        let offset = collectionView!.contentOffset.y + parentOffset
+        let offset = collectionView!.contentOffset.y
 
         imageView.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
         let imagePoint = CGPoint(x: attr!.center.x, y: attr!.center.y - offset)
@@ -253,24 +242,16 @@ class PostsViewController: UIViewController, UICollectionViewDelegate, UICollect
     }
     
     
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-        if scrollView.contentOffset.y < 0 {
-            let v = parentViewController!.parentViewController! as! UserProfileViewController
-            v.scrollView.setContentOffset(CGPointMake(0, -300), animated: true)
-            v.navigationController?.setNavigationBarHidden(false, animated: true)
-            scrollView.setContentOffset(CGPointMake(0, 0), animated: false)
-        }
-        
-        if scrollView.contentOffset.y > 0 {
-            let v = parentViewController!.parentViewController! as! UserProfileViewController
-            if v.scrollView.contentOffset.y == -300 {
-                v.scrollView.setContentOffset(CGPointMake(0, 0), animated: true)
-                v.navigationController?.setNavigationBarHidden(true, animated: true)
-                scrollView.setContentOffset(CGPointMake(0, 0), animated: false)
-            }
-        }
-    }
-    
+//    func scrollViewDidScroll(scrollView: UIScrollView) {
+//        if scrollView.contentOffset.y < 0 {
+//            let v = parentViewController!.parentViewController! as! UserProfileViewController
+//            v.scrollView.setContentOffset(CGPointMake(0, -300), animated: true)
+//            v.navigationController?.setNavigationBarHidden(false, animated: true)
+//            scrollView.setContentOffset(CGPointMake(0, 0), animated: false)
+//        }
+//        
+//    }
+//    
     
 
 
