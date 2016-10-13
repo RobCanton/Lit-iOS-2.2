@@ -29,6 +29,11 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         self.navigationController?.popViewControllerAnimated(true)
     }
     
+    func messageTapped() {
+        mainStore.dispatch(OpenConversation(uid: user!.getUserId()))
+        tabBarController?.selectedIndex = 1
+    }
+    
 //    var scrollView:UIScrollView!
 //    var bodyView:UserProfileBodyViewController!
     var headerView:CreateProfileHeaderView!

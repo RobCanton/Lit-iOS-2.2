@@ -21,10 +21,14 @@ struct AppState: StateType {
     var viewLocationKey:String = ""
     
     var viewUser:String = ""
+    var messageUser:String = ""
     
     var friends = Tree<String>()
     var friendRequestsIn = [String:Bool]()
     var friendRequestsOut = [String:Bool]()
+    
+    var conversations = [Conversation]()
+    
     
     func printStore() {
         

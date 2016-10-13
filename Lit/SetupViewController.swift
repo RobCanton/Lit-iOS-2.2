@@ -140,6 +140,7 @@ class SetupViewController: UIViewController,IGLocationManagerDelegate, StoreSubs
         Listeners.listenToLocations()
         Listeners.listenToFriends()
         Listeners.listenToFriendRequests()
+        Listeners.listenToConversations()
         
     }
     

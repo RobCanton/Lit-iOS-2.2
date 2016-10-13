@@ -10,6 +10,7 @@ import UIKit
 
 protocol HeaderProtocol {
     func backTapped()
+    func messageTapped()
 }
 
 class CreateProfileHeaderView: UIView {
@@ -29,6 +30,7 @@ class CreateProfileHeaderView: UIView {
     
     @IBOutlet weak var backBtn: UIButton!
     var friendBtnTap:UITapGestureRecognizer!
+    var messageBtnTap:UITapGestureRecognizer!
     
     var delegate:HeaderProtocol!
 
@@ -50,7 +52,8 @@ class CreateProfileHeaderView: UIView {
         friendBtn.layer.cornerRadius = messageBtn.frame.height/3
         
         friendBtnTap = UITapGestureRecognizer(target: self, action: #selector(friendBtnTapped))
-        
+        messageBtnTap = UITapGestureRecognizer(target: self, action: #selector(messageBtnTapped))
+
     }
     
     func setUsername(name:String) {
@@ -96,6 +99,10 @@ class CreateProfileHeaderView: UIView {
         default:
             break
         }
+    }
+    
+    func messageBtnTapped(gesture:UITapGestureRecognizer) {
+        delegate.messageTapped()
     }
     
     var status:FriendStatus = .NOT_FRIENDS
@@ -146,6 +153,7 @@ class CreateProfileHeaderView: UIView {
         }
         
         friendBtn.addGestureRecognizer(friendBtnTap)
+        messageBtn.addGestureRecognizer(messageBtnTap)
         
     }
 }

@@ -11,22 +11,53 @@ import UIKit
 import JSQMessagesViewController
 
 
-class ChatViewController: JSQMessagesViewController {
+class ChatViewController: JSQMessagesViewController, GetUserProtocol {
     
-    let incomingBubble = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(accentColor)
-    let outgoingBubble = JSQMessagesBubbleImageFactory().outgoingMessagesBubbleImageWithColor(UIColor.lightGrayColor())
+    let incomingBubble = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor.grayColor())
+    let outgoingBubble = JSQMessagesBubbleImageFactory().outgoingMessagesBubbleImageWithColor(accentColor)
     var messages = [JSQMessage]()
+    
+    var conversation:Conversation!
+    var partner:User!
+    {
+        didSet {
+            self.title = partner.getDisplayName()
+        }
+    }
+    
+    func userLoaded(user: User) {
+        partner = user
+    }
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        //self.collectionView?.backgroundColor = UIColor(white: 0.15, alpha: 1.0)
+        self.collectionView?.backgroundColor = UIColor(white: 0.10, alpha: 1.0)
+        self.navigationController?.navigationBar.backItem?.backBarButtonItem?.title = " "
+        
+        conversation.delegate = self
+        if let user = conversation.getPartner() {
+            partner = user
+        }
+        
         self.setup()
         self.downloadMessages()
-        self.senderId = mainStore.state.userState.uid
 
     }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+    
+    
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+    }
+    
+    
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
@@ -62,21 +93,23 @@ class ChatViewController: JSQMessagesViewController {
     override func collectionView(collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageAvatarImageDataSource! {
         return nil
     }
+    
+    
 }
 
 //MARK - Setup
 extension ChatViewController {
     
     func setup() {
-        self.senderId = UIDevice.currentDevice().identifierForVendor?.UUIDString
-        self.senderDisplayName = UIDevice.currentDevice().identifierForVendor?.UUIDString
+        self.senderId = mainStore.state.userState.uid
+        self.senderDisplayName = ""
     }
     
     override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
         
-        FirebaseService.ref.child("messages").childByAutoId()
+        FirebaseService.ref.child("conversations/\(conversation.getKey())/messages").childByAutoId()
             .setValue([
-                "senderId": mainStore.state.userState.uid,
+                "senderId": self.senderId,
                 "text": text,
                 "timestamp": [".sv":"timestamp"]
                 ])
@@ -92,7 +125,7 @@ extension ChatViewController {
     
     
     func downloadMessages() {
-        FirebaseService.ref.child("messages").observeEventType(.ChildAdded, withBlock: { snapshot in
+        FirebaseService.ref.child("conversations/\(conversation.getKey())/messages").observeEventType(.ChildAdded, withBlock: { snapshot in
                 let senderId = snapshot.value!["senderId"] as! String
                 let text     = snapshot.value!["text"] as! String
                 let timestamp     = snapshot.value!["timestamp"] as! Double
@@ -104,4 +137,10 @@ extension ChatViewController {
                 self.finishSendingMessageAnimated(true)
         })
     }
+    
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return UIStatusBarStyle.LightContent
+    }
+    
+    
 }

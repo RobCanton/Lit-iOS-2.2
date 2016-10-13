@@ -17,6 +17,7 @@ class Listeners {
     private static var listeningToFriends = false
     private static var listeningToFriendRequests = false
     private static var listeningToLocations = false
+    private static var listeningToConversations = false
     
     static func listenToFriends() {
         if !listeningToFriends {
@@ -151,6 +152,24 @@ class Listeners {
                         mainStore.dispatch(RemoveFriendRequestOut(uid: snapshot.key, seen: seen))
                     }
                     
+                }
+            })
+        }
+    }
+    
+    static func listenToConversations() {
+        if !listeningToConversations {
+            listeningToConversations = true
+            let uid = mainStore.state.userState.uid
+            let conversationsRef = ref.child("users_public/\(uid)/conversations")
+            
+            conversationsRef.observeEventType(.ChildAdded, withBlock: { snapshot in
+            
+                if snapshot.exists() {
+                    let partner = snapshot.key
+                    let conversationKey = snapshot.value! as! String
+                    let conversation = Conversation(key: conversationKey, partner_uid: partner)
+                    mainStore.dispatch(ConversationAdded(conversation: conversation))
                 }
             })
         }

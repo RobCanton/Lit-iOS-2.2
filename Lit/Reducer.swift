@@ -21,9 +21,11 @@ struct AppReducer: Reducer {
             storyViewIndex:StoryViewIndexReducer(action, state: state?.storyViewIndex),
             viewLocationKey: ViewLocationReducer(action, state: state?.viewLocationKey),
             viewUser: ViewUserReducer(action, state: state?.viewUser),
+            messageUser: MessageUserReducer(action, state: state?.messageUser),
             friends: FriendsReducer(action, state: state?.friends),
             friendRequestsIn: FriendRequestsInReducer(action, state: state?.friendRequestsIn),
-            friendRequestsOut: FriendRequestsOutReducer(action, state: state?.friendRequestsOut)
+            friendRequestsOut: FriendRequestsOutReducer(action, state: state?.friendRequestsOut),
+            conversations: ConversationsReducer(action, state: state?.conversations)
         )
     } 
     
@@ -38,6 +40,23 @@ func ViewUserReducer(action: Action, state:String?) -> String {
         state = a.uid
         break
     case _ as UserViewed:
+        state = ""
+        break
+    default:
+        break
+    }
+    return state
+}
+
+func MessageUserReducer(action: Action, state:String?) -> String {
+    var state = state ?? ""
+    
+    switch action {
+    case _ as OpenConversation:
+        let a = action as! OpenConversation
+        state = a.uid
+        break
+    case _ as ConversationOpened:
         state = ""
         break
     default:
