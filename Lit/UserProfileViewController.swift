@@ -12,15 +12,17 @@ import MXParallaxHeader
 import ARNTransitionAnimator
 
 
-class UserProfileViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, ARNImageTransitionZoomable {
+class UserProfileViewController: UIViewController, StoreSubscriber, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, ARNImageTransitionZoomable {
 
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        mainStore.subscribe(self)
         self.navigationController?.hidesBarsOnSwipe = true
     }
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
+        mainStore.unsubscribe(self)
         mainStore.dispatch(UserViewed())
         self.navigationController?.hidesBarsOnSwipe = false
     }
@@ -31,11 +33,28 @@ class UserProfileViewController: UIViewController, UICollectionViewDelegate, UIC
     var user:User?
     {
         didSet{
-            print("Set user!")
-
+            checkFriendStatus()
             headerView.imageView.loadImageUsingCacheWithURLString(user!.getLargeImageUrl(), completion: {result in})
             headerView.setUsername(user!.getDisplayName())
         }
+    }
+    
+    func newState(state: AppState) {
+        checkFriendStatus()
+    }
+    
+    func checkFriendStatus() {
+        guard let _ = user else {return}
+        
+        var friendStatus = FriendStatus.NOT_FRIENDS
+        let friends = mainStore.state.friends
+        if friends.contains(user!.getUserId()) {
+            friendStatus = FriendStatus.FRIENDS
+        }
+        headerView.setFriendStatus(friendStatus)
+        
+        
+        
     }
     
     override func prefersStatusBarHidden() -> Bool {
@@ -66,18 +85,6 @@ class UserProfileViewController: UIViewController, UICollectionViewDelegate, UIC
         headerView = UINib(nibName: "CreateProfileHeaderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! CreateProfileHeaderView
         headerView.setGradient()
 
-        let uid = mainStore.state.viewUser
-        
-        if uid != "" {
-            FirebaseService.getUser(uid, completionHandler: { _user in
-                if _user != nil {
-                    self.user = _user
-                    
-                }
-            })
-        }
-        
-
         screenSize = self.view.frame
         screenWidth = screenSize.width
         screenHeight = screenSize.height
@@ -98,7 +105,6 @@ class UserProfileViewController: UIViewController, UICollectionViewDelegate, UIC
         collectionView!.pagingEnabled = true
         collectionView!.showsVerticalScrollIndicator = false
         
-        
         collectionView!.parallaxHeader.view = headerView
         collectionView!.parallaxHeader.height = UltravisualLayoutConstants.Cell.featuredHeight
         collectionView!.parallaxHeader.mode = .Fill
@@ -112,6 +118,16 @@ class UserProfileViewController: UIViewController, UICollectionViewDelegate, UIC
         controlBar.frame = CGRectMake(0,0, collectionView!.frame.width, 60)
         controlBar.setControlBar()
         collectionView?.addSubview(controlBar)
+        
+        let uid = mainStore.state.viewUser
+        
+        if uid != "" {
+            FirebaseService.getUser(uid, completionHandler: { _user in
+                if _user != nil {
+                    self.user = _user
+                }
+            })
+        }
         
         let ref = FirebaseService.ref.child("users_public/\(uid)/uploads")
         

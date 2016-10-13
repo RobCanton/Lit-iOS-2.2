@@ -20,7 +20,8 @@ class CreateProfileHeaderView: UIView {
     @IBOutlet weak var messageBtn: UIView!
 
     @IBOutlet weak var friendBtn: UIView!
-    
+    @IBOutlet weak var friendBtnImage: UIButton!
+    @IBOutlet weak var friendBtnLabel: UILabel!
     
     func setGradient() {
         let gradient: CAGradientLayer = CAGradientLayer()
@@ -31,8 +32,8 @@ class CreateProfileHeaderView: UIView {
         gradient.frame = gradientView.bounds
         gradientView.layer.insertSublayer(gradient, atIndex: 0)
         
-        messageBtn.layer.cornerRadius = messageBtn.frame.width/2
-        friendBtn.layer.cornerRadius = messageBtn.frame.width/2
+        messageBtn.layer.cornerRadius = messageBtn.frame.height/2
+        friendBtn.layer.cornerRadius = messageBtn.frame.height/3
         
 
     }
@@ -40,7 +41,7 @@ class CreateProfileHeaderView: UIView {
     func setUsername(name:String) {
         usernameLabel.text = name
         
-        bioTextView.text = "Simple things."
+        bioTextView.text = "Tell me, who did I leave behind. You think it got to me. I can just read your mind. You think I'm so caught up in where I am right now."
     }
     
     
@@ -55,6 +56,38 @@ class CreateProfileHeaderView: UIView {
             friendBtn.alpha = 1 + progress * 1.75
             //centerUsernameLabel.alpha = 1 - usernameLabel.alpha
             
+        }
+    }
+    
+    func setFriendStatus(status:FriendStatus) {
+        switch status {
+        case .FRIENDS:
+            friendBtnImage.setImage(UIImage(named: "checkmark"), forState: .Normal)
+            friendBtnLabel.text = "Friends"
+            friendBtn.backgroundColor = UIColor(white: 0.45, alpha: 1.0)
+            break
+        case .NOT_FRIENDS:
+            friendBtnImage.setImage(UIImage(named: "plus_plain"), forState: .Normal)
+            friendBtnLabel.text = "Add Friend"
+            friendBtn.backgroundColor = accentColor
+            break
+        case .PENDING_INCOMING:
+            friendBtnImage.setImage(UIImage(named: "plus_plain"), forState: .Normal)
+            friendBtnLabel.text = "Add Friend"
+            friendBtn.backgroundColor = accentColor
+            break
+        case .PENDING_INCOMING_SEEN:
+            friendBtnImage.setImage(UIImage(named: "plus_plain"), forState: .Normal)
+            friendBtnLabel.text = "Add Friend"
+            friendBtn.backgroundColor = accentColor
+            break
+        case .PENDING_OUTGOING:
+            friendBtnImage.setImage(UIImage(named: "plus_plain"), forState: .Normal)
+            friendBtnLabel.text = "Added"
+            friendBtn.backgroundColor = UIColor(white: 0.45, alpha: 1.0)
+            break
+        default:
+            break
         }
     }
 }
