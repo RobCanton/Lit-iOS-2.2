@@ -12,19 +12,21 @@ import MXParallaxHeader
 import ARNTransitionAnimator
 
 
-class UserProfileViewController: UIViewController, StoreSubscriber, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, ARNImageTransitionZoomable {
+class UserProfileViewController: UIViewController, StoreSubscriber, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, ARNImageTransitionZoomable, HeaderProtocol {
 
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         mainStore.subscribe(self)
-        self.navigationController?.hidesBarsOnSwipe = true
     }
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         mainStore.unsubscribe(self)
         mainStore.dispatch(UserViewed())
-        self.navigationController?.hidesBarsOnSwipe = false
+    }
+    
+    func backTapped() {
+        self.navigationController?.popViewControllerAnimated(true)
     }
     
 //    var scrollView:UIScrollView!
@@ -46,15 +48,9 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     func checkFriendStatus() {
         guard let _ = user else {return}
         
-        var friendStatus = FriendStatus.NOT_FRIENDS
-        let friends = mainStore.state.friends
-        if friends.contains(user!.getUserId()) {
-            friendStatus = FriendStatus.FRIENDS
-        }
+        let friendStatus = FirebaseService.checkFriendStatus(user!.getUserId())
         headerView.setFriendStatus(friendStatus)
-        
-        
-        
+
     }
     
     override func prefersStatusBarHidden() -> Bool {
@@ -73,18 +69,11 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         super.viewDidLoad()
         self.navigationItem.title = " "
         self.automaticallyAdjustsScrollViewInsets = false
+        navigationController?.setNavigationBarHidden(true, animated: false)
         
-        self.navigationController?.navigationBar.titleTextAttributes =
-            [NSFontAttributeName: UIFont(name: "Avenir-Book", size: 20.0)!]
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: .Default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.translucent = true
-        self.navigationController?.navigationBar.barStyle = .BlackTranslucent
-        self.navigationController?.navigationItem.backBarButtonItem?.title = " "
         
         headerView = UINib(nibName: "CreateProfileHeaderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! CreateProfileHeaderView
-        headerView.setGradient()
-
+        headerView.delegate = self
         screenSize = self.view.frame
         screenWidth = screenSize.width
         screenHeight = screenSize.height

@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol HeaderProtocol {
+    func backTapped()
+}
+
 class CreateProfileHeaderView: UIView {
     @IBOutlet weak var usernameLabel: UILabel!
     
@@ -23,7 +27,17 @@ class CreateProfileHeaderView: UIView {
     @IBOutlet weak var friendBtnImage: UIButton!
     @IBOutlet weak var friendBtnLabel: UILabel!
     
-    func setGradient() {
+    @IBOutlet weak var backBtn: UIButton!
+    var friendBtnTap:UITapGestureRecognizer!
+    
+    var delegate:HeaderProtocol!
+
+    @IBAction func backTapped(sender: AnyObject) {
+        delegate.backTapped()
+    }
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
         let gradient: CAGradientLayer = CAGradientLayer()
         
         gradient.colors = [UIColor.clearColor().CGColor, UIColor(white: 0.0, alpha: 0.75).CGColor]
@@ -35,7 +49,8 @@ class CreateProfileHeaderView: UIView {
         messageBtn.layer.cornerRadius = messageBtn.frame.height/2
         friendBtn.layer.cornerRadius = messageBtn.frame.height/3
         
-
+        friendBtnTap = UITapGestureRecognizer(target: self, action: #selector(friendBtnTapped))
+        
     }
     
     func setUsername(name:String) {
@@ -54,40 +69,83 @@ class CreateProfileHeaderView: UIView {
             locationLabel.alpha = 1 + progress * 1.75
             messageBtn.alpha = 1 + progress * 1.75
             friendBtn.alpha = 1 + progress * 1.75
-            //centerUsernameLabel.alpha = 1 - usernameLabel.alpha
+            friendBtn.alpha = 1 + progress * 1.75
+            backBtn.alpha = 1 + progress * 1.75
             
         }
     }
     
-    func setFriendStatus(status:FriendStatus) {
+    func friendBtnTapped(gesture:UITapGestureRecognizer) {
+        friendBtn.removeGestureRecognizer(friendBtnTap)
+
+        print("Tapped:\(status.rawValue)")
         switch status {
         case .FRIENDS:
-            friendBtnImage.setImage(UIImage(named: "checkmark"), forState: .Normal)
-            friendBtnLabel.text = "Friends"
-            friendBtn.backgroundColor = UIColor(white: 0.45, alpha: 1.0)
             break
         case .NOT_FRIENDS:
-            friendBtnImage.setImage(UIImage(named: "plus_plain"), forState: .Normal)
-            friendBtnLabel.text = "Add Friend"
-            friendBtn.backgroundColor = accentColor
+            FirebaseService.sendFriendRequest(mainStore.state.viewUser, completionHandler: { success in})
             break
         case .PENDING_INCOMING:
-            friendBtnImage.setImage(UIImage(named: "plus_plain"), forState: .Normal)
-            friendBtnLabel.text = "Add Friend"
-            friendBtn.backgroundColor = accentColor
+            FirebaseService.acceptFriendRequest(mainStore.state.viewUser)
             break
         case .PENDING_INCOMING_SEEN:
-            friendBtnImage.setImage(UIImage(named: "plus_plain"), forState: .Normal)
-            friendBtnLabel.text = "Add Friend"
-            friendBtn.backgroundColor = accentColor
+            FirebaseService.acceptFriendRequest(mainStore.state.viewUser)
             break
         case .PENDING_OUTGOING:
-            friendBtnImage.setImage(UIImage(named: "plus_plain"), forState: .Normal)
-            friendBtnLabel.text = "Added"
-            friendBtn.backgroundColor = UIColor(white: 0.45, alpha: 1.0)
             break
         default:
             break
         }
+    }
+    
+    var status:FriendStatus = .NOT_FRIENDS
+    
+    func setFriendStatus(_status:FriendStatus) {
+        status = _status
+        switch status {
+        case .IS_CURRENT_USER:
+            friendBtn.hidden = true
+            messageBtn.hidden = true
+            break
+        case .FRIENDS:
+            friendBtnImage.setImage(UIImage(named: "checkmark_filled"), forState: .Normal)
+            friendBtnLabel.text = "Friends"
+            friendBtn.backgroundColor = UIColor(white: 0.5, alpha: 1.0)
+            friendBtn.hidden = false
+            messageBtn.hidden = false
+            break
+        case .NOT_FRIENDS:
+            
+            friendBtnImage.setImage(UIImage(named: "plus_plain"), forState: .Normal)
+            friendBtnLabel.text = "Add Friend"
+            friendBtn.backgroundColor = accentColor
+            friendBtn.hidden = false
+            messageBtn.hidden = false
+            break
+        case .PENDING_INCOMING:
+            friendBtnImage.setImage(UIImage(named: "plus_plain"), forState: .Normal)
+            friendBtnLabel.text = "Accept"
+            friendBtn.backgroundColor = accentColor
+            friendBtn.hidden = false
+            messageBtn.hidden = false
+            break
+        case .PENDING_INCOMING_SEEN:
+            friendBtnImage.setImage(UIImage(named: "plus_plain"), forState: .Normal)
+            friendBtnLabel.text = "Accept"
+            friendBtn.backgroundColor = accentColor
+            friendBtn.hidden = false
+            messageBtn.hidden = false
+            break
+        case .PENDING_OUTGOING:
+            friendBtnImage.setImage(UIImage(named: "plus_plain"), forState: .Normal)
+            friendBtnLabel.text = "Added"
+            friendBtn.backgroundColor = UIColor(white: 0.5, alpha: 1.0)
+            friendBtn.hidden = false
+            messageBtn.hidden = false
+            break
+        }
+        
+        friendBtn.addGestureRecognizer(friendBtnTap)
+        
     }
 }

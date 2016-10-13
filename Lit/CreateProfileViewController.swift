@@ -39,8 +39,10 @@ class CreateProfileViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        
         headerView = UINib(nibName: "CreateProfileHeaderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! CreateProfileHeaderView
-        headerView.setGradient()
+
         scrollView = MXScrollView()
         scrollView.parallaxHeader.view = headerView
         scrollView.parallaxHeader.height = 300

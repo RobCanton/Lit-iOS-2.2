@@ -174,5 +174,56 @@ class FirebaseService {
         }
     }
     
+    static func checkFriendStatus(friend_uid:String) -> FriendStatus {
+        
+        if friend_uid == mainStore.state.userState.uid {
+            return FriendStatus.IS_CURRENT_USER
+        }
+        
+        let friends = mainStore.state.friends
+        if friends.contains(friend_uid) {
+            return FriendStatus.FRIENDS
+        }
+        
+        let requests = mainStore.state.friendRequestsIn
+        if let _ = requests[friend_uid] {
+            return FriendStatus.PENDING_INCOMING
+        }
+        
+        let requestsOut = mainStore.state.friendRequestsOut
+        if let _ = requestsOut[friend_uid] {
+            return FriendStatus.PENDING_OUTGOING
+        }
+        
+        return FriendStatus.NOT_FRIENDS
+        
+    }
+    
+    
+    static func sendFriendRequest(friend_uid:String, completionHandler:(success:Bool)->()) {
+        
+        let uid = mainStore.state.userState.uid
+        let userRef = FirebaseService.ref.child("users_public/\(uid)/friendRequestsOut/\(friend_uid)")
+        userRef.setValue(false)
+        let friendRef = FirebaseService.ref.child("users_public/\(friend_uid)/friendRequestsIn/\(uid)")
+        friendRef.setValue(false, withCompletionBlock: {
+            error, ref in
+            
+            if error != nil {
+                completionHandler(success: false)
+            } else {
+                completionHandler(success: true)
+            }
+        })
+    }
+    
+    static func acceptFriendRequest(friend_uid:String) {
+        let uid = mainStore.state.userState.uid
+        ref.child("users_public/\(uid)/friends/\(friend_uid)").setValue(true)
+        ref.child("users_public/\(friend_uid)/friends/\(uid)").setValue(true)
+        ref.child("users_public/\(uid)/friendRequestsIn/\(friend_uid)").removeValue()
+        ref.child("users_public/\(friend_uid)/friendRequestsOut/\(uid)").removeValue()
+    }
+    
 
 }

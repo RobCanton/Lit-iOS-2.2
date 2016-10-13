@@ -15,6 +15,7 @@ enum FriendStatus: String {
     case PENDING_OUTGOING = "PENDING_OUTGOING"
     case FRIENDS = "FRIENDS"
     case NOT_FRIENDS = "NOT_FRIENDS"
+    case IS_CURRENT_USER = "IS_CURRENT_USER"
 }
 
 

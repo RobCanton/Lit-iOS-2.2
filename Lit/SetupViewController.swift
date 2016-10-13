@@ -132,9 +132,7 @@ class SetupViewController: UIViewController,IGLocationManagerDelegate, StoreSubs
         guard let cities     = self.cities else {return}
         guard let activeCity = self.activeCity else {return}
         guard let locations  = self.locations else {return}
-        
-        
-        
+
         mainStore.dispatch(CitiesRetrieved(cities: cities))
         mainStore.dispatch(SetActiveCity(city: activeCity))
         mainStore.dispatch(LocationsRetrieved(locations: locations))
