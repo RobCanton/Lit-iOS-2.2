@@ -17,6 +17,7 @@ class ConversationViewCell: UITableViewCell, GetUserProtocol {
     
     @IBOutlet weak var messageLabel: UILabel!
     
+    @IBOutlet weak var timeLabel: UILabel!
     
     var conversation:Conversation? {
         didSet{
@@ -25,6 +26,18 @@ class ConversationViewCell: UITableViewCell, GetUserProtocol {
             if let user = conversation!.getPartner() {
                 userLoaded(user)
             }
+            
+            let ref = FirebaseService.ref.child("conversations/\(conversation!.getKey())/messages")
+            ref.queryLimitedToLast(1).observeEventType(.ChildAdded, withBlock: { snapshot in
+                if snapshot.exists() {
+                    let message = snapshot.value!["text"] as! String
+                    let timeStamp = snapshot.value!["timestamp"] as! Double
+                    self.timeLabel.text = NSDate(timeIntervalSince1970: timeStamp/1000).timeStringSinceNow()
+                    self.messageLabel.text = message
+                    
+                }
+            })
+            
         }
     }
     

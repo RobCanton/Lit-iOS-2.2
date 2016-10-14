@@ -55,6 +55,8 @@
 		B0254F721DAFEF4A0082D898 /* ConversationViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0254F711DAFEF4A0082D898 /* ConversationViewCell.swift */; };
 		B0254F741DAFFC130082D898 /* Conversation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0254F731DAFFC130082D898 /* Conversation.swift */; };
 		B0254F761DAFFCDC0082D898 /* ConversationsReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0254F751DAFFCDC0082D898 /* ConversationsReducer.swift */; };
+		B0254F781DB01FAE0082D898 /* JSQMessagesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0254F771DB01FAE0082D898 /* JSQMessagesService.swift */; };
+		B0254F7A1DB07F080082D898 /* helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0254F791DB07F080082D898 /* helper.swift */; };
 		B026A84A1DAD76FB00DD2CCD /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B026A8481DAD76FB00DD2CCD /* UserProfileViewController.swift */; };
 		B026A84E1DAD9D3400DD2CCD /* UserProfileBodyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B026A84C1DAD9D3400DD2CCD /* UserProfileBodyViewController.swift */; };
 		B026A84F1DAD9D3400DD2CCD /* UserProfileBodyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B026A84D1DAD9D3400DD2CCD /* UserProfileBodyViewController.xib */; };
@@ -170,6 +172,8 @@
 		B0254F711DAFEF4A0082D898 /* ConversationViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationViewCell.swift; sourceTree = "<group>"; };
 		B0254F731DAFFC130082D898 /* Conversation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Conversation.swift; sourceTree = "<group>"; };
 		B0254F751DAFFCDC0082D898 /* ConversationsReducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationsReducer.swift; sourceTree = "<group>"; };
+		B0254F771DB01FAE0082D898 /* JSQMessagesService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSQMessagesService.swift; sourceTree = "<group>"; };
+		B0254F791DB07F080082D898 /* helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = helper.swift; sourceTree = "<group>"; };
 		B026A8481DAD76FB00DD2CCD /* UserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
 		B026A84C1DAD9D3400DD2CCD /* UserProfileBodyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileBodyViewController.swift; sourceTree = "<group>"; };
 		B026A84D1DAD9D3400DD2CCD /* UserProfileBodyViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserProfileBodyViewController.xib; sourceTree = "<group>"; };
@@ -270,6 +274,7 @@
 				B09D5FCA1DA57C80004A188E /* ARNImageTransitionNavigationController.swift */,
 				B09D5FCB1DA57C80004A188E /* ARNImageZoomTransition.swift */,
 				B09D5FCC1DA57C80004A188E /* ARNModalImageTransitionViewController.swift */,
+				B0254F791DB07F080082D898 /* helper.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -278,6 +283,7 @@
 			isa = PBXGroup;
 			children = (
 				76136D441D495E8E003DB433 /* FirebaseService.swift */,
+				B0254F771DB01FAE0082D898 /* JSQMessagesService.swift */,
 				76B361D61D6519ED0024CDC7 /* LocationService.swift */,
 				B087E9C11D9B4D760079E2BF /* Listeners.swift */,
 			);
@@ -739,7 +745,9 @@
 				B087E9CC1D9B88700079E2BF /* LocationsReducer.swift in Sources */,
 				768FB9781D5BB55000251035 /* User.swift in Sources */,
 				B05ABCFD1D41185200364322 /* Reducer.swift in Sources */,
+				B0254F7A1DB07F080082D898 /* helper.swift in Sources */,
 				767729841D5116930052CA17 /* CWStatusBarNotificationUtils.swift in Sources */,
+				B0254F781DB01FAE0082D898 /* JSQMessagesService.swift in Sources */,
 				B05ABCF91D41178D00364322 /* AppState.swift in Sources */,
 				76136D3C1D493713003DB433 /* LocationCell.swift in Sources */,
 				76A516671D60C69D005E2815 /* ChatViewController.swift in Sources */,

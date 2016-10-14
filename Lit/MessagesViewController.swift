@@ -86,6 +86,8 @@ class MessagesViewController: UITableViewController, StoreSubscriber {
         tableView.delegate = self
         tableView.dataSource = self
         
+        tableView.tableFooterView = UIView()
+        
         conversations = mainStore.state.conversations
         tableView.reloadData()
     }
@@ -120,10 +122,10 @@ class MessagesViewController: UITableViewController, StoreSubscriber {
         
     }
     
-    
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.LightContent
+    override func prefersStatusBarHidden() -> Bool {
+        return true
     }
+    
     
 
     

@@ -150,17 +150,25 @@ extension NSDate
         
         let components = calendar.components([.Day, .Hour, .Minute, .Second], fromDate: self, toDate: NSDate(), options: [])
         
-        if components.day > 0 {
-            return "\(components.day)d ago"
-        }
-        else if components.hour > 0 {
-            return "\(components.hour)h ago"
-        }
-        else if components.minute > 0 {
-            return "\(components.minute)m ago"
+        if components.day >= 365 {
+            return "\(components.day % 365)y"
         }
         
-        return "\(components.second)s ago"
+        if components.day >= 7 {
+            return "\(components.day % 7)w"
+        }
+        
+        if components.day > 0 {
+            return "\(components.day)d"
+        }
+        else if components.hour > 0 {
+            return "\(components.hour)h"
+        }
+        else if components.minute > 0 {
+            return "\(components.minute)m"
+        }
+        
+        return "\(components.second)s"
     }
 
 }

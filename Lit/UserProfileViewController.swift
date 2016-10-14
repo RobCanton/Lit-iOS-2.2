@@ -18,10 +18,12 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         mainStore.subscribe(self)
+        navigationController?.setNavigationBarHidden(true, animated: false)
     }
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         mainStore.unsubscribe(self)
+        navigationController?.setNavigationBarHidden(false, animated: false)
         mainStore.dispatch(UserViewed())
     }
     
@@ -74,7 +76,6 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         super.viewDidLoad()
         self.navigationItem.title = " "
         self.automaticallyAdjustsScrollViewInsets = false
-        navigationController?.setNavigationBarHidden(true, animated: false)
         
         
         headerView = UINib(nibName: "CreateProfileHeaderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! CreateProfileHeaderView

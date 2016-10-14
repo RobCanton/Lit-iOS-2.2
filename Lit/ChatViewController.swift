@@ -9,9 +9,12 @@
 import Foundation
 import UIKit
 import JSQMessagesViewController
+import ReSwift
 
 
-class ChatViewController: JSQMessagesViewController, GetUserProtocol {
+class ChatViewController: JSQMessagesViewController, GetUserProtocol, StoreSubscriber {
+    
+    
     
     let incomingBubble = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor.grayColor())
     let outgoingBubble = JSQMessagesBubbleImageFactory().outgoingMessagesBubbleImageWithColor(accentColor)
@@ -22,11 +25,16 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol {
     {
         didSet {
             self.title = partner.getDisplayName()
+            partnerImageView = UIImageView()
+            partnerImageView!.loadImageUsingCacheWithURLString(partner.getImageUrl(), completion: { result in
+            })
         }
     }
     
+    var partnerImageView:UIImageView?
     func userLoaded(user: User) {
         partner = user
+       
     }
 
     
@@ -35,6 +43,15 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol {
         // Do any additional setup after loading the view, typically from a nib.
         self.collectionView?.backgroundColor = UIColor(white: 0.10, alpha: 1.0)
         self.navigationController?.navigationBar.backItem?.backBarButtonItem?.title = " "
+        
+        self.inputToolbar.barTintColor = UIColor(white: 0.10, alpha: 1.0)
+        self.inputToolbar.contentView.leftBarButtonItemWidth = 0
+        self.inputToolbar.contentView.textView.keyboardAppearance = .Dark
+        self.inputToolbar.contentView.textView.backgroundColor = UIColor(white: 0.10, alpha: 1.0)
+        self.inputToolbar.contentView.textView.textColor = UIColor.whiteColor()
+        self.inputToolbar.contentView.textView.layer.borderColor = UIColor(white: 0.10, alpha: 1.0).CGColor
+        self.inputToolbar.contentView.textView.layer.borderWidth = 1.0
+        collectionView?.collectionViewLayout.outgoingAvatarViewSize = .zero
         
         conversation.delegate = self
         if let user = conversation.getPartner() {
@@ -48,15 +65,20 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
-    
-    
+        mainStore.subscribe(self)
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
+        mainStore.unsubscribe(self)
     }
     
+    func newState(state: AppState) {
+        if state.viewUser != "" {
+            let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("UserProfileViewController") as! UserProfileViewController
+            navigationController?.pushViewController(controller, animated: true)
+        }
+    }
     
     
     override func viewDidAppear(animated: Bool) {
@@ -71,9 +93,11 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol {
         return self.messages.count
     }
     
+    
     override func collectionView(collectionView: JSQMessagesCollectionView!, messageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageData! {
         let data = self.messages[indexPath.row]
         return data
+        
     }
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, didDeleteMessageAtIndexPath indexPath: NSIndexPath!) {
@@ -91,7 +115,19 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol {
     }
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageAvatarImageDataSource! {
-        return nil
+        let data = messages[indexPath.row]
+        
+        switch(data.senderId) {
+        case self.senderId:
+            return nil
+        default:
+            if partnerImageView != nil {
+                let image = JSQMessagesAvatarImageFactory.avatarImageWithImage(partnerImageView!.image, diameter: 48)
+                return image
+            }
+
+            return nil
+        }
     }
     
     
@@ -138,8 +174,11 @@ extension ChatViewController {
         })
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.LightContent
+    override func prefersStatusBarHidden() -> Bool {
+        return true
+    }
+    @IBAction func viewUserProfile(sender: AnyObject) {
+        mainStore.dispatch(ViewUser(uid: partner!.getUserId()))
     }
     
     

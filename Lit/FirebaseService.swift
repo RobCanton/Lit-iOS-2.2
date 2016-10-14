@@ -225,5 +225,7 @@ class FirebaseService {
         ref.child("users_public/\(friend_uid)/friendRequestsOut/\(uid)").removeValue()
     }
     
+    
+    
 
 }
