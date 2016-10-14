@@ -23,7 +23,7 @@
 import UIKit
 import ARNTransitionAnimator
 
-class GalleryViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, ARNImageTransitionZoomable {
+class GalleryViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, ARNImageTransitionZoomable, ZoomProtocol {
     
     let cellIdentifier = "photoCell"
     var screenSize: CGRect!
@@ -123,8 +123,9 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
         let storyboard = UIStoryboard(name: "ModalViewController", bundle: nil)
         let controller = storyboard.instantiateViewControllerWithIdentifier("ModalViewController") as! ModalViewController
         controller.item = self.photos[self.selectedIndexPath!.item]
+        controller.delegate = self
         let operationType: ARNTransitionAnimatorOperation = .Present
-        let animator = ARNTransitionAnimator(operationType: operationType, fromVC: self.navigationController!, toVC: controller)
+        let animator = ARNTransitionAnimator(operationType: operationType, fromVC: self, toVC: controller)
         
         animator.presentationBeforeHandler = { [weak self] containerView, transitionContext in
             containerView.addSubview(controller.view)
@@ -157,11 +158,8 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
         animator.dismissalBeforeHandler = { [weak self] containerView, transitionContext in
             
             let fromVC = transitionContext.viewForKey(UITransitionContextFromViewKey)
-            if case .Dismiss = self!.animator!.interactiveType {
-                containerView.addSubview(fromVC!)
-            } else {
-                containerView.addSubview(self!.view)
-            }
+
+            containerView.addSubview(fromVC!)
             containerView.bringSubviewToFront(controller.view)
             
             let sourceImageView = controller.createTransitionImageView()
@@ -200,12 +198,19 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
         
         
         self.animator = animator
-        
         self.animator!.interactiveType = .Dismiss
         controller.transitioningDelegate = self.animator
-        self.navigationController!.presentViewController(controller, animated: true, completion: nil)
+        self.presentViewController(controller, animated: true, completion: nil)
         
         
+    }
+    
+    func Deanimate(){
+        self.animator?.interactiveType = .None
+    }
+    
+    func Reanimate(){
+        self.animator?.interactiveType = .Present
     }
     
     func createTransitionImageView() -> UIImageView {

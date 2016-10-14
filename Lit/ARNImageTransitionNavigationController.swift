@@ -38,7 +38,7 @@ class ARNImageTransitionNavigationController: UINavigationController, UINavigati
             return ARNImageZoomTransition.createAnimator(.Pop, fromVC: fromVC, toVC: toVC)
         }
         
-        return nil
+        return  ARNImageZoomTransition.createAnimator(.None, fromVC: fromVC, toVC: toVC)
     }
     
     func navigationController(navigationController: UINavigationController, interactionControllerForAnimationController animationController: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {

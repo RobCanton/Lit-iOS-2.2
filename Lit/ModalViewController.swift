@@ -12,6 +12,11 @@ enum ModalMode {
     case Location, User
 }
 
+protocol ZoomProtocol {
+    func Deanimate()
+    func Reanimate()
+}
+
 class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransitionZoomable {
     
     var item:StoryItem?
@@ -21,6 +26,7 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
     @IBOutlet weak var authorImage: UIImageView!
     @IBOutlet weak var locationLabel: UILabel!
     
+    var delegate:ZoomProtocol!
     var mode:ModalMode = .Location
     
     
@@ -52,7 +58,12 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
     func profileTapped(gesture:UITapGestureRecognizer) {
         print("profile tapped")
         let uid = item!.getAuthorId()
-        self.presentingViewController?.dismissViewControllerAnimated(false, completion: {
+
+        delegate.Deanimate()
+
+        self.presentingViewController?.dismissViewControllerAnimated(true, completion: {
+            
+            self.delegate.Reanimate()
             mainStore.dispatch(ViewUser(uid: uid))
         })
 
@@ -94,6 +105,7 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
             }
             
         })
+        
     }
     
     override func viewWillDisappear(animated: Bool) {

@@ -72,6 +72,7 @@ class LocationViewController: MXSegmentedPagerController, StoreSubscriber {
         super.viewDidLoad()
         self.navigationItem.title = " "
         
+        
         self.segmentedPager.backgroundColor = UIColor.blackColor()
         
         // Parallax Header

@@ -6,7 +6,7 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Modal View Controller-->
+        <!--Yolo-->
         <scene sceneID="voD-2n-ZS7">
             <objects>
                 <viewController storyboardIdentifier="ModalViewController" definesPresentationContext="YES" providesPresentationContextTransitionStyle="YES" modalPresentationStyle="overFullScreen" id="zSB-aw-sBJ" customClass="ModalViewController" customModule="Lit" customModuleProvider="target" sceneMemberID="viewController">
@@ -50,11 +50,9 @@
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                         <constraints>
-                            <constraint firstItem="GfA-9t-bT0" firstAttribute="top" secondItem="XHY-DZ-v0p" secondAttribute="bottom" id="3av-Rx-96M"/>
-                            <constraint firstItem="GfA-9t-bT0" firstAttribute="top" secondItem="JlU-0u-pfs" secondAttribute="bottom" constant="20" id="80q-jz-Frj"/>
+                            <constraint firstItem="MZQ-iI-SPU" firstAttribute="top" secondItem="IAF-hg-Hcl" secondAttribute="bottom" id="DJb-4z-UzD"/>
                             <constraint firstAttribute="trailingMargin" secondItem="MZQ-iI-SPU" secondAttribute="trailing" id="GiT-6h-ITp"/>
                             <constraint firstItem="XHY-DZ-v0p" firstAttribute="top" secondItem="U0U-wj-u1A" secondAttribute="top" id="Idd-6H-cUQ"/>
-                            <constraint firstItem="MZQ-iI-SPU" firstAttribute="top" secondItem="IAF-hg-Hcl" secondAttribute="bottom" id="JpR-vc-Esn"/>
                             <constraint firstItem="mbO-g9-TeI" firstAttribute="leading" secondItem="JlU-0u-pfs" secondAttribute="trailing" constant="8" id="TpF-G1-EE8"/>
                             <constraint firstItem="oyk-VP-ped" firstAttribute="leading" secondItem="JlU-0u-pfs" secondAttribute="trailing" constant="8" id="Vc8-LU-KNM"/>
                             <constraint firstItem="XHY-DZ-v0p" firstAttribute="leading" secondItem="U0U-wj-u1A" secondAttribute="leading" id="ghQ-wF-D8n"/>
@@ -62,8 +60,10 @@
                             <constraint firstItem="oyk-VP-ped" firstAttribute="centerY" secondItem="JlU-0u-pfs" secondAttribute="centerY" id="hz5-MQ-QkX"/>
                             <constraint firstItem="mbO-g9-TeI" firstAttribute="bottom" secondItem="JlU-0u-pfs" secondAttribute="bottom" id="kiF-Jo-BQB"/>
                             <constraint firstAttribute="trailing" secondItem="XHY-DZ-v0p" secondAttribute="trailing" id="kwR-fG-U1b"/>
+                            <constraint firstItem="GfA-9t-bT0" firstAttribute="top" secondItem="JlU-0u-pfs" secondAttribute="bottom" constant="20" id="mH6-Vp-n5t"/>
                             <constraint firstAttribute="leadingMargin" secondItem="MZQ-iI-SPU" secondAttribute="leading" id="oD7-pX-3Fg"/>
                             <constraint firstAttribute="leadingMargin" secondItem="JlU-0u-pfs" secondAttribute="leading" id="sEn-kK-g6E"/>
+                            <constraint firstItem="GfA-9t-bT0" firstAttribute="top" secondItem="XHY-DZ-v0p" secondAttribute="bottom" id="ygg-WX-HKC"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
@@ -71,6 +71,8 @@
                             </mask>
                         </variation>
                     </view>
+                    <navigationItem key="navigationItem" title="Yolo" id="Dys-bG-mTe"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
                         <outlet property="authorImage" destination="JlU-0u-pfs" id="1lU-KO-QTe"/>
@@ -82,7 +84,25 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Cqp-zy-5ZR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="378.5" y="348.5"/>
+            <point key="canvasLocation" x="936.5" y="386.5"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="xWo-q3-ag1">
+            <objects>
+                <navigationController storyboardIdentifier="ModalNavController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Rkf-W0-fdQ" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="jpR-vC-bdz">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="zSB-aw-sBJ" kind="relationship" relationship="rootViewController" id="C2P-SU-NXR"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WGM-6r-y4W" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="378" y="348"/>
         </scene>
     </scenes>
 </document>
