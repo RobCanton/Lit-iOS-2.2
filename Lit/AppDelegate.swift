@@ -20,6 +20,11 @@ let mainStore = Store<AppState>(
 let accentColor:UIColor = UIColor(red: 0, green: 126/255, blue: 1, alpha: 1) // #FFAB00
 let errorColor:UIColor = UIColor(red: 1, green: 80/255, blue: 80/255, alpha: 1)
 
+var screenStatusBarHeight: CGFloat {
+    return UIApplication.sharedApplication().statusBarFrame.height
+}
+
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 

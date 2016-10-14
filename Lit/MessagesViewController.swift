@@ -83,6 +83,9 @@ class MessagesViewController: UITableViewController, StoreSubscriber {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.navigationController?.navigationBar.barStyle = .Black
+        self.navigationController?.navigationBar.translucent = true
+        
         tableView.delegate = self
         tableView.dataSource = self
         
@@ -123,7 +126,7 @@ class MessagesViewController: UITableViewController, StoreSubscriber {
     }
     
     override func prefersStatusBarHidden() -> Bool {
-        return true
+        return false
     }
     
     

@@ -64,7 +64,7 @@ class LocationViewController: MXSegmentedPagerController, StoreSubscriber {
     }
     
     override func prefersStatusBarHidden() -> Bool {
-        return true
+        return false
     }
 
     

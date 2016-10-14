@@ -66,6 +66,7 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol, StoreSubsc
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         mainStore.subscribe(self)
+        profileBtn.enabled = true
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -76,7 +77,7 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol, StoreSubsc
     func newState(state: AppState) {
         if state.viewUser != "" {
             let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("UserProfileViewController") as! UserProfileViewController
-            navigationController?.pushViewController(controller, animated: true)
+            self.navigationController?.pushViewController(controller, animated: true)
         }
     }
     
@@ -130,6 +131,12 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol, StoreSubsc
         }
     }
     
+    @IBAction func viewUserProfile(sender: UIBarButtonItem) {
+        sender.enabled = false
+        mainStore.dispatch(ViewUser(uid: partner!.getUserId()))
+    }
+    
+    @IBOutlet weak var profileBtn: UIBarButtonItem!
     
 }
 
@@ -175,11 +182,9 @@ extension ChatViewController {
     }
     
     override func prefersStatusBarHidden() -> Bool {
-        return true
+        return false
     }
-    @IBAction func viewUserProfile(sender: AnyObject) {
-        mainStore.dispatch(ViewUser(uid: partner!.getUserId()))
-    }
+    
     
     
 }

@@ -58,7 +58,7 @@ class MainViewController: UICollectionViewController, StoreSubscriber, CLLocatio
     }
     
     override func prefersStatusBarHidden() -> Bool {
-        return true
+        return false
     }
     
     func newState(state: [Location]?) {
@@ -91,8 +91,8 @@ class MainViewController: UICollectionViewController, StoreSubscriber, CLLocatio
             [NSFontAttributeName: UIFont(name: "Avenir-Book", size: 20.0)!]
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: .Default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.barStyle = .Black
         self.navigationController?.navigationBar.translucent = true
-        self.navigationController?.navigationBar.barStyle = .BlackTranslucent
         
         //locationManager.startUpdatingLocation()
         

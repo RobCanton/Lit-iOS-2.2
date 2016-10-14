@@ -12,19 +12,30 @@ import MXParallaxHeader
 import ARNTransitionAnimator
 
 
-class UserProfileViewController: UIViewController, StoreSubscriber, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, ARNImageTransitionZoomable, HeaderProtocol {
+class UserProfileViewController: UIViewController, StoreSubscriber, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, ARNImageTransitionZoomable, HeaderProtocol, ZoomProtocol {
 
+    var statusBarBG:UIView?
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         mainStore.subscribe(self)
-        navigationController?.setNavigationBarHidden(true, animated: false)
+        navigationController?.setNavigationBarHidden(true, animated: true)
     }
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         mainStore.unsubscribe(self)
-        navigationController?.setNavigationBarHidden(false, animated: false)
+        navigationController?.setNavigationBarHidden(false, animated: true)
         mainStore.dispatch(UserViewed())
+        
+        
+    }
+    
+    func Deanimate() {
+        animator?.interactiveType = .None
+    }
+    
+    func Reanimate() {
+        animator?.interactiveType = .Present
     }
     
     func backTapped() {
@@ -61,7 +72,11 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     }
     
     override func prefersStatusBarHidden() -> Bool {
-        return true
+        return false
+    }
+    
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return .LightContent
     }
     
     let cellIdentifier = "photoCell"
@@ -71,11 +86,13 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     
     var photos = [StoryItem]()
     var collectionView:UICollectionView?
+    var controlBar:UserProfileControlBar?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.title = " "
         self.automaticallyAdjustsScrollViewInsets = false
+        
         
         
         headerView = UINib(nibName: "CreateProfileHeaderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! CreateProfileHeaderView
@@ -85,7 +102,7 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         screenHeight = screenSize.height
         
         let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: 60, left: 0, bottom: 200, right: 0)
+        layout.sectionInset = UIEdgeInsets(top: 40 + screenStatusBarHeight, left: 0, bottom: 200, right: 0)
         layout.itemSize = CGSize(width: screenWidth/3, height: screenWidth/3)
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
@@ -100,6 +117,7 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         collectionView!.pagingEnabled = true
         collectionView!.showsVerticalScrollIndicator = false
         
+
         collectionView!.parallaxHeader.view = headerView
         collectionView!.parallaxHeader.height = UltravisualLayoutConstants.Cell.featuredHeight
         collectionView!.parallaxHeader.mode = .Fill
@@ -109,10 +127,15 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         self.view.addSubview(collectionView!)
         
         
-        let controlBar = UINib(nibName: "UserProfileControlBarView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! UserProfileControlBar
-        controlBar.frame = CGRectMake(0,0, collectionView!.frame.width, 60)
-        controlBar.setControlBar()
-        collectionView?.addSubview(controlBar)
+        controlBar = UINib(nibName: "UserProfileControlBarView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! UserProfileControlBar
+        controlBar!.frame = CGRectMake(0,0, collectionView!.frame.width, 60)
+        controlBar!.setControlBar()
+        collectionView?.addSubview(controlBar!)
+        
+        statusBarBG = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: screenStatusBarHeight))
+        statusBarBG!.backgroundColor = UIColor.blackColor()
+        view.addSubview(statusBarBG!)
+        statusBarBG!.hidden = true
         
         let uid = mainStore.state.viewUser
         
@@ -175,8 +198,28 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     
 
     func scrollViewDidScroll(scrollView: UIScrollView) {
-        headerView.setProgress(scrollView.parallaxHeader.progress)
-        
+        let progress = scrollView.parallaxHeader.progress
+        headerView.setProgress(progress)
+        print("progress: \(progress)")
+        if progress < 0 {
+            
+            let scale = abs(progress)
+            if let _ = controlBar {
+                let shift = controlBar!.centerBlock.frame.height/5
+                let scaleTransform = CGAffineTransformMakeScale(1 - scale/5, 1 - scale/5)
+                let translateTransform = CGAffineTransformMakeTranslation(0, scale * shift)
+                let transform = CGAffineTransformConcat(scaleTransform, translateTransform)
+                controlBar!.leftBlock.transform = transform
+                controlBar!.centerBlock.transform = transform
+                controlBar!.rightBlock.transform = transform
+            }
+            
+            if progress <= -1.0 {
+                statusBarBG?.hidden = false
+            } else {
+                statusBarBG?.hidden = true
+            }
+        }
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
@@ -197,6 +240,7 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     func showInteractive() {
         let storyboard = UIStoryboard(name: "ModalViewController", bundle: nil)
         let controller = storyboard.instantiateViewControllerWithIdentifier("ModalViewController") as! ModalViewController
+        controller.delegate = self
         controller.mode = .User
         controller.item = self.photos[self.selectedIndexPath!.item]
         let operationType: ARNTransitionAnimatorOperation = .Present
@@ -233,11 +277,7 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         animator.dismissalBeforeHandler = { [weak self] containerView, transitionContext in
             
             let fromVC = transitionContext.viewForKey(UITransitionContextFromViewKey)
-            if case .Dismiss = self!.animator!.interactiveType {
-                containerView.addSubview(fromVC!)
-            } else {
-                containerView.addSubview(self!.view)
-            }
+            containerView.addSubview(fromVC!)
             containerView.bringSubviewToFront(controller.view)
             
             let sourceImageView = controller.createTransitionImageView()

@@ -60,11 +60,12 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
         let uid = item!.getAuthorId()
 
         delegate.Deanimate()
-
         self.presentingViewController?.dismissViewControllerAnimated(true, completion: {
             
             self.delegate.Reanimate()
-            mainStore.dispatch(ViewUser(uid: uid))
+            if self.mode == .Location {
+               mainStore.dispatch(ViewUser(uid: uid))
+            }
         })
 
 
@@ -87,10 +88,10 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
         authorImage.layer.cornerRadius = authorImage.frame.width/2
         authorImage.clipsToBounds = true
         authorImage.layer.opacity = 0
-        if mode == .Location {
-            authorImage.userInteractionEnabled = true
-            authorImage.addGestureRecognizer(tap)
-        }
+
+        authorImage.userInteractionEnabled = true
+        authorImage.addGestureRecognizer(tap)
+        
         authorLabel.layer.opacity = 0
         timeLabel.layer.opacity = 0
         locationLabel.layer.opacity = 0
