@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 enum ModalMode {
     case Location, User
@@ -44,7 +45,7 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
+        listenForLikes()
         self.authorImage.layer.opacity = 0
         self.authorLabel.layer.opacity = 0
         self.timeLabel.layer.opacity = 0
@@ -62,6 +63,7 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
         
     }
 
+
     
     func profileTapped(gesture:UITapGestureRecognizer) {
         print("profile tapped")
@@ -77,27 +79,96 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
         })
     }
     
+    
     func like(gesture:UITapGestureRecognizer) {
         print("Liked photo!")
-        likeBtn.backgroundColor = accentColor
-        let subview = likeBtn.subviews[0] as! UIButton
-        subview.setImage(UIImage(named: "like_filled"), forState: .Normal)
-        
-        dislikeBtn.backgroundColor = UIColor(white: 0.15, alpha: 1.0)
-        let dislikeSubView = dislikeBtn.subviews[0] as! UIButton
-        dislikeSubView.setImage(UIImage(named: "dislike"), forState: .Normal)
-        
+        if let _ = item {
+            let ref = FirebaseService.ref.child("uploads/\(item!.getKey())/likes/\(mainStore.state.userState.uid)")
+            ref.setValue(true)
+        }
+        setLike()
+        likeBtn.transform = CGAffineTransformMakeScale(1.25, 1.25)
+        UIView.animateWithDuration(0.3,
+                                   delay: 0,
+                                   usingSpringWithDamping: CGFloat(0.20),
+                                   initialSpringVelocity: CGFloat(6.0),
+                                   options: UIViewAnimationOptions.AllowUserInteraction,
+                                   animations: {
+                                    self.likeBtn.transform = CGAffineTransformIdentity
+            },
+                                   completion: { Void in()  }
+        )
+  
     }
     
     func dislike(gesture:UITapGestureRecognizer) {
-        print("Disiked photo!")
-        dislikeBtn.backgroundColor = accentColor
+        if let _ = item {
+            let ref = FirebaseService.ref.child("uploads/\(item!.getKey())/likes/\(mainStore.state.userState.uid)")
+            ref.setValue(false)
+        }
+        setDislike()
+        dislikeBtn.transform = CGAffineTransformMakeScale(1.25, 1.25)
+        UIView.animateWithDuration(0.3,
+                                   delay: 0,
+                                   usingSpringWithDamping: CGFloat(0.20),
+                                   initialSpringVelocity: CGFloat(6.0),
+                                   options: UIViewAnimationOptions.AllowUserInteraction,
+                                   animations: {
+                                    self.dislikeBtn.transform = CGAffineTransformIdentity
+            },
+                                   completion: { Void in()  }
+        )
+
+    }
+
+    func setLike() {
+        likeBtn.backgroundColor = accentColor
+        let subview = likeBtn.subviews[0] as! UIButton
+        subview.setImage(UIImage(named: "like_filled"), forState: .Normal)
+        resetDislike()
+        
+    }
+
+    func setDislike() {
+        dislikeBtn.backgroundColor = errorColor
         let subview = dislikeBtn.subviews[0] as! UIButton
         subview.setImage(UIImage(named: "dislike_filled"), forState: .Normal)
-        
+        resetLike()
+    }
+    
+    func resetLike() {
         likeBtn.backgroundColor = UIColor(white: 0.15, alpha: 1.0)
         let likeSubView = likeBtn.subviews[0] as! UIButton
         likeSubView.setImage(UIImage(named: "like"), forState: .Normal)
+    }
+    
+    func resetDislike() {
+        dislikeBtn.backgroundColor = UIColor(white: 0.15, alpha: 1.0)
+        let dislikeSubView = dislikeBtn.subviews[0] as! UIButton
+        dislikeSubView.setImage(UIImage(named: "dislike"), forState: .Normal)
+    }
+    
+
+    var likesRef: FIRDatabaseReference?
+    func listenForLikes() {
+        likesRef = FirebaseService.ref.child("uploads/\(item!.getKey())/likes/\(mainStore.state.userState.uid)")
+        likesRef!.observeEventType(.Value, withBlock: { snapshot in
+            if snapshot.exists() {
+                let liked = snapshot.value! as! Bool
+                if liked {
+                    self.setLike()
+                } else {
+                    self.setDislike()
+                }
+            } else {
+                self.resetLike()
+                self.resetDislike()
+            }
+        })
+    }
+    
+    func stopListeningForLikes() {
+        likesRef?.removeAllObservers()
     }
     
     override func viewDidLoad() {
@@ -152,8 +223,11 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
         
     }
     
+    
+    
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
+        stopListeningForLikes()
         self.authorImage.layer.opacity = 0
         self.authorLabel.layer.opacity = 0
         self.timeLabel.layer.opacity = 0
