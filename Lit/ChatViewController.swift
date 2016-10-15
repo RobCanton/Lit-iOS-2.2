@@ -15,7 +15,8 @@ import Firebase
 
 class ChatViewController: JSQMessagesViewController, GetUserProtocol, StoreSubscriber {
     
-    
+
+
     
     let incomingBubble = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor.grayColor())
     let outgoingBubble = JSQMessagesBubbleImageFactory().outgoingMessagesBubbleImageWithColor(accentColor)
@@ -53,7 +54,6 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol, StoreSubsc
         self.inputToolbar.contentView.textView.layer.borderColor = UIColor(white: 0.10, alpha: 1.0).CGColor
         self.inputToolbar.contentView.textView.layer.borderWidth = 1.0
         collectionView?.collectionViewLayout.outgoingAvatarViewSize = .zero
-        
         collectionView?.collectionViewLayout.springinessEnabled = true
         
         conversation.delegate = self
@@ -61,9 +61,9 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol, StoreSubsc
             partner = user
         }
         
+        downloadRef = FirebaseService.ref.child("conversations/\(conversation.getKey())/messages")
         self.setup()
         self.downloadMessages()
-
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -75,6 +75,8 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol, StoreSubsc
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         mainStore.unsubscribe(self)
+        downloadRef?.removeAllObservers()
+        conversation.listenToConversation()
     }
     
     func newState(state: AppState) {
@@ -192,19 +194,6 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol, StoreSubsc
     var limit:UInt = 10
     var loadingNextBatch = false
     var downloadRef:FIRDatabaseReference?
-    
-//    override func scrollViewDidScroll(scrollView: UIScrollView) {
-//        if !loadingNextBatch {
-//            if scrollView.contentOffset.y < 0 {
-//                loadingNextBatch = true
-//                limit += 10
-//                downloadRef?.removeAllObservers()
-//                downloadMessages()
-//                
-//            }
-//        }
-//    }
-    
 }
 
 
@@ -217,8 +206,6 @@ extension ChatViewController {
         self.senderDisplayName = ""
     }
     
-    
-    
     override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
         
         FirebaseService.ref.child("conversations/\(conversation.getKey())/messages").childByAutoId()
@@ -229,7 +216,6 @@ extension ChatViewController {
                 ])
         
         self.finishSendingMessageAnimated(true)
-        
     }
     
     override func didPressAccessoryButton(sender: UIButton!) {
@@ -238,8 +224,7 @@ extension ChatViewController {
     
     func downloadMessages() {
 
-        downloadRef = FirebaseService.ref.child("conversations/\(conversation.getKey())/messages")
-        downloadRef!.observeEventType(.ChildAdded, withBlock: { snapshot in
+        downloadRef?.observeEventType(.ChildAdded, withBlock: { snapshot in
                 let senderId = snapshot.value!["senderId"] as! String
                 let text     = snapshot.value!["text"] as! String
                 let timestamp     = snapshot.value!["timestamp"] as! Double
@@ -253,12 +238,8 @@ extension ChatViewController {
                 self.finishSendingMessageAnimated(true)
         })
     }
-
     
     override func prefersStatusBarHidden() -> Bool {
         return false
     }
-    
-    
-    
 }

@@ -59,8 +59,6 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
             self.likeBtn.layer.opacity = 1.0
             self.dislikeBtn.layer.opacity = 1.0
         })
-        
-        
     }
 
 

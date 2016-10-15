@@ -44,14 +44,34 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, PopUpProtocolD
             }
         }
         
-        var unseenActivity = 0
-        for (_, seen) in mainStore.state.friendRequestsIn {
-            if !seen {
-                unseenActivity += 1
+        messageNotifications()
+        socialNotifications()
+    }
+    
+    func messageNotifications() {
+        var count = 0
+        for conversation in mainStore.state.conversations {
+            if !conversation.seen {
+                count += 1
             }
         }
-        if unseenActivity > 0 {
-            tabBar.items?[2].badgeValue = "\(unseenActivity)"
+        if count > 0 {
+            tabBar.items?[1].badgeValue = "\(count)"
+        } else {
+            tabBar.items?[1].badgeValue = nil
+        }
+    }
+    
+    func socialNotifications() {
+        var count = 0
+        for (_, seen) in mainStore.state.friendRequestsIn {
+            if !seen {
+                count += 1
+            }
+        }
+        
+        if count > 0 {
+            tabBar.items?[2].badgeValue = "\(count)"
         } else {
             tabBar.items?[2].badgeValue = nil
         }

@@ -126,7 +126,7 @@ class FirebaseService {
         var story = [StoryItem]()
         var loadedCount = 0
         for postKey in postKeys {
-            let postRef = FirebaseService.ref.child("uploads/\(postKey)")
+            let postRef = FirebaseService.ref.child("uploads/\(postKey)/meta")
             
             postRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
                 

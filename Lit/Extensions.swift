@@ -6,6 +6,7 @@
 //  Copyright © 2016 Robert Canton. All rights reserved.
 //
 
+import Foundation
 import UIKit
 import RecordButton
 
@@ -151,11 +152,11 @@ extension NSDate
         let components = calendar.components([.Day, .Hour, .Minute, .Second], fromDate: self, toDate: NSDate(), options: [])
         
         if components.day >= 365 {
-            return "\(components.day % 365)y"
+            return "\(components.day / 365)y"
         }
         
         if components.day >= 7 {
-            return "\(components.day % 7)w"
+            return "\(components.day / 7)w"
         }
         
         if components.day > 0 {
@@ -167,8 +168,8 @@ extension NSDate
         else if components.minute > 0 {
             return "\(components.minute)m"
         }
-        
-        return "\(components.second)s"
+        return "Now"
+        //return "\(components.second)s"
     }
 
 }
