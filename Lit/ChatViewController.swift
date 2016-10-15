@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import JSQMessagesViewController
 import ReSwift
+import Firebase
 
 
 class ChatViewController: JSQMessagesViewController, GetUserProtocol, StoreSubscriber {
@@ -53,6 +54,8 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol, StoreSubsc
         self.inputToolbar.contentView.textView.layer.borderWidth = 1.0
         collectionView?.collectionViewLayout.outgoingAvatarViewSize = .zero
         
+        collectionView?.collectionViewLayout.springinessEnabled = true
+        
         conversation.delegate = self
         if let user = conversation.getPartner() {
             partner = user
@@ -88,6 +91,10 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol, StoreSubsc
     
     func reloadMessagesView() {
         self.collectionView?.reloadData()
+        // set seen timestamp
+        let uid = mainStore.state.userState.uid
+        let ref = FirebaseService.ref.child("conversations/\(conversation.getKey())/\(uid)")
+        ref.updateChildValues(["seen": [".sv":"timestamp"]])
     }
     
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -131,6 +138,50 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol, StoreSubsc
         }
     }
     
+    override func collectionView(collectionView: JSQMessagesCollectionView, attributedTextForCellTopLabelAtIndexPath indexPath: NSIndexPath) -> NSAttributedString? {
+
+        let currentItem = self.messages[indexPath.item]
+        
+        if indexPath.item == 0 && messages.count > 8 {
+            return JSQMessagesTimestampFormatter.sharedFormatter().attributedTimestampForDate(currentItem.date)
+        }
+        
+        if indexPath.item > 0 {
+            let prevItem    = self.messages[indexPath.item-1]
+            
+            let gap = currentItem.date.timeIntervalSinceDate(prevItem.date)
+            
+            if gap > 3600 {
+                return JSQMessagesTimestampFormatter.sharedFormatter().attributedTimestampForDate(currentItem.date)
+            }
+        }
+
+        
+        return nil
+    }
+    
+    override func collectionView(collectionView: JSQMessagesCollectionView, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout, heightForCellTopLabelAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        
+        let currentItem = self.messages[indexPath.item]
+        
+        if indexPath.item == 0 && messages.count > 8 {
+            return kJSQMessagesCollectionViewCellLabelHeightDefault
+        }
+        
+        if indexPath.item > 0 {
+            let currentItem = self.messages[indexPath.item]
+            let prevItem    = self.messages[indexPath.item-1]
+            
+            let gap = currentItem.date.timeIntervalSinceDate(prevItem.date)
+            
+            if gap > 3600 {
+                return kJSQMessagesCollectionViewCellLabelHeightDefault
+            }
+        }
+        
+        return 0.0
+    }
+    
     @IBAction func viewUserProfile(sender: UIBarButtonItem) {
         sender.enabled = false
         mainStore.dispatch(ViewUser(uid: partner!.getUserId()))
@@ -138,7 +189,25 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol, StoreSubsc
     
     @IBOutlet weak var profileBtn: UIBarButtonItem!
     
+    var limit:UInt = 10
+    var loadingNextBatch = false
+    var downloadRef:FIRDatabaseReference?
+    
+//    override func scrollViewDidScroll(scrollView: UIScrollView) {
+//        if !loadingNextBatch {
+//            if scrollView.contentOffset.y < 0 {
+//                loadingNextBatch = true
+//                limit += 10
+//                downloadRef?.removeAllObservers()
+//                downloadMessages()
+//                
+//            }
+//        }
+//    }
+    
 }
+
+
 
 //MARK - Setup
 extension ChatViewController {
@@ -147,6 +216,8 @@ extension ChatViewController {
         self.senderId = mainStore.state.userState.uid
         self.senderDisplayName = ""
     }
+    
+    
     
     override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
         
@@ -165,21 +236,24 @@ extension ChatViewController {
         
     }
     
-    
-    
     func downloadMessages() {
-        FirebaseService.ref.child("conversations/\(conversation.getKey())/messages").observeEventType(.ChildAdded, withBlock: { snapshot in
+
+        downloadRef = FirebaseService.ref.child("conversations/\(conversation.getKey())/messages")
+        downloadRef!.observeEventType(.ChildAdded, withBlock: { snapshot in
                 let senderId = snapshot.value!["senderId"] as! String
                 let text     = snapshot.value!["text"] as! String
                 let timestamp     = snapshot.value!["timestamp"] as! Double
                 
-                let date = NSDate(timeIntervalSince1970: timestamp)
+                let date = NSDate(timeIntervalSince1970: timestamp/1000)
                 let message = JSQMessage(senderId: senderId, senderDisplayName: "Rob", date: date, text: text)
+            
+            
                 self.messages.append(message)
                 self.reloadMessagesView()
                 self.finishSendingMessageAnimated(true)
         })
     }
+
     
     override func prefersStatusBarHidden() -> Bool {
         return false

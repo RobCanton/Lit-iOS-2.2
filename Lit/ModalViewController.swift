@@ -25,15 +25,22 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
     @IBOutlet weak var authorLabel: UILabel!
     @IBOutlet weak var authorImage: UIImageView!
     @IBOutlet weak var locationLabel: UILabel!
+    @IBOutlet weak var likeBtn: UIView!
+    @IBOutlet weak var dislikeBtn: UIView!
     
     var delegate:ZoomProtocol!
     var mode:ModalMode = .Location
+    var tap: UITapGestureRecognizer!
+    var likeTap:UITapGestureRecognizer!
     
+    var likeBtnTap: UITapGestureRecognizer!
+    var dislikeBtnTap:UITapGestureRecognizer!
     
     
     deinit {
 
     }
+    
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -48,12 +55,13 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
             self.authorLabel.layer.opacity = 1.0
             self.timeLabel.layer.opacity = 1.0
             self.locationLabel.layer.opacity = 1.0
+            self.likeBtn.layer.opacity = 1.0
+            self.dislikeBtn.layer.opacity = 1.0
         })
         
         
     }
-    
-    var tap: UITapGestureRecognizer!
+
     
     func profileTapped(gesture:UITapGestureRecognizer) {
         print("profile tapped")
@@ -67,15 +75,50 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
                mainStore.dispatch(ViewUser(uid: uid))
             }
         })
-
-
+    }
+    
+    func like(gesture:UITapGestureRecognizer) {
+        print("Liked photo!")
+        likeBtn.backgroundColor = accentColor
+        let subview = likeBtn.subviews[0] as! UIButton
+        subview.setImage(UIImage(named: "like_filled"), forState: .Normal)
+        
+        dislikeBtn.backgroundColor = UIColor(white: 0.15, alpha: 1.0)
+        let dislikeSubView = dislikeBtn.subviews[0] as! UIButton
+        dislikeSubView.setImage(UIImage(named: "dislike"), forState: .Normal)
+        
+    }
+    
+    func dislike(gesture:UITapGestureRecognizer) {
+        print("Disiked photo!")
+        dislikeBtn.backgroundColor = accentColor
+        let subview = dislikeBtn.subviews[0] as! UIButton
+        subview.setImage(UIImage(named: "dislike_filled"), forState: .Normal)
+        
+        likeBtn.backgroundColor = UIColor(white: 0.15, alpha: 1.0)
+        let likeSubView = likeBtn.subviews[0] as! UIButton
+        likeSubView.setImage(UIImage(named: "like"), forState: .Normal)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tap = UITapGestureRecognizer(target: self, action: #selector(profileTapped))
+        likeTap = UITapGestureRecognizer(target: self, action: #selector(like))
         
+        likeBtnTap = UITapGestureRecognizer(target: self, action: #selector(like))
+        dislikeBtnTap = UITapGestureRecognizer(target: self, action: #selector(dislike))
+        
+        likeTap.numberOfTapsRequired = 2
+        
+        likeBtn.layer.cornerRadius = likeBtn.frame.width/2
+        dislikeBtn.layer.cornerRadius = dislikeBtn.frame.width/2
+        
+        likeBtn.addGestureRecognizer(likeBtnTap)
+        dislikeBtn.addGestureRecognizer(dislikeBtnTap)
+        
+        imageView.userInteractionEnabled = true
+        imageView.addGestureRecognizer(likeTap)
         let key = mainStore.state.viewLocationKey
         let locations = mainStore.state.locations
 
@@ -115,6 +158,8 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
         self.authorLabel.layer.opacity = 0
         self.timeLabel.layer.opacity = 0
         self.locationLabel.layer.opacity = 0
+        self.likeBtn.layer.opacity = 0
+        self.dislikeBtn.layer.opacity = 0
 
     }
     

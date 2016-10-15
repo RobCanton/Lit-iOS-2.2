@@ -176,7 +176,6 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
-        
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(cellIdentifier, forIndexPath: indexPath) as! PhotoCell
         
         cell.setPhoto(photos[indexPath.item])

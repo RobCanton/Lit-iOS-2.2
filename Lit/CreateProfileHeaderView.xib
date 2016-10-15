@@ -152,7 +152,7 @@
                     </variation>
                 </view>
             </subviews>
-            <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="jxZ-88-RSp" secondAttribute="trailing" constant="14" id="0hU-v7-Idr"/>
                 <constraint firstAttribute="bottom" secondItem="YDl-NU-OHa" secondAttribute="bottom" constant="14" id="1i9-YM-YYU"/>

@@ -32,6 +32,7 @@ class CreateProfileHeaderView: UIView {
     var friendBtnTap:UITapGestureRecognizer!
     var messageBtnTap:UITapGestureRecognizer!
     
+    
     var delegate:HeaderProtocol!
 
     @IBAction func backTapped(sender: AnyObject) {

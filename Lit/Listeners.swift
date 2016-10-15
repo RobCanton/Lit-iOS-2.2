@@ -169,9 +169,15 @@ class Listeners {
                     let partner = snapshot.key
                     let conversationKey = snapshot.value! as! String
                     let conversation = Conversation(key: conversationKey, partner_uid: partner)
+                    
+                    
                     mainStore.dispatch(ConversationAdded(conversation: conversation))
                 }
             })
         }
+    }
+    
+    static func listenToConversation(key:String) {
+        
     }
 }

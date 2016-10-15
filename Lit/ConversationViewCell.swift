@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import JSQMessagesViewController
 
 class ConversationViewCell: UITableViewCell, GetUserProtocol {
     
@@ -19,6 +20,7 @@ class ConversationViewCell: UITableViewCell, GetUserProtocol {
     
     @IBOutlet weak var timeLabel: UILabel!
     
+    
     var conversation:Conversation? {
         didSet{
             conversation!.delegate = self
@@ -27,16 +29,20 @@ class ConversationViewCell: UITableViewCell, GetUserProtocol {
                 userLoaded(user)
             }
             
-            let ref = FirebaseService.ref.child("conversations/\(conversation!.getKey())/messages")
-            ref.queryLimitedToLast(1).observeEventType(.ChildAdded, withBlock: { snapshot in
-                if snapshot.exists() {
-                    let message = snapshot.value!["text"] as! String
-                    let timeStamp = snapshot.value!["timestamp"] as! Double
-                    self.timeLabel.text = NSDate(timeIntervalSince1970: timeStamp/1000).timeStringSinceNow()
-                    self.messageLabel.text = message
-                    
-                }
-            })
+            if let lastMessage = conversation!.lastMessage {
+                messageLabel.text = lastMessage.text
+                timeLabel.text = lastMessage.date.timeStringSinceNow()
+
+            }
+            
+            if !conversation!.seen {
+                userImageView.layer.borderColor = accentColor.CGColor
+                userImageView.layer.borderWidth = 1.5
+            } else {
+                userImageView.layer.borderColor = UIColor.clearColor().CGColor
+                userImageView.layer.borderWidth = 0
+            }
+            
             
         }
     }
