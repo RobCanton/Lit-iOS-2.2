@@ -30,3 +30,15 @@ func formatDateTime(timestamp: String) -> String {
     let date = convertFromTimestamp(timestamp)
     return dateFormatter.stringFromDate(date)
 }
+
+
+func getLikesString(numLikes:Int) -> String{
+    if numLikes == 0 {
+        return ""
+    } else if numLikes == 1 {
+        return "1 like"
+    }
+    
+    return "\(numLikes) likes"
+    
+}

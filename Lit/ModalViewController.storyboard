@@ -48,7 +48,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xhp-UQ-jhK">
-                                <rect key="frame" x="303" y="568" width="52" height="52"/>
+                                <rect key="frame" x="303" y="599" width="52" height="52"/>
                                 <subviews>
                                     <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bgg-la-1cf">
                                         <rect key="frame" x="0.0" y="0.0" width="52" height="52"/>
@@ -96,7 +96,7 @@
                                 </variation>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="23 likes" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MlD-7y-F6G">
-                                <rect key="frame" x="296" y="625" width="59" height="22"/>
+                                <rect key="frame" x="296" y="569" width="59" height="22"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -104,6 +104,7 @@
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstItem="xhp-UQ-jhK" firstAttribute="top" secondItem="MlD-7y-F6G" secondAttribute="bottom" constant="8" id="0lK-XJ-UPH"/>
                             <constraint firstItem="MlD-7y-F6G" firstAttribute="top" secondItem="xhp-UQ-jhK" secondAttribute="bottom" constant="5" id="8XI-iq-UEp"/>
                             <constraint firstAttribute="trailingMargin" secondItem="xhp-UQ-jhK" secondAttribute="trailing" id="CMH-oa-ose"/>
                             <constraint firstItem="MlD-7y-F6G" firstAttribute="top" secondItem="xhp-UQ-jhK" secondAttribute="bottom" constant="5" id="CPA-CE-3ME"/>
@@ -111,6 +112,7 @@
                             <constraint firstAttribute="trailingMargin" secondItem="xhp-UQ-jhK" secondAttribute="trailing" id="E9S-Yx-Hxp"/>
                             <constraint firstAttribute="trailingMargin" secondItem="MZQ-iI-SPU" secondAttribute="trailing" id="GiT-6h-ITp"/>
                             <constraint firstItem="XHY-DZ-v0p" firstAttribute="top" secondItem="U0U-wj-u1A" secondAttribute="top" id="Idd-6H-cUQ"/>
+                            <constraint firstItem="GfA-9t-bT0" firstAttribute="top" secondItem="xhp-UQ-jhK" secondAttribute="bottom" constant="16" id="MS0-nm-Fmd"/>
                             <constraint firstItem="GfA-9t-bT0" firstAttribute="top" secondItem="MlD-7y-F6G" secondAttribute="bottom" constant="10" id="Q1c-17-usQ"/>
                             <constraint firstItem="mbO-g9-TeI" firstAttribute="leading" secondItem="JlU-0u-pfs" secondAttribute="trailing" constant="8" id="TpF-G1-EE8"/>
                             <constraint firstItem="MlD-7y-F6G" firstAttribute="centerY" secondItem="mbO-g9-TeI" secondAttribute="centerY" id="UnK-2V-TBN"/>
@@ -134,14 +136,16 @@
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="hz5-MQ-QkX"/>
-                                <exclude reference="CMH-oa-ose"/>
-                                <exclude reference="E9S-Yx-Hxp"/>
-                                <exclude reference="sod-Ik-YwB"/>
-                                <exclude reference="frf-WG-x0j"/>
                                 <exclude reference="8XI-iq-UEp"/>
+                                <exclude reference="CPA-CE-3ME"/>
                                 <exclude reference="UnK-2V-TBN"/>
                                 <exclude reference="W9v-NF-2ij"/>
                                 <exclude reference="l1X-Su-BAs"/>
+                                <exclude reference="Q1c-17-usQ"/>
+                                <exclude reference="frf-WG-x0j"/>
+                                <exclude reference="CMH-oa-ose"/>
+                                <exclude reference="E9S-Yx-Hxp"/>
+                                <exclude reference="sod-Ik-YwB"/>
                             </mask>
                         </variation>
                     </view>
@@ -152,6 +156,7 @@
                         <outlet property="authorLabel" destination="oyk-VP-ped" id="BdX-tY-eA2"/>
                         <outlet property="imageView" destination="XHY-DZ-v0p" id="pop-sa-Tyn"/>
                         <outlet property="likeBtn" destination="xhp-UQ-jhK" id="eDn-X9-jI6"/>
+                        <outlet property="likesLabel" destination="MlD-7y-F6G" id="kQR-J6-fqA"/>
                         <outlet property="locationLabel" destination="MZQ-iI-SPU" id="CdQ-2k-dQ8"/>
                         <outlet property="timeLabel" destination="mbO-g9-TeI" id="icJ-aY-gW5"/>
                     </connections>

@@ -29,11 +29,13 @@ class StoryItem: NSObject {
     dynamic var image: UIImage?
     dynamic var filePath: NSURL?
     private var author:User?
+    
+    var likes:Int
     var delegate:ItemDelegate?
     
     var isContentLoaded = false
     
-    init(key: String, authorId: String, locationKey:String, downloadUrl: String, contentType: ContentType, dateCreated: Double, length: Double)
+    init(key: String, authorId: String, locationKey:String, downloadUrl: String, contentType: ContentType, dateCreated: Double, length: Double, likes:Int)
     {
         
         self.key          = key
@@ -43,6 +45,7 @@ class StoryItem: NSObject {
         self.contentType  = contentType
         self.dateCreated  = NSDate(timeIntervalSince1970: dateCreated/1000)
         self.length       = length
+        self.likes        = likes
     
         
         super.init()
@@ -80,6 +83,7 @@ class StoryItem: NSObject {
     func getLength() -> Double? {
         return length
     }
+    
     
     func initiateDownload() {
         loadAuthor()

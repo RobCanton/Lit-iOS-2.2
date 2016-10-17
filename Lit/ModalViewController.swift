@@ -31,6 +31,7 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
     @IBOutlet weak var authorImage: UIImageView!
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var likeBtn: UIView!
+    @IBOutlet weak var likesLabel: UILabel!
     
     var delegate:ZoomProtocol!
     var mode:ModalMode = .Location
@@ -94,10 +95,27 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
     
     
     func like(gesture:UITapGestureRecognizer) {
-        let ref = FirebaseService.ref.child("uploads/\(item!.getKey())/likes/\(mainStore.state.userState.uid)")
+        let ref = FirebaseService.ref.child("uploads/\(item!.getKey())")
         if likeStatus == .None {
             if let _ = item {
-                ref.setValue(true)
+                ref.child("/likes/\(mainStore.state.userState.uid)").setValue(true)
+                
+                ref.child("meta/likes").runTransactionBlock({ (currentData: FIRMutableData) -> FIRTransactionResult in
+                    if var numLikes = currentData.value as? Int {
+                        
+                        numLikes += 1
+                        currentData.value = numLikes
+                        
+                        return FIRTransactionResult.successWithValue(currentData)
+                    }
+                    return FIRTransactionResult.successWithValue(currentData)
+                }) { (error, committed, snapshot) in
+                    if let error = error {
+                        print(error.localizedDescription)
+                    }
+                }
+                
+                
             }
             likeStatus = .Liked
             likeBtn.transform = CGAffineTransformMakeScale(1.25, 1.25)
@@ -113,8 +131,23 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
             )
         } else {
             if let _ = item {
-                ref.removeValue()
+                ref.child("/likes/\(mainStore.state.userState.uid)").removeValue()
                 likeStatus = .None
+                
+                ref.child("meta/likes").runTransactionBlock({ (currentData: FIRMutableData) -> FIRTransactionResult in
+                    if var numLikes = currentData.value as? Int {
+                        
+                        numLikes -= 1
+                        currentData.value = numLikes
+                        
+                        return FIRTransactionResult.successWithValue(currentData)
+                    }
+                    return FIRTransactionResult.successWithValue(currentData)
+                }) { (error, committed, snapshot) in
+                    if let error = error {
+                        print(error.localizedDescription)
+                    }
+                }
             }
         }
         
@@ -135,11 +168,11 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
         likeSubView.setImage(UIImage(named: "like"), forState: .Normal)
     }
     
-
     var likesRef: FIRDatabaseReference?
+    var userLikedRef: FIRDatabaseReference?
     func listenForLikes() {
-        likesRef = FirebaseService.ref.child("uploads/\(item!.getKey())/likes/\(mainStore.state.userState.uid)")
-        likesRef!.observeEventType(.Value, withBlock: { snapshot in
+        userLikedRef = FirebaseService.ref.child("uploads/\(item!.getKey())/likes/\(mainStore.state.userState.uid)")
+        userLikedRef!.observeEventType(.Value, withBlock: { snapshot in
             if snapshot.exists() {
                 let liked = snapshot.value! as! Bool
                 if liked {
@@ -149,10 +182,20 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
                 self.likeStatus = .None
             }
         })
+        
+        likesRef = FirebaseService.ref.child("uploads/\(item!.getKey())/meta/likes")
+        likesRef?.observeEventType(.Value, withBlock: { snapshot in
+            if snapshot.exists() {
+                let likes = snapshot.value! as! Int
+                self.item!.likes = likes
+                self.likesLabel.text = getLikesString(self.item!.likes)
+            }
+        })
     }
     
     func stopListeningForLikes() {
         likesRef?.removeAllObservers()
+        userLikedRef?.removeAllObservers()
     }
     
     override func viewDidLoad() {
@@ -188,6 +231,8 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
         authorLabel.layer.opacity = 0
         timeLabel.layer.opacity = 0
         locationLabel.layer.opacity = 0
+        
+        likesLabel.text = getLikesString(item!.likes)
         
         FirebaseService.getUser(item!.getAuthorId(), completionHandler: { _user in
             if let user = _user {

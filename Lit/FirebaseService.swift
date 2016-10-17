@@ -65,10 +65,11 @@ class FirebaseService {
                         "url": downloadURL!.absoluteString,
                         "contentType": contentTypeStr,
                         "dateCreated": [".sv": "timestamp"],
-                        "length": 4
+                        "length": 4,
+                        "likes": 0
 
                     ]
-                    dataRef.setValue(obj, withCompletionBlock: { error, _ in
+                    dataRef.child("meta").setValue(obj, withCompletionBlock: { error, _ in
                         if error == nil {
                             let locationRef = ref.child("locations/\(city.getKey())/\(activeLocationKey)/uploads/\(dataRef.key)")
                             locationRef.setValue([dataRef.key:true])
@@ -113,7 +114,8 @@ class FirebaseService {
                     "url": downloadURL!.absoluteString,
                     "contentType": contentTypeStr,
                     "dateCreated": [".sv": "timestamp"],
-                    "length": length
+                    "length": length,
+                    "likes": 0
                     ])
             }
         }
@@ -130,7 +132,7 @@ class FirebaseService {
             postRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
                 
                 if snapshot.exists() {
-                    let key = snapshot.key
+                    let key = postKey
                     let authorId = snapshot.value!["author"] as! String
                     let locationKey = snapshot.value!["location"] as! String
                     let downloadUrl = snapshot.value!["url"] as! String
@@ -145,7 +147,13 @@ class FirebaseService {
                     let dateCreated = snapshot.value!["dateCreated"] as! Double
                     let length = snapshot.value!["length"] as! Double
                     
-                    let storyItem = StoryItem(key: key, authorId: authorId,locationKey: locationKey, downloadUrl: downloadUrl, contentType: contentType, dateCreated: dateCreated, length: length)
+                    var likes = 0
+                    if snapshot.hasChild("likes") {
+                        likes = snapshot.value!["likes"] as! Int
+                    }
+                    
+                    
+                    let storyItem = StoryItem(key: key, authorId: authorId,locationKey: locationKey, downloadUrl: downloadUrl, contentType: contentType, dateCreated: dateCreated, length: length, likes: likes)
                     story.append(storyItem)
                 }
                 
