@@ -18,6 +18,10 @@ protocol ZoomProtocol {
     func Reanimate()
 }
 
+enum LikeStatus {
+    case None, Liked
+}
+
 class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransitionZoomable {
     
     var item:StoryItem?
@@ -27,7 +31,6 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
     @IBOutlet weak var authorImage: UIImageView!
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var likeBtn: UIView!
-    @IBOutlet weak var dislikeBtn: UIView!
     
     var delegate:ZoomProtocol!
     var mode:ModalMode = .Location
@@ -35,8 +38,21 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
     var likeTap:UITapGestureRecognizer!
     
     var likeBtnTap: UITapGestureRecognizer!
-    var dislikeBtnTap:UITapGestureRecognizer!
     
+    var likeStatus = LikeStatus.None
+        {
+        didSet {
+            switch likeStatus{
+            case .Liked:
+                setLike()
+                break
+            case .None:
+                resetLike()
+                break
+                
+            }
+        }
+    }
     
     deinit {
 
@@ -57,7 +73,6 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
             self.timeLabel.layer.opacity = 1.0
             self.locationLabel.layer.opacity = 1.0
             self.likeBtn.layer.opacity = 1.0
-            self.dislikeBtn.layer.opacity = 1.0
         })
     }
 
@@ -79,71 +94,45 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
     
     
     func like(gesture:UITapGestureRecognizer) {
-        print("Liked photo!")
-        if let _ = item {
-            let ref = FirebaseService.ref.child("uploads/\(item!.getKey())/likes/\(mainStore.state.userState.uid)")
-            ref.setValue(true)
+        let ref = FirebaseService.ref.child("uploads/\(item!.getKey())/likes/\(mainStore.state.userState.uid)")
+        if likeStatus == .None {
+            if let _ = item {
+                ref.setValue(true)
+            }
+            likeStatus = .Liked
+            likeBtn.transform = CGAffineTransformMakeScale(1.25, 1.25)
+            UIView.animateWithDuration(0.3,
+                                       delay: 0,
+                                       usingSpringWithDamping: CGFloat(0.20),
+                                       initialSpringVelocity: CGFloat(6.0),
+                                       options: UIViewAnimationOptions.AllowUserInteraction,
+                                       animations: {
+                                        self.likeBtn.transform = CGAffineTransformIdentity
+                },
+                                       completion: { Void in()  }
+            )
+        } else {
+            if let _ = item {
+                ref.removeValue()
+                likeStatus = .None
+            }
         }
-        setLike()
-        likeBtn.transform = CGAffineTransformMakeScale(1.25, 1.25)
-        UIView.animateWithDuration(0.3,
-                                   delay: 0,
-                                   usingSpringWithDamping: CGFloat(0.20),
-                                   initialSpringVelocity: CGFloat(6.0),
-                                   options: UIViewAnimationOptions.AllowUserInteraction,
-                                   animations: {
-                                    self.likeBtn.transform = CGAffineTransformIdentity
-            },
-                                   completion: { Void in()  }
-        )
+        
+
   
     }
     
-    func dislike(gesture:UITapGestureRecognizer) {
-        if let _ = item {
-            let ref = FirebaseService.ref.child("uploads/\(item!.getKey())/likes/\(mainStore.state.userState.uid)")
-            ref.setValue(false)
-        }
-        setDislike()
-        dislikeBtn.transform = CGAffineTransformMakeScale(1.25, 1.25)
-        UIView.animateWithDuration(0.3,
-                                   delay: 0,
-                                   usingSpringWithDamping: CGFloat(0.20),
-                                   initialSpringVelocity: CGFloat(6.0),
-                                   options: UIViewAnimationOptions.AllowUserInteraction,
-                                   animations: {
-                                    self.dislikeBtn.transform = CGAffineTransformIdentity
-            },
-                                   completion: { Void in()  }
-        )
-
-    }
-
     func setLike() {
         likeBtn.backgroundColor = accentColor
         let subview = likeBtn.subviews[0] as! UIButton
         subview.setImage(UIImage(named: "like_filled"), forState: .Normal)
-        resetDislike()
         
-    }
-
-    func setDislike() {
-        dislikeBtn.backgroundColor = errorColor
-        let subview = dislikeBtn.subviews[0] as! UIButton
-        subview.setImage(UIImage(named: "dislike_filled"), forState: .Normal)
-        resetLike()
     }
     
     func resetLike() {
         likeBtn.backgroundColor = UIColor(white: 0.15, alpha: 1.0)
         let likeSubView = likeBtn.subviews[0] as! UIButton
         likeSubView.setImage(UIImage(named: "like"), forState: .Normal)
-    }
-    
-    func resetDislike() {
-        dislikeBtn.backgroundColor = UIColor(white: 0.15, alpha: 1.0)
-        let dislikeSubView = dislikeBtn.subviews[0] as! UIButton
-        dislikeSubView.setImage(UIImage(named: "dislike"), forState: .Normal)
     }
     
 
@@ -154,13 +143,10 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
             if snapshot.exists() {
                 let liked = snapshot.value! as! Bool
                 if liked {
-                    self.setLike()
-                } else {
-                    self.setDislike()
+                    self.likeStatus = .Liked
                 }
             } else {
-                self.resetLike()
-                self.resetDislike()
+                self.likeStatus = .None
             }
         })
     }
@@ -176,15 +162,10 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
         likeTap = UITapGestureRecognizer(target: self, action: #selector(like))
         
         likeBtnTap = UITapGestureRecognizer(target: self, action: #selector(like))
-        dislikeBtnTap = UITapGestureRecognizer(target: self, action: #selector(dislike))
-        
         likeTap.numberOfTapsRequired = 2
         
         likeBtn.layer.cornerRadius = likeBtn.frame.width/2
-        dislikeBtn.layer.cornerRadius = dislikeBtn.frame.width/2
-        
         likeBtn.addGestureRecognizer(likeBtnTap)
-        dislikeBtn.addGestureRecognizer(dislikeBtnTap)
         
         imageView.userInteractionEnabled = true
         imageView.addGestureRecognizer(likeTap)
@@ -231,7 +212,6 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
         self.timeLabel.layer.opacity = 0
         self.locationLabel.layer.opacity = 0
         self.likeBtn.layer.opacity = 0
-        self.dislikeBtn.layer.opacity = 0
 
     }
     

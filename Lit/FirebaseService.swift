@@ -8,7 +8,6 @@
 
 import Firebase
 import ReSwift
-import ReSwiftRouter
 import IngeoSDK
 import AVFoundation
 
@@ -54,7 +53,7 @@ class FirebaseService {
             metadata.contentType = contentTypeStr
             
             // Upload file and metadata to the object 'images/mountains.jpg'
-            let uploadTask = storageRef.child("user_uploads/\(dataRef.key))").putData(data, metadata: metadata) { metadata, error in
+            let uploadTask = storageRef.child("user_uploads/\(dataRef.key)/meta)").putData(data, metadata: metadata) { metadata, error in
                 if (error != nil) {
                     // Uh-oh, an error occurred!
                 } else {

@@ -54,7 +54,6 @@ class CreateProfileHeaderView: UIView {
         
         friendBtnTap = UITapGestureRecognizer(target: self, action: #selector(friendBtnTapped))
         messageBtnTap = UITapGestureRecognizer(target: self, action: #selector(messageBtnTapped))
-
     }
     
     func setUsername(name:String) {

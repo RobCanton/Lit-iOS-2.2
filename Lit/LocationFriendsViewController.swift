@@ -25,7 +25,6 @@ class LocationFriendsViewController: UITableViewController {
         super.viewDidLoad()
         
         tableView.backgroundColor = UIColor.blackColor()
-        
         tableView.dataSource = self
         tableView.delegate = self
         
@@ -44,7 +43,6 @@ class LocationFriendsViewController: UITableViewController {
         
         visitors = [String]()
         mainStore.state.friends.forEach({ friend in
-            print("FRIEND: \(friend)")
             visitors.append(friend)
         })
         

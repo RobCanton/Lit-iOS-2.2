@@ -30,6 +30,42 @@ protocol PopUpProtocolDelegate {
 
 class CameraViewController: UIViewController, UIImagePickerControllerDelegate, AVCaptureFileOutputRecordingDelegate {
     
+    var interactor:Interactor? = nil
+    
+    func handlePanGesture(sender: UIPanGestureRecognizer) {
+        let percentThreshold:CGFloat = 0.3
+        
+        // convert y-position to downward pull progress (percentage)
+        let translation = sender.translationInView(view)
+        let verticalMovement = translation.y / view.bounds.height
+        let downwardMovement = fmaxf(Float(verticalMovement), 0.0)
+        let downwardMovementPercent = fminf(downwardMovement, 1.0)
+        let progress = CGFloat(downwardMovementPercent)
+        
+        print(progress)
+        
+        guard let interactor = interactor else { return }
+        
+        print("wah")
+        switch sender.state {
+        case .Began:
+            interactor.hasStarted = true
+            dismissViewControllerAnimated(true, completion: nil)
+        case .Changed:
+            interactor.shouldFinish = progress > percentThreshold
+            interactor.updateInteractiveTransition(progress)
+        case .Cancelled:
+            interactor.hasStarted = false
+            interactor.cancelInteractiveTransition()
+        case .Ended:
+            interactor.hasStarted = false
+            interactor.shouldFinish
+                ? interactor.finishInteractiveTransition()
+                : interactor.cancelInteractiveTransition()
+        default:
+            break
+        }
+    }
     
     var captureSession: AVCaptureSession?
     var stillImageOutput: AVCaptureStillImageOutput?
@@ -47,7 +83,11 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     var progress : CGFloat! = 0
     
     override func prefersStatusBarHidden() -> Bool {
-        return true
+        return false
+    }
+    
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return .LightContent
     }
     
     var cameraState:CameraState = .Initiating
@@ -182,6 +222,9 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        var panGesture = UIPanGestureRecognizer(target: self, action:("handlePanGesture:"))
+        view.addGestureRecognizer(panGesture)
         
         cameraView.frame = self.view.frame
         

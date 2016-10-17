@@ -64,6 +64,8 @@
 		B026A84F1DAD9D3400DD2CCD /* UserProfileBodyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B026A84D1DAD9D3400DD2CCD /* UserProfileBodyViewController.xib */; };
 		B026A8531DADC61700DD2CCD /* PostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B026A8511DADC61700DD2CCD /* PostsViewController.swift */; };
 		B026A8541DADC61700DD2CCD /* PostsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B026A8521DADC61700DD2CCD /* PostsViewController.xib */; };
+		B0321EC21DB52BEB00AD4C53 /* DummyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0321EC11DB52BEB00AD4C53 /* DummyViewController.swift */; };
+		B0321EC41DB5337900AD4C53 /* DismissAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0321EC31DB5337900AD4C53 /* DismissAnimator.swift */; };
 		B032C9921DA807C000811779 /* SetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B032C9901DA807C000811779 /* SetupViewController.swift */; };
 		B032C9931DA807C000811779 /* SetupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B032C9911DA807C000811779 /* SetupViewController.xib */; };
 		B03DED101DAED40D0062357A /* UserProfileControlBarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B03DED0F1DAED40D0062357A /* UserProfileControlBarView.xib */; };
@@ -183,6 +185,8 @@
 		B026A84D1DAD9D3400DD2CCD /* UserProfileBodyViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserProfileBodyViewController.xib; sourceTree = "<group>"; };
 		B026A8511DADC61700DD2CCD /* PostsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsViewController.swift; sourceTree = "<group>"; };
 		B026A8521DADC61700DD2CCD /* PostsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostsViewController.xib; sourceTree = "<group>"; };
+		B0321EC11DB52BEB00AD4C53 /* DummyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DummyViewController.swift; sourceTree = "<group>"; };
+		B0321EC31DB5337900AD4C53 /* DismissAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissAnimator.swift; sourceTree = "<group>"; };
 		B032C9901DA807C000811779 /* SetupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetupViewController.swift; sourceTree = "<group>"; };
 		B032C9911DA807C000811779 /* SetupViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SetupViewController.xib; sourceTree = "<group>"; };
 		B03DED0F1DAED40D0062357A /* UserProfileControlBarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserProfileControlBarView.xib; sourceTree = "<group>"; };
@@ -279,6 +283,7 @@
 				B09D5FCB1DA57C80004A188E /* ARNImageZoomTransition.swift */,
 				B09D5FCC1DA57C80004A188E /* ARNModalImageTransitionViewController.swift */,
 				B0254F791DB07F080082D898 /* helper.swift */,
+				B0321EC31DB5337900AD4C53 /* DismissAnimator.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -465,6 +470,7 @@
 				B0254F6E1DAFDFC10082D898 /* Messages */,
 				B087E9BA1D9B435C0079E2BF /* Popup */,
 				B026A8501DAD9D3800DD2CCD /* UserProfile */,
+				B0321EC11DB52BEB00AD4C53 /* DummyViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -705,6 +711,7 @@
 				B09D5FCD1DA57C80004A188E /* ARNImageTransitionNavigationController.swift in Sources */,
 				B032C9921DA807C000811779 /* SetupViewController.swift in Sources */,
 				76D2E46B1D7F50AF00B7C939 /* City.swift in Sources */,
+				B0321EC41DB5337900AD4C53 /* DismissAnimator.swift in Sources */,
 				B0FF11471D3EB32100D709CE /* LoginViewController.swift in Sources */,
 				76136D3F1D493786003DB433 /* Location.swift in Sources */,
 				765036281D59170E0062BCF0 /* StoryItem.swift in Sources */,
@@ -766,6 +773,7 @@
 				B026A8531DADC61700DD2CCD /* PostsViewController.swift in Sources */,
 				B09D5FD31DA57CE9004A188E /* ModalViewController.swift in Sources */,
 				76EE2B941D87653700EDB4CB /* ActivityViewController.swift in Sources */,
+				B0321EC21DB52BEB00AD4C53 /* DummyViewController.swift in Sources */,
 				B03DED121DAED45A0062357A /* UserProfileControlBar.swift in Sources */,
 				76EC36041D58EB600056D4CF /* CircleProgressView.swift in Sources */,
 				B05ABD041D41211100364322 /* MainViewController.swift in Sources */,
@@ -895,7 +903,7 @@
 				);
 				INFOPLIST_FILE = Lit/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.rcanton.Lit;
+				PRODUCT_BUNDLE_IDENTIFIER = com.robcanton.lit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -913,7 +921,7 @@
 				);
 				INFOPLIST_FILE = Lit/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.rcanton.Lit;
+				PRODUCT_BUNDLE_IDENTIFIER = com.robcanton.lit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

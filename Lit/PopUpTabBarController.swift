@@ -8,17 +8,17 @@
 
 import Foundation
 import UIKit
-import LNPopupController
 import ReSwift
 import Firebase
 
-class PopUpTabBarController: UITabBarController, StoreSubscriber, PopUpProtocolDelegate {
+class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarControllerDelegate {
     
-    var popupVC:PopupViewController!
-    
+    let tabBarHeight:CGFloat = 60
     var activeLocation:Location?
     
+    var array = [UIView]()
     
+    var selectedItem = 0
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         mainStore.subscribe(self, selector: { state in
@@ -39,7 +39,7 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, PopUpProtocolD
                 if key == location.getKey() {
                     print("PopUpTabBarController: New Active Location \(location.getKey())")
                     activeLocation = location
-                    presentPopupBar()
+                    // ACTIVE LOCATION SET
                 }
             }
         }
@@ -79,135 +79,94 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, PopUpProtocolD
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        popupVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("PopupViewController") as! PopupViewController
-        popupVC.view.backgroundColor = UIColor.clearColor()
-        popupVC.popupBar?.tintColor = UIColor.whiteColor()
-        popupVC.cameraViewController.delegate = self
-        
-        
-        
-        
-    }
-    
-    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
-        guard let change = change else {
-            return
-        }
-        
-        if let key = keyPath {
-            if key == "center" {
-                if let newCenter = change["new"]?.CGPointValue() {
-                    barTitleView.alpha = max(0, -0.7 + (max(0,newCenter.y) / self.view.frame.height) * 1.3)
-                    popupVC.scrollView.alpha =  1 - max(0, -0.2 + (max(0,newCenter.y) / self.view.frame.height) * 1.8)
-                }
-            } else if key == "frame" {
-                if let newFrame = change["new"]?.CGRectValue() {
-                    if (newFrame.origin.y > 0) {
-                        barTitleView.alpha = 1
-                        popupVC.scrollView.alpha = 0
-                    } else {
-                        barTitleView.alpha = 0
-                        popupVC.scrollView.alpha = 1
-                        
-                    }
-                }
+        delegate = self
+        tabBarController?.delegate = self
+        //self.tabBarController?.tabBar.shadowImage = UIImage()
+        self.tabBar.setValue(true, forKey: "_hidesShadow")
+        let itemWidth = tabBar.frame.width / CGFloat(tabBar.items!.count)
+        for itemIndex in 0...tabBar.items!.count
+        {
+            let bgView = UIView(frame: CGRectMake(itemWidth * CGFloat(itemIndex), 0, itemWidth, tabBarHeight))
+            if itemIndex == 2
+            {
+                bgView.backgroundColor = UIColor(red: 1, green: 175/255, blue: 0, alpha: 0.5)
+                //bgView.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.15)
+                bgView.alpha = 1.0
             }
-        }
-        
-        
-        
-
-    }
-    
-    let barTitleView = UIView()
-    let barTitle = UILabel()
-    let progressView = UIProgressView()
-    func presentPopupBar() {
-        
-        //"You are near \(activeLocation!.getName())"popupVC.popupItem.title = "You are near \(activeLocation!.getName())"
-
-        self.presentPopupBarWithContentViewController(popupVC, animated: true, completion: nil)
-        self.openPopupAnimated(true, completion: {})
-//        popupBar!.titleTextAttributes = [
-//                NSFontAttributeName : UIFont(name: "Avenir", size: 20.0)!,
-//        ]
-        popupBar?.barTintColor = UIColor.clearColor()
-        popupBar?.backgroundImage = UIImage()
-        popupBar?.tintColor = accentColor
-        let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .Dark))
-        let bounds = popupBar!.bounds
-        blurView.frame = CGRect(x: 0, y: -bounds.height / 2, width: bounds.width, height: bounds.height * 1.5)
-
-        popupBar?.addSubview(blurView)
-        popupBar?.layer.borderColor = UIColor.clearColor().CGColor
-        popupBar?.layer.borderWidth = 0.0
-        
-        barTitle.frame = blurView.frame
-        barTitle.textAlignment = .Center
-        barTitle.numberOfLines = 2
-        
-        
-        progressView.frame = CGRect(x: 0, y: bounds.height - 1, width: bounds.width, height: 0.5)
-        progressView.progress = 0.0
-        progressView.trackTintColor = UIColor.clearColor()
-        barTitleView.addSubview(progressView)
-        
-        barTitle.styleLocationTitleWithPreText("you are at\n\(activeLocation!.getName().lowercaseString)", size1: 24.0, size2: 11.0)
-
-        barTitleView.addSubview(barTitle)
-        popupBar?.addSubview(barTitleView)
-        popupBar!.addObserver(self, forKeyPath: "center", options: .New, context: nil)
-        popupBar!.addObserver(self, forKeyPath: "frame", options: .New, context: nil)
-
-    
-    }
-    
-    
-    
-    
-    func presentCamera() {
-        popupVC.movetoCamera()
-        self.openPopupAnimated(true, completion: {})
-    }
-    
-    func presentVisitors() {
-        popupVC.movetoVisitors()
-        self.openPopupAnimated(true, completion: {})
-    }
-    
-    
-    func close(uploadTask:FIRStorageUploadTask, outputUrl: NSURL?) {
-        
-        self.closePopupAnimated(true, completion: nil)
-        
-        uploadTask.observeStatus(.Progress) { snapshot in
-            if let progress = snapshot.progress {
-                let percentComplete = Float(progress.completedUnitCount) / Float(progress.totalUnitCount)
-                print("Progress: \(percentComplete)")
-                self.progressView.setProgress(percentComplete, animated: true)
-                //self.barTitle.text = "Uploading - \(round(min(100, percentComplete * 100)))%"
-                self.barTitle.styleLocationTitleWithPreText("uploading to\n\(self.activeLocation!.getName().lowercaseString)", size1: 24.0, size2: 11.0)
+            else
+            {
+                bgView.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.15)
+                bgView.alpha = 0
             }
+            
+            tabBar.insertSubview(bgView, atIndex: 0)
+            array.append(bgView)
         }
         
-        uploadTask.observeStatus(.Success) { snapshot in
-            self.popupBar?.popupItem?.progress = 1.0
-            NSTimer.scheduledTimerWithTimeInterval(1.25, target: self, selector: #selector(self.resetUploadBar), userInfo: nil, repeats: false)
-            if let url = outputUrl {
-                let fileManager = NSFileManager.defaultManager()
-                do {
-                    try fileManager.removeItemAtURL(url)
-                }
-                catch let error as NSError {
-                    print("Ooops! Something went wrong: \(error)")
-                }
-            }
+        array[0].alpha = 1
+        
+//        let cameraItem = tabBar.items![2]
+
+
+    }
+    
+    override func viewWillLayoutSubviews() {
+        var tabFrame:CGRect = self.tabBar.frame
+        tabFrame.size.height = tabBarHeight
+        tabFrame.origin.y = self.view.frame.size.height - tabBarHeight;
+        self.tabBar.frame = tabFrame
+    }
+    
+    override func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem) {
+        
+        let itemTag = item.tag
+        highlightItem(itemTag)
+    }
+    
+    internal func highlightItem(itemTag:Int)
+    {
+
+        if itemTag == 2
+        {
+            
+            self.performSegueWithIdentifier("toCamera", sender: self)
+            
+        } else {
+            let prevItem = array[selectedItem]
+            selectedItem = itemTag
+            UIView.animateWithDuration(0.15, animations: {
+                prevItem.alpha = 0
+                self.array[itemTag].alpha = 1.0
+            })
+        }
+        
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if let destinationViewController = segue.destinationViewController as? CameraViewController {
+            destinationViewController.transitioningDelegate = self
+            destinationViewController.interactor = interactor
         }
     }
     
-    func resetUploadBar() {
-        barTitle.styleLocationTitleWithPreText("you are at\n\(activeLocation!.getName().lowercaseString)", size1: 24.0, size2: 11.0)
-        self.progressView.progress = 0.0
+    func tabBarController(tabBarController: UITabBarController, shouldSelectViewController viewController: UIViewController) -> Bool {
+        print(selectedIndex)
+        if viewController.isKindOfClass(DummyViewController) {
+            return false
+        }
+        return true
+    }
+    
+    let interactor = Interactor()
+    
+}
+
+extension PopUpTabBarController: UIViewControllerTransitioningDelegate {
+    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return DismissAnimator()
+    }
+    
+    func interactionControllerForDismissal(animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+        return interactor.hasStarted ? interactor : nil
     }
 }
