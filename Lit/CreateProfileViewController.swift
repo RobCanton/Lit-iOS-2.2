@@ -202,15 +202,16 @@ class CreateProfileViewController: UIViewController, UITextFieldDelegate {
                 smallTask.observeStatus(.Success, handler: { smallTaskSnapshot in
                     if let largeTask = self.uploadLargeProfilePicture() {
                         largeTask.observeStatus(.Success, handler: { largeTaskSnapshot in
-                            let privateRef = FIRDatabase.database().reference().child("users_private/\(user.uid)")
+                            let privateRef = FIRDatabase.database().reference().child("users/private/\(user.uid)")
                             privateRef.setValue(["fullname":fullname], withCompletionBlock: {error, ref in
                             
                                 if error == nil {
-                                    let publicRef = FIRDatabase.database().reference().child("users_public/\(user.uid)")
+                                    let publicRef = FIRDatabase.database().reference().child("users/profile/\(user.uid)")
                                     publicRef.setValue([
                                         "username":username,
                                         "smallProfilePicURL": smallTaskSnapshot.metadata!.downloadURL()!.absoluteString,
-                                        "largeProfilePicURL": largeTaskSnapshot.metadata!.downloadURL()!.absoluteString
+                                        "largeProfilePicURL": largeTaskSnapshot.metadata!.downloadURL()!.absoluteString,
+                                        "numFriends":0
                                         ], withCompletionBlock: {error, ref in
                                             if error == nil {
                                                 self.getNewUser()
@@ -231,7 +232,7 @@ class CreateProfileViewController: UIViewController, UITextFieldDelegate {
     func checkUsernameAvailability() {
         print("checkUsernameAvailability")
         
-        let ref = FIRDatabase.database().reference().child("users_public")
+        let ref = FIRDatabase.database().reference().child("users/profile")
         ref.queryOrderedByChild("username").queryEqualToValue(usernameField.text!).observeSingleEventOfType(.Value, withBlock: { snapshot in
             if snapshot.exists() {
                 self.usernameTaken()

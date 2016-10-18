@@ -39,17 +39,13 @@ class MainViewController: UICollectionViewController, StoreSubscriber, CLLocatio
     }
     @IBAction func nearMeTapped(sender: UIBarButtonItem) {
         
-        FirebaseService.signOut()
-    
-        
+        mainStore.dispatch(ViewUser(uid: mainStore.state.userState.uid))
     }
     @IBOutlet weak var nearMeButton: UIBarButtonItem!
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        mainStore.subscribe(self, selector: { state in
-            state.locations
-        })
+        mainStore.subscribe(self)
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -61,14 +57,16 @@ class MainViewController: UICollectionViewController, StoreSubscriber, CLLocatio
         return false
     }
     
-    func newState(state: [Location]?) {
+    func newState(state: AppState) {
         print("MainViewController: New State")
-        if state != nil{
-            locations = state!
-            locations.sortInPlace({ $0.getVisitorsCount() > $1.getVisitorsCount() })
-        }
+        locations = state.locations
+        locations.sortInPlace({ $0.getVisitorsCount() > $1.getVisitorsCount() })
 
         collectionView?.reloadData()
+        
+        if state.viewUser != "" {
+            push(state.viewUser)
+        }
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -109,9 +107,9 @@ class MainViewController: UICollectionViewController, StoreSubscriber, CLLocatio
     
     func addSearchBar(){
         if self.searchBar == nil{
-            self.searchBarBoundsY = (self.navigationController?.navigationBar.frame.size.height)! + UIApplication.sharedApplication().statusBarFrame.size.height
+            self.searchBarBoundsY = screenStatusBarHeight
             
-            self.searchBar = UISearchBar(frame: CGRectMake(0,0, UIScreen.mainScreen().bounds.size.width, 44))
+            self.searchBar = UISearchBar(frame: CGRectMake(0,screenStatusBarHeight, UIScreen.mainScreen().bounds.size.width, 44))
             self.searchBar!.searchBarStyle       = UISearchBarStyle.Minimal
             self.searchBar!.tintColor            = UIColor.whiteColor()
             self.searchBar!.barTintColor         = UIColor.whiteColor()
@@ -267,11 +265,19 @@ extension MainViewController {
 
             mainStore.dispatch(ViewLocationDetail(locationKey: location.getKey()))
             mainStore.unsubscribe(self)
-            let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LocationViewController")
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let controller = storyboard.instantiateViewControllerWithIdentifier("LocViewController") as! LocViewController
             navigationController?.navigationBar.tintColor = UIColor.whiteColor()
             navigationController?.pushViewController(controller, animated: true)
             
         }
     }
+    
+    func push(uid:String) {
+        let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("UserProfileViewController")
+        navigationController?.pushViewController(controller, animated: true)
+    }
+    
+    
     
 }

@@ -22,8 +22,8 @@ class Listeners {
     static func listenToFriends() {
         if !listeningToFriends {
             listeningToFriends = true
-            
-            let friendsRef = ref.child("users_public/\(mainStore.state.userState.uid)/friends")
+            let uid = mainStore.state.userState.uid
+            let friendsRef = ref.child("users/social/friends/\(uid)")
             
             /**
              Listen for a Friend Added
@@ -88,8 +88,8 @@ class Listeners {
     static func listenToFriendRequests() {
         if !listeningToFriendRequests {
             listeningToFriendRequests = true
-            
-            let requestsInRef = ref.child("users_public/\(mainStore.state.userState.uid)/friendRequestsIn")
+            let uid = mainStore.state.userState.uid
+            let requestsInRef = ref.child("users/social/requestsIn/\(uid)")
             
             /**
              Listen for a Friend Request In Added
@@ -97,6 +97,7 @@ class Listeners {
             requestsInRef.observeEventType(.ChildAdded, withBlock: { snapshot in
                 if snapshot.exists() {
                     if let seen = snapshot.value! as? Bool {
+                        print("Friend request in!")
                         mainStore.dispatch(AddFriendRequestIn(uid: snapshot.key, seen: seen))
                     }
 
@@ -129,7 +130,7 @@ class Listeners {
                 }
             })
             
-            let requestsOutRef = ref.child("users_public/\(mainStore.state.userState.uid)/friendRequestsOut")
+            let requestsOutRef = ref.child("users/social/requestsOut/\(uid)")
             
             /**
              Listen for a Friend Request Out Added
@@ -161,7 +162,7 @@ class Listeners {
         if !listeningToConversations {
             listeningToConversations = true
             let uid = mainStore.state.userState.uid
-            let conversationsRef = ref.child("users_public/\(uid)/conversations")
+            let conversationsRef = ref.child("users/conversations/\(uid)")
             
             conversationsRef.observeEventType(.ChildAdded, withBlock: { snapshot in
             

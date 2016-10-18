@@ -55,12 +55,8 @@ class ActivityFriendRequestCell: UITableViewCell {
     }
     @IBAction func confirmTapped(sender: AnyObject) {
         print("Confirm")
-        let uid = mainStore.state.userState.uid
+        FirebaseService.acceptFriendRequest(friend_uid)
 
-        FirebaseService.ref.child("users/\(uid)/friendRequestsIn/\(friend_uid)").removeValue()
-        FirebaseService.ref.child("users/\(friend_uid)/friendRequestsOut/\(uid)").removeValue()
-        FirebaseService.ref.child("users/\(uid)/friends/\(friend_uid)").setValue(true)
-        FirebaseService.ref.child("users/\(friend_uid)/friends/\(uid)").setValue(true)
     }
     @IBAction func deleteTapped(sender: AnyObject) {
         print("Delete")

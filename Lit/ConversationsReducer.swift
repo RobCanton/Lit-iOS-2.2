@@ -21,7 +21,6 @@ func findConversation(key:String) -> Conversation? {
 func userHasSeenMessage(seen:NSDate?, message:JSQMessage?) -> Bool{
     if seen != nil && message != nil {
         let diff = seen!.timeIntervalSinceDate(message!.date)
-        print("DIFF: \(diff)")
         if diff < 0 {
             return false
         }

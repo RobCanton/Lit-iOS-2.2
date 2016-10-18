@@ -56,9 +56,9 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
             }
         }
         if count > 0 {
-            tabBar.items?[1].badgeValue = "\(count)"
+            tabBar.items?[3].badgeValue = "\(count)"
         } else {
-            tabBar.items?[1].badgeValue = nil
+            tabBar.items?[3].badgeValue = nil
         }
     }
     
@@ -71,9 +71,9 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
         }
         
         if count > 0 {
-            tabBar.items?[2].badgeValue = "\(count)"
+            tabBar.items?[1].badgeValue = "\(count)"
         } else {
-            tabBar.items?[2].badgeValue = nil
+            tabBar.items?[1].badgeValue = nil
         }
     }
     
@@ -81,7 +81,11 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
         super.viewDidLoad()
         delegate = self
         tabBarController?.delegate = self
-        //self.tabBarController?.tabBar.shadowImage = UIImage()
+        tabBar.backgroundImage = UIImage()
+        tabBar.backgroundColor = UIColor.clearColor()
+        tabBar.shadowImage = UIImage()
+        
+        
         self.tabBar.setValue(true, forKey: "_hidesShadow")
         let itemWidth = tabBar.frame.width / CGFloat(tabBar.items!.count)
         for itemIndex in 0...tabBar.items!.count
@@ -91,11 +95,11 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
             {
                 bgView.backgroundColor = UIColor(red: 1, green: 175/255, blue: 0, alpha: 0.5)
                 //bgView.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.15)
-                bgView.alpha = 1.0
+                bgView.alpha = 0
             }
             else
             {
-                bgView.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.15)
+                bgView.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.1)
                 bgView.alpha = 0
             }
             
@@ -105,7 +109,11 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
         
         array[0].alpha = 1
         
-//        let cameraItem = tabBar.items![2]
+        let bgView = UIVisualEffectView(effect: UIBlurEffect(style: .Dark))
+        bgView.frame = CGRectMake(0,0,self.view.frame.width,tabBarHeight)
+        
+        tabBar.addSubview(bgView)
+        tabBar.sendSubviewToBack(bgView)
 
 
     }

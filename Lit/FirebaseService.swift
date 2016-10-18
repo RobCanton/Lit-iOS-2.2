@@ -23,13 +23,20 @@ class FirebaseService {
     
     
     static func getUser(uid:String, completionHandler: (user:User?)->()) {
-        ref.child("users_public/\(uid)").observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+        ref.child("users/profile/\(uid)").observeSingleEventOfType(.Value, withBlock: { (snapshot) in
             var user:User?
             if snapshot.exists() {
-                let displayName = snapshot.value!["username"] as! String
-                let imageUrl    = snapshot.value!["smallProfilePicURL"] as! String
+                let displayName      = snapshot.value!["username"] as! String
+                let imageUrl         = snapshot.value!["smallProfilePicURL"] as! String
                 let largeImageUrl    = snapshot.value!["largeProfilePicURL"] as! String
-                user = User(uid: uid, displayName: displayName, imageUrl: imageUrl, largeImageUrl: largeImageUrl)
+                let numFriends       = snapshot.value!["numFriends"] as! Int
+                
+//                var friends = [String:Bool]()
+//                if snapshot.hasChild("friends") {
+//                    friends = snapshot.value!["friends"] as! [String:Bool]
+//                    print("Friends: \(friends)")
+//                }
+                user = User(uid: uid, displayName: displayName, imageUrl: imageUrl, largeImageUrl: largeImageUrl, numFriends: numFriends)
             }
 
             completionHandler(user: user)
@@ -53,7 +60,7 @@ class FirebaseService {
             metadata.contentType = contentTypeStr
             
             // Upload file and metadata to the object 'images/mountains.jpg'
-            let uploadTask = storageRef.child("user_uploads/\(dataRef.key)/meta)").putData(data, metadata: metadata) { metadata, error in
+            let uploadTask = storageRef.child("user_uploads/\(dataRef.key))").putData(data, metadata: metadata) { metadata, error in
                 if (error != nil) {
                     // Uh-oh, an error occurred!
                 } else {
@@ -71,9 +78,9 @@ class FirebaseService {
                     ]
                     dataRef.child("meta").setValue(obj, withCompletionBlock: { error, _ in
                         if error == nil {
-                            let locationRef = ref.child("locations/\(city.getKey())/\(activeLocationKey)/uploads/\(dataRef.key)")
+                            let locationRef = ref.child("locations/\(city.getKey())/\(activeLocationKey)/uploads")
                             locationRef.setValue([dataRef.key:true])
-                            let userRef = ref.child("users_public/\(mainStore.state.userState.uid)/uploads/\(dataRef.key)")
+                            let userRef = ref.child("users/uploads/\(mainStore.state.userState.uid)/\(dataRef.key)")
                             userRef.setValue([dataRef.key:true])
                         }
                     })
@@ -102,7 +109,7 @@ class FirebaseService {
         let data = NSData(contentsOfURL: url)
         
         // Upload file and metadata to the object 'images/mountains.jpg'
-        let uploadTask = storageRef.child("user_uploads/\(city.getKey())/\(saveRef.key))").putData(data!, metadata: metadata) { metadata, error in
+        let uploadTask = storageRef.child("user_uploads/\(saveRef.key))").putData(data!, metadata: metadata) { metadata, error in
             if (error != nil) {
                 // Uh-oh, an error occurred!
                 saveRef.removeValue()
@@ -121,6 +128,24 @@ class FirebaseService {
         }
         
         return uploadTask
+    }
+    
+    static func deletePost(postItem:StoryItem, completionHandler:()->()) {
+        let postKey = postItem.getKey()
+        let uid = mainStore.state.userState.uid
+        let location = postItem.getLocationKey()
+        
+        let locationRef = ref.child("locations/toronto/\(location)/uploads/\(postKey)")
+        locationRef.removeValue()
+        
+        let userRef = ref.child("users/uploads/\(uid)/\(postKey)")
+        userRef.removeValue()
+        
+        let postRef = ref.child("uploads/\(postKey)")
+        postRef.updateChildValues(["delete":true])
+        
+        //let storageRef = self.storageRef.child("user_uploads/\(postKey))")
+        //storageRef.deleteWithCompletion(nil)
     }
     
     static func downloadStory(postKeys:[String], completionHandler: (story:[StoryItem])->()) {
@@ -210,9 +235,9 @@ class FirebaseService {
     static func sendFriendRequest(friend_uid:String, completionHandler:(success:Bool)->()) {
         
         let uid = mainStore.state.userState.uid
-        let userRef = FirebaseService.ref.child("users_public/\(uid)/friendRequestsOut/\(friend_uid)")
+        let userRef = FirebaseService.ref.child("users/social/requestsOut/\(uid)/\(friend_uid)")
         userRef.setValue(false)
-        let friendRef = FirebaseService.ref.child("users_public/\(friend_uid)/friendRequestsIn/\(uid)")
+        let friendRef = FirebaseService.ref.child("users/social/requestsIn/\(friend_uid)/\(uid)")
         friendRef.setValue(false, withCompletionBlock: {
             error, ref in
             
@@ -226,10 +251,30 @@ class FirebaseService {
     
     static func acceptFriendRequest(friend_uid:String) {
         let uid = mainStore.state.userState.uid
-        ref.child("users_public/\(uid)/friends/\(friend_uid)").setValue(true)
-        ref.child("users_public/\(friend_uid)/friends/\(uid)").setValue(true)
-        ref.child("users_public/\(uid)/friendRequestsIn/\(friend_uid)").removeValue()
-        ref.child("users_public/\(friend_uid)/friendRequestsOut/\(uid)").removeValue()
+        ref.child("users/social/friends/\(uid)/\(friend_uid)").setValue(true)
+        ref.child("users/social/friends/\(friend_uid)/\(uid)").setValue(true)
+        ref.child("users/social/requestsOut/\(friend_uid)/\(uid)").removeValue()
+        ref.child("users/social/requestsIn/\(uid)/\(friend_uid)").removeValue()
+        incrementUserFriends(uid)
+        incrementUserFriends(friend_uid)
+    }
+    
+    static func incrementUserFriends(uid:String) {
+        let userRef = ref.child("users/profile/\(uid)")
+        userRef.child("numFriends").runTransactionBlock({ (currentData: FIRMutableData) -> FIRTransactionResult in
+            if var numFriends = currentData.value as? Int {
+                
+                numFriends += 1
+                currentData.value = numFriends
+                
+                return FIRTransactionResult.successWithValue(currentData)
+            }
+            return FIRTransactionResult.successWithValue(currentData)
+        }) { (error, committed, snapshot) in
+            if let error = error {
+                print(error.localizedDescription)
+            }
+        }
     }
     
     

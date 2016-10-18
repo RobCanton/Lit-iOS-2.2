@@ -16,6 +16,7 @@ enum ModalMode {
 protocol ZoomProtocol {
     func Deanimate()
     func Reanimate()
+    func mediaDeleted()
 }
 
 enum LikeStatus {
@@ -55,10 +56,6 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
         }
     }
     
-    deinit {
-
-    }
-    
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -76,8 +73,6 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
             self.likeBtn.layer.opacity = 1.0
         })
     }
-
-
     
     func profileTapped(gesture:UITapGestureRecognizer) {
         print("profile tapped")
@@ -93,6 +88,36 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
         })
     }
     
+    @IBAction func moreTapped(sender: AnyObject) {
+        // 1
+        let optionMenu = UIAlertController(title: nil, message: "Options", preferredStyle: .ActionSheet)
+        
+        // 2
+        let deleteAction = UIAlertAction(title: "Delete", style: .Destructive, handler: {
+            (alert: UIAlertAction!) -> Void in
+            if let _ = self.item {
+                FirebaseService.deletePost(self.item!, completionHandler: {})
+                self.delegate.Deanimate()
+                self.presentingViewController?.dismissViewControllerAnimated(true, completion: {
+                    self.delegate.Reanimate()
+                    self.delegate.mediaDeleted()
+                })
+            }
+
+        })
+
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
+            (alert: UIAlertAction!) -> Void in
+        })
+        
+        
+        // 4
+        optionMenu.addAction(deleteAction)
+        optionMenu.addAction(cancelAction)
+        
+        // 5
+        self.presentViewController(optionMenu, animated: true, completion: nil)
+    }
     
     func like(gesture:UITapGestureRecognizer) {
         let ref = FirebaseService.ref.child("uploads/\(item!.getKey())")

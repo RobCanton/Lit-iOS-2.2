@@ -25,6 +25,10 @@ import ARNTransitionAnimator
 
 class GalleryViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, ARNImageTransitionZoomable, ZoomProtocol {
     
+    func mediaDeleted() {
+        
+    }
+    
     let cellIdentifier = "photoCell"
     var screenSize: CGRect!
     var screenWidth: CGFloat!
@@ -243,14 +247,14 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
 
     func getItemSize(indexPath:NSIndexPath) -> CGSize {
-        if photos.count == 1 {
+        /*if photos.count == 1 {
             return CGSize(width: screenWidth, height: screenWidth);
         }
         
         if indexPath.item == 0 {
             return CGSize(width: screenWidth, height: screenWidth/3);
         }
-        
+        */
         return CGSize(width: screenWidth/3, height: screenWidth/3);
     }
 

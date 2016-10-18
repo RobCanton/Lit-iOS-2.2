@@ -13,13 +13,15 @@ class User {
     private var displayName: String
     private var imageUrl: String
     private var largeImageUrl: String
+    private var numFriends: Int
     
-    init(uid:String, displayName:String, imageUrl: String, largeImageUrl:String)
+    init(uid:String, displayName:String, imageUrl: String, largeImageUrl:String, numFriends: Int)
     {
         self.uid           = uid
         self.displayName   = displayName
         self.imageUrl      = imageUrl
         self.largeImageUrl = largeImageUrl
+        self.numFriends    = numFriends
     }
     
     func getUserId() -> String {
@@ -36,6 +38,10 @@ class User {
     
     func getLargeImageUrl() -> String {
         return largeImageUrl
+    }
+    
+    func getNumFriends() -> Int{
+        return numFriends
     }
     
 }

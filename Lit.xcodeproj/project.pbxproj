@@ -66,6 +66,9 @@
 		B026A8541DADC61700DD2CCD /* PostsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B026A8521DADC61700DD2CCD /* PostsViewController.xib */; };
 		B0321EC21DB52BEB00AD4C53 /* DummyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0321EC11DB52BEB00AD4C53 /* DummyViewController.swift */; };
 		B0321EC41DB5337900AD4C53 /* DismissAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0321EC31DB5337900AD4C53 /* DismissAnimator.swift */; };
+		B0321ECC1DB568BA00AD4C53 /* LocViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0321ECB1DB568BA00AD4C53 /* LocViewController.swift */; };
+		B0321ECE1DB56BF900AD4C53 /* LocationHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0321ECD1DB56BF900AD4C53 /* LocationHeaderView.swift */; };
+		B0321ED01DB56C0500AD4C53 /* LocationHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0321ECF1DB56C0500AD4C53 /* LocationHeaderView.xib */; };
 		B032C9921DA807C000811779 /* SetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B032C9901DA807C000811779 /* SetupViewController.swift */; };
 		B032C9931DA807C000811779 /* SetupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B032C9911DA807C000811779 /* SetupViewController.xib */; };
 		B03DED101DAED40D0062357A /* UserProfileControlBarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B03DED0F1DAED40D0062357A /* UserProfileControlBarView.xib */; };
@@ -187,6 +190,9 @@
 		B026A8521DADC61700DD2CCD /* PostsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostsViewController.xib; sourceTree = "<group>"; };
 		B0321EC11DB52BEB00AD4C53 /* DummyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DummyViewController.swift; sourceTree = "<group>"; };
 		B0321EC31DB5337900AD4C53 /* DismissAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissAnimator.swift; sourceTree = "<group>"; };
+		B0321ECB1DB568BA00AD4C53 /* LocViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocViewController.swift; sourceTree = "<group>"; };
+		B0321ECD1DB56BF900AD4C53 /* LocationHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationHeaderView.swift; sourceTree = "<group>"; };
+		B0321ECF1DB56C0500AD4C53 /* LocationHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LocationHeaderView.xib; sourceTree = "<group>"; };
 		B032C9901DA807C000811779 /* SetupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetupViewController.swift; sourceTree = "<group>"; };
 		B032C9911DA807C000811779 /* SetupViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SetupViewController.xib; sourceTree = "<group>"; };
 		B03DED0F1DAED40D0062357A /* UserProfileControlBarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserProfileControlBarView.xib; sourceTree = "<group>"; };
@@ -453,6 +459,9 @@
 				B09D5FD11DA57CE9004A188E /* ModalViewController.swift */,
 				B0254F7B1DB0995E0082D898 /* DetailViewController.storyboard */,
 				B0254F7C1DB0995E0082D898 /* DetailViewController.swift */,
+				B0321ECB1DB568BA00AD4C53 /* LocViewController.swift */,
+				B0321ECD1DB56BF900AD4C53 /* LocationHeaderView.swift */,
+				B0321ECF1DB56C0500AD4C53 /* LocationHeaderView.xib */,
 			);
 			name = Location;
 			sourceTree = "<group>";
@@ -615,6 +624,7 @@
 				B09D5FD21DA57CE9004A188E /* ModalViewController.storyboard in Resources */,
 				B00BA9271D9E4E1D00F5EA30 /* CreateProfileViewController.xib in Resources */,
 				B0BA326A1DA7158B004352A7 /* HeaderView.xib in Resources */,
+				B0321ED01DB56C0500AD4C53 /* LocationHeaderView.xib in Resources */,
 				B026A84F1DAD9D3400DD2CCD /* UserProfileBodyViewController.xib in Resources */,
 				B0254F7D1DB0995E0082D898 /* DetailViewController.storyboard in Resources */,
 				76C0E7541D80D770004EFA4C /* VisitorCell.xib in Resources */,
@@ -742,6 +752,7 @@
 				76C0E7531D80D770004EFA4C /* VisitorCell.swift in Sources */,
 				76B361CA1D64E8160024CDC7 /* RatingViewController.swift in Sources */,
 				76136D391D4933F6003DB433 /* UltravisualLayout.swift in Sources */,
+				B0321ECC1DB568BA00AD4C53 /* LocViewController.swift in Sources */,
 				76A516691D60C721005E2815 /* Message.swift in Sources */,
 				B06D54C41D9ECB6D00F6A4A7 /* KaedeTextField.swift in Sources */,
 				76B7212B1D5E377D002B4491 /* StoryProgressIndicator.swift in Sources */,
@@ -754,6 +765,7 @@
 				B079BE861DA557B00042B586 /* PhotoCell.swift in Sources */,
 				B0254F761DAFFCDC0082D898 /* ConversationsReducer.swift in Sources */,
 				B087E9C21D9B4D760079E2BF /* Listeners.swift in Sources */,
+				B0321ECE1DB56BF900AD4C53 /* LocationHeaderView.swift in Sources */,
 				B06D54C61D9ECB6D00F6A4A7 /* MinoruTextField.swift in Sources */,
 				B0254F701DAFE00C0082D898 /* MessagesViewController.swift in Sources */,
 				B06D54C71D9ECB6D00F6A4A7 /* TextFieldsEffects.swift in Sources */,

@@ -42,7 +42,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MZQ-iI-SPU">
-                                <rect key="frame" x="20" y="20" width="335" height="21"/>
+                                <rect key="frame" x="20" y="20" width="302" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -97,10 +97,18 @@
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="23 likes" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MlD-7y-F6G">
                                 <rect key="frame" x="296" y="569" width="59" height="22"/>
-                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
+                                <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="15"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2oN-Lf-lr5">
+                                <rect key="frame" x="330" y="20" width="25" height="25"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <state key="normal" image="more"/>
+                                <connections>
+                                    <action selector="moreTapped:" destination="zSB-aw-sBJ" eventType="touchUpInside" id="cuL-xC-Err"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -110,7 +118,6 @@
                             <constraint firstItem="MlD-7y-F6G" firstAttribute="top" secondItem="xhp-UQ-jhK" secondAttribute="bottom" constant="5" id="CPA-CE-3ME"/>
                             <constraint firstItem="MZQ-iI-SPU" firstAttribute="top" secondItem="IAF-hg-Hcl" secondAttribute="bottom" id="DJb-4z-UzD"/>
                             <constraint firstAttribute="trailingMargin" secondItem="xhp-UQ-jhK" secondAttribute="trailing" id="E9S-Yx-Hxp"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="MZQ-iI-SPU" secondAttribute="trailing" id="GiT-6h-ITp"/>
                             <constraint firstItem="XHY-DZ-v0p" firstAttribute="top" secondItem="U0U-wj-u1A" secondAttribute="top" id="Idd-6H-cUQ"/>
                             <constraint firstItem="GfA-9t-bT0" firstAttribute="top" secondItem="xhp-UQ-jhK" secondAttribute="bottom" constant="16" id="MS0-nm-Fmd"/>
                             <constraint firstItem="GfA-9t-bT0" firstAttribute="top" secondItem="MlD-7y-F6G" secondAttribute="bottom" constant="10" id="Q1c-17-usQ"/>
@@ -118,11 +125,13 @@
                             <constraint firstItem="MlD-7y-F6G" firstAttribute="centerY" secondItem="mbO-g9-TeI" secondAttribute="centerY" id="UnK-2V-TBN"/>
                             <constraint firstItem="oyk-VP-ped" firstAttribute="leading" secondItem="JlU-0u-pfs" secondAttribute="trailing" constant="8" id="Vc8-LU-KNM"/>
                             <constraint firstItem="MlD-7y-F6G" firstAttribute="centerY" secondItem="xhp-UQ-jhK" secondAttribute="centerY" id="W9v-NF-2ij"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="2oN-Lf-lr5" secondAttribute="trailing" id="Y1V-d2-x4k"/>
                             <constraint firstAttribute="trailingMargin" secondItem="MlD-7y-F6G" secondAttribute="trailing" id="bIa-sl-38x"/>
                             <constraint firstItem="GfA-9t-bT0" firstAttribute="top" secondItem="xhp-UQ-jhK" secondAttribute="bottom" constant="20" id="frf-WG-x0j"/>
                             <constraint firstItem="XHY-DZ-v0p" firstAttribute="leading" secondItem="U0U-wj-u1A" secondAttribute="leading" id="ghQ-wF-D8n"/>
                             <constraint firstItem="oyk-VP-ped" firstAttribute="top" secondItem="JlU-0u-pfs" secondAttribute="top" id="hjb-Pj-mlP"/>
                             <constraint firstItem="oyk-VP-ped" firstAttribute="centerY" secondItem="JlU-0u-pfs" secondAttribute="centerY" id="hz5-MQ-QkX"/>
+                            <constraint firstItem="2oN-Lf-lr5" firstAttribute="top" secondItem="IAF-hg-Hcl" secondAttribute="bottom" constant="8" id="jQ8-kV-FUu"/>
                             <constraint firstItem="mbO-g9-TeI" firstAttribute="bottom" secondItem="JlU-0u-pfs" secondAttribute="bottom" id="kiF-Jo-BQB"/>
                             <constraint firstAttribute="trailing" secondItem="XHY-DZ-v0p" secondAttribute="trailing" id="kwR-fG-U1b"/>
                             <constraint firstItem="MlD-7y-F6G" firstAttribute="centerY" secondItem="xhp-UQ-jhK" secondAttribute="centerY" id="l1X-Su-BAs"/>
@@ -168,5 +177,6 @@
     </scenes>
     <resources>
         <image name="like" width="32" height="32"/>
+        <image name="more" width="32" height="32"/>
     </resources>
 </document>

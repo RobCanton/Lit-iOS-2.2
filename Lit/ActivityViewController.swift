@@ -18,9 +18,10 @@ class ActivityViewController: UITableViewController, StoreSubscriber {
         super.viewWillAppear(animated)
         mainStore.subscribe(self)
         
-        for (uid, seen) in mainStore.state.friendRequestsIn {
+        for (friend_uid, seen) in mainStore.state.friendRequestsIn {
             if !seen {
-                let ref = FirebaseService.ref.child("users/\(mainStore.state.userState.uid)/friendRequestsIn/\(uid)")
+                let uid = mainStore.state.userState.uid
+                let ref = FirebaseService.ref.child("users/social/requestsIn/\(uid)/\(friend_uid)")
                 ref.setValue(true)
             }
         }

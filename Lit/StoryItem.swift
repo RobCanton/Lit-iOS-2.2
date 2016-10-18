@@ -61,7 +61,7 @@ class StoryItem: NSObject {
     }
     
     func getLocationKey() -> String {
-        return authorId
+        return locationKey
     }
     
     func getAuthor() -> User? {
