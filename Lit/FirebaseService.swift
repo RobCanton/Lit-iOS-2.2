@@ -51,6 +51,7 @@ class FirebaseService {
         let activeLocationKey = mainStore.state.userState.activeLocationKey
         
         let dataRef = ref.child("uploads").childByAutoId()
+        let postKey = dataRef.key
 
         if let data = UIImageJPEGRepresentation(image, 0.5) {
             // Create a reference to the file you want to upload
@@ -60,7 +61,7 @@ class FirebaseService {
             metadata.contentType = contentTypeStr
             
             // Upload file and metadata to the object 'images/mountains.jpg'
-            let uploadTask = storageRef.child("user_uploads/\(dataRef.key))").putData(data, metadata: metadata) { metadata, error in
+            let uploadTask = storageRef.child("user_uploads/\(postKey))").putData(data, metadata: metadata) { metadata, error in
                 if (error != nil) {
                     // Uh-oh, an error occurred!
                 } else {
@@ -78,10 +79,10 @@ class FirebaseService {
                     ]
                     dataRef.child("meta").setValue(obj, withCompletionBlock: { error, _ in
                         if error == nil {
-                            let locationRef = ref.child("locations/\(city.getKey())/\(activeLocationKey)/uploads")
-                            locationRef.setValue([dataRef.key:true])
-                            let userRef = ref.child("users/uploads/\(mainStore.state.userState.uid)/\(dataRef.key)")
-                            userRef.setValue([dataRef.key:true])
+                            let locationRef = ref.child("locations/\(city.getKey())/\(activeLocationKey)/uploads/\(postKey)")
+                            locationRef.setValue(true)
+                            let userRef = ref.child("users/uploads/\(mainStore.state.userState.uid)/\(postKey)")
+                            userRef.setValue(true)
                         }
                     })
 

@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import ARNTransitionAnimator
 
 enum ModalMode {
     case Location, User
@@ -23,8 +24,11 @@ enum LikeStatus {
     case None, Liked
 }
 
-class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransitionZoomable {
+class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransitionZoomable, UINavigationControllerDelegate {
     
+    var ref:ARNTransitionAnimator?
+    
+    var dotings = true
     var item:StoryItem?
     @IBOutlet weak var imageView : UIImageView!
     @IBOutlet weak var timeLabel: UILabel!
@@ -32,9 +36,10 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
     @IBOutlet weak var authorImage: UIImageView!
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var likeBtn: UIView!
-    @IBOutlet weak var likesLabel: UILabel!
+    //@IBOutlet weak var likesLabel: UILabel!
+    @IBOutlet weak var likesLabel: UIButton!
     
-    var delegate:ZoomProtocol!
+    var delegate:ZoomProtocol?
     var mode:ModalMode = .Location
     var tap: UITapGestureRecognizer!
     var likeTap:UITapGestureRecognizer!
@@ -56,9 +61,19 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
         }
     }
     
+    var user:User?
+    {
+        didSet {
+            self.authorLabel.text = user!.getDisplayName()
+            self.timeLabel.text = self.item!.getDateCreated()!.timeStringSinceNow()
+            self.authorImage.loadImageUsingCacheWithURLString(user!.getImageUrl(), completion: { result in
+            })
+        }
+    }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
         listenForLikes()
         self.authorImage.layer.opacity = 0
         self.authorLabel.layer.opacity = 0
@@ -74,49 +89,74 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
         })
     }
     
-    func profileTapped(gesture:UITapGestureRecognizer) {
-        print("profile tapped")
-        let uid = item!.getAuthorId()
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
 
-        delegate.Deanimate()
-        self.presentingViewController?.dismissViewControllerAnimated(true, completion: {
-            
-            self.delegate.Reanimate()
-            if self.mode == .Location {
-               mainStore.dispatch(ViewUser(uid: uid))
-            }
-        })
     }
     
-    @IBAction func moreTapped(sender: AnyObject) {
-        // 1
-        let optionMenu = UIAlertController(title: nil, message: "Options", preferredStyle: .ActionSheet)
-        
-        // 2
-        let deleteAction = UIAlertAction(title: "Delete", style: .Destructive, handler: {
-            (alert: UIAlertAction!) -> Void in
-            if let _ = self.item {
-                FirebaseService.deletePost(self.item!, completionHandler: {})
-                self.delegate.Deanimate()
-                self.presentingViewController?.dismissViewControllerAnimated(true, completion: {
-                    self.delegate.Reanimate()
-                    self.delegate.mediaDeleted()
-                })
+    
+    func profileTapped(gesture:UITapGestureRecognizer) {
+        print("profile tapped")
+        viewUser()
+    }
+    
+    func viewUser() {
+        if let _ = user {
+            let uid = item!.getAuthorId()
+            if let nav = navigationController as? ARNImageTransitionNavigationController {
+                nav.doZoomTransition = false
             }
-
-        })
-
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
-            (alert: UIAlertAction!) -> Void in
-        })
-        
-        
-        // 4
-        optionMenu.addAction(deleteAction)
-        optionMenu.addAction(cancelAction)
-        
-        // 5
-        self.presentViewController(optionMenu, animated: true, completion: nil)
+            let controller = UIStoryboard(name: "Main", bundle: nil)
+                .instantiateViewControllerWithIdentifier("UserProfileViewController") as! UserProfileViewController
+            controller.user = user!
+            
+            self.navigationController?.pushViewController(controller, animated: true)
+        }
+    }
+    
+    func moreTap() {
+        let optionMenu = UIAlertController(title: nil, message: "Options", preferredStyle: .ActionSheet)
+        if let _ = item {
+            if item?.getAuthorId() == mainStore.state.userState.uid {
+                
+                /* Show post edit options */
+                let deleteAction = UIAlertAction(title: "Delete", style: .Destructive, handler: {
+                    (alert: UIAlertAction!) -> Void in
+                    if let _ = self.item {
+                        FirebaseService.deletePost(self.item!, completionHandler: {})
+                        self.delegate?.Deanimate()
+                        self.navigationController?.popViewController(true, completion: {
+                            self.delegate?.Reanimate()
+                            self.delegate?.mediaDeleted()
+                        })
+                    }
+                    
+                })
+                optionMenu.addAction(deleteAction)
+            } else {
+                /* show post report options */
+                
+                let viewUserAction = UIAlertAction(title: "View Profile", style: .Default, handler: {
+                    (alert: UIAlertAction!) -> Void in
+                    self.viewUser()
+                })
+                
+                let reportAction = UIAlertAction(title: "Report", style: .Destructive, handler: {
+                    (alert: UIAlertAction!) -> Void in
+                })
+                
+                optionMenu.addAction(viewUserAction)
+                optionMenu.addAction(reportAction)
+            }
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
+                (alert: UIAlertAction!) -> Void in
+            })
+            
+            optionMenu.addAction(cancelAction)
+            self.presentViewController(optionMenu, animated: true, completion: nil)
+            
+        }
     }
     
     func like(gesture:UITapGestureRecognizer) {
@@ -139,8 +179,6 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
                         print(error.localizedDescription)
                     }
                 }
-                
-                
             }
             likeStatus = .Liked
             likeBtn.transform = CGAffineTransformMakeScale(1.25, 1.25)
@@ -175,9 +213,6 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
                 }
             }
         }
-        
-
-  
     }
     
     func setLike() {
@@ -213,7 +248,8 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
             if snapshot.exists() {
                 let likes = snapshot.value! as! Int
                 self.item!.likes = likes
-                self.likesLabel.text = getLikesString(self.item!.likes)
+                //self.likesLabel.text = getLikesString(self.item!.likes)
+                self.likesLabel.setTitle(getLikesString(self.item!.likes), forState: .Normal)
             }
         })
     }
@@ -242,9 +278,20 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
 
         for location in locations {
             if key == location.getKey() {
-                self.locationLabel.styleLocationTitle(location.getName().lowercaseString, size: 32)
+                //self.locationLabel.styleLocationTitle(location.getName().lowercaseString, size: 32)
+                self.title = location.getName().lowercaseString
+                
             }
         }
+        
+        let barButton = UIBarButtonItem(image: UIImage(named: "more"), style: .Plain, target: self, action: #selector(moreTap))
+        barButton.imageInsets = UIEdgeInsetsMake(0, -10, 0, 10)
+        self.navigationItem.rightBarButtonItem = barButton
+        
+        navigationItem.backBarButtonItem = nil
+        navigationItem.backBarButtonItem = UIBarButtonItem()
+        
+        
         
         authorImage.layer.cornerRadius = authorImage.frame.width/2
         authorImage.clipsToBounds = true
@@ -257,18 +304,18 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
         timeLabel.layer.opacity = 0
         locationLabel.layer.opacity = 0
         
-        likesLabel.text = getLikesString(item!.likes)
+        self.likesLabel.setTitle(getLikesString(self.item!.likes), forState: .Normal)
         
         FirebaseService.getUser(item!.getAuthorId(), completionHandler: { _user in
-            if let user = _user {
-                self.authorLabel.text = user.getDisplayName()
-                self.timeLabel.text = self.item!.getDateCreated()!.timeStringSinceNow()
-                self.authorImage.loadImageUsingCacheWithURLString(user.getImageUrl(), completion: { result in
-                })
-                
+            if let _ = _user {
+                self.user = _user
             }
             
         })
+        
+        if let _ = item {
+            self.imageView.loadImageUsingCacheWithURLString(item!.getDownloadUrl()!.absoluteString, completion: { result in })
+        }
         
     }
     
@@ -284,7 +331,7 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
         self.likeBtn.layer.opacity = 0
 
     }
-    
+
     // MARK: - ARNImageTransitionZoomable
     
     func createTransitionImageView() -> UIImageView {
@@ -320,5 +367,18 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
     
     override func prefersStatusBarHidden() -> Bool {
         return true
+        
     }
+    
+    func navigationController(navigationController: UINavigationController, didShowViewController viewController: UIViewController, animated: Bool) {
+//        print("showed tings")
+//        if viewController.isKindOfClass(ModalViewController) {
+//            print("Showed modal")
+//            if let nav = navigationController as? ARNImageTransitionNavigationController {
+//                nav.doZoomTransition = true
+//            }
+//        }
+    }
+
+
 }

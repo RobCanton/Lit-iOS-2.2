@@ -40,8 +40,8 @@
                         <constraint firstAttribute="width" secondItem="6OQ-3r-dRO" secondAttribute="height" multiplier="1:1" id="9yd-0Y-U5V"/>
                     </constraints>
                 </imageView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gm9-6z-av0">
-                    <rect key="frame" x="0.0" y="26" width="28" height="28"/>
+                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gm9-6z-av0">
+                    <rect key="frame" x="2" y="26" width="28" height="28"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="28" id="egt-oe-QFV"/>
                         <constraint firstAttribute="width" constant="28" id="wO3-o6-mcg"/>
@@ -156,7 +156,7 @@
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="jxZ-88-RSp" secondAttribute="trailing" constant="14" id="0hU-v7-Idr"/>
                 <constraint firstAttribute="bottom" secondItem="YDl-NU-OHa" secondAttribute="bottom" constant="14" id="1i9-YM-YYU"/>
-                <constraint firstItem="Gm9-6z-av0" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="27c-Zu-Z5B"/>
+                <constraint firstItem="Gm9-6z-av0" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="2" id="27c-Zu-Z5B"/>
                 <constraint firstItem="K38-Iv-6NC" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="2cM-GV-hq3"/>
                 <constraint firstItem="QEM-bq-DwW" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="D9H-cD-5jf"/>
                 <constraint firstItem="gNO-dm-a0s" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Dk5-LL-OJf"/>

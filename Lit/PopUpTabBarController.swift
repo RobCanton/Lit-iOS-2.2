@@ -13,6 +13,8 @@ import Firebase
 
 class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarControllerDelegate {
     
+    var visible = true
+    
     let tabBarHeight:CGFloat = 60
     var activeLocation:Location?
     
@@ -165,7 +167,31 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
         return true
     }
     
+    
+    func setTabBarVisible(_visible:Bool, animated:Bool) {
+        
+        if visible == _visible {
+            return
+        }
+        visible = _visible
+
+        // get a frame calculation ready
+        let frame = self.tabBar.frame
+        let height = frame.size.height
+        let offsetY = (visible ? -height : height)
+        
+        UIView.animateWithDuration(0.15, delay: 0.0, options: .CurveEaseOut, animations: {
+            self.tabBar.frame = CGRectOffset(frame, 0, offsetY)
+            self.view.frame = CGRectMake(0, 0, self.view.frame.width, self.view.frame.height + offsetY)
+            self.view.setNeedsDisplay()
+            self.view.layoutIfNeeded()
+            }, completion: { result in })
+    }
+    
+    
     let interactor = Interactor()
+    
+    
     
 }
 

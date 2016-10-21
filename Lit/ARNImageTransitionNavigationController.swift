@@ -14,6 +14,14 @@ class ARNImageTransitionNavigationController: UINavigationController, UINavigati
     weak var interactiveAnimator : ARNTransitionAnimator?
     var currentOperation : UINavigationControllerOperation = .None
     
+    
+    var doZoomTransition = false
+        {
+        didSet{
+            print("doZoomTransition: \(doZoomTransition)")
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -26,6 +34,10 @@ class ARNImageTransitionNavigationController: UINavigationController, UINavigati
         fromViewController fromVC: UIViewController,
         toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning?
     {
+        if !doZoomTransition {
+            return nil
+        }
+        
         self.currentOperation = operation
         
         if let _interactiveAnimator = self.interactiveAnimator {
@@ -42,6 +54,11 @@ class ARNImageTransitionNavigationController: UINavigationController, UINavigati
     }
     
     func navigationController(navigationController: UINavigationController, interactionControllerForAnimationController animationController: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+        
+        if !doZoomTransition {
+            return nil
+        }
+        
         if let _interactiveAnimator = self.interactiveAnimator {
             if  self.currentOperation == .Pop {
                 return _interactiveAnimator
@@ -49,4 +66,23 @@ class ARNImageTransitionNavigationController: UINavigationController, UINavigati
         }
         return nil
     }
+    
+    func navigationController(navigationController: UINavigationController, didShowViewController viewController: UIViewController, animated: Bool) {
+        if let modal = viewController as? ModalViewController {
+            if modal.dotings {
+                doZoomTransition = true
+                if let animator = modal.ref {
+                    interactiveAnimator = animator
+                }
+
+            } else {
+                doZoomTransition = false
+            }
+            
+        } else {
+            doZoomTransition = false
+        }
+    }
+    
+
 }

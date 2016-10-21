@@ -389,3 +389,24 @@ public extension UIView {
     }
 }
 
+extension UINavigationController {
+    
+    func pushViewController(viewController: UIViewController,
+                            animated: Bool, completion: Void -> Void) {
+        
+        CATransaction.begin()
+        CATransaction.setCompletionBlock(completion)
+        pushViewController(viewController, animated: animated)
+        CATransaction.commit()
+    }
+    
+    func popViewController(animated: Bool, completion: Void -> Void) {
+        
+        CATransaction.begin()
+        CATransaction.setCompletionBlock(completion)
+        popViewControllerAnimated(animated)
+        CATransaction.commit()
+    }
+    
+    
+}

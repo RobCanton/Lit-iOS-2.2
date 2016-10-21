@@ -16,14 +16,12 @@ class ARNModalImageTransitionViewController: UIViewController, UIViewControllerT
     func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         let animator = ARNImageZoomTransition.createAnimator(.Present, fromVC: source, toVC: presented)
         self.fromVC = source
-        print("yyee")
         return animator
     }
     
     func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         let animator = ARNImageZoomTransition.createAnimator(.Dismiss, fromVC: self, toVC: self.fromVC!)
         
-        print("FROM VC")
         print(fromVC!)
         return animator
     }

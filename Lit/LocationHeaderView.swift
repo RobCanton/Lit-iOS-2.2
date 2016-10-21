@@ -8,12 +8,27 @@
 
 import UIKit
 
+protocol LocationHeaderProtocol {
+    func backTapped()
+    func showMap()
+}
+
 class LocationHeaderView: UIView {
 
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var gradientView: UIView!
+    @IBOutlet weak var locationTitle: UILabel!
+    @IBOutlet weak var addressTitle: UILabel!
     
-    var delegate:HeaderProtocol?
+    @IBOutlet weak var addressBlock: UIView!
+    @IBOutlet weak var descriptionLabel: UILabel!
+    var delegate:LocationHeaderProtocol?
+    
+    var addressTap:UITapGestureRecognizer!
+    
+    @IBAction func backTapped(sender: AnyObject) {
+        delegate?.backTapped()
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -24,6 +39,8 @@ class LocationHeaderView: UIView {
         
         gradient.frame = gradientView.bounds
         gradientView.layer.insertSublayer(gradient, atIndex: 0)
+        
+        
     }
     
     func setProgress(progress:CGFloat) {
@@ -34,7 +51,17 @@ class LocationHeaderView: UIView {
     func setLocation(location:Location) {
         
         imageView.loadImageUsingCacheWithURLString(location.getImageURL(), completion: { result in })
+        locationTitle.styleLocationTitle(location.getName().lowercaseString, size: 32.0)
+        addressTitle.text = location.getAddress()
+        descriptionLabel.text = location.getDescription()
         
+        addressTap = UITapGestureRecognizer(target: self, action: #selector(showMap))
+        addressBlock.userInteractionEnabled = true
+        addressBlock.addGestureRecognizer(addressTap)
+    }
+    
+    func showMap(gesture:UITapGestureRecognizer) {
+        delegate?.showMap()
     }
 
 }
