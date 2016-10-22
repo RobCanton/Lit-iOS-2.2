@@ -1,0 +1,90 @@
+//
+//  UsersListViewController.swift
+//  Lit
+//
+//  Created by Robert Canton on 2016-10-21.
+//  Copyright © 2016 Robert Canton. All rights reserved.
+//
+
+import UIKit
+
+enum UsersListType {
+    case Friends, Likes, Visitors, None
+}
+
+class UsersListViewController: UITableViewController {
+    
+    let cellIdentifier = "userCell"
+    var user:User?
+    var userIds = [String]()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        tableView.backgroundColor = UIColor.blackColor()
+        tableView.dataSource = self
+        tableView.delegate = self
+        
+        let nib = UINib(nibName: "UserTableViewCell", bundle: nil)
+        tableView.registerNib(nib, forCellReuseIdentifier: cellIdentifier)
+        tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: self.tableView.frame.width, height: 120))
+        
+        tableView.reloadData()
+        
+
+    }
+    
+    func getUserFriends(uid:String) {
+        
+        let ref = FirebaseService.ref.child("users/social/friends/\(uid)")
+        ref.observeSingleEventOfType(.Value, withBlock: { snapshot in
+            var _users = [String]()
+            if snapshot.exists() {
+                for user in snapshot.children {
+                    let uid = user.key!!
+                    _users.append(uid)
+                }
+                self.userIds = _users
+                self.tableView.reloadData()
+            }
+        })
+    }
+    
+    func getLikers(postKey:String) {
+        let ref = FirebaseService.ref.child("uploads/\(postKey)/likes")
+        ref.observeSingleEventOfType(.Value, withBlock: { snapshot in
+            var _users = [String]()
+            if snapshot.exists() {
+                for user in snapshot.children {
+                    let uid = user.key!!
+                    _users.append(uid)
+                }
+                self.userIds = _users
+                self.tableView.reloadData()
+            }
+        })
+    }
+    
+    
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return userIds.count
+    }
+    
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 74
+    }
+    
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! UserTableViewCell
+        cell.getUser(userIds[indexPath.item])
+        return cell
+    }
+    
+    
+    override func prefersStatusBarHidden() -> Bool {
+        return true
+    }
+}

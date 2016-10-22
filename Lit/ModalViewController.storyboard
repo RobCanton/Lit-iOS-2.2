@@ -95,13 +95,16 @@
                                     </mask>
                                 </variation>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KOW-tP-lZn">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KOW-tP-lZn">
                                 <rect key="frame" x="285" y="561" width="88" height="30"/>
                                 <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="15"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <state key="normal" title="40 likes">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="likesBtnTapped:" destination="zSB-aw-sBJ" eventType="touchUpInside" id="Ni3-ou-HOk"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -110,10 +113,12 @@
                             <constraint firstAttribute="trailingMargin" secondItem="xhp-UQ-jhK" secondAttribute="trailing" id="CMH-oa-ose"/>
                             <constraint firstItem="MZQ-iI-SPU" firstAttribute="top" secondItem="IAF-hg-Hcl" secondAttribute="bottom" id="DJb-4z-UzD"/>
                             <constraint firstAttribute="trailingMargin" secondItem="xhp-UQ-jhK" secondAttribute="trailing" id="E9S-Yx-Hxp"/>
+                            <constraint firstItem="KOW-tP-lZn" firstAttribute="centerX" secondItem="xhp-UQ-jhK" secondAttribute="centerX" id="I5h-Gz-5Ho"/>
                             <constraint firstItem="XHY-DZ-v0p" firstAttribute="top" secondItem="U0U-wj-u1A" secondAttribute="top" id="Idd-6H-cUQ"/>
-                            <constraint firstItem="GfA-9t-bT0" firstAttribute="top" secondItem="xhp-UQ-jhK" secondAttribute="bottom" constant="24" id="MS0-nm-Fmd"/>
+                            <constraint firstItem="GfA-9t-bT0" firstAttribute="top" secondItem="xhp-UQ-jhK" secondAttribute="bottom" constant="20" id="MS0-nm-Fmd"/>
                             <constraint firstItem="mbO-g9-TeI" firstAttribute="leading" secondItem="JlU-0u-pfs" secondAttribute="trailing" constant="8" id="TpF-G1-EE8"/>
                             <constraint firstItem="oyk-VP-ped" firstAttribute="leading" secondItem="JlU-0u-pfs" secondAttribute="trailing" constant="8" id="Vc8-LU-KNM"/>
+                            <constraint firstItem="xhp-UQ-jhK" firstAttribute="top" secondItem="KOW-tP-lZn" secondAttribute="bottom" constant="8" id="b3y-k1-qkK"/>
                             <constraint firstItem="GfA-9t-bT0" firstAttribute="top" secondItem="xhp-UQ-jhK" secondAttribute="bottom" constant="20" id="frf-WG-x0j"/>
                             <constraint firstItem="XHY-DZ-v0p" firstAttribute="leading" secondItem="U0U-wj-u1A" secondAttribute="leading" id="ghQ-wF-D8n"/>
                             <constraint firstItem="oyk-VP-ped" firstAttribute="top" secondItem="JlU-0u-pfs" secondAttribute="top" id="hjb-Pj-mlP"/>

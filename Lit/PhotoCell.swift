@@ -18,9 +18,11 @@ class PhotoCell: UICollectionViewCell {
     
     @IBOutlet weak var titleLabel: UILabel!
     
+    @IBOutlet weak var likeTag: UIView!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        self.likeTag.hidden = true
     }
     
     func setPhoto(item:StoryItem) {
@@ -31,6 +33,24 @@ class PhotoCell: UICollectionViewCell {
         
         self.layer.borderColor = UIColor.blackColor().CGColor
         self.layer.borderWidth = 1.5
+        
+        likeTag.layer.cornerRadius = likeTag.frame.width/2
+        likeTag.clipsToBounds = true
+        
+        
+        let userLikedRef = FirebaseService.ref.child("uploads/\(item.getKey())/likes/\(mainStore.state.userState.uid)")
+        userLikedRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+            if snapshot.exists() {
+                let liked = snapshot.value! as! Bool
+                if liked {
+                    self.likeTag.hidden = false
+                } else {
+                    self.likeTag.hidden = true
+                }
+            } else {
+                self.likeTag.hidden = true
+            }
+        })
     }
     
     func setTitle(titleStr:String) {

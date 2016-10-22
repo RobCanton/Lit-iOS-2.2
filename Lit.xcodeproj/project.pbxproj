@@ -103,6 +103,9 @@
 		B087E9C61D9B531A0079E2BF /* FriendsReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B087E9C51D9B531A0079E2BF /* FriendsReducer.swift */; };
 		B087E9CA1D9B7CDD0079E2BF /* Tree.swift in Sources */ = {isa = PBXBuildFile; fileRef = B087E9C91D9B7CDD0079E2BF /* Tree.swift */; };
 		B087E9CC1D9B88700079E2BF /* LocationsReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B087E9CB1D9B88700079E2BF /* LocationsReducer.swift */; };
+		B08BBB8C1DBAF42000AD3FF1 /* UsersListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08BBB8B1DBAF42000AD3FF1 /* UsersListViewController.swift */; };
+		B08BBB901DBAF4C200AD3FF1 /* UserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08BBB8E1DBAF4C200AD3FF1 /* UserTableViewCell.swift */; };
+		B08BBB911DBAF4C200AD3FF1 /* UserTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B08BBB8F1DBAF4C200AD3FF1 /* UserTableViewCell.xib */; };
 		B09D5FCD1DA57C80004A188E /* ARNImageTransitionNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09D5FCA1DA57C80004A188E /* ARNImageTransitionNavigationController.swift */; };
 		B09D5FCE1DA57C80004A188E /* ARNImageZoomTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09D5FCB1DA57C80004A188E /* ARNImageZoomTransition.swift */; };
 		B09D5FCF1DA57C80004A188E /* ARNModalImageTransitionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09D5FCC1DA57C80004A188E /* ARNModalImageTransitionViewController.swift */; };
@@ -231,6 +234,9 @@
 		B087E9C51D9B531A0079E2BF /* FriendsReducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsReducer.swift; sourceTree = "<group>"; };
 		B087E9C91D9B7CDD0079E2BF /* Tree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tree.swift; sourceTree = "<group>"; };
 		B087E9CB1D9B88700079E2BF /* LocationsReducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationsReducer.swift; sourceTree = "<group>"; };
+		B08BBB8B1DBAF42000AD3FF1 /* UsersListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersListViewController.swift; sourceTree = "<group>"; };
+		B08BBB8E1DBAF4C200AD3FF1 /* UserTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTableViewCell.swift; sourceTree = "<group>"; };
+		B08BBB8F1DBAF4C200AD3FF1 /* UserTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserTableViewCell.xib; sourceTree = "<group>"; };
 		B09D5FCA1DA57C80004A188E /* ARNImageTransitionNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ARNImageTransitionNavigationController.swift; sourceTree = "<group>"; };
 		B09D5FCB1DA57C80004A188E /* ARNImageZoomTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ARNImageZoomTransition.swift; sourceTree = "<group>"; };
 		B09D5FCC1DA57C80004A188E /* ARNModalImageTransitionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ARNModalImageTransitionViewController.swift; sourceTree = "<group>"; };
@@ -484,6 +490,7 @@
 				B087E9BB1D9B43A30079E2BF /* Main */,
 				B0254F6E1DAFDFC10082D898 /* Messages */,
 				B087E9BA1D9B435C0079E2BF /* Popup */,
+				B08BBB8D1DBAF49A00AD3FF1 /* UsersList */,
 				B026A8501DAD9D3800DD2CCD /* UserProfile */,
 				B0321EC11DB52BEB00AD4C53 /* DummyViewController.swift */,
 			);
@@ -496,6 +503,16 @@
 				B087E9C91D9B7CDD0079E2BF /* Tree.swift */,
 			);
 			name = DataStructures;
+			sourceTree = "<group>";
+		};
+		B08BBB8D1DBAF49A00AD3FF1 /* UsersList */ = {
+			isa = PBXGroup;
+			children = (
+				B08BBB8B1DBAF42000AD3FF1 /* UsersListViewController.swift */,
+				B08BBB8E1DBAF4C200AD3FF1 /* UserTableViewCell.swift */,
+				B08BBB8F1DBAF4C200AD3FF1 /* UserTableViewCell.xib */,
+			);
+			name = UsersList;
 			sourceTree = "<group>";
 		};
 		B0BA32731DA71A71004352A7 /* CreateProfile */ = {
@@ -641,6 +658,7 @@
 				B00BA91E1D9D6DB600F5EA30 /* StoryItemViewController.xib in Resources */,
 				B0FF11571D3EB33100D709CE /* GoogleService-Info.plist in Resources */,
 				B032C9931DA807C000811779 /* SetupViewController.xib in Resources */,
+				B08BBB911DBAF4C200AD3FF1 /* UserTableViewCell.xib in Resources */,
 				B00BA9231D9E4E0700F5EA30 /* FirstScreenViewController.xib in Resources */,
 				76C0E7501D80D4BA004EFA4C /* VisitorsViewController.xib in Resources */,
 				B079BE871DA557B00042B586 /* PhotoCell.xib in Resources */,
@@ -752,6 +770,7 @@
 				B0254F7E1DB0995E0082D898 /* DetailViewController.swift in Sources */,
 				B026A84E1DAD9D3400DD2CCD /* UserProfileBodyViewController.swift in Sources */,
 				B01783921D9A20F10088AD33 /* Friend.swift in Sources */,
+				B08BBB8C1DBAF42000AD3FF1 /* UsersListViewController.swift in Sources */,
 				B087E9CA1D9B7CDD0079E2BF /* Tree.swift in Sources */,
 				76B361D71D6519ED0024CDC7 /* LocationService.swift in Sources */,
 				76136D471D49600B003DB433 /* LocationActions.swift in Sources */,
@@ -801,6 +820,7 @@
 				76FF2E6B1D566D6A00E04EE3 /* CameraViewController.swift in Sources */,
 				B06D54C01D9ECB6D00F6A4A7 /* HoshiTextField.swift in Sources */,
 				B06D54C31D9ECB6D00F6A4A7 /* JiroTextField.swift in Sources */,
+				B08BBB901DBAF4C200AD3FF1 /* UserTableViewCell.swift in Sources */,
 				B0BA326E1DA7165A004352A7 /* CreateProfileHeaderView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

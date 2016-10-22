@@ -71,7 +71,7 @@ class ARNImageTransitionNavigationController: UINavigationController, UINavigati
         if let modal = viewController as? ModalViewController {
             if modal.dotings {
                 doZoomTransition = true
-                if let animator = modal.ref {
+                if let animator = modal.animatorRef {
                     interactiveAnimator = animator
                 }
 
@@ -83,6 +83,7 @@ class ARNImageTransitionNavigationController: UINavigationController, UINavigati
             doZoomTransition = false
         }
     }
+
     
 
 }

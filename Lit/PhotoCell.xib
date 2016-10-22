@@ -35,6 +35,25 @@
                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yeF-Kd-6xm">
+                        <rect key="frame" x="270" y="270" width="22" height="22"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="06h-rF-pK8">
+                                <rect key="frame" x="4" y="4" width="14" height="14"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <state key="normal" image="like_filled"/>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.0" green="0.4941176471" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="22" id="Zob-ky-UFc"/>
+                            <constraint firstItem="06h-rF-pK8" firstAttribute="top" secondItem="yeF-Kd-6xm" secondAttribute="top" constant="4" id="bif-f9-3gg"/>
+                            <constraint firstAttribute="bottom" secondItem="06h-rF-pK8" secondAttribute="bottom" constant="4" id="iVO-Yv-O9Y"/>
+                            <constraint firstAttribute="trailing" secondItem="06h-rF-pK8" secondAttribute="trailing" constant="4" id="lAd-SQ-aS4"/>
+                            <constraint firstAttribute="width" constant="22" id="m78-px-paZ"/>
+                            <constraint firstItem="06h-rF-pK8" firstAttribute="leading" secondItem="yeF-Kd-6xm" secondAttribute="leading" constant="4" id="xNF-EW-bcX"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
@@ -45,6 +64,7 @@
                 <constraint firstItem="oO1-PZ-pll" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="8" id="Odm-jn-IbQ"/>
                 <constraint firstAttribute="bottom" secondItem="oO1-PZ-pll" secondAttribute="bottom" constant="8" id="PER-16-v3r"/>
                 <constraint firstAttribute="bottom" secondItem="UZ5-k5-KDw" secondAttribute="bottom" constant="8" id="Xw3-gE-XRE"/>
+                <constraint firstAttribute="trailing" secondItem="yeF-Kd-6xm" secondAttribute="trailing" constant="8" id="aGq-w0-Kpm"/>
                 <constraint firstItem="FZs-dU-jtY" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="i9d-9Z-7uX"/>
                 <constraint firstAttribute="trailing" secondItem="FZs-dU-jtY" secondAttribute="trailing" constant="8" id="l4T-3t-BxC"/>
                 <constraint firstItem="FZs-dU-jtY" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="mrw-Z2-kHe"/>
@@ -52,15 +72,20 @@
                 <constraint firstItem="24F-Lj-LPE" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="s5n-8b-elu"/>
                 <constraint firstAttribute="bottom" secondItem="24F-Lj-LPE" secondAttribute="bottom" id="sV3-wV-JZn"/>
                 <constraint firstAttribute="trailing" secondItem="UZ5-k5-KDw" secondAttribute="trailing" constant="8" id="wb1-v8-rYy"/>
+                <constraint firstAttribute="bottom" secondItem="yeF-Kd-6xm" secondAttribute="bottom" constant="8" id="yqp-Ao-TdY"/>
             </constraints>
             <size key="customSize" width="283" height="274"/>
             <connections>
                 <outlet property="authorImage" destination="oO1-PZ-pll" id="cUA-7c-Dku"/>
                 <outlet property="imageView" destination="24F-Lj-LPE" id="8pI-qO-CK9"/>
+                <outlet property="likeTag" destination="yeF-Kd-6xm" id="yJf-iZ-MxB"/>
                 <outlet property="timeLabel" destination="UZ5-k5-KDw" id="Syj-Tc-E01"/>
                 <outlet property="titleLabel" destination="FZs-dU-jtY" id="Pti-4o-hBK"/>
             </connections>
             <point key="canvasLocation" x="570" y="450"/>
         </collectionViewCell>
     </objects>
+    <resources>
+        <image name="like_filled" width="32" height="32"/>
+    </resources>
 </document>

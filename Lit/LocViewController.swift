@@ -60,8 +60,6 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
     }
     
     func downloadMedia() {
-        //self.photos = [StoryItem]()
-        //self.collectionView!.reloadData()
         FirebaseService.downloadStory(location!.getPostKeys(), completionHandler: { story in
             self.photos = story.reverse()
             self.collectionView!.reloadData()
@@ -134,6 +132,8 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
     }
     
     func mediaDeleted() {
+        self.photos = [StoryItem]()
+        self.collectionView!.reloadData()
         downloadMedia()
     }
     
@@ -242,11 +242,7 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
             self!.controller.view.alpha = 0.0
             
             animator.presentationAnimationHandler = { containerView, percentComplete in
-                //print(percentComplete)
-                //self!.tabBarController?.setTabBarOffsetY(percentComplete)
-                
                 sourceImageView.frame = destinationImageView.frame
-                
                 self!.controller.view.alpha = 1.0
             }
             
@@ -280,8 +276,6 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
             }
             
             animator.dismissalAnimationHandler = { containerView, percentComplete in
-                //print(percentComplete)
-                //self!.tabBarController?.setTabBarOffsetY(-1 *  (1 - percentComplete))
                 if percentComplete < -0.05 { return }
                 let frame = CGRectMake(
                     destFrame.origin.x - (destFrame.origin.x - sourceFrame.origin.x) * (1 - percentComplete),
@@ -307,12 +301,11 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
             controller.transitioningDelegate = self.animator
             self.presentViewController(controller, animated: true, completion: nil)
         } else {
-            //self.tabBarController?.setTabBarVisible(false, animated: true)
             self.animator!.interactiveType = .Pop
             if let _nav = self.navigationController as? ARNImageTransitionNavigationController {
                 _nav.interactiveAnimator = self.animator!
             }
-            controller.ref = self.animator!
+            controller.animatorRef = self.animator!
             self.navigationController?.pushViewController(controller, animated: true)
         }
     }
@@ -322,7 +315,7 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
     }
     
     func Reanimate(){
-        self.animator?.interactiveType = .Present
+        //self.animator?.interactiveType = .Push
     }
     
     func createTransitionImageView() -> UIImageView {
@@ -348,12 +341,8 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
     }
     
     func dismissalCompletionAction(completeTransition: Bool) {
-        
         self.selectedImageView?.hidden = false
         if completeTransition {
-            if let nav = navigationController as? ARNImageTransitionNavigationController {
-                nav.doZoomTransition = false
-            }
             if let tabBar = self.tabBarController as? PopUpTabBarController {
                 tabBar.setTabBarVisible(true, animated: true)
             }

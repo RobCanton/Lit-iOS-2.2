@@ -30,25 +30,15 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         mainStore.subscribe(self)
-        //navigationController?.setNavigationBarHidden(true, animated: true)
         
     }
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         mainStore.unsubscribe(self)
-        //navigationController?.setNavigationBarHidden(false, animated: true)
-        mainStore.dispatch(UserViewed())
     }
     
-
-
-    
     func backTapped() {
-//        if let _ = navigationController {
-//            self.navigationController!.popViewControllerAnimated(true)
-//        } else {
-//            self.dismissViewControllerAnimated(true, completion: nil)
-//        }
+
     }
     
     func messageTapped() {
@@ -57,8 +47,11 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     }
     
     func friendBlockTapped() {
-        let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("FriendsListViewController")
-        self.presentViewController(controller, animated: true, completion: nil)
+        let controller = UIStoryboard(name: "Main", bundle: nil)
+            .instantiateViewControllerWithIdentifier("UsersListViewController") as! UsersListViewController
+        controller.title = "\(user!.getDisplayName())'s friends"
+        controller.getUserFriends(user!.getUserId())
+        self.navigationController?.pushViewController(controller, animated: true)
     }
     
     func newState(state: AppState) {
@@ -231,12 +224,6 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
             nav.doZoomTransition = true
         }
         showInteractive()
-//        let storyboard = UIStoryboard(name: "ModalViewController", bundle: nil)
-//        let controller = storyboard.instantiateViewControllerWithIdentifier("ModalViewController") as! ModalViewController
-//        controller.dotings = false
-//        controller.item = self.photos[self.selectedIndexPath!.item]
-//        //controller.delegate = self
-//        self.navigationController?.pushViewController(controller, animated: true)
     }
     
     var animator : ARNTransitionAnimator?
@@ -258,6 +245,7 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     func showInteractive() {
         let storyboard = UIStoryboard(name: "ModalViewController", bundle: nil)
         controller = storyboard.instantiateViewControllerWithIdentifier("ModalViewController") as! ModalViewController
+        controller.mode = .User
         controller.item = self.photos[self.selectedIndexPath!.item]
         controller.delegate = self
         
@@ -353,6 +341,7 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
             if let _nav = self.navigationController as? ARNImageTransitionNavigationController {
                 _nav.interactiveAnimator = self.animator!
             }
+            controller.animatorRef = self.animator!
             self.navigationController?.pushViewController(controller, animated: true)
         }
     }
@@ -383,11 +372,6 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     func dismissalCompletionAction(completeTransition: Bool) {
         
         self.selectedImageView?.hidden = false
-        if completeTransition {
-            if let nav = navigationController as? ARNImageTransitionNavigationController {
-                nav.doZoomTransition = false
-            }
-        }
     }
     
 

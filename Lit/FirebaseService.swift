@@ -137,16 +137,14 @@ class FirebaseService {
         let location = postItem.getLocationKey()
         
         let locationRef = ref.child("locations/toronto/\(location)/uploads/\(postKey)")
-        locationRef.removeValue()
-        
         let userRef = ref.child("users/uploads/\(uid)/\(postKey)")
-        userRef.removeValue()
-        
         let postRef = ref.child("uploads/\(postKey)")
-        postRef.updateChildValues(["delete":true])
-        
-        //let storageRef = self.storageRef.child("user_uploads/\(postKey))")
-        //storageRef.deleteWithCompletion(nil)
+        locationRef.removeValueWithCompletionBlock({ error, ref in
+            userRef.removeValueWithCompletionBlock({ error, ref in
+                postRef.updateChildValues(["delete":true])
+                completionHandler()
+            })
+        })
     }
     
     static func downloadStory(postKeys:[String], completionHandler: (story:[StoryItem])->()) {
