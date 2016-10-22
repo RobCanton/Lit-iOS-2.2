@@ -19,16 +19,15 @@ class FirstScreenViewController: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        loginButton.layer.borderColor = UIColor.whiteColor().CGColor
-        loginButton.layer.borderWidth = 2.0
-
-        activateLoginButton()
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        setupVideoBackground()
+        loginButton.layer.borderColor = UIColor.whiteColor().CGColor
+        loginButton.layer.borderWidth = 2.0
+        loginButton.hidden = true
         tap = UITapGestureRecognizer(target: self, action: #selector(initiateFBLogin))
+        setupVideoBackground()
         
     }
 
@@ -39,7 +38,7 @@ class FirstScreenViewController: UIViewController {
     
     func activateLoginButton() {
         loginButton.addGestureRecognizer(tap)
-        loginButton.layer.opacity = 1.0
+        loginButton.hidden = false
     }
     
     func initiateFBLogin() {

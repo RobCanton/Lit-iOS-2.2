@@ -192,6 +192,24 @@ class FirebaseService {
         }
     }
     
+    static func downloadUsers(userIds:[String], completionHandler: (users:[User])->()) {
+        var users = [User]()
+        var loadedCount = 0
+        for userId in userIds {
+            getUser(userId, completionHandler: { _user in
+                if let user = _user {
+                    users.append(user)
+                }
+                loadedCount += 1
+                if loadedCount >= userIds.count {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        completionHandler(users: users)
+                    })
+                }
+            })
+        }
+    }
+    
     
     static func compressVideo(inputURL: NSURL, outputURL: NSURL, handler:(session: AVAssetExportSession)-> Void) {
         let urlAsset = AVURLAsset(URL: inputURL, options: nil)

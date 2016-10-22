@@ -33,10 +33,4 @@ class UserTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func getUser(uid:String) {
-        FirebaseService.getUser(uid, completionHandler: { _user in
-            self.user = _user
-        })
-    }
-    
 }

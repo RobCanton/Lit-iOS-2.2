@@ -24,18 +24,6 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dUM-ja-0xe">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bJb-bP-ad3">
-                            <rect key="frame" x="2" y="26" width="28" height="30"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="28" id="0gO-Bu-3lq"/>
-                                <constraint firstAttribute="height" constant="28" id="iFh-Ox-pr1"/>
-                            </constraints>
-                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <state key="normal" image="backarrow"/>
-                            <connections>
-                                <action selector="backTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="SWw-Ma-xDo"/>
-                            </connections>
-                        </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9gM-qU-bdZ">
                             <rect key="frame" x="8" y="284" width="584" height="44"/>
                             <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="30"/>
@@ -91,6 +79,18 @@
                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <button hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" misplaced="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bJb-bP-ad3">
+                            <rect key="frame" x="0.0" y="26" width="28" height="30"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="28" id="0gO-Bu-3lq"/>
+                                <constraint firstAttribute="height" constant="28" id="iFh-Ox-pr1"/>
+                            </constraints>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <state key="normal" image="backarrow"/>
+                            <connections>
+                                <action selector="backTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="SWw-Ma-xDo"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>

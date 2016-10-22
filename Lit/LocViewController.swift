@@ -24,6 +24,7 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
     var collectionView:UICollectionView?
     var controlBar:UserProfileControlBar?
     var headerView:LocationHeaderView!
+    var eventsBanner:EventsBannerView?
     
     var location: Location?
         {
@@ -35,15 +36,13 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
     
     override func viewWillAppear(animated: Bool) {
         mainStore.subscribe(self)
-        navigationController?.setNavigationBarHidden(true, animated: false)
-        //navigationController?.hidesBarsOnSwipe = true
+        navigationController?.hidesBarsOnSwipe = true
         print("LocationViewController Subscribed")
     }
     
     override func viewWillDisappear(animated: Bool) {
         mainStore.unsubscribe(self)
-        navigationController?.setNavigationBarHidden(false, animated: false)
-        //navigationController?.hidesBarsOnSwipe = false
+        navigationController?.hidesBarsOnSwipe = true
         print("LocationViewController Unsubscribed")
     }
     
@@ -69,9 +68,16 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let contactBarButton = UIBarButtonItem(title: "Contact", style: .Plain, target: self, action: nil)
+        self.navigationItem.rightBarButtonItem = contactBarButton
+        
         self.navigationItem.title = " "
         self.automaticallyAdjustsScrollViewInsets = false
         
+        
+        let controlBarHeight:CGFloat = 60.0
+        let eventsHeight:CGFloat = 140.0
+        let topInset:CGFloat = controlBarHeight + eventsHeight
         headerView = UINib(nibName: "LocationHeaderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! LocationHeaderView
         headerView.delegate = self
         screenSize = self.view.frame
@@ -79,7 +85,7 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
         screenHeight = screenSize.height
         
         let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: 40 + screenStatusBarHeight, left: 0, bottom: 200, right: 0)
+        layout.sectionInset = UIEdgeInsets(top: topInset, left: 0, bottom: 200, right: 0)
         layout.itemSize = CGSize(width: screenWidth/3, height: screenWidth/3)
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
@@ -99,12 +105,17 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
         collectionView!.parallaxHeader.minimumHeight = 0;
         
         collectionView!.backgroundColor = UIColor.blackColor()
-        self.view.addSubview(collectionView!)
+        view.addSubview(collectionView!)
         
-        controlBar = UINib(nibName: "UserProfileControlBarView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! UserProfileControlBar
-        controlBar!.frame = CGRectMake(0,0, collectionView!.frame.width, 60)
-        controlBar!.setControlBar()
-        collectionView?.addSubview(controlBar!)
+        //controlBar = UINib(nibName: "UserProfileControlBarView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! UserProfileControlBar
+        //controlBar!.frame = CGRectMake(0,0, collectionView!.frame.width, 60)
+        //controlBar!.setControlBar()
+        //collectionView?.addSubview(controlBar!)
+        
+        eventsBanner = UINib(nibName: "EventsBannerView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as? EventsBannerView
+        eventsBanner?.clipsToBounds = true
+        eventsBanner!.frame = CGRectMake(0,controlBarHeight, collectionView!.frame.width, eventsHeight)
+        collectionView!.addSubview(eventsBanner!)
         
         statusBarBG = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: screenStatusBarHeight))
         statusBarBG!.backgroundColor = UIColor.blackColor()
@@ -119,7 +130,6 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
     }
     
     func backTapped() {
-        self.navigationController?.popViewControllerAnimated(true)
     }
     
     func showMap() {
@@ -169,7 +179,6 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
     func scrollViewDidScroll(scrollView: UIScrollView) {
         let progress = scrollView.parallaxHeader.progress
         headerView.setProgress(progress)
-        print("progress: \(progress)")
         if progress < 0 {
             
             let scale = abs(progress)

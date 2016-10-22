@@ -128,6 +128,7 @@ class LoginViewController: UIViewController, StoreSubscriber {
                     mainStore.dispatch(UserIsAuthenticated( user: _user!, flow: .ReturningUser))
                 } else {
                    // Do nothing
+                    self.v1.activateLoginButton()
                 }
             })
         }

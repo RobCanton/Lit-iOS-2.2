@@ -74,6 +74,8 @@ class LocationViewController: MXSegmentedPagerController, StoreSubscriber {
         super.viewDidLoad()
         self.navigationItem.title = " "
         
+        let contactBarButton = UIBarButtonItem(title: "Contact", style: .Plain, target: self, action: nil)
+        self.navigationItem.rightBarButtonItem = contactBarButton
         
         self.segmentedPager.backgroundColor = UIColor.blackColor()
         

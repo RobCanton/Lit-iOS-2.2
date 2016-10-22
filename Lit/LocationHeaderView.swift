@@ -45,6 +45,8 @@ class LocationHeaderView: UIView {
     
     func setProgress(progress:CGFloat) {
         if progress < 0 {
+            addressBlock.alpha = 1 + progress * 1.75
+            descriptionLabel.alpha = 1 + progress * 1.75
         }
     }
     

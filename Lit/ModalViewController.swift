@@ -99,6 +99,8 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
         self.timeLabel.layer.opacity = 0
         self.locationLabel.layer.opacity = 0
         
+        navigationController?.setNavigationBarHidden(false, animated: true)
+        
         UIView.animateWithDuration(0.75, animations: {
             self.authorImage.layer.opacity = 1.0
             self.authorLabel.layer.opacity = 1.0

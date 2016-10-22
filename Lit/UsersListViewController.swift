@@ -16,7 +16,21 @@ class UsersListViewController: UITableViewController {
     
     let cellIdentifier = "userCell"
     var user:User?
+    var users = [User]()
+    {
+        didSet {
+            self.tableView.reloadData()
+        }
+    }
+    
     var userIds = [String]()
+    {
+        didSet{
+            FirebaseService.downloadUsers(userIds, completionHandler: { users in
+                self.users = users
+            })
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,7 +80,7 @@ class UsersListViewController: UITableViewController {
     
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return userIds.count
+        return users.count
     }
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -79,10 +93,20 @@ class UsersListViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! UserTableViewCell
-        cell.getUser(userIds[indexPath.item])
+        cell.selectionStyle = .None
+        cell.user = users[indexPath.item]
         return cell
     }
     
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! UserTableViewCell
+        print("Tapped")
+
+        let controller = UIStoryboard(name: "Main", bundle: nil)
+                .instantiateViewControllerWithIdentifier("UserProfileViewController") as! UserProfileViewController
+        controller.user = users[indexPath.item]
+        self.navigationController?.pushViewController(controller, animated: true)
+    }
     
     override func prefersStatusBarHidden() -> Bool {
         return true
