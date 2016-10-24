@@ -115,6 +115,8 @@
 		B0BA326A1DA7158B004352A7 /* HeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0BA32681DA7158B004352A7 /* HeaderView.xib */; };
 		B0BA326C1DA7163D004352A7 /* CreateProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0BA326B1DA7163D004352A7 /* CreateProfileHeaderView.xib */; };
 		B0BA326E1DA7165A004352A7 /* CreateProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0BA326D1DA7165A004352A7 /* CreateProfileHeaderView.swift */; };
+		B0ED4B671DBD84D20040E5F0 /* GuestsBannerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0ED4B661DBD84D20040E5F0 /* GuestsBannerView.xib */; };
+		B0ED4B691DBD85130040E5F0 /* GuestsBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0ED4B681DBD85130040E5F0 /* GuestsBannerView.swift */; };
 		B0FF11451D3EB32100D709CE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FF11441D3EB32100D709CE /* AppDelegate.swift */; };
 		B0FF11471D3EB32100D709CE /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FF11461D3EB32100D709CE /* LoginViewController.swift */; };
 		B0FF114C1D3EB32100D709CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B0FF114B1D3EB32100D709CE /* Assets.xcassets */; };
@@ -246,6 +248,8 @@
 		B0BA32681DA7158B004352A7 /* HeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeaderView.xib; sourceTree = "<group>"; };
 		B0BA326B1DA7163D004352A7 /* CreateProfileHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreateProfileHeaderView.xib; sourceTree = "<group>"; };
 		B0BA326D1DA7165A004352A7 /* CreateProfileHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateProfileHeaderView.swift; sourceTree = "<group>"; };
+		B0ED4B661DBD84D20040E5F0 /* GuestsBannerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GuestsBannerView.xib; sourceTree = "<group>"; };
+		B0ED4B681DBD85130040E5F0 /* GuestsBannerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GuestsBannerView.swift; sourceTree = "<group>"; };
 		B0FF11411D3EB32000D709CE /* Lit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0FF11441D3EB32100D709CE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B0FF11461D3EB32100D709CE /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -456,8 +460,10 @@
 			children = (
 				B079BE841DA557B00042B586 /* PhotoCell.swift */,
 				B079BE851DA557B00042B586 /* PhotoCell.xib */,
-				B09D5FD01DA57CE9004A188E /* ModalViewController.storyboard */,
 				B09D5FD11DA57CE9004A188E /* ModalViewController.swift */,
+				B09D5FD01DA57CE9004A188E /* ModalViewController.storyboard */,
+				B0ED4B681DBD85130040E5F0 /* GuestsBannerView.swift */,
+				B0ED4B661DBD84D20040E5F0 /* GuestsBannerView.xib */,
 				B08BBB951DBBE51400AD3FF1 /* EventsBannerView.swift */,
 				B08BBB931DBBE4FD00AD3FF1 /* EventsBannerView.xib */,
 				B0321ECB1DB568BA00AD4C53 /* LocViewController.swift */,
@@ -653,6 +659,7 @@
 				B03DED101DAED40D0062357A /* UserProfileControlBarView.xib in Resources */,
 				B06D54D81D9EEFD700F6A4A7 /* intro4.mp4 in Resources */,
 				B09D5FD21DA57CE9004A188E /* ModalViewController.storyboard in Resources */,
+				B0ED4B671DBD84D20040E5F0 /* GuestsBannerView.xib in Resources */,
 				B00BA9271D9E4E1D00F5EA30 /* CreateProfileViewController.xib in Resources */,
 				B0BA326A1DA7158B004352A7 /* HeaderView.xib in Resources */,
 				B0321ED01DB56C0500AD4C53 /* LocationHeaderView.xib in Resources */,
@@ -764,6 +771,7 @@
 				B0254F721DAFEF4A0082D898 /* ConversationViewCell.swift in Sources */,
 				76EE2B971D8766ED00EDB4CB /* ActivityFriendRequestCell.swift in Sources */,
 				B08BBB961DBBE51400AD3FF1 /* EventsBannerView.swift in Sources */,
+				B0ED4B691DBD85130040E5F0 /* GuestsBannerView.swift in Sources */,
 				762F82941D62573300549E1B /* GalleryViewController.swift in Sources */,
 				B06D54C51D9ECB6D00F6A4A7 /* MadokaTextField.swift in Sources */,
 				B087E9C61D9B531A0079E2BF /* FriendsReducer.swift in Sources */,

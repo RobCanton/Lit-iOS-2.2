@@ -53,7 +53,8 @@ class LocationHeaderView: UIView {
     func setLocation(location:Location) {
         
         imageView.loadImageUsingCacheWithURLString(location.getImageURL(), completion: { result in })
-        locationTitle.styleLocationTitle(location.getName().lowercaseString, size: 32.0)
+        locationTitle.styleLocationTitle(location.getName(), size: 32.0)
+        locationTitle.applyShadow(4, opacity: 0.8, height: 4, shouldRasterize: false)
         addressTitle.text = location.getAddress()
         descriptionLabel.text = location.getDescription()
         

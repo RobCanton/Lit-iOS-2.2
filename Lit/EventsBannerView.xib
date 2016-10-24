@@ -57,13 +57,11 @@
                         <constraint firstItem="n7j-6a-xEN" firstAttribute="top" secondItem="Kyd-bb-AdZ" secondAttribute="bottom" constant="2" id="3TU-rh-NiT"/>
                         <constraint firstAttribute="bottom" secondItem="n7j-6a-xEN" secondAttribute="bottom" constant="8" id="AXR-fv-aIT"/>
                         <constraint firstItem="aF0-0p-3ko" firstAttribute="centerY" secondItem="cLb-vL-PmD" secondAttribute="centerY" id="Hhq-BA-yHR"/>
-                        <constraint firstAttribute="trailing" secondItem="Kyd-bb-AdZ" secondAttribute="trailing" constant="8" id="Oji-kI-fGj"/>
                         <constraint firstAttribute="trailing" secondItem="aF0-0p-3ko" secondAttribute="trailing" constant="8" id="RUb-wZ-CFk"/>
                         <constraint firstItem="Kyd-bb-AdZ" firstAttribute="leading" secondItem="cLb-vL-PmD" secondAttribute="leading" constant="8" id="VVT-aa-h2U"/>
                         <constraint firstItem="n7j-6a-xEN" firstAttribute="leading" secondItem="cLb-vL-PmD" secondAttribute="leading" constant="8" id="XLm-ID-n4S"/>
                         <constraint firstItem="aF0-0p-3ko" firstAttribute="centerY" secondItem="cLb-vL-PmD" secondAttribute="centerY" id="lYg-0c-NgE"/>
                         <constraint firstAttribute="trailing" secondItem="aF0-0p-3ko" secondAttribute="trailing" constant="8" id="wgB-VU-RfL"/>
-                        <constraint firstAttribute="trailing" secondItem="n7j-6a-xEN" secondAttribute="trailing" constant="8" id="yXh-db-W4Q"/>
                     </constraints>
                     <variation key="default">
                         <mask key="constraints">
