@@ -71,13 +71,13 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
         self.navigationItem.title = " "
         self.automaticallyAdjustsScrollViewInsets = false
         
-        detailsView = UINib(nibName: "LocationDetailsView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as? LocationDetailsView
+        
         
         let navHeight = screenStatusBarHeight + navigationController!.navigationBar.frame.height
-        let slack:CGFloat = 2.0
+        let slack:CGFloat = 1.0
         let controlBarHeight:CGFloat = navHeight
         let eventsHeight:CGFloat = 140.0
-        let topInset:CGFloat = detailsView.frame.height + eventsHeight + slack
+        let topInset:CGFloat = navHeight + eventsHeight + slack
         
         headerView = UINib(nibName: "LocationHeaderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! LocationHeaderView
         headerView.delegate = self
@@ -108,6 +108,7 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
         collectionView!.backgroundColor = UIColor.blackColor()
         view.addSubview(collectionView!)
         
+        detailsView = UINib(nibName: "LocationDetailsView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as? LocationDetailsView
         detailsView.frame = CGRectMake(0, 0, collectionView!.frame.width, navHeight)
         detailsView.delegate = self
         collectionView?.addSubview(detailsView)

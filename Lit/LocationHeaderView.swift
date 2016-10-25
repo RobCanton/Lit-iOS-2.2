@@ -158,6 +158,11 @@ class LocationHeaderView: UIView {
                 }
             })
             centerGuest.hidden = false
+            if isFriend(visitors[0]) {
+                centerGuest.layer.borderColor = accentColor.CGColor
+            } else {
+                centerGuest.layer.borderColor = UIColor.whiteColor().CGColor
+            }
         }
         if visitors.count == 2 {
             FirebaseService.getUser(visitors[0], completionHandler: { _user in
@@ -175,6 +180,18 @@ class LocationHeaderView: UIView {
             
             leftGuest.center = CGPointMake(centerGuest.center.x - size * 0.55, guestsView.bounds.height/2)
             rightGuest.center = CGPointMake(centerGuest.center.x + size * 0.55, guestsView.bounds.height/2)
+            
+            if isFriend(visitors[0]) {
+                leftGuest.layer.borderColor = accentColor.CGColor
+            } else {
+                leftGuest.layer.borderColor = UIColor.whiteColor().CGColor
+            }
+            if isFriend(visitors[1]) {
+                rightGuest.layer.borderColor = accentColor.CGColor
+            } else {
+                rightGuest.layer.borderColor = UIColor.whiteColor().CGColor
+            }
+            
         }
         
         if visitors.count >= 3 {
@@ -200,7 +217,24 @@ class LocationHeaderView: UIView {
             leftGuest.center = CGPointMake(centerGuest.center.x - size * 0.85, guestsView.bounds.height/2)
             rightGuest.center = CGPointMake(centerGuest.center.x + size * 0.85, guestsView.bounds.height/2)
             
+            if isFriend(visitors[0]) {
+                centerGuest.layer.borderColor = accentColor.CGColor
+            } else {
+                centerGuest.layer.borderColor = UIColor.whiteColor().CGColor
+            }
+            
+            if isFriend(visitors[1]) {
+                leftGuest.layer.borderColor = accentColor.CGColor
+            } else {
+                leftGuest.layer.borderColor = UIColor.whiteColor().CGColor
+            }
+            if isFriend(visitors[2]) {
+                rightGuest.layer.borderColor = accentColor.CGColor
+            } else {
+                rightGuest.layer.borderColor = UIColor.whiteColor().CGColor
+            }
         }
+        
         guestsView.applyShadow(2, opacity: 0.8, height: 2, shouldRasterize: false)
         guestsLabel.applyShadow(2, opacity: 0.8, height: 2, shouldRasterize: false)
     }

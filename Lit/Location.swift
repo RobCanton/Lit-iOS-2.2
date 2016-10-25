@@ -109,7 +109,11 @@ class Location {
     }
     
     func addVisitor(visitor:String) {
-        visitors.append(visitor)
+        if isFriend(visitor) {
+            visitors.insert(visitor, atIndex: 0)
+        } else {
+            visitors.append(visitor)
+        }
     }
     
     func removeVisitor(_visitor:String) {

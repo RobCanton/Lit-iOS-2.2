@@ -14,6 +14,7 @@ enum UsersListType {
 
 class UsersListViewController: UITableViewController {
     
+    var statusBarBG:UIView!
     var showStatusBar = false
     
     let cellIdentifier = "userCell"
@@ -45,8 +46,6 @@ class UsersListViewController: UITableViewController {
         tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: self.tableView.frame.width, height: 120))
         
         tableView.reloadData()
-        
-
     }
     
     func getUserFriends(uid:String) {

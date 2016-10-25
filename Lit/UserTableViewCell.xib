@@ -10,10 +10,10 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="userCell" rowHeight="70" id="KGk-i7-Jjw" customClass="UserTableViewCell" customModule="Lit" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
+            <rect key="frame" x="0.0" y="0.0" width="362" height="70"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="69"/>
+                <rect key="frame" x="0.0" y="0.0" width="362" height="69"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yAH-Kh-Iuv">
@@ -31,7 +31,7 @@
                         </variation>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MqG-HS-YOO">
-                        <rect key="frame" x="69" y="24" width="243" height="21"/>
+                        <rect key="frame" x="69" y="24" width="211" height="21"/>
                         <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="20"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
@@ -42,7 +42,6 @@
                     <constraint firstItem="MqG-HS-YOO" firstAttribute="leading" secondItem="yAH-Kh-Iuv" secondAttribute="trailing" constant="8" id="Ldx-iW-TuA"/>
                     <constraint firstItem="MqG-HS-YOO" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Sd0-T0-iiP"/>
                     <constraint firstAttribute="topMargin" secondItem="yAH-Kh-Iuv" secondAttribute="top" id="X1C-YH-9y3"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="MqG-HS-YOO" secondAttribute="trailing" id="Xea-ny-h99"/>
                     <constraint firstAttribute="bottomMargin" secondItem="yAH-Kh-Iuv" secondAttribute="bottom" id="lfP-gz-V96"/>
                     <constraint firstAttribute="leadingMargin" secondItem="yAH-Kh-Iuv" secondAttribute="leading" id="s9l-ta-enG"/>
                 </constraints>
@@ -51,6 +50,7 @@
                 <outlet property="profileImageView" destination="yAH-Kh-Iuv" id="eTv-iT-jqJ"/>
                 <outlet property="usernameLabel" destination="MqG-HS-YOO" id="MN9-fg-2by"/>
             </connections>
+            <point key="canvasLocation" x="411" y="340"/>
         </tableViewCell>
     </objects>
 </document>

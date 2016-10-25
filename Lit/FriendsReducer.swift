@@ -9,6 +9,26 @@
 import Foundation
 import ReSwift
 
+
+func isFriend(user:String) -> Bool {
+    return mainStore.state.friends.contains(user)
+}
+
+func sortUsersArrayByFriends(users:[String]) -> [String] {
+    let friends = mainStore.state.friends
+    var sortedArray = [String]()
+
+    for user in users {
+        if friends.contains(user) {
+            sortedArray.insert(user, atIndex: 0)
+        } else {
+            sortedArray.append(user)
+        }
+    }
+    
+    return sortedArray
+}
+
 func FriendsReducer(action: Action, state:Tree<String>?) -> Tree<String> {
     var state = state ?? Tree<String>()
     
