@@ -11,6 +11,7 @@ import UIKit
 protocol LocationHeaderProtocol {
     func backTapped()
     func showMap()
+    func showGuests()
 }
 
 class LocationHeaderView: UIView {
@@ -30,6 +31,10 @@ class LocationHeaderView: UIView {
     @IBOutlet weak var guestsLabel: UILabel!
     
     
+    var centerTap: UITapGestureRecognizer!
+    var leftTap: UITapGestureRecognizer!
+    var rightTap: UITapGestureRecognizer!
+    var labelTap: UITapGestureRecognizer!
     var leftGuest:UIImageView!
     var centerGuest:UIImageView!
     var rightGuest:UIImageView!
@@ -76,9 +81,19 @@ class LocationHeaderView: UIView {
         rightGuest.layer.borderColor = UIColor.whiteColor().CGColor
         rightGuest.layer.borderWidth = 0.75
         
+        centerGuest.userInteractionEnabled = true
+        leftGuest.userInteractionEnabled = true
+        rightGuest.userInteractionEnabled = true
+        guestsLabel.userInteractionEnabled = true
+        
         guestsView.addSubview(leftGuest)
         guestsView.addSubview(rightGuest)
         guestsView.addSubview(centerGuest)
+        
+        centerTap = UITapGestureRecognizer(target: self, action: #selector(showGuests))
+        leftTap = UITapGestureRecognizer(target: self, action: #selector(showGuests))
+        rightTap = UITapGestureRecognizer(target: self, action: #selector(showGuests))
+        labelTap = UITapGestureRecognizer(target: self, action: #selector(showGuests))
 
     }
     
@@ -101,12 +116,19 @@ class LocationHeaderView: UIView {
         addressTap = UITapGestureRecognizer(target: self, action: #selector(showMap))
         addressBlock.userInteractionEnabled = true
         addressBlock.addGestureRecognizer(addressTap)
-
         
+        centerGuest.addGestureRecognizer(centerTap)
+        leftGuest.addGestureRecognizer(leftTap)
+        rightGuest.addGestureRecognizer(rightTap)
+        guestsLabel.addGestureRecognizer(labelTap)
     }
     
     func showMap(gesture:UITapGestureRecognizer) {
         delegate?.showMap()
+    }
+    
+    func showGuests(gesture:UITapGestureRecognizer) {
+        delegate?.showGuests()
     }
     
     func setGuests() {
@@ -179,7 +201,8 @@ class LocationHeaderView: UIView {
             rightGuest.center = CGPointMake(centerGuest.center.x + size * 0.85, guestsView.bounds.height/2)
             
         }
-        
+        guestsView.applyShadow(2, opacity: 0.8, height: 2, shouldRasterize: false)
+        guestsLabel.applyShadow(2, opacity: 0.8, height: 2, shouldRasterize: false)
     }
 
 

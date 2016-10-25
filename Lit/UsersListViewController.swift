@@ -14,6 +14,8 @@ enum UsersListType {
 
 class UsersListViewController: UITableViewController {
     
+    var showStatusBar = false
+    
     let cellIdentifier = "userCell"
     var user:User?
     var users = [User]()
@@ -78,6 +80,11 @@ class UsersListViewController: UITableViewController {
         })
     }
     
+    func getLocationGuests(location:Location) {
+        self.userIds = location.getVisitors()
+        self.tableView.reloadData()
+    }
+    
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return users.count
@@ -108,7 +115,5 @@ class UsersListViewController: UITableViewController {
         self.navigationController?.pushViewController(controller, animated: true)
     }
     
-    override func prefersStatusBarHidden() -> Bool {
-        return true
-    }
+
 }

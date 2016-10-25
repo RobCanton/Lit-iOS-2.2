@@ -151,6 +151,17 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
         }
     }
     
+    func showGuests() {
+        if let _ = location {
+            let controller = UIStoryboard(name: "Main", bundle: nil)
+                .instantiateViewControllerWithIdentifier("UsersListViewController") as! UsersListViewController
+            controller.showStatusBar = true
+            controller.title = "guests"
+            controller.getLocationGuests(location!)
+            self.navigationController?.pushViewController(controller, animated: true)
+        }
+    }
+    
     func mediaDeleted() {
         self.photos = [StoryItem]()
         self.collectionView!.reloadData()
@@ -202,7 +213,7 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
         }
         
         if progress < 0 {
-            
+            detailsView.alpha = 1 + progress * 1.75
             let scale = abs(progress)
             if let _ = controlBar {
                 let shift = controlBar!.centerBlock.frame.height/5

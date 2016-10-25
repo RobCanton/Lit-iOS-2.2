@@ -22,7 +22,7 @@ class MapViewController: UIViewController {
         let coordinate = location.getCoordinates().coordinate
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(coordinate,
                                                                   regionRadius * 2.0, regionRadius * 2.0)
-        
+
         mapView.showsUserLocation = true
         mapView.showsCompass = true
         mapView.showsBuildings = true
@@ -46,7 +46,7 @@ class MapViewController: UIViewController {
     
     func setLocation(_location:Location) {
         self.location = _location
-        
+        title = location.getName()
         
     }
     
