@@ -31,7 +31,7 @@ class LocationCell: UICollectionViewCell {
         
         centerGuest = UIImageView()
         centerGuest.backgroundColor = UIColor.blackColor()
-        centerGuest.frame = CGRectMake(0, 0, size * 1.15, size * 1.15)
+        centerGuest.frame = CGRectMake(0, 0, size * 1.05, size * 1.05)
         centerGuest.layer.cornerRadius = centerGuest.frame.width/2
         centerGuest.clipsToBounds = true
         
@@ -84,13 +84,9 @@ class LocationCell: UICollectionViewCell {
     }
     
     func setGuests() {
-        
-        
 
         let size = guestsView.frame.height
-        //let visitors = location!.getVisitors()
-        let visitors = ["Yn1uZ5b4g5bME8YY2vmLPKWKwOq1","6U1Da447qOh9MJhh5QO4gRpisXD3","Yn1uZ5b4g5bME8YY2vmLPKWKwOq1","Yn1uZ5b4g5bME8YY2vmLPKWKwOq1","Yn1uZ5b4g5bME8YY2vmLPKWKwOq1","Yn1uZ5b4g5bME8YY2vmLPKWKwOq1","Yn1uZ5b4g5bME8YY2vmLPKWKwOq1","Yn1uZ5b4g5bME8YY2vmLPKWKwOq1"]
-        
+        let visitors = location!.getVisitors()
         let count = visitors.count
         if count == 1 {
             guestsLabel.text = "1 guest"

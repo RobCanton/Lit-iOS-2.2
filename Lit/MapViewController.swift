@@ -14,10 +14,11 @@ class MapViewController: UIViewController {
     @IBOutlet weak var mapView: MKMapView!
     var location:Location!
     
+    var statusBarBG:UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let regionRadius: CLLocationDistance = 750
+        let regionRadius: CLLocationDistance = 500
         let coordinate = location.getCoordinates().coordinate
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(coordinate,
                                                                   regionRadius * 2.0, regionRadius * 2.0)
@@ -30,6 +31,16 @@ class MapViewController: UIViewController {
         mapView.setRegion(coordinateRegion, animated: true)
         let a = MapPin(coordinate: coordinate, title: location.getName(), subtitle: location.getAddress())
         mapView.addAnnotation(a)
+        
+        let navHeight = screenStatusBarHeight + navigationController!.navigationBar.frame.height
+        
+        statusBarBG = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: navHeight))
+        statusBarBG.backgroundColor = UIColor.clearColor()
+        let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .Dark))
+        blurView.frame = statusBarBG.bounds
+        statusBarBG.addSubview(blurView)
+        view.addSubview(statusBarBG)
+        
     }
     
     

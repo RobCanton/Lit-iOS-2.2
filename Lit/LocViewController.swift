@@ -61,6 +61,9 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
             self.collectionView!.reloadData()
         })
     }
+    override func viewDidLayoutSubviews() {
+        headerView.setGuests()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -105,7 +108,7 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
         collectionView!.backgroundColor = UIColor.blackColor()
         view.addSubview(collectionView!)
         
-        detailsView.frame = CGRectMake(0, 0, collectionView!.frame.width, detailsView.frame.height)
+        detailsView.frame = CGRectMake(0, 0, collectionView!.frame.width, navHeight)
         detailsView.delegate = self
         collectionView?.addSubview(detailsView)
         
@@ -211,7 +214,7 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
                 controlBar!.rightBlock.transform = transform
             }
             if scale > 0.80 {
-                let prop = (scale - 0.80) / 0.20
+                let prop = ((scale - 0.80) / 0.20) * 1.15
                 print("prop \(prop)")
                 statusBarBG!.backgroundColor = UIColor(white: 0.0, alpha: prop)
             } else {

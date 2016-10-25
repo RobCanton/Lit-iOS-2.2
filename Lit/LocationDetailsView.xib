@@ -8,20 +8,12 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="LocationDetailsView" customModule="Lit" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="600" height="100"/>
+            <rect key="frame" x="0.0" y="0.0" width="600" height="48"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wKc-bI-Ybg">
                     <rect key="frame" x="8" y="8" width="295" height="36"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="marker" translatesAutoresizingMaskIntoConstraints="NO" id="mOi-Cp-uf9">
-                            <rect key="frame" x="0.0" y="5" width="18" height="18"/>
-                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="18" id="dJf-Ou-fcn"/>
-                                <constraint firstAttribute="width" constant="18" id="nVh-dx-Yqm"/>
-                            </constraints>
-                        </imageView>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="Send" translatesAutoresizingMaskIntoConstraints="NO" id="AcB-fu-kNu">
                             <rect key="frame" x="269" y="9" width="16" height="16"/>
                             <constraints>
@@ -31,10 +23,18 @@
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="54 Kindy Street" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Htc-U6-cyx">
                             <rect key="frame" x="30" y="6" width="231" height="24"/>
-                            <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="16"/>
+                            <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="18"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="marker" translatesAutoresizingMaskIntoConstraints="NO" id="mOi-Cp-uf9">
+                            <rect key="frame" x="0.0" y="6" width="18" height="18"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="20" id="dJf-Ou-fcn"/>
+                                <constraint firstAttribute="width" constant="20" id="nVh-dx-Yqm"/>
+                            </constraints>
+                        </imageView>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
@@ -44,7 +44,7 @@
                         <constraint firstItem="AcB-fu-kNu" firstAttribute="leading" secondItem="Htc-U6-cyx" secondAttribute="trailing" constant="4" id="7mp-fz-j1E"/>
                         <constraint firstItem="AcB-fu-kNu" firstAttribute="centerY" secondItem="Htc-U6-cyx" secondAttribute="centerY" id="CFG-Og-9Ya"/>
                         <constraint firstItem="Htc-U6-cyx" firstAttribute="baseline" secondItem="mOi-Cp-uf9" secondAttribute="baseline" id="FXg-DX-Z4T"/>
-                        <constraint firstItem="Htc-U6-cyx" firstAttribute="leading" secondItem="mOi-Cp-uf9" secondAttribute="trailing" constant="6" id="GgT-gI-yPf"/>
+                        <constraint firstItem="Htc-U6-cyx" firstAttribute="leading" secondItem="mOi-Cp-uf9" secondAttribute="trailing" constant="8" id="GgT-gI-yPf"/>
                         <constraint firstItem="Htc-U6-cyx" firstAttribute="centerY" secondItem="wKc-bI-Ybg" secondAttribute="centerY" id="VIj-3J-Wxz"/>
                         <constraint firstAttribute="trailing" secondItem="AcB-fu-kNu" secondAttribute="trailing" constant="8" id="XKh-WP-zz0"/>
                         <constraint firstItem="AcB-fu-kNu" firstAttribute="baseline" secondItem="Htc-U6-cyx" secondAttribute="baseline" id="thL-O1-zcL"/>
@@ -52,23 +52,18 @@
                     </constraints>
                     <variation key="default">
                         <mask key="constraints">
+                            <exclude reference="6rQ-2y-Ekn"/>
                             <exclude reference="VIj-3J-Wxz"/>
                             <exclude reference="CFG-Og-9Ya"/>
                             <exclude reference="thL-O1-zcL"/>
                         </mask>
                     </variation>
                 </view>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pru-ob-0R5">
-                    <rect key="frame" x="8" y="52" width="584" height="34"/>
-                    <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="15"/>
-                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ICV-2L-gfl">
                     <rect key="frame" x="520" y="8" width="20" height="20"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="20" id="afn-TI-Irs"/>
-                        <constraint firstAttribute="width" constant="20" id="cHD-ZY-RnJ"/>
+                        <constraint firstAttribute="height" constant="25" id="afn-TI-Irs"/>
+                        <constraint firstAttribute="width" constant="25" id="cHD-ZY-RnJ"/>
                     </constraints>
                     <color key="tintColor" white="0.59999999999999998" alpha="1" colorSpace="calibratedWhite"/>
                     <state key="normal" image="phone"/>
@@ -80,7 +75,7 @@
                     <rect key="frame" x="560" y="8" width="20" height="20"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="20" id="5dF-G4-cK0"/>
-                        <constraint firstAttribute="width" constant="20" id="tEV-ID-9yM"/>
+                        <constraint firstAttribute="width" constant="25" id="tEV-ID-9yM"/>
                     </constraints>
                     <color key="tintColor" white="0.59999999999999998" alpha="1" colorSpace="calibratedWhite"/>
                     <state key="normal" image="externallink"/>
@@ -93,16 +88,13 @@
             <constraints>
                 <constraint firstItem="gl9-Dj-F8J" firstAttribute="leading" secondItem="ICV-2L-gfl" secondAttribute="trailing" constant="20" id="3mU-tY-ZMo"/>
                 <constraint firstItem="gl9-Dj-F8J" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="5yE-Ey-RB0"/>
-                <constraint firstItem="Pru-ob-0R5" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="Igy-xK-JPC"/>
                 <constraint firstItem="gl9-Dj-F8J" firstAttribute="centerY" secondItem="wKc-bI-Ybg" secondAttribute="centerY" id="Jsc-2h-FF8"/>
-                <constraint firstItem="Pru-ob-0R5" firstAttribute="top" secondItem="wKc-bI-Ybg" secondAttribute="bottom" constant="2" id="WDH-J0-rOt"/>
-                <constraint firstAttribute="bottom" secondItem="Pru-ob-0R5" secondAttribute="bottom" constant="8" id="Xa5-bb-rIA"/>
+                <constraint firstAttribute="bottom" secondItem="wKc-bI-Ybg" secondAttribute="bottom" constant="4" id="YL4-4g-KwU"/>
                 <constraint firstItem="wKc-bI-Ybg" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="ZuA-t3-yWp"/>
                 <constraint firstItem="ICV-2L-gfl" firstAttribute="centerY" secondItem="wKc-bI-Ybg" secondAttribute="centerY" id="oql-ag-h5M"/>
                 <constraint firstItem="ICV-2L-gfl" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="rGz-yr-Cwd"/>
-                <constraint firstAttribute="trailing" secondItem="Pru-ob-0R5" secondAttribute="trailing" constant="8" id="sn4-Lg-OQh"/>
                 <constraint firstItem="wKc-bI-Ybg" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="ucc-5c-rR3"/>
-                <constraint firstAttribute="trailing" secondItem="gl9-Dj-F8J" secondAttribute="trailing" constant="20" id="ypl-7Q-YvI"/>
+                <constraint firstAttribute="trailing" secondItem="gl9-Dj-F8J" secondAttribute="trailing" constant="25" id="ypl-7Q-YvI"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <variation key="default">
@@ -114,9 +106,8 @@
             <connections>
                 <outlet property="addresView" destination="wKc-bI-Ybg" id="LDI-EL-bWx"/>
                 <outlet property="addressLabel" destination="Htc-U6-cyx" id="dZl-TS-5KD"/>
-                <outlet property="descriptionLabel" destination="Pru-ob-0R5" id="1pj-Sc-KfB"/>
             </connections>
-            <point key="canvasLocation" x="390" y="90"/>
+            <point key="canvasLocation" x="390" y="64"/>
         </view>
     </objects>
     <resources>

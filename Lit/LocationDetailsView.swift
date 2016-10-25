@@ -15,7 +15,7 @@ protocol LocationDetailsProtocol {
 class LocationDetailsView: UIView {
     
     @IBOutlet weak var addressLabel: UILabel!
-    @IBOutlet weak var descriptionLabel: UILabel!
+
     
     @IBOutlet weak var addresView: UIView!
     var location:Location!
@@ -51,8 +51,7 @@ class LocationDetailsView: UIView {
     func setLocation(location:Location) {
         self.location = location
         addressLabel.text = location.getAddress()
-        descriptionLabel.text = location.getDescription()
-        
+
         addressTap = UITapGestureRecognizer(target: self, action: #selector(showMap))
         addresView.userInteractionEnabled = true
         addresView.addGestureRecognizer(addressTap)
