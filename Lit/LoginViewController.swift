@@ -131,6 +131,8 @@ class LoginViewController: UIViewController, StoreSubscriber {
                     self.v1.activateLoginButton()
                 }
             })
+        } else {
+            self.v1.activateLoginButton()
         }
         
     }
@@ -141,79 +143,6 @@ class LoginViewController: UIViewController, StoreSubscriber {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-        
-//        func DEPRECATED_LOGIN() {
-//            
-//            let cities = mainStore.state.cities
-//            if cities.count == 0 {
-//                FirebaseService.retrieveCities()
-//            } else {
-//                
-//                if mainStore.state.userState.coordinates == nil{
-//                    let loc = IGLocationManager.currentLocation()
-//                    mainStore.dispatch(UpdateUserLocation(location: loc))
-//                } else if mainStore.state.userState.activeCity == nil {
-//                    if let loc = mainStore.state.userState.coordinates {
-//                        var nearestCity:City?
-//                        var minDistance = Double(MAXFLOAT)
-//                        for city in mainStore.state.cities {
-//                            let coords = city.getCoordinates()
-//                            let dist = coords.distanceFromLocation(loc)
-//                            
-//                            if dist < minDistance {
-//                                minDistance = dist
-//                                nearestCity = city
-//                            }
-//                        }
-//                        
-//                        if let _ = nearestCity {
-//                            mainStore.dispatch(SetActiveCity(city: nearestCity!))
-//                            
-//                        }
-//                    }
-//                } else if mainStore.state.locations.count == 0 {
-//                    // get locations
-//                    let city = mainStore.state.userState.activeCity
-//                    FirebaseService.retrieveLocationsForCity(city!.getKey())
-//                }
-//                else if mainStore.state.userState.activeLocationKey == ""{
-//                    Listeners.listenToLocations()
-//                    var minDistance = Double(MAXFLOAT)
-//                    var nearestLocation:Location?
-//                    for location in mainStore.state.locations {
-//                        let coords = location.getCoordinates()
-//                        let igCoords = IGLocation(latitude: coords.coordinate.latitude, longitude: coords.coordinate.longitude)
-//                        let dist = igCoords.distanceFromLocation(mainStore.state.userState.coordinates!)
-//                        
-//                        if dist < minDistance {
-//                            minDistance = dist
-//                            nearestLocation = location
-//                        }
-//                    }
-//                    
-//                    if let nLoc = nearestLocation {
-//                        let uid = mainStore.state.userState.uid
-//                        let city = mainStore.state.userState.activeCity!.getKey()
-//                        
-//                        let ignoreRef = FirebaseService.ref.child("users/\(uid)/ignores/\(city)/\(nLoc.getKey())")
-//                        ignoreRef.observeSingleEventOfType(.Value, withBlock: { (snapshot) in
-//                            
-//                            if snapshot.exists() {
-//                                // block
-//                                // TODO MOVE THIS TO MAIN VIEW
-//                                self.performSegueWithIdentifier("showLit", sender: self)
-//                            } else {
-//                                mainStore.dispatch(SetActiveLocation(locationKey: nearestLocation!.getKey()))
-//                            }
-//                        })
-//                    }
-//                } else {
-//                    
-//                    self.performSegueWithIdentifier("showLit", sender: self)
-//                }
-//            }
-//        }
-    
 }
 
 

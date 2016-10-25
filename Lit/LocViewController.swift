@@ -11,7 +11,7 @@ import Firebase
 import ReSwift
 import ARNTransitionAnimator
 
-class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, LocationHeaderProtocol, ARNImageTransitionZoomable, ZoomProtocol {
+class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, LocationHeaderProtocol, ARNImageTransitionZoomable, ZoomProtocol, LocationDetailsProtocol {
     
     var statusBarBG:UIView?
     
@@ -22,19 +22,12 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
     
     var photos = [StoryItem]()
     var collectionView:UICollectionView?
-    var guestsBanner:GuestsBannerView!
+    var detailsView:LocationDetailsView!
     var controlBar:UserProfileControlBar?
     var headerView:LocationHeaderView!
     var eventsBanner:EventsBannerView?
     
     var location: Location?
-        {
-        didSet {
-            
-            downloadMedia()
-        }
-    }
-    
     override func viewWillAppear(animated: Bool) {
         mainStore.subscribe(self)
         //navigationController?.hidesBarsOnSwipe = true
@@ -55,6 +48,9 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
             if key == location.getKey() {
                 self.location = location
                 headerView.setLocation(self.location!)
+                titleLabel.styleLocationTitle(self.location!.getName(), size: 32.0)
+                detailsView.setLocation(self.location!)
+                downloadMedia()
             }
         }
     }
@@ -72,12 +68,13 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
         self.navigationItem.title = " "
         self.automaticallyAdjustsScrollViewInsets = false
         
+        detailsView = UINib(nibName: "LocationDetailsView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as? LocationDetailsView
         
         let navHeight = screenStatusBarHeight + navigationController!.navigationBar.frame.height
-        let slack:CGFloat = 4.0
+        let slack:CGFloat = 2.0
         let controlBarHeight:CGFloat = navHeight
         let eventsHeight:CGFloat = 140.0
-        let topInset:CGFloat = controlBarHeight + eventsHeight + slack
+        let topInset:CGFloat = detailsView.frame.height + eventsHeight + slack
         
         headerView = UINib(nibName: "LocationHeaderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! LocationHeaderView
         headerView.delegate = self
@@ -108,30 +105,31 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
         collectionView!.backgroundColor = UIColor.blackColor()
         view.addSubview(collectionView!)
         
-        guestsBanner = UINib(nibName: "GuestsBannerView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as? GuestsBannerView
-        guestsBanner.frame = CGRectMake(0,0, collectionView!.frame.width, controlBarHeight)
-        guestsBanner.setGuests()
-        collectionView?.addSubview(guestsBanner)
-        
-//        controlBar = UINib(nibName: "UserProfileControlBarView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as? UserProfileControlBar
-//        controlBar!.frame = CGRectMake(0,0, collectionView!.frame.width, controlBarHeight)
-//        controlBar!.setControlBar()
-//        collectionView?.addSubview(controlBar!)
+        detailsView.frame = CGRectMake(0, 0, collectionView!.frame.width, detailsView.frame.height)
+        detailsView.delegate = self
+        collectionView?.addSubview(detailsView)
         
         eventsBanner = UINib(nibName: "EventsBannerView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as? EventsBannerView
         eventsBanner?.clipsToBounds = true
-        eventsBanner!.frame = CGRectMake(0,controlBarHeight, collectionView!.frame.width, eventsHeight)
+        eventsBanner!.frame = CGRectMake(0,detailsView.frame.height, collectionView!.frame.width, eventsHeight)
         collectionView!.addSubview(eventsBanner!)
         
         statusBarBG = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: navHeight))
-        statusBarBG!.backgroundColor = UIColor.blackColor()
-//        let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .Dark))
-//        blurView.frame = statusBarBG!.bounds
-//        statusBarBG?.addSubview(blurView)
+        statusBarBG!.backgroundColor = UIColor(white: 0.0, alpha: 0.0)
+        
+        titleLabel = UILabel()
+        titleLabel.frame = statusBarBG!.bounds
+        titleLabel.frame = CGRectMake(0, screenStatusBarHeight/2, statusBarBG!.bounds.width, headerView.locationTitle.frame.height)
+        titleLabel.center = CGPoint(x: statusBarBG!.bounds.width/2, y: statusBarBG!.bounds.height/2 + screenStatusBarHeight/2)
+        titleLabel.textAlignment = .Center
+        statusBarBG!.addSubview(titleLabel)
+        titleLabel.hidden = true
+        
         view.addSubview(statusBarBG!)
-        statusBarBG!.hidden = true
         
     }
+    
+    var titleLabel:UILabel!
     
     func pushUserProfile(uid:String) {
         let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("UserProfileViewController")
@@ -188,6 +186,18 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
     func scrollViewDidScroll(scrollView: UIScrollView) {
         let progress = scrollView.parallaxHeader.progress
         headerView.setProgress(progress)
+        let titlePoint = headerView.locationTitle.frame.origin
+        
+        if let _ = titleLabel {
+            if titlePoint.y <= titleLabel.frame.origin.y {
+                headerView.locationTitle.hidden = true
+                titleLabel.hidden = false
+            } else {
+                headerView.locationTitle.hidden = false
+                titleLabel.hidden = true
+            }
+        }
+        
         if progress < 0 {
             
             let scale = abs(progress)
@@ -200,11 +210,12 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
                 controlBar!.centerBlock.transform = transform
                 controlBar!.rightBlock.transform = transform
             }
-            
-            if progress <= -1.0 {
-                statusBarBG?.hidden = false
+            if scale > 0.80 {
+                let prop = (scale - 0.80) / 0.20
+                print("prop \(prop)")
+                statusBarBG!.backgroundColor = UIColor(white: 0.0, alpha: prop)
             } else {
-                statusBarBG?.hidden = true
+                statusBarBG!.backgroundColor = UIColor(white: 0.0, alpha: 0)
             }
         }
     }

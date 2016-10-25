@@ -9,12 +9,15 @@
 import Firebase
 import UIKit
 import ReSwift
-import IngeoSDK
+import CoreLocation
 
 
-class SetupViewController: UIViewController,IGLocationManagerDelegate, StoreSubscriber {
+class SetupViewController: UIViewController, StoreSubscriber, LocationServiceDelegate {
 
 
+    let locationManager = CLLocationManager()
+    
+    
     @IBOutlet weak var enableLocationServicesButton: UIView!
     
     override func viewWillAppear(animated: Bool) {
@@ -29,10 +32,17 @@ class SetupViewController: UIViewController,IGLocationManagerDelegate, StoreSubs
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        startSetup()
-        
-        // Do any additional setup after loading the view.
+        LocationService.sharedInstance.delegate = self
+        retrieveCities()
+    }
+    
+    func tracingLocation(currentLocation: CLLocation){
+        LocationService.sharedInstance.stopUpdatingLocation()
+        determineNearestCity(currentLocation)
+    
+    }
+    func tracingLocationDidFailWithError(error: NSError) {
+    
     }
 
     override func didReceiveMemoryWarning() {
@@ -47,15 +57,6 @@ class SetupViewController: UIViewController,IGLocationManagerDelegate, StoreSubs
     var cities:[City]?
     var activeCity:City?
     var locations:[Location]?
-    
-    
-    //MARK- Update Location
-    func startSetup(){
-        IGLocationManager.initWithDelegate(self, secretAPIKey: "193ca2c61218e6f929626f6d35396341")
-        retrieveCities()
-
-    }
-    
     func retrieveCities() {
         print("retrieveCities")
         FIRDatabase.database().reference().child("cities")
@@ -66,7 +67,7 @@ class SetupViewController: UIViewController,IGLocationManagerDelegate, StoreSubs
                     let name = city.value["name"] as! String
                     let lat = city.childSnapshotForPath("coordinates").value!["latitude"] as! Double
                     let lon = city.childSnapshotForPath("coordinates").value!["longitude"] as! Double
-                    let coord = IGLocation(latitude: lat, longitude: lon)
+                    let coord = CLLocation(latitude: lat, longitude: lon)
                     let country = city.value["country"] as! String
                     let region = city.value["region"] as! String
                     
@@ -74,22 +75,23 @@ class SetupViewController: UIViewController,IGLocationManagerDelegate, StoreSubs
                     cities.append(city)
                 }
                 self.cities = cities
-                self.determineNearestCity()
+                LocationService.sharedInstance.startUpdatingLocation()
             })
     }
     
-    func determineNearestCity() {
+    func determineNearestCity(coordinate:CLLocation) {
+        
         guard let cities = self.cities else {return}
         print("determineNearestCity")
-        let loc = IGLocationManager.currentLocation()
 
         var minDistance = Double(MAXFLOAT)
         for city in cities {
             let coords = city.getCoordinates()
-            let dist = coords.distanceFromLocation(loc)
+            let dist = coords.distanceFromLocation(coordinate)
 
             if dist < minDistance {
                 minDistance = dist
+                print("Active city: \(activeCity)")
                 activeCity = city
             }
         }

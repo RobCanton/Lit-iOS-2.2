@@ -63,6 +63,7 @@
 		B026A8531DADC61700DD2CCD /* PostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B026A8511DADC61700DD2CCD /* PostsViewController.swift */; };
 		B026A8541DADC61700DD2CCD /* PostsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B026A8521DADC61700DD2CCD /* PostsViewController.xib */; };
 		B02B37D91DB814C400174DE7 /* LeftTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02B37D81DB814C400174DE7 /* LeftTransition.swift */; };
+		B0305A521DBE6F15009B5F74 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0305A511DBE6F15009B5F74 /* WebViewController.swift */; };
 		B03095E51DB7D65C008A4DFA /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03095E41DB7D65C008A4DFA /* MapViewController.swift */; };
 		B0321EC21DB52BEB00AD4C53 /* DummyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0321EC11DB52BEB00AD4C53 /* DummyViewController.swift */; };
 		B0321EC41DB5337900AD4C53 /* DismissAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0321EC31DB5337900AD4C53 /* DismissAnimator.swift */; };
@@ -115,8 +116,8 @@
 		B0BA326A1DA7158B004352A7 /* HeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0BA32681DA7158B004352A7 /* HeaderView.xib */; };
 		B0BA326C1DA7163D004352A7 /* CreateProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0BA326B1DA7163D004352A7 /* CreateProfileHeaderView.xib */; };
 		B0BA326E1DA7165A004352A7 /* CreateProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0BA326D1DA7165A004352A7 /* CreateProfileHeaderView.swift */; };
-		B0ED4B671DBD84D20040E5F0 /* GuestsBannerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0ED4B661DBD84D20040E5F0 /* GuestsBannerView.xib */; };
-		B0ED4B691DBD85130040E5F0 /* GuestsBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0ED4B681DBD85130040E5F0 /* GuestsBannerView.swift */; };
+		B0ED4B671DBD84D20040E5F0 /* LocationDetailsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0ED4B661DBD84D20040E5F0 /* LocationDetailsView.xib */; };
+		B0ED4B691DBD85130040E5F0 /* LocationDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0ED4B681DBD85130040E5F0 /* LocationDetailsView.swift */; };
 		B0FF11451D3EB32100D709CE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FF11441D3EB32100D709CE /* AppDelegate.swift */; };
 		B0FF11471D3EB32100D709CE /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FF11461D3EB32100D709CE /* LoginViewController.swift */; };
 		B0FF114C1D3EB32100D709CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B0FF114B1D3EB32100D709CE /* Assets.xcassets */; };
@@ -194,6 +195,7 @@
 		B026A8511DADC61700DD2CCD /* PostsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsViewController.swift; sourceTree = "<group>"; };
 		B026A8521DADC61700DD2CCD /* PostsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostsViewController.xib; sourceTree = "<group>"; };
 		B02B37D81DB814C400174DE7 /* LeftTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeftTransition.swift; sourceTree = "<group>"; };
+		B0305A511DBE6F15009B5F74 /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		B03095E41DB7D65C008A4DFA /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		B0321EC11DB52BEB00AD4C53 /* DummyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DummyViewController.swift; sourceTree = "<group>"; };
 		B0321EC31DB5337900AD4C53 /* DismissAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissAnimator.swift; sourceTree = "<group>"; };
@@ -248,8 +250,8 @@
 		B0BA32681DA7158B004352A7 /* HeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeaderView.xib; sourceTree = "<group>"; };
 		B0BA326B1DA7163D004352A7 /* CreateProfileHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreateProfileHeaderView.xib; sourceTree = "<group>"; };
 		B0BA326D1DA7165A004352A7 /* CreateProfileHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateProfileHeaderView.swift; sourceTree = "<group>"; };
-		B0ED4B661DBD84D20040E5F0 /* GuestsBannerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GuestsBannerView.xib; sourceTree = "<group>"; };
-		B0ED4B681DBD85130040E5F0 /* GuestsBannerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GuestsBannerView.swift; sourceTree = "<group>"; };
+		B0ED4B661DBD84D20040E5F0 /* LocationDetailsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LocationDetailsView.xib; sourceTree = "<group>"; };
+		B0ED4B681DBD85130040E5F0 /* LocationDetailsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationDetailsView.swift; sourceTree = "<group>"; };
 		B0FF11411D3EB32000D709CE /* Lit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0FF11441D3EB32100D709CE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B0FF11461D3EB32100D709CE /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -462,14 +464,15 @@
 				B079BE851DA557B00042B586 /* PhotoCell.xib */,
 				B09D5FD11DA57CE9004A188E /* ModalViewController.swift */,
 				B09D5FD01DA57CE9004A188E /* ModalViewController.storyboard */,
-				B0ED4B681DBD85130040E5F0 /* GuestsBannerView.swift */,
-				B0ED4B661DBD84D20040E5F0 /* GuestsBannerView.xib */,
+				B0ED4B681DBD85130040E5F0 /* LocationDetailsView.swift */,
+				B0ED4B661DBD84D20040E5F0 /* LocationDetailsView.xib */,
 				B08BBB951DBBE51400AD3FF1 /* EventsBannerView.swift */,
 				B08BBB931DBBE4FD00AD3FF1 /* EventsBannerView.xib */,
 				B0321ECB1DB568BA00AD4C53 /* LocViewController.swift */,
 				B0321ECD1DB56BF900AD4C53 /* LocationHeaderView.swift */,
 				B0321ECF1DB56C0500AD4C53 /* LocationHeaderView.xib */,
 				B03095E41DB7D65C008A4DFA /* MapViewController.swift */,
+				B0305A511DBE6F15009B5F74 /* WebViewController.swift */,
 			);
 			name = Location;
 			sourceTree = "<group>";
@@ -627,7 +630,7 @@
 						DevelopmentTeam = 6BES3VUFCX;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
-								enabled = 1;
+								enabled = 0;
 							};
 						};
 					};
@@ -659,7 +662,7 @@
 				B03DED101DAED40D0062357A /* UserProfileControlBarView.xib in Resources */,
 				B06D54D81D9EEFD700F6A4A7 /* intro4.mp4 in Resources */,
 				B09D5FD21DA57CE9004A188E /* ModalViewController.storyboard in Resources */,
-				B0ED4B671DBD84D20040E5F0 /* GuestsBannerView.xib in Resources */,
+				B0ED4B671DBD84D20040E5F0 /* LocationDetailsView.xib in Resources */,
 				B00BA9271D9E4E1D00F5EA30 /* CreateProfileViewController.xib in Resources */,
 				B0BA326A1DA7158B004352A7 /* HeaderView.xib in Resources */,
 				B0321ED01DB56C0500AD4C53 /* LocationHeaderView.xib in Resources */,
@@ -771,7 +774,7 @@
 				B0254F721DAFEF4A0082D898 /* ConversationViewCell.swift in Sources */,
 				76EE2B971D8766ED00EDB4CB /* ActivityFriendRequestCell.swift in Sources */,
 				B08BBB961DBBE51400AD3FF1 /* EventsBannerView.swift in Sources */,
-				B0ED4B691DBD85130040E5F0 /* GuestsBannerView.swift in Sources */,
+				B0ED4B691DBD85130040E5F0 /* LocationDetailsView.swift in Sources */,
 				762F82941D62573300549E1B /* GalleryViewController.swift in Sources */,
 				B06D54C51D9ECB6D00F6A4A7 /* MadokaTextField.swift in Sources */,
 				B087E9C61D9B531A0079E2BF /* FriendsReducer.swift in Sources */,
@@ -817,6 +820,7 @@
 				B0254F7A1DB07F080082D898 /* helper.swift in Sources */,
 				767729841D5116930052CA17 /* CWStatusBarNotificationUtils.swift in Sources */,
 				B0254F781DB01FAE0082D898 /* JSQMessagesService.swift in Sources */,
+				B0305A521DBE6F15009B5F74 /* WebViewController.swift in Sources */,
 				B05ABCF91D41178D00364322 /* AppState.swift in Sources */,
 				76136D3C1D493713003DB433 /* LocationCell.swift in Sources */,
 				76A516671D60C69D005E2815 /* ChatViewController.swift in Sources */,

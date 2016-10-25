@@ -24,10 +24,6 @@ func UserStateReducer(action: Action, state: UserState?) -> UserState {
         state.isAuth = false
         state.uid = ""
         break
-    case _ as UpdateUserLocation:
-        let a = action as! UpdateUserLocation
-        state.coordinates = a.location
-        break
     case _ as SetActiveCity:
         let a = action as! SetActiveCity
         state.activeCity = a.city

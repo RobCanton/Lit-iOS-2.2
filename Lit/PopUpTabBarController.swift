@@ -10,22 +10,61 @@ import Foundation
 import UIKit
 import ReSwift
 import Firebase
+import CoreLocation
 
-class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarControllerDelegate {
+class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarControllerDelegate, LocationServiceDelegate {
+    
+    var activeLocation:Location?
     
     var visible = true
     
     let tabBarHeight:CGFloat = 60
-    var activeLocation:Location?
     
     var array = [UIView]()
-    
     var selectedItem = 0
+    
+    let locationManager = CLLocationManager()
+    
+    func tracingLocation(currentLocation: CLLocation){
+        print("New Location:\n\(currentLocation)")
+
+        let currentKey = mainStore.state.userState.activeLocationKey
+        var key = ""
+        
+        let locations = mainStore.state.locations
+        var minDistance = Double(MAXFLOAT)
+        
+        for location in locations {
+            let distance = location.getCoordinates().distanceFromLocation(currentLocation)
+            if distance < minDistance {
+                minDistance = distance
+                key = location.getKey()
+            }
+        }
+        
+        if key != currentKey {
+            if minDistance < 500 {
+                let uid = mainStore.state.userState.uid
+                let ref = FirebaseService.ref.child("users/visits/\(uid)/\(key)")
+                ref.setValue([".sv": "timestamp"])
+                let locRef = FirebaseService.ref.child("locations/toronto/\(key)/visitors/\(uid)")
+                locRef.setValue([".sv": "timestamp"])
+                
+            } else {
+                key = ""
+            }
+        }
+        
+        mainStore.dispatch(SetActiveLocation(locationKey: key))
+    }
+    
+    func tracingLocationDidFailWithError(error: NSError) {
+        
+    }
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        mainStore.subscribe(self, selector: { state in
-            state.userState
-        })
+        mainStore.subscribe(self)
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -33,21 +72,41 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
         mainStore.unsubscribe(self) 
     }
     
-    func newState(state: UserState) {
+    func newState(state: AppState) {
+        messageNotifications()
+        socialNotifications()
         
-        let key = state.activeLocationKey
-        if key != activeLocation?.getKey() {
-            for location in mainStore.state.locations {
-                if key == location.getKey() {
-                    print("PopUpTabBarController: New Active Location \(location.getKey())")
-                    activeLocation = location
-                    // ACTIVE LOCATION SET
-                }
+        let currentKey = state.userState.activeLocationKey
+
+        if let _ = activeLocation {
+            if currentKey == activeLocation?.getKey() { return }
+        }
+        var loc:Location?
+        for location in state.locations {
+            if location.getKey() == currentKey {
+                loc = location
             }
         }
         
-        messageNotifications()
-        socialNotifications()
+        if loc == nil {
+            deactivateLocation()
+        } else {
+            activateLocation(loc!)
+        }
+    }
+    
+    func activateLocation(location:Location) {
+        activeLocation = location
+        print("ACTIVE LOCATION: \(activeLocation!.getKey())")
+        
+        array[2].alpha = 1.0
+        
+    }
+    
+    func deactivateLocation() {
+        activeLocation = nil
+        array[2].alpha = 0.0
+        
     }
     
     func messageNotifications() {
@@ -81,6 +140,7 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         delegate = self
         tabBarController?.delegate = self
         tabBar.backgroundImage = UIImage()
@@ -95,7 +155,7 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
             let bgView = UIView(frame: CGRectMake(itemWidth * CGFloat(itemIndex), 0, itemWidth, tabBarHeight))
             if itemIndex == 2
             {
-                bgView.backgroundColor = UIColor(red: 1, green: 175/255, blue: 0, alpha: 0.5)
+                bgView.backgroundColor = accentColor
                 //bgView.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.15)
                 bgView.alpha = 0
             }
@@ -116,8 +176,9 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
         
         tabBar.addSubview(bgView)
         tabBar.sendSubviewToBack(bgView)
-
-
+        
+        LocationService.sharedInstance.delegate = self
+        LocationService.sharedInstance.startUpdatingLocation()
     }
     
     override func viewWillLayoutSubviews() {

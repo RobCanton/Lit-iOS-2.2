@@ -40,7 +40,6 @@ struct UserState {
     var isAuth: Bool = false
     var uid: String = ""
     var user:User?
-    var coordinates: IGLocation?
     var activeCity: City?
     var activeLocationKey:String=""
     var vote:RatingState = .Selection

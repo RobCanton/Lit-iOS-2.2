@@ -1,79 +1,93 @@
-////
-////  LocationService.swift
-////  Lit
-////
-////  Created by Robert Canton on 2016-08-17.
-////  Copyright © 2016 Robert Canton. All rights reserved.
-////
-//
-//import CoreLocation
-//import Foundation
-//import ReSwift
-//
-//class LocationService: NSObject, CLLocationManagerDelegate {
-//    
-//    private let locationManager = CLLocationManager()
-//    
-//    private var userLocation:CLLocation?
-//    
-//    
-//    func initiateLocationUpdater() {
-//        locationManager.delegate = self
-//        locationManager.requestAlwaysAuthorization()
-//        locationManager.requestWhenInUseAuthorization()
-//        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-//        locationManager.startUpdatingLocation()
-//    }
-//    
-//    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-//        CLGeocoder().reverseGeocodeLocation(manager.location!, completionHandler: { (placemarks, error) ->
-//            Void in
-//            
-//            if error != nil {
-//                //print("Error: " + error!.localizedDescription)
-//                return
-//            }
-//            if placemarks?.count > 0 {
-//                let pm = placemarks![0] as CLPlacemark
-//                self.checkCurrentLocation(pm)
-//            }
-//        })
-//    }
-//    
-//    private func checkCurrentLocation(placemark: CLPlacemark) {
-//        let latitude =  (placemark.location?.coordinate.latitude)!
-//        let longitude = (placemark.location?.coordinate.longitude)!
-//        let coordinate:CLLocation = CLLocation(latitude: latitude, longitude: longitude)
-//        var minDistance = Double(MAXFLOAT)
-//        let locations = mainStore.state.locations
-//        var nearestLocationKey:String?
-//        if locations.count != 0 {
-//            for location in locations {
-//                let distance = coordinate.distanceFromLocation(location.getCoordinates())
-//                
-//                if distance < minDistance {
-//                    minDistance = distance
-//                    nearestLocationKey = location.getKey()
-//                }
-//            }
-//            if let _ = nearestLocationKey {
-//                if nearestLocationKey! != mainStore.state.userLocationState.activeLocationKey {
-//                    mainStore.dispatch(SetUserLocation(activeLocationKey: nearestLocationKey!))
-//                }
-//            }
-//            
-//        }
-//    }
-//    
-//    /* GETTERS */
-//    
-//    func getUserLocation() -> CLLocation? {
-//        return userLocation
-//    }
-//    
-//    
-//    
-//    
-// 
-// 
-//}
+import Foundation
+import CoreLocation
+
+protocol LocationServiceDelegate {
+    func tracingLocation(currentLocation: CLLocation)
+    func tracingLocationDidFailWithError(error: NSError)
+}
+
+class LocationService: NSObject, CLLocationManagerDelegate {
+    
+    class var sharedInstance: LocationService {
+        struct Static {
+            static var onceToken: dispatch_once_t = 0
+            
+            static var instance: LocationService? = nil
+        }
+        dispatch_once(&Static.onceToken) {
+            Static.instance = LocationService()
+        }
+        return Static.instance!
+    }
+    
+    var locationManager: CLLocationManager?
+    var lastLocation: CLLocation?
+    var delegate: LocationServiceDelegate?
+    
+    override init() {
+        super.init()
+        
+        self.locationManager = CLLocationManager()
+        guard let locationManager = self.locationManager else {
+            return
+        }
+        
+        if CLLocationManager.authorizationStatus() == .NotDetermined {
+            // requestWhenInUseAuthorization
+            locationManager.requestWhenInUseAuthorization()
+        }
+        
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest // The accuracy of the location data
+        locationManager.distanceFilter = 50 // The minimum distance (measured in meters) a device must move horizontally before an update event is generated.
+        locationManager.delegate = self
+    }
+    
+    func startUpdatingLocation() {
+        print("Starting Location Updates")
+        self.locationManager?.startUpdatingLocation()
+    }
+    
+    func stopUpdatingLocation() {
+        print("Stop Location Updates")
+        self.locationManager?.stopUpdatingLocation()
+    }
+    
+    // CLLocationManagerDelegate
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        
+        guard let location = locations.last else {
+            return
+        }
+        
+        // singleton for get last location
+        self.lastLocation = location
+        
+        // use for real time update location
+        updateLocation(location)
+    }
+    
+    func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
+        
+        // do on error
+        updateLocationDidFailWithError(error)
+    }
+    
+    // Private function
+    private func updateLocation(currentLocation: CLLocation){
+        
+        guard let delegate = self.delegate else {
+            return
+        }
+        
+        delegate.tracingLocation(currentLocation)
+    }
+    
+    private func updateLocationDidFailWithError(error: NSError) {
+        
+        guard let delegate = self.delegate else {
+            return
+        }
+        
+        delegate.tracingLocationDidFailWithError(error)
+    }
+}

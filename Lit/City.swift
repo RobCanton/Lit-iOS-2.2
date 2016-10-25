@@ -6,19 +6,19 @@
 //  Copyright © 2016 Robert Canton. All rights reserved.
 //
 
-import IngeoSDK
+import CoreLocation
 
 class City {
     
     private var key:String                    // Key in database
     private var name:String
-    private var coordinates:IGLocation
+    private var coordinates:CLLocation
     private var country:String
     private var region:String
 
     
     
-    init(key:String, name:String, coordinates:IGLocation, country:String, region:String)
+    init(key:String, name:String, coordinates:CLLocation, country:String, region:String)
     {
         self.key          = key
         self.name         = name
@@ -39,7 +39,7 @@ class City {
         return name
     }
     
-    func getCoordinates() -> IGLocation
+    func getCoordinates() -> CLLocation
     {
         return coordinates
     }

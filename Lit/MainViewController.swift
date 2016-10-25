@@ -14,9 +14,9 @@ import LNPopupController
 import Firebase
 import FBSDKCoreKit
 import FBSDKLoginKit
-import IngeoSDK
 
-class MainViewController: UICollectionViewController, StoreSubscriber, CLLocationManagerDelegate, UIGestureRecognizerDelegate, UISearchBarDelegate, IGLocationManagerDelegate {
+
+class MainViewController: UICollectionViewController, StoreSubscriber, CLLocationManagerDelegate, UIGestureRecognizerDelegate, UISearchBarDelegate {
     
     var locations = [Location]()
     
@@ -61,6 +61,15 @@ class MainViewController: UICollectionViewController, StoreSubscriber, CLLocatio
         print("MainViewController: New State")
         locations = state.locations
         locations.sortInPlace({ $0.getVisitorsCount() > $1.getVisitorsCount() })
+        
+        for i in 0 ..< locations.count {
+            let location = locations[i]
+            if location.getKey() == state.userState.activeLocationKey {
+                locations.removeAtIndex(i)
+                locations.insert(location, atIndex: 0)
+            }
+            
+        }
 
         collectionView?.reloadData()
         
@@ -100,9 +109,6 @@ class MainViewController: UICollectionViewController, StoreSubscriber, CLLocatio
         
         self.addSearchBar()
         searchBar?.hidden = true
-        
-        IGLocationManager.initWithDelegate(self, secretAPIKey: "193ca2c61218e6f929626f6d35396341")
-        IGLocationManager.startUpdatingLocation()
     }
     
     func addSearchBar(){
@@ -181,43 +187,6 @@ class MainViewController: UICollectionViewController, StoreSubscriber, CLLocatio
         self.searchBar!.resignFirstResponder()
         self.searchBar!.text = ""
         navigationController?.setNavigationBarHidden(false, animated: false)
-    }
-    
-    func igLocationManager(manager: IGLocationManager!, didUpdateLocation igLocation: IGLocation!) {
-        print("didUpdateLocation: \(igLocation.description)")
-        var minDistance = Double(MAXFLOAT)
-        var nearestLocation:Location?
-        for location in mainStore.state.locations {
-            let coords = location.getCoordinates()
-            let igCoords = IGLocation(latitude: coords.coordinate.latitude, longitude: coords.coordinate.longitude)
-            let dist = igCoords.distanceFromLocation(igLocation)
-
-            if dist < minDistance {
-                minDistance = dist
-                nearestLocation = location
-            }
-        }
-
-        if let nLoc = nearestLocation {
-            mainStore.dispatch(SetActiveLocation(locationKey: nearestLocation!.getKey()))
-            // HANDLE BLOCKS SOON
-            //            let uid = mainStore.state.userState.uid
-            //            let city = mainStore.state.userState.activeCity!.getKey()
-
-//            let ignoreRef = FirebaseService.ref.child("users/\(uid)/ignores/\(city)/\(nLoc.getKey())")
-//            ignoreRef.observeSingleEventOfType(.Value, withBlock: { (snapshot) in
-//
-//                if snapshot.exists() {
-//                    //Do nothing
-//                } else {
-//                    mainStore.dispatch(SetActiveLocation(locationKey: nearestLocation!.getKey()))
-//                }
-//            })
-        }
-    }
-    
-    func igLocationManager(manager: IGLocationManager!, didDetectMotionState motionState: IGMotionState) {
-        print("didDetectMotionState: \(IGLocation.stringForMotionState(motionState))")
     }
 }
 

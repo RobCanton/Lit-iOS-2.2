@@ -44,14 +44,10 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Lit uses your background location to notify you to check out nearby places.</string>
-	<key>NSLocationWhenInUsageDescription</key>
+	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Lit uses your location to show the best spots in your city.</string>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>location</string>
-	</array>
+	<key>NSLocationUsageDescription</key>
+	<string>Test</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

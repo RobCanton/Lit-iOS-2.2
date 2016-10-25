@@ -24,6 +24,7 @@ class LocationHeaderView: UIView {
     @IBOutlet weak var descriptionLabel: UILabel!
     var delegate:LocationHeaderProtocol?
     
+    @IBOutlet weak var guestsView: UIView!
     var addressTap:UITapGestureRecognizer!
     
     @IBAction func backTapped(sender: AnyObject) {
@@ -34,13 +35,13 @@ class LocationHeaderView: UIView {
         super.awakeFromNib()
         let gradient: CAGradientLayer = CAGradientLayer()
         
-        gradient.colors = [UIColor.clearColor().CGColor, UIColor(white: 0.0, alpha: 0.75).CGColor]
+        gradient.colors = [UIColor.clearColor().CGColor, UIColor(white: 0.0, alpha: 0.85).CGColor]
         gradient.locations = [0.0 , 1.0]
         
         gradient.frame = gradientView.bounds
         gradientView.layer.insertSublayer(gradient, atIndex: 0)
         
-        
+        setGuests()
     }
     
     func setProgress(progress:CGFloat) {
@@ -65,6 +66,32 @@ class LocationHeaderView: UIView {
     
     func showMap(gesture:UITapGestureRecognizer) {
         delegate?.showMap()
+    }
+    
+    func setGuests() {
+        
+        let numGuests = 3
+        
+        for i in 0 ..< numGuests {
+            let image = UIImage(named: "11")
+            let profileView = UIImageView(image: image)
+            profileView.backgroundColor = UIColor.blackColor()
+            let size = guestsView.frame.height
+            profileView.frame = CGRectMake(CGFloat(i) * size * 0.75, 0, size, size)
+            profileView.layer.cornerRadius = profileView.frame.width/2
+            profileView.clipsToBounds = true
+            guestsView.addSubview(profileView)
+            guestsView.sendSubviewToBack(profileView)
+//            let x = (CGFloat(i) * (profileView.frame.width * (0.75 - (0.02 * CGFloat(i)))))
+//            profileView.center = CGPointMake(x, guestsView.center.y/2)
+//            guestsView.addSubview(profileView)
+            //guestsView.sendSubviewToBack(profileView)
+        }
+        
+        let label = UILabel()
+        label.text = "3 friends are here"
+        label.font = UIFont(name: "Avenir-Medium", size: 22.0)
+        
     }
 
 }

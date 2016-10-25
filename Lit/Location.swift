@@ -87,6 +87,10 @@ class Location {
     
     func getWebsite() -> String
     {
+        return website
+    }
+    
+    func getWebsitePretty() -> String {
         let s = website.stringByReplacingOccurrencesOfString("http://", withString: "")
         let t = s.stringByReplacingOccurrencesOfString("www.", withString: "")
         return t
