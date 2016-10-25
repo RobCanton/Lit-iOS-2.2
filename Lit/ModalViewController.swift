@@ -98,6 +98,8 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
         self.authorLabel.layer.opacity = 0
         self.timeLabel.layer.opacity = 0
         self.locationLabel.layer.opacity = 0
+        self.likesLabel.layer.opacity = 0.0
+        self.likeBtn.layer.opacity = 0.0
         
         navigationController?.setNavigationBarHidden(false, animated: true)
         
@@ -107,6 +109,7 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
             self.timeLabel.layer.opacity = 1.0
             self.locationLabel.layer.opacity = 1.0
             self.likeBtn.layer.opacity = 1.0
+            self.likesLabel.layer.opacity = 1.0
         })
     }
     
@@ -118,6 +121,7 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
         self.timeLabel.layer.opacity = 0
         self.locationLabel.layer.opacity = 0
         self.likeBtn.layer.opacity = 0
+        self.likesLabel.layer.opacity = 0
     }
     
     func profileTapped(gesture:UITapGestureRecognizer) {

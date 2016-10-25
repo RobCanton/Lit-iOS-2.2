@@ -10,11 +10,10 @@ import UIKit
 import ReSwift
 import BRYXBanner
 import CoreLocation
-import LNPopupController
 import Firebase
 import FBSDKCoreKit
 import FBSDKLoginKit
-
+import Whisper
 
 class MainViewController: UICollectionViewController, StoreSubscriber, CLLocationManagerDelegate, UIGestureRecognizerDelegate, UISearchBarDelegate {
     
@@ -57,6 +56,8 @@ class MainViewController: UICollectionViewController, StoreSubscriber, CLLocatio
         return false
     }
     
+    var activeLocation:Location?
+    
     func newState(state: AppState) {
         print("MainViewController: New State")
         locations = state.locations
@@ -75,6 +76,39 @@ class MainViewController: UICollectionViewController, StoreSubscriber, CLLocatio
         
         if state.viewUser != "" {
             push(state.viewUser)
+        }
+        let currentKey = state.userState.activeLocationKey
+        if let _ = activeLocation {
+            if currentKey == activeLocation?.getKey() { return }
+        }
+        var loc:Location?
+        for location in state.locations {
+            if location.getKey() == currentKey {
+                loc = location
+            }
+        }
+        
+        if loc == nil {
+            deactivateLocation()
+        } else {
+            activateLocation(loc!)
+        }
+    }
+    
+    var murmur:Murmur?
+    func activateLocation(location:Location) {
+        activeLocation = location
+        murmur = Murmur(title: "You are near \(activeLocation!.getName())")
+        murmur!.backgroundColor = accentColor
+        murmur!.titleColor = UIColor.whiteColor()
+        // Present a permanent status bar message
+        show(whistle: murmur!, action: .Present)
+    }
+    
+    func deactivateLocation() {
+        activeLocation = nil
+        if let _ = murmur {
+            hide(whisperFrom: navigationController!)
         }
     }
     

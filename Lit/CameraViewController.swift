@@ -223,6 +223,15 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
         var panGesture = UIPanGestureRecognizer(target: self, action:("handlePanGesture:"))
         view.addGestureRecognizer(panGesture)
         
+        cancelButton.backgroundColor = UIColor(white: 0.15, alpha: 0.8)
+        cancelButton.layer.cornerRadius = cancelButton.frame.width/2
+        cancelButton.clipsToBounds = true
+        
+        sendButton.backgroundColor = accentColor
+        sendButton.layer.cornerRadius = cancelButton.frame.width/2
+        sendButton.clipsToBounds = true
+        sendButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 2, bottom: 0, right: -2)
+        
         cameraView.frame = self.view.frame
         
         recordButton = RecordButton(frame: CGRectMake(0,0,70,70))

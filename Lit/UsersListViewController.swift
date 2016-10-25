@@ -99,20 +99,22 @@ class UsersListViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! UserTableViewCell
-        cell.selectionStyle = .None
         cell.user = users[indexPath.item]
         return cell
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! UserTableViewCell
-        print("Tapped")
 
         let controller = UIStoryboard(name: "Main", bundle: nil)
                 .instantiateViewControllerWithIdentifier("UserProfileViewController") as! UserProfileViewController
         controller.user = users[indexPath.item]
         self.navigationController?.pushViewController(controller, animated: true)
+         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
+
+    
+
 
 }

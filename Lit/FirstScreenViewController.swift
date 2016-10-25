@@ -27,7 +27,7 @@ class FirstScreenViewController: UIViewController {
         loginButton.layer.borderWidth = 2.0
         loginButton.hidden = true
         tap = UITapGestureRecognizer(target: self, action: #selector(initiateFBLogin))
-        setupVideoBackground()
+        //setupVideoBackground()
         
     }
 

@@ -38,19 +38,19 @@ class PhotoCell: UICollectionViewCell {
         likeTag.clipsToBounds = true
         
         
-        let userLikedRef = FirebaseService.ref.child("uploads/\(item.getKey())/likes/\(mainStore.state.userState.uid)")
-        userLikedRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
-            if snapshot.exists() {
-                let liked = snapshot.value! as! Bool
-                if liked {
-                    self.likeTag.hidden = false
-                } else {
-                    self.likeTag.hidden = true
-                }
-            } else {
-                self.likeTag.hidden = true
-            }
-        })
+//        let userLikedRef = FirebaseService.ref.child("uploads/\(item.getKey())/likes/\(mainStore.state.userState.uid)")
+//        userLikedRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+//            if snapshot.exists() {
+//                let liked = snapshot.value! as! Bool
+//                if liked {
+//                    self.likeTag.hidden = false
+//                } else {
+//                    self.likeTag.hidden = true
+//                }
+//            } else {
+//                self.likeTag.hidden = true
+//            }
+//        })
     }
     
     func setTitle(titleStr:String) {

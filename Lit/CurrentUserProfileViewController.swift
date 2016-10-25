@@ -1,17 +1,17 @@
 //
-//  LocViewController.swift
+//  CurrentUserProfileViewController.swift
 //  Lit
 //
-//  Created by Robert Canton on 2016-10-17.
+//  Created by Robert Canton on 2016-10-25.
 //  Copyright © 2016 Robert Canton. All rights reserved.
 //
-
 import UIKit
-import Firebase
 import ReSwift
+import MXParallaxHeader
 import ARNTransitionAnimator
 
-class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, LocationHeaderProtocol, ARNImageTransitionZoomable, ZoomProtocol, LocationDetailsProtocol {
+
+class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, HeaderProtocol, ControlBarProtocol, ZoomProtocol {
     
     var statusBarBG:UIView?
     
@@ -22,69 +22,82 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
     
     var photos = [StoryItem]()
     var collectionView:UICollectionView?
-    var detailsView:LocationDetailsView!
     var controlBar:UserProfileControlBar?
-    var headerView:LocationHeaderView!
-    var eventsBanner:EventsBannerView?
+    var headerView:CreateProfileHeaderView!
+    var user:User? = mainStore.state.userState.user
     
-    var location: Location?
     override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         mainStore.subscribe(self)
-        //navigationController?.hidesBarsOnSwipe = true
-        print("LocationViewController Subscribed")
+        
+    }
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        mainStore.unsubscribe(self)
     }
     
-    override func viewWillDisappear(animated: Bool) {
-        mainStore.unsubscribe(self)
-        //navigationController?.hidesBarsOnSwipe = true
-        print("LocationViewController Unsubscribed")
+    func backTapped() {
+        
+    }
+    
+    func messageTapped() {
+        mainStore.dispatch(OpenConversation(uid: user!.getUserId()))
+        tabBarController?.selectedIndex = 1
+    }
+    
+    func friendBlockTapped() {
+        let controller = UIStoryboard(name: "Main", bundle: nil)
+            .instantiateViewControllerWithIdentifier("UsersListViewController") as! UsersListViewController
+        controller.title = "\(user!.getDisplayName())'s friends"
+        controller.getUserFriends(user!.getUserId())
+        self.navigationController?.pushViewController(controller, animated: true)
     }
     
     func newState(state: AppState) {
-        print("New State!")
-        let key = state.viewLocationKey
-        let locations = state.locations
-        for location in locations {
-            if key == location.getKey() {
-                self.location = location
-                headerView.setLocation(self.location!)
-                titleLabel.styleLocationTitle(self.location!.getName(), size: 32.0)
-                detailsView.setLocation(self.location!)
-                downloadMedia()
-            }
-        }
+        checkFriendStatus()
     }
     
-    func downloadMedia() {
-        FirebaseService.downloadStory(location!.getPostKeys(), completionHandler: { story in
-            self.photos = story.reverse()
-            self.collectionView!.reloadData()
-        })
+    func mediaDeleted() {
+        getKeys()
     }
-    override func viewDidLayoutSubviews() {
-        headerView.setGuests()
+    
+    
+    func checkFriendStatus() {
+        guard let _ = user else {return}
+        
+        let friendStatus = FirebaseService.checkFriendStatus(user!.getUserId())
+        headerView.setFriendStatus(friendStatus)
+        
+    }
+    
+    override func prefersStatusBarHidden() -> Bool {
+        return false
+    }
+    
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return .LightContent
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.navigationItem.title = " "
         self.automaticallyAdjustsScrollViewInsets = false
 
-        let navHeight = screenStatusBarHeight + navigationController!.navigationBar.frame.height
-        let slack:CGFloat = 1.0
-        let controlBarHeight:CGFloat = navHeight
-        let eventsHeight:CGFloat = 140.0
-        let topInset:CGFloat = navHeight + eventsHeight + slack
+        self.navigationController?.navigationBar.titleTextAttributes =
+            [NSFontAttributeName: UIFont(name: "Avenir-Book", size: 20.0)!]
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: .Default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.barStyle = .Black
+        self.navigationController?.navigationBar.translucent = true
         
-        headerView = UINib(nibName: "LocationHeaderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! LocationHeaderView
+        headerView = UINib(nibName: "CreateProfileHeaderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! CreateProfileHeaderView
         headerView.delegate = self
         screenSize = self.view.frame
         screenWidth = screenSize.width
         screenHeight = screenSize.height
         
         let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: topInset, left: 0, bottom: 200, right: 0)
+        layout.sectionInset = UIEdgeInsets(top: 40 + screenStatusBarHeight, left: 0, bottom: 200, right: 0)
         layout.itemSize = CGSize(width: screenWidth/3, height: screenWidth/3)
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
@@ -98,73 +111,60 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
         collectionView!.bounces = true
         collectionView!.pagingEnabled = true
         collectionView!.showsVerticalScrollIndicator = false
+        
         collectionView!.parallaxHeader.view = headerView
         collectionView!.parallaxHeader.height = UltravisualLayoutConstants.Cell.featuredHeight
         collectionView!.parallaxHeader.mode = .Fill
         collectionView!.parallaxHeader.minimumHeight = 0;
         
         collectionView!.backgroundColor = UIColor.blackColor()
-        view.addSubview(collectionView!)
+        self.view.addSubview(collectionView!)
         
-        detailsView = UINib(nibName: "LocationDetailsView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as? LocationDetailsView
-        detailsView.frame = CGRectMake(0, 0, collectionView!.frame.width, navHeight)
-        detailsView.delegate = self
-        collectionView?.addSubview(detailsView)
+        controlBar = UINib(nibName: "UserProfileControlBarView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! UserProfileControlBar
+        controlBar!.frame = CGRectMake(0,0, collectionView!.frame.width, 60)
+        controlBar!.setControlBar()
+        controlBar!.delegate = self
+        collectionView?.addSubview(controlBar!)
         
-        eventsBanner = UINib(nibName: "EventsBannerView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as? EventsBannerView
-        eventsBanner?.clipsToBounds = true
-        eventsBanner!.frame = CGRectMake(0,detailsView.frame.height, collectionView!.frame.width, eventsHeight)
-        collectionView!.addSubview(eventsBanner!)
-        
-        statusBarBG = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: navHeight))
-        statusBarBG!.backgroundColor = UIColor(white: 0.0, alpha: 0.0)
-        
-        titleLabel = UILabel()
-        titleLabel.frame = statusBarBG!.bounds
-        titleLabel.frame = CGRectMake(0, screenStatusBarHeight/2, statusBarBG!.bounds.width, headerView.locationTitle.frame.height)
-        titleLabel.center = CGPoint(x: statusBarBG!.bounds.width/2, y: statusBarBG!.bounds.height/2 + screenStatusBarHeight/2)
-        titleLabel.textAlignment = .Center
-        statusBarBG!.addSubview(titleLabel)
-        titleLabel.hidden = true
-        
+        statusBarBG = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: screenStatusBarHeight))
+        statusBarBG!.backgroundColor = UIColor.blackColor()
         view.addSubview(statusBarBG!)
+        statusBarBG!.hidden = true
         
-    }
-    
-    var titleLabel:UILabel!
-    
-    func pushUserProfile(uid:String) {
-        let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("UserProfileViewController")
-        navigationController?.pushViewController(controller, animated: true)
-    }
-    
-    func backTapped() {
-    }
-    
-    func showMap() {
-        if let _ = location {
-            let mapController = UIStoryboard(name: "Main", bundle: nil)
-                .instantiateViewControllerWithIdentifier("MapViewController") as! MapViewController
-            mapController.setLocation(location!)
-            navigationController?.pushViewController(mapController, animated: true)
+        if let _ = user {
+            if let _ = headerView {
+                checkFriendStatus()
+                headerView.imageView.loadImageUsingCacheWithURLString(user!.getLargeImageUrl(), completion: {result in})
+                headerView.setUsername(user!.getDisplayName())
+                controlBar?.setFriendsBlock(user!.getNumFriends())
+                getKeys()
+            }
         }
     }
     
-    func showGuests() {
-        if let _ = location {
-            let controller = UIStoryboard(name: "Main", bundle: nil)
-                .instantiateViewControllerWithIdentifier("UsersListViewController") as! UsersListViewController
-            controller.showStatusBar = true
-            controller.title = "guests"
-            controller.getLocationGuests(location!)
-            self.navigationController?.pushViewController(controller, animated: true)
-        }
+    func getKeys() {
+        let uid = user!.getUserId()
+        var postKeys = [String]()
+        let ref = FirebaseService.ref.child("users/uploads/\(uid)")
+        ref.observeSingleEventOfType(.Value, withBlock: { snapshot in
+            if snapshot.exists() {
+                for child in snapshot.children {
+                    postKeys.append(child.key!!)
+                }
+                self.downloadStory(postKeys)
+            }
+            
+        })
     }
     
-    func mediaDeleted() {
+    func downloadStory(postKeys:[String]) {
+        controlBar?.setPostsBlock(postKeys.count)
         self.photos = [StoryItem]()
-        self.collectionView!.reloadData()
-        downloadMedia()
+        collectionView?.reloadData()
+        FirebaseService.downloadStory(postKeys, completionHandler: { story in
+            self.photos = story.reverse()
+            self.collectionView!.reloadData()
+        })
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -176,8 +176,6 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(cellIdentifier, forIndexPath: indexPath) as! PhotoCell
         
         cell.setPhoto(photos[indexPath.item])
-        
-        
         return cell
     }
     
@@ -189,30 +187,15 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
     
     func getItemSize(indexPath:NSIndexPath) -> CGSize {
         
-        if photos.count > 9 {
-            return CGSize(width: screenWidth/4, height: screenWidth/4);
-        }
         return CGSize(width: screenWidth/3, height: screenWidth/3);
     }
-
+    
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         let progress = scrollView.parallaxHeader.progress
         headerView.setProgress(progress)
-        let titlePoint = headerView.locationTitle.frame.origin
-        
-        if let _ = titleLabel {
-            if titlePoint.y <= titleLabel.frame.origin.y {
-                headerView.locationTitle.hidden = true
-                titleLabel.hidden = false
-            } else {
-                headerView.locationTitle.hidden = false
-                titleLabel.hidden = true
-            }
-        }
-        
         if progress < 0 {
-            detailsView.alpha = 1 + progress * 1.75
+            
             let scale = abs(progress)
             if let _ = controlBar {
                 let shift = controlBar!.centerBlock.frame.height/5
@@ -223,12 +206,11 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
                 controlBar!.centerBlock.transform = transform
                 controlBar!.rightBlock.transform = transform
             }
-            if scale > 0.80 {
-                let prop = ((scale - 0.80) / 0.20) * 1.15
-                print("prop \(prop)")
-                statusBarBG!.backgroundColor = UIColor(white: 0.0, alpha: prop)
+            
+            if progress <= -1.0 {
+                statusBarBG?.hidden = false
             } else {
-                statusBarBG!.backgroundColor = UIColor(white: 0.0, alpha: 0)
+                statusBarBG?.hidden = true
             }
         }
     }
@@ -244,9 +226,6 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
         if let nav = navigationController as? ARNImageTransitionNavigationController {
             nav.doZoomTransition = true
         }
-        
-        
-        
         showInteractive()
     }
     
@@ -255,10 +234,20 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
     
     var isModeModal = false
     
+    func Deanimate(){
+        self.animator?.interactiveType = .None
+    }
+    
+    func Reanimate(){
+        self.animator?.interactiveType = .Present
+    }
+    
     var controller:ModalViewController!
+    
     func showInteractive() {
         let storyboard = UIStoryboard(name: "ModalViewController", bundle: nil)
         controller = storyboard.instantiateViewControllerWithIdentifier("ModalViewController") as! ModalViewController
+        controller.mode = .User
         controller.item = self.photos[self.selectedIndexPath!.item]
         controller.delegate = self
         
@@ -284,7 +273,11 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
             self!.controller.view.alpha = 0.0
             
             animator.presentationAnimationHandler = { containerView, percentComplete in
+                //print(percentComplete)
+                //self!.tabBarController?.setTabBarOffsetY(percentComplete)
+                
                 sourceImageView.frame = destinationImageView.frame
+                
                 self!.controller.view.alpha = 1.0
             }
             
@@ -318,6 +311,8 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
             }
             
             animator.dismissalAnimationHandler = { containerView, percentComplete in
+                //print(percentComplete)
+                //self!.tabBarController?.setTabBarOffsetY(-1 *  (1 - percentComplete))
                 if percentComplete < -0.05 { return }
                 let frame = CGRectMake(
                     destFrame.origin.x - (destFrame.origin.x - sourceFrame.origin.x) * (1 - percentComplete),
@@ -343,6 +338,7 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
             controller.transitioningDelegate = self.animator
             self.presentViewController(controller, animated: true, completion: nil)
         } else {
+            //self.tabBarController?.setTabBarVisible(false, animated: true)
             self.animator!.interactiveType = .Pop
             if let _nav = self.navigationController as? ARNImageTransitionNavigationController {
                 _nav.interactiveAnimator = self.animator!
@@ -352,13 +348,6 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
         }
     }
     
-    func Deanimate(){
-        self.animator?.interactiveType = .None
-    }
-    
-    func Reanimate(){
-        //self.animator?.interactiveType = .Push
-    }
     
     func createTransitionImageView() -> UIImageView {
         
@@ -374,7 +363,7 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
         imageView.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
         let imagePoint = CGPoint(x: attr!.center.x, y: attr!.center.y - offset)
         imageView.center = imagePoint //self.parentViewController!.view.convertPoint(imagePoint, fromView: self.view)
-
+        
         return imageView
     }
     
@@ -383,6 +372,7 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
     }
     
     func dismissalCompletionAction(completeTransition: Bool) {
+        
         self.selectedImageView?.hidden = false
         if completeTransition {
             if let tabBar = self.tabBarController as? PopUpTabBarController {
@@ -392,11 +382,4 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
     }
     
     
-    override func prefersStatusBarHidden() -> Bool {
-        return false
-    }
-    
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return .LightContent
-    }
 }

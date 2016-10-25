@@ -10,6 +10,7 @@ import UIKit
 
 class UserTableViewCell: UITableViewCell {
 
+
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var usernameLabel: UILabel!
     
@@ -25,12 +26,10 @@ class UserTableViewCell: UITableViewCell {
         // Initialization code
         profileImageView.layer.cornerRadius = profileImageView.frame.width/2
         profileImageView.clipsToBounds = true
+        
+        selectionStyle = .None
+        
     }
 
-    override func setSelected(selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
 
-        // Configure the view for the selected state
-    }
-    
 }

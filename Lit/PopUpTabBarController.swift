@@ -18,7 +18,7 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
     
     var visible = true
     
-    let tabBarHeight:CGFloat = 60
+    let tabBarHeight:CGFloat = 54
     
     var array = [UIView]()
     var selectedItem = 0
@@ -99,7 +99,9 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
         activeLocation = location
         print("ACTIVE LOCATION: \(activeLocation!.getKey())")
         
-        array[2].alpha = 1.0
+        array[2].alpha = 0.3
+        
+
         
     }
     
