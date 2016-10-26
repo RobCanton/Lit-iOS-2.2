@@ -49,10 +49,10 @@
 		B00BA9271D9E4E1D00F5EA30 /* CreateProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B00BA9251D9E4E1D00F5EA30 /* CreateProfileViewController.xib */; };
 		B01783901D98EF040088AD33 /* FriendRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B017838F1D98EF040088AD33 /* FriendRequest.swift */; };
 		B01783921D9A20F10088AD33 /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01783911D9A20F10088AD33 /* Friend.swift */; };
-		B01B34981DC107C600B2B9CE /* SelectionCardView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B01B34971DC107C600B2B9CE /* SelectionCardView.xib */; };
-		B01B349A1DC107F500B2B9CE /* SelectionCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01B34991DC107F500B2B9CE /* SelectionCardView.swift */; };
 		B01B349D1DC117A900B2B9CE /* TacoDialogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01B349B1DC117A900B2B9CE /* TacoDialogView.swift */; };
 		B01B34A01DC11A0600B2B9CE /* TacoDialogView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B01B349F1DC11A0600B2B9CE /* TacoDialogView.xib */; };
+		B01B34A21DC15BC600B2B9CE /* DialogRow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B01B34A11DC15BC600B2B9CE /* DialogRow.xib */; };
+		B01B34A41DC15BDA00B2B9CE /* DialogRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01B34A31DC15BDA00B2B9CE /* DialogRow.swift */; };
 		B0236E131DC00E0A0083C720 /* CurrentUserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0236E121DC00E0A0083C720 /* CurrentUserProfileViewController.swift */; };
 		B0254F701DAFE00C0082D898 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0254F6F1DAFE00C0082D898 /* MessagesViewController.swift */; };
 		B0254F721DAFEF4A0082D898 /* ConversationViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0254F711DAFEF4A0082D898 /* ConversationViewCell.swift */; };
@@ -168,10 +168,10 @@
 		B00BA9251D9E4E1D00F5EA30 /* CreateProfileViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreateProfileViewController.xib; sourceTree = "<group>"; };
 		B017838F1D98EF040088AD33 /* FriendRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendRequest.swift; sourceTree = "<group>"; };
 		B01783911D9A20F10088AD33 /* Friend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
-		B01B34971DC107C600B2B9CE /* SelectionCardView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectionCardView.xib; sourceTree = "<group>"; };
-		B01B34991DC107F500B2B9CE /* SelectionCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionCardView.swift; sourceTree = "<group>"; };
 		B01B349B1DC117A900B2B9CE /* TacoDialogView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TacoDialogView.swift; sourceTree = "<group>"; };
 		B01B349F1DC11A0600B2B9CE /* TacoDialogView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TacoDialogView.xib; sourceTree = "<group>"; };
+		B01B34A11DC15BC600B2B9CE /* DialogRow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DialogRow.xib; sourceTree = "<group>"; };
+		B01B34A31DC15BDA00B2B9CE /* DialogRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DialogRow.swift; sourceTree = "<group>"; };
 		B0236E121DC00E0A0083C720 /* CurrentUserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentUserProfileViewController.swift; sourceTree = "<group>"; };
 		B0254F6F1DAFE00C0082D898 /* MessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
 		B0254F711DAFEF4A0082D898 /* ConversationViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationViewCell.swift; sourceTree = "<group>"; };
@@ -418,10 +418,10 @@
 			isa = PBXGroup;
 			children = (
 				76FF2E6A1D566D6A00E04EE3 /* CameraViewController.swift */,
-				B01B34991DC107F500B2B9CE /* SelectionCardView.swift */,
-				B01B34971DC107C600B2B9CE /* SelectionCardView.xib */,
 				B01B349B1DC117A900B2B9CE /* TacoDialogView.swift */,
 				B01B349F1DC11A0600B2B9CE /* TacoDialogView.xib */,
+				B01B34A31DC15BDA00B2B9CE /* DialogRow.swift */,
+				B01B34A11DC15BC600B2B9CE /* DialogRow.xib */,
 			);
 			name = Camera;
 			sourceTree = "<group>";
@@ -660,9 +660,9 @@
 				B00BA91E1D9D6DB600F5EA30 /* StoryItemViewController.xib in Resources */,
 				B0FF11571D3EB33100D709CE /* GoogleService-Info.plist in Resources */,
 				B032C9931DA807C000811779 /* SetupViewController.xib in Resources */,
+				B01B34A21DC15BC600B2B9CE /* DialogRow.xib in Resources */,
 				B08BBB911DBAF4C200AD3FF1 /* UserTableViewCell.xib in Resources */,
 				B00BA9231D9E4E0700F5EA30 /* FirstScreenViewController.xib in Resources */,
-				B01B34981DC107C600B2B9CE /* SelectionCardView.xib in Resources */,
 				76C0E7501D80D4BA004EFA4C /* VisitorsViewController.xib in Resources */,
 				B079BE871DA557B00042B586 /* PhotoCell.xib in Resources */,
 				B0FF114C1D3EB32100D709CE /* Assets.xcassets in Resources */,
@@ -742,6 +742,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B01B34A41DC15BDA00B2B9CE /* DialogRow.swift in Sources */,
 				768C67681D586C26003A76D5 /* StoryViewController.swift in Sources */,
 				B00BA9221D9E4E0700F5EA30 /* FirstScreenViewController.swift in Sources */,
 				B00BA91D1D9D6DB600F5EA30 /* StoryItemViewController.swift in Sources */,
@@ -819,7 +820,6 @@
 				B0321EC21DB52BEB00AD4C53 /* DummyViewController.swift in Sources */,
 				B03DED121DAED45A0062357A /* UserProfileControlBar.swift in Sources */,
 				76EC36041D58EB600056D4CF /* CircleProgressView.swift in Sources */,
-				B01B349A1DC107F500B2B9CE /* SelectionCardView.swift in Sources */,
 				B05ABD041D41211100364322 /* MainViewController.swift in Sources */,
 				763566D01D4A835F000BAA08 /* Extensions.swift in Sources */,
 				76FF2E6B1D566D6A00E04EE3 /* CameraViewController.swift in Sources */,
