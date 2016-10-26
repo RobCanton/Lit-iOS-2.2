@@ -87,6 +87,8 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
         return .LightContent
     }
     
+    var pinchGesture:UIPinchGestureRecognizer!
+    
     var cameraState:CameraState = .Initiating
         {
         didSet {
@@ -220,9 +222,11 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        var pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(pinch))
+        
         var panGesture = UIPanGestureRecognizer(target: self, action:("handlePanGesture:"))
         view.addGestureRecognizer(panGesture)
-        
+        view.addGestureRecognizer(pinchGesture)
         cancelButton.backgroundColor = UIColor(white: 0.15, alpha: 0.8)
         cancelButton.layer.cornerRadius = cancelButton.frame.width/2
         cancelButton.clipsToBounds = true
@@ -296,7 +300,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
         let captureTapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "AutoFocusGesture:")
         captureTapGesture.numberOfTapsRequired = 1
         captureTapGesture.numberOfTouchesRequired = 1
-        self.cameraView.addGestureRecognizer(captureTapGesture)
+        view.addGestureRecognizer(captureTapGesture)
         
         do {
             
@@ -335,6 +339,30 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
             print(error)
         }
     }
+    
+    
+    func pinch(pinch: UIPinchGestureRecognizer) {
+        
+        var vZoomFactor = pinch.scale
+        
+        if vZoomFactor >= 1 {
+            var error:NSError!
+            do{
+                try cameraDevice!.lockForConfiguration()
+                defer {cameraDevice!.unlockForConfiguration()}
+                if (vZoomFactor <= cameraDevice!.activeFormat.videoMaxZoomFactor){
+                    cameraDevice!.videoZoomFactor = vZoomFactor
+                }else{
+                    NSLog("Unable to set videoZoom: (max %f, asked %f)", cameraDevice!.activeFormat.videoMaxZoomFactor, vZoomFactor);
+                }
+            }catch error as NSError{
+                NSLog("Unable to set videoZoom: %@", error.localizedDescription);
+            }catch _{
+                
+            }
+        }
+    }
+    
     
     func switchFlashMode(sender:UIButton!) {
         if let avDevice = cameraDevice
