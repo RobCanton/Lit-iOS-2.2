@@ -24,6 +24,7 @@ pod "PageControls/ScrollingPageControl", '0.1.2'
 pod "ARNTransitionAnimator"
 pod 'NVActivityIndicatorView', '2.0'
 pod 'SwiftLocation', '1.0.5'
+pod 'SwiftMessages', '~> 1.1.4'
 
 end
 

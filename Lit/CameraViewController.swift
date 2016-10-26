@@ -10,7 +10,7 @@ import UIKit
 import AVFoundation
 import RecordButton
 import Firebase
-
+import SwiftMessages
 
 enum CameraState {
     case Initiating, Running, PhotoTaken, VideoTaken, Recording
@@ -173,46 +173,58 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     @IBOutlet weak var sendButton: UIButton!
     
     @IBAction func sendButtonTapped(sender: UIButton) {
-        if cameraState == .PhotoTaken {
-            if let image = imageView.image {
-                self.imageView.hidden = true
-                print("Sending dat image")
-                if let uploadTask = FirebaseService.sendImage(image)
-                {
-                    self.delegate?.close(uploadTask, outputUrl: nil)
-                }
-            }
-        }
-        else if cameraState == .VideoTaken {
-            playerLayer?.player?.seekToTime(CMTimeMake(0, 1))
-            playerLayer?.player?.pause()
-            
-            playerLayer?.removeFromSuperlayer()
-            videoLayer.hidden = true
-            
-            print("Send tapped video taken")
-            
-            if let url = videoUrl {
-                
-                let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
-                let outputUrl = documentsURL.URLByAppendingPathComponent("output.mp4")
-                
-                FirebaseService.compressVideo(url, outputURL: outputUrl, handler: { session in
-                    print("here: \(session.status)")
-                    /*
-                    T0D0 - HANDLE COMPRESSION ERRORS
-                    */
-                    dispatch_async(dispatch_get_main_queue(), {
-                        if let uploadTask = FirebaseService.uploadVideo(outputUrl) {
-                            self.videoUrl = nil
-                            self.delegate?.close(uploadTask, outputUrl: outputUrl)
-                        }
-                    })
-                })
-            }
-        }
+        print("fam")
+        // Get started
+        let view: TacoDialogView = try! SwiftMessages.viewFromNib()
+        view.configureDropShadow()
+        var config = SwiftMessages.Config()
+        config.presentationContext = .Window(windowLevel: UIWindowLevelStatusBar)
+        config.duration = .Forever
+        config.presentationStyle = .Bottom
+        config.dimMode = .Gray(interactive: true)
+        SwiftMessages.show(config: config, view: view)
         
-        cameraState = .Running
+//        if cameraState == .PhotoTaken {
+//            if let image = imageView.image {
+        
+//                self.imageView.hidden = true
+//                print("Sending dat image")
+//                if let uploadTask = FirebaseService.sendImage(image)
+//                {
+//                    self.delegate?.close(uploadTask, outputUrl: nil)
+//                }
+//            }
+//        }
+//        else if cameraState == .VideoTaken {
+//            playerLayer?.player?.seekToTime(CMTimeMake(0, 1))
+//            playerLayer?.player?.pause()
+//            
+//            playerLayer?.removeFromSuperlayer()
+//            videoLayer.hidden = true
+//            
+//            print("Send tapped video taken")
+//            
+//            if let url = videoUrl {
+//                
+//                let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
+//                let outputUrl = documentsURL.URLByAppendingPathComponent("output.mp4")
+//                
+//                FirebaseService.compressVideo(url, outputURL: outputUrl, handler: { session in
+//                    print("here: \(session.status)")
+//                    /*
+//                    T0D0 - HANDLE COMPRESSION ERRORS
+//                    */
+//                    dispatch_async(dispatch_get_main_queue(), {
+//                        if let uploadTask = FirebaseService.uploadVideo(outputUrl) {
+//                            self.videoUrl = nil
+//                            self.delegate?.close(uploadTask, outputUrl: outputUrl)
+//                        }
+//                    })
+//                })
+//            }
+//        }
+        
+        //cameraState = .Running
     }
 
     var recordButton: RecordButton!
@@ -222,19 +234,19 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        var pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(pinch))
+        let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(pinch))
         
-        var panGesture = UIPanGestureRecognizer(target: self, action:("handlePanGesture:"))
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture))
+        
         view.addGestureRecognizer(panGesture)
         view.addGestureRecognizer(pinchGesture)
-        cancelButton.backgroundColor = UIColor(white: 0.15, alpha: 0.8)
-        cancelButton.layer.cornerRadius = cancelButton.frame.width/2
-        cancelButton.clipsToBounds = true
         
         sendButton.backgroundColor = accentColor
-        sendButton.layer.cornerRadius = cancelButton.frame.width/2
+        sendButton.layer.cornerRadius = sendButton.frame.width/2
         sendButton.clipsToBounds = true
         sendButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 2, bottom: 0, right: -2)
+        
+        sendButton.applyShadow(4, opacity: 0.7, height: 3, shouldRasterize: false)
         
         cameraView.frame = self.view.frame
         

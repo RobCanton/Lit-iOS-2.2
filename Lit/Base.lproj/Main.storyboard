@@ -502,10 +502,10 @@
                                 </connections>
                             </button>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="80H-Sb-wGz">
-                                <rect key="frame" x="540" y="540" width="48" height="48"/>
+                                <rect key="frame" x="534" y="534" width="54" height="54"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="48" id="AB8-hg-9ov"/>
-                                    <constraint firstAttribute="width" constant="48" id="Nox-6m-Ptp"/>
+                                    <constraint firstAttribute="height" constant="54" id="AB8-hg-9ov"/>
+                                    <constraint firstAttribute="width" constant="54" id="Nox-6m-Ptp"/>
                                 </constraints>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <state key="normal" image="Send"/>
