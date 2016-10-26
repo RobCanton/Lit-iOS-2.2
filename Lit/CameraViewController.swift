@@ -33,7 +33,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     var interactor:Interactor? = nil
     
     func handlePanGesture(sender: UIPanGestureRecognizer) {
-        let percentThreshold:CGFloat = 0.3
+        let percentThreshold:CGFloat = 0.1
         
         // convert y-position to downward pull progress (percentage)
         let translation = sender.translationInView(view)

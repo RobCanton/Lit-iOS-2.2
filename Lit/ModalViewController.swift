@@ -306,6 +306,7 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
         likeBtn.layer.cornerRadius = likeBtn.frame.width/2
         likeBtn.addGestureRecognizer(likeBtnTap)
         
+        
         imageView.userInteractionEnabled = true
         imageView.addGestureRecognizer(likeTap)
         let key = mainStore.state.viewLocationKey
@@ -324,9 +325,12 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
         authorImage.layer.cornerRadius = authorImage.frame.width/2
         authorImage.clipsToBounds = true
         authorImage.layer.opacity = 0
+        authorImage.layer.borderColor = UIColor.whiteColor().CGColor
+        authorImage.layer.borderWidth = 1.0
 
         authorImage.userInteractionEnabled = true
         authorImage.addGestureRecognizer(tap)
+        
         
         authorLabel.layer.opacity = 0
         timeLabel.layer.opacity = 0

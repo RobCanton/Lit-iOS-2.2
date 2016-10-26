@@ -102,7 +102,7 @@ class MainViewController: UICollectionViewController, StoreSubscriber, CLLocatio
         murmur!.backgroundColor = accentColor
         murmur!.titleColor = UIColor.whiteColor()
         // Present a permanent status bar message
-        show(whistle: murmur!, action: .Present)
+//        show(whistle: murmur!, action: .Present)
     }
     
     func deactivateLocation() {

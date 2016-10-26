@@ -42,8 +42,37 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     }
     
     func messageTapped() {
-        mainStore.dispatch(OpenConversation(uid: user!.getUserId()))
-        tabBarController?.selectedIndex = 1
+        //mainStore.dispatch(OpenConversation(uid: user!.getUserId()))
+        //tabBarController?.selectedIndex = 1
+        let uid = mainStore.state.userState.uid
+        let partner_uid = user!.getUserId()
+        if let conversation = checkForExistingConversation(partner_uid) {
+            presentConversation(conversation)
+        } else {
+            let ref = FirebaseService.ref.child("conversations").childByAutoId()
+            let conversationKey = ref.key
+            ref.child(uid).setValue(["seen": [".sv":"timestamp"]], withCompletionBlock: { error, ref in
+
+                let recipientUserRef = FirebaseService.ref.child("users/conversations/\(partner_uid)")
+                recipientUserRef.child(uid).setValue(conversationKey)
+                
+                let currentUserRef = FirebaseService.ref.child("users/conversations/\(uid)")
+                currentUserRef.child(partner_uid).setValue(conversationKey, withCompletionBlock: { error, ref in
+                    let conversation = Conversation(key: conversationKey, partner_uid: partner_uid)
+                    self.presentConversation(conversation)
+                })
+            })
+        }
+
+        
+    }
+    
+    func presentConversation(conversation:Conversation) {
+        let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("ChatViewController") as! ChatViewController
+        
+        controller.conversation = conversation
+        navigationController?.navigationBar.tintColor = UIColor.whiteColor()
+        navigationController?.pushViewController(controller, animated: true)
     }
     
     func friendBlockTapped() {

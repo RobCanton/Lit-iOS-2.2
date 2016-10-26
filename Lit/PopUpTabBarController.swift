@@ -99,10 +99,8 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
         activeLocation = location
         print("ACTIVE LOCATION: \(activeLocation!.getKey())")
         
-        array[2].alpha = 0.3
-        
-
-        
+        //array[2].alpha = 0.3
+      
     }
     
     func deactivateLocation() {
@@ -217,6 +215,7 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let destinationViewController = segue.destinationViewController as? CameraViewController {
+            self.setTabBarVisible(false, animated: true)
             destinationViewController.transitioningDelegate = self
             destinationViewController.interactor = interactor
         }

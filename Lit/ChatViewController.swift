@@ -69,7 +69,7 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol, StoreSubsc
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         mainStore.subscribe(self)
-        profileBtn.enabled = true
+        //profileBtn.enabled = true
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -184,12 +184,12 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol, StoreSubsc
         return 0.0
     }
     
-    @IBAction func viewUserProfile(sender: UIBarButtonItem) {
-        sender.enabled = false
-        mainStore.dispatch(ViewUser(uid: partner!.getUserId()))
-    }
-    
-    @IBOutlet weak var profileBtn: UIBarButtonItem!
+//    @IBAction func viewUserProfile(sender: UIBarButtonItem) {
+//        sender.enabled = false
+//        mainStore.dispatch(ViewUser(uid: partner!.getUserId()))
+//    }
+//    
+//    @IBOutlet weak var profileBtn: UIBarButtonItem!
     
     var limit:UInt = 10
     var loadingNextBatch = false

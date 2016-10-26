@@ -300,6 +300,7 @@
                                         </label>
                                         <imageView userInteractionEnabled="NO" alpha="0.69999999999999996" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Send" translatesAutoresizingMaskIntoConstraints="NO" id="asB-y7-5eK">
                                             <rect key="frame" x="572" y="23" width="20" height="24"/>
+                                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" secondItem="asB-y7-5eK" secondAttribute="height" multiplier="13:15" id="7WW-C0-lsy"/>
                                                 <constraint firstAttribute="height" constant="24" id="HHh-oE-wcF"/>
@@ -455,17 +456,6 @@
                         <color key="backgroundColor" red="0.096637228260869512" green="0.096637228260869512" blue="0.096637228260869512" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" top="YES"/>
-                    <navigationItem key="navigationItem" id="STc-TL-9DZ">
-                        <barButtonItem key="backBarButtonItem" title=" " id="W3E-ii-1Ed"/>
-                        <barButtonItem key="rightBarButtonItem" image="user" id="N6j-Fm-ZJW">
-                            <connections>
-                                <action selector="viewUserProfile:" destination="Mbj-H0-cen" id="cRw-nP-Rc7"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <connections>
-                        <outlet property="profileBtn" destination="N6j-Fm-ZJW" id="4lH-Jd-cFY"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="n3Y-wY-vVD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -635,7 +625,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6Es-Nl-38Q" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3136" y="1367"/>
+            <point key="canvasLocation" x="3116" y="1057"/>
         </scene>
         <!--Table View Controller-->
         <scene sceneID="8fV-ET-JI4">
@@ -1043,6 +1033,7 @@
         <!--Dummy View Controller-->
         <scene sceneID="HKm-Fp-bFd">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6eb-rG-csF" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController storyboardIdentifier="DummyViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="DAc-2n-Ogm" customClass="DummyViewController" customModule="Lit" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="oJD-6c-PVL"/>
@@ -1057,9 +1048,8 @@
                         <inset key="imageInsets" minX="0.0" minY="6" maxX="0.0" maxY="-6"/>
                     </tabBarItem>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="6eb-rG-csF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1668" y="1291"/>
+            <point key="canvasLocation" x="1922" y="1291"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="UXK-cC-lMM">

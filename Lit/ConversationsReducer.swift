@@ -9,6 +9,27 @@
 import ReSwift
 import JSQMessagesViewController
 
+func getNonEmptyConversations() -> [Conversation] {
+    var activeConvos = [Conversation]()
+    for conversation in mainStore.state.conversations {
+        if conversation.lastMessage != nil {
+            activeConvos.append(conversation)
+        }
+    }
+    return activeConvos
+}
+
+func checkForExistingConversation(partner_uid:String) -> Conversation? {
+    print("Looking for conversation")
+    for conversation in mainStore.state.conversations {
+        print(conversation.getPartnerId())
+        if conversation.getPartnerId() == partner_uid {
+            return conversation
+        }
+    }
+    return nil
+}
+
 func findConversation(key:String) -> Conversation? {
     for conversation in mainStore.state.conversations {
         if conversation.getKey() == key {
@@ -39,6 +60,7 @@ func ConversationsReducer(action: Action, state:[Conversation]?) -> [Conversatio
     switch action {
     case _ as ConversationAdded:
         let a = action as! ConversationAdded
+        print("CONVERSATION ADDED")
         state.append(a.conversation)
         break
     case _ as NewMessageInConversation:

@@ -163,15 +163,15 @@ class Listeners {
             listeningToConversations = true
             let uid = mainStore.state.userState.uid
             let conversationsRef = ref.child("users/conversations/\(uid)")
-            
+            print(conversationsRef)
             conversationsRef.observeEventType(.ChildAdded, withBlock: { snapshot in
-            
+                print("walk")
                 if snapshot.exists() {
                     let partner = snapshot.key
                     let conversationKey = snapshot.value! as! String
                     let conversation = Conversation(key: conversationKey, partner_uid: partner)
                     
-                    
+                    print("\(partner) - key \(conversationKey)")
                     mainStore.dispatch(ConversationAdded(conversation: conversation))
                 }
             })

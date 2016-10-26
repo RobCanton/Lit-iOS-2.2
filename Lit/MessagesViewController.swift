@@ -27,7 +27,8 @@ class MessagesViewController: UITableViewController, StoreSubscriber {
     
     func newState(state: AppState) {
         
-        conversations = state.conversations
+        conversations = getNonEmptyConversations()
+
         tableView.reloadData()
         
         if state.messageUser != "" {
@@ -91,7 +92,7 @@ class MessagesViewController: UITableViewController, StoreSubscriber {
         
         tableView.tableFooterView = UIView()
         
-        conversations = mainStore.state.conversations
+        conversations = getNonEmptyConversations()
         tableView.reloadData()
     }
     

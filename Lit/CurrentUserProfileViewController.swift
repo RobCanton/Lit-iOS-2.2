@@ -9,7 +9,9 @@ import UIKit
 import ReSwift
 import MXParallaxHeader
 import ARNTransitionAnimator
-
+import Firebase
+import FBSDKCoreKit
+import FBSDKLoginKit
 
 class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, HeaderProtocol, ControlBarProtocol, ZoomProtocol {
     
@@ -381,5 +383,38 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
         }
     }
     
+    @IBAction func settingsTapped(sender: AnyObject) {
+        
+        // 1
+        let optionMenu = UIAlertController(title: nil, message: "Options", preferredStyle: .ActionSheet)
+        
+        // 2
+        let logoutAction = UIAlertAction(title: "Logout", style: .Destructive, handler: {
+            (alert: UIAlertAction!) -> Void in
+            
+            try! FIRAuth.auth()!.signOut()
+            let loginManager = FBSDKLoginManager()
+            loginManager.logOut() // this is an instance function
+            mainStore.dispatch(UserIsUnauthenticated())
+            self.dismissViewControllerAnimated(true, completion: {})
+            //            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            //            let vc = storyboard.instantiateViewControllerWithIdentifier("LoginViewController") as! LoginViewController
+            //            self.presentViewController(vc, animated: true, completion: nil)
+            
+        })
+        
+        //
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
+            (alert: UIAlertAction!) -> Void in
+        })
+        
+        
+        // 4
+        optionMenu.addAction(logoutAction)
+        optionMenu.addAction(cancelAction)
+        
+        // 5
+        self.presentViewController(optionMenu, animated: true, completion: nil)
+    }
     
 }

@@ -18,7 +18,7 @@ class Interactor: UIPercentDrivenInteractiveTransition {
 
 extension DismissAnimator : UIViewControllerAnimatedTransitioning {
     func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
-        return 0.35
+        return 0.20
     }
     
     func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
@@ -36,14 +36,21 @@ extension DismissAnimator : UIViewControllerAnimatedTransitioning {
         let bottomLeftCorner = CGPoint(x: 0, y: screenBounds.height)
         let finalFrame = CGRect(origin: bottomLeftCorner, size: screenBounds.size)
         
-        UIView.animateWithDuration(
-            transitionDuration(transitionContext),
-            animations: {
-                fromVC.view.frame = finalFrame
+//        UIView.animateWithDuration(
+//            transitionDuration(transitionContext),
+//            animations: {
+//                fromVC.view.frame = finalFrame
+//            },
+//            completion: { _ in
+//                transitionContext.completeTransition(!transitionContext.transitionWasCancelled())
+//            }
+//        )
+        
+        UIView.animateWithDuration(transitionDuration(transitionContext), delay: 0, options: .CurveEaseOut, animations: {
+            fromVC.view.frame = finalFrame
             },
-            completion: { _ in
-                transitionContext.completeTransition(!transitionContext.transitionWasCancelled())
-            }
-        )
+                                   completion: { _ in
+                                    transitionContext.completeTransition(!transitionContext.transitionWasCancelled())
+        })
     }
 }
