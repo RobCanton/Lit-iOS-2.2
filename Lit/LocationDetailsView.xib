@@ -16,6 +16,7 @@
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="Send" translatesAutoresizingMaskIntoConstraints="NO" id="AcB-fu-kNu">
                             <rect key="frame" x="269" y="9" width="16" height="16"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="16" id="4qf-4Y-PJO"/>
                                 <constraint firstAttribute="height" constant="16" id="kZA-K7-Vv8"/>
@@ -111,7 +112,7 @@
         </view>
     </objects>
     <resources>
-        <image name="Send" width="50" height="50"/>
+        <image name="Send" width="32" height="32"/>
         <image name="externallink" width="32" height="32"/>
         <image name="marker" width="32" height="32"/>
         <image name="phone" width="32" height="32"/>

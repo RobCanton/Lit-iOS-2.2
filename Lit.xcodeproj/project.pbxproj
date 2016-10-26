@@ -406,19 +406,12 @@
 			name = Activity;
 			sourceTree = "<group>";
 		};
-		B087E9BA1D9B435C0079E2BF /* Popup */ = {
+		B087E9BA1D9B435C0079E2BF /* Camera */ = {
 			isa = PBXGroup;
 			children = (
-				76B361CC1D64E85F0024CDC7 /* PopupViewController.swift */,
-				76B361C81D64E8160024CDC7 /* RatingViewController.swift */,
-				76B361C91D64E8160024CDC7 /* RatingViewController.xib */,
 				76FF2E6A1D566D6A00E04EE3 /* CameraViewController.swift */,
-				76C0E7511D80D770004EFA4C /* VisitorCell.swift */,
-				76C0E7521D80D770004EFA4C /* VisitorCell.xib */,
-				76C0E74D1D80D4BA004EFA4C /* VisitorsViewController.swift */,
-				76C0E74E1D80D4BA004EFA4C /* VisitorsViewController.xib */,
 			);
-			name = Popup;
+			name = Camera;
 			sourceTree = "<group>";
 		};
 		B087E9BB1D9B43A30079E2BF /* Main */ = {
@@ -434,6 +427,7 @@
 		B087E9BC1D9B43DC0079E2BF /* Location */ = {
 			isa = PBXGroup;
 			children = (
+				B0321ECB1DB568BA00AD4C53 /* LocViewController.swift */,
 				B079BE841DA557B00042B586 /* PhotoCell.swift */,
 				B079BE851DA557B00042B586 /* PhotoCell.xib */,
 				B09D5FD11DA57CE9004A188E /* ModalViewController.swift */,
@@ -442,7 +436,6 @@
 				B0ED4B661DBD84D20040E5F0 /* LocationDetailsView.xib */,
 				B08BBB951DBBE51400AD3FF1 /* EventsBannerView.swift */,
 				B08BBB931DBBE4FD00AD3FF1 /* EventsBannerView.xib */,
-				B0321ECB1DB568BA00AD4C53 /* LocViewController.swift */,
 				B0321ECD1DB56BF900AD4C53 /* LocationHeaderView.swift */,
 				B0321ECF1DB56C0500AD4C53 /* LocationHeaderView.xib */,
 				B03095E41DB7D65C008A4DFA /* MapViewController.swift */,
@@ -455,14 +448,13 @@
 			isa = PBXGroup;
 			children = (
 				76173B791D5784AC0093A137 /* Main.storyboard */,
-				76A5166B1D6103AF005E2815 /* ProfileViewController.swift */,
 				76B361D41D6517A50024CDC7 /* PopUpTabBarController.swift */,
 				B087E9B91D9B42880079E2BF /* Activity */,
 				B087E9BC1D9B43DC0079E2BF /* Location */,
 				B00BA91F1D9E3B5700F5EA30 /* Login */,
 				B087E9BB1D9B43A30079E2BF /* Main */,
 				B0254F6E1DAFDFC10082D898 /* Messages */,
-				B087E9BA1D9B435C0079E2BF /* Popup */,
+				B087E9BA1D9B435C0079E2BF /* Camera */,
 				B08BBB8D1DBAF49A00AD3FF1 /* UsersList */,
 				B026A8501DAD9D3800DD2CCD /* UserProfile */,
 				B0321EC11DB52BEB00AD4C53 /* DummyViewController.swift */,
@@ -491,6 +483,14 @@
 		B08BBB921DBBE06300AD3FF1 /* Deprecated */ = {
 			isa = PBXGroup;
 			children = (
+				76B361CC1D64E85F0024CDC7 /* PopupViewController.swift */,
+				76B361C81D64E8160024CDC7 /* RatingViewController.swift */,
+				76B361C91D64E8160024CDC7 /* RatingViewController.xib */,
+				76C0E7511D80D770004EFA4C /* VisitorCell.swift */,
+				76C0E7521D80D770004EFA4C /* VisitorCell.xib */,
+				76C0E74D1D80D4BA004EFA4C /* VisitorsViewController.swift */,
+				76C0E74E1D80D4BA004EFA4C /* VisitorsViewController.xib */,
+				76A5166B1D6103AF005E2815 /* ProfileViewController.swift */,
 				76A5166D1D618CAD005E2815 /* LocationViewController.swift */,
 				B0BA32671DA7158B004352A7 /* HeaderView.swift */,
 				B0BA32681DA7158B004352A7 /* HeaderView.xib */,
