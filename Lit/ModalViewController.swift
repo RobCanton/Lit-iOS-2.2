@@ -154,13 +154,15 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
                 let deleteAction = UIAlertAction(title: "Delete", style: .Destructive, handler: {
                     (alert: UIAlertAction!) -> Void in
                     if let _ = self.item {
+                        
                         FirebaseService.deletePost(self.item!, completionHandler: {
                             self.delegate?.mediaDeleted()
                             self.navigationController?.popViewControllerAnimated(false)
-                            if let tab =  self.tabBarController as? PopUpTabBarController {
-                                tab.setTabBarVisible(true, animated: true)
-                            }
+                            
                         })
+                        if let tab =  self.tabBarController as? PopUpTabBarController {
+                            tab.setTabBarVisible(true, animated: true)
+                        }
                         
                     }
                     

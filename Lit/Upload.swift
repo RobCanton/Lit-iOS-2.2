@@ -8,6 +8,8 @@
 
 import Foundation
 import UIKit
+
+
 class Upload {
     
     private var userProfile = false
