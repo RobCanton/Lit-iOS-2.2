@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 // convert an NSDate object to a timestamp string
 
@@ -41,4 +42,14 @@ func getLikesString(numLikes:Int) -> String{
     
     return "\(numLikes) likes"
     
+}
+
+func printFonts() {
+    let fontFamilyNames = UIFont.familyNames()
+    for familyName in fontFamilyNames {
+        print("------------------------------")
+        print("Font Family Name = [\(familyName)]")
+        let names = UIFont.fontNamesForFamilyName(familyName as! String)
+        print("Font Names = [\(names)]")
+    }
 }

@@ -9,23 +9,28 @@
 import UIKit
 import SwiftMessages
 
-class TacoDialogView: MessageView {
+protocol UploadSelectorDelegate {
+    func send(upload:Upload)
+}
 
-
+class UploadSelectorView: MessageView {
     
     @IBOutlet weak var contentView: UIStackView!
     
     var profileRow:DialogRow!
     var rows = [DialogRow]()
+    
+    var delegate:UploadSelectorDelegate?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         
         profileRow = UINib(nibName: "DialogRow", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! DialogRow
-        profileRow.tag = 0
+
         profileRow.setToProfileRow()
         profileRow.addTarget(self, action: #selector(rowTapped), forControlEvents: .TouchUpInside)
         contentView.addArrangedSubview(profileRow)
-        rows.append(profileRow)
+
         
         let key = mainStore.state.userState.activeLocationKey
         for location in mainStore.state.locations {
@@ -34,21 +39,20 @@ class TacoDialogView: MessageView {
             }
         }
         
-        
         let sendButton = UIButton()
         sendButton.backgroundColor = accentColor
         sendButton.layer.cornerRadius = 5
         sendButton.clipsToBounds = true
-        sendButton.setTitle("send", forState: .Normal)
+        sendButton.setTitle("upload", forState: .Normal)
         sendButton.tintColor = UIColor.whiteColor()
         sendButton.titleLabel?.font = UIFont(name: "Avenir-Black", size: 20.0)
+        sendButton.addTarget(self, action: #selector(send), forControlEvents: .TouchUpInside)
         
         contentView.addArrangedSubview(sendButton)
     }
     
     func addLocationOption(location:Location) {
      let row = UINib(nibName: "DialogRow", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! DialogRow
-        row.tag = rows.count
         row.setToLocationRow(location)
         row.addTarget(self, action: #selector(rowTapped), forControlEvents: .TouchUpInside)
         contentView.addArrangedSubview(row)
@@ -61,6 +65,23 @@ class TacoDialogView: MessageView {
         } else {
             sender.active(true)
         }
+    }
+    
+    func send(sender:UIButton) {
+        
+        let toUserProfile = profileRow.isActive
+        var locationKey:String = ""
+        var keys = [String]()
+        for row in rows {
+            if row.isActive {
+                keys.append(row.key)
+                locationKey = row.key
+                break
+            }
+        }
+        let upload = Upload(toUserProfile: toUserProfile, locationKey: locationKey)
+        delegate?.send(upload)
+        
     }
     
     

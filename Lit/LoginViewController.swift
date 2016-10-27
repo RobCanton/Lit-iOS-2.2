@@ -60,14 +60,8 @@ class LoginViewController: UIViewController, StoreSubscriber {
             self.performSegueWithIdentifier("showLit", sender: self)
             
         }
-        
-    
-
     }
-    
-    
 
-    
     func logout() {
         try! FIRAuth.auth()!.signOut()
         mainStore.dispatch(UserIsUnauthenticated())
@@ -119,9 +113,7 @@ class LoginViewController: UIViewController, StoreSubscriber {
         
         self.scrollView.contentSize = CGSizeMake(self.view.frame.width, self.view.frame.height)
         scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
-        
-
-        
+         
         if let user = FIRAuth.auth()?.currentUser {
             FirebaseService.getUser(user.uid, completionHandler: { _user in
                 if _user != nil {

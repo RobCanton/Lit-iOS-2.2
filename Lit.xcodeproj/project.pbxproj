@@ -49,10 +49,11 @@
 		B00BA9271D9E4E1D00F5EA30 /* CreateProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B00BA9251D9E4E1D00F5EA30 /* CreateProfileViewController.xib */; };
 		B01783901D98EF040088AD33 /* FriendRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B017838F1D98EF040088AD33 /* FriendRequest.swift */; };
 		B01783921D9A20F10088AD33 /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01783911D9A20F10088AD33 /* Friend.swift */; };
-		B01B349D1DC117A900B2B9CE /* TacoDialogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01B349B1DC117A900B2B9CE /* TacoDialogView.swift */; };
-		B01B34A01DC11A0600B2B9CE /* TacoDialogView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B01B349F1DC11A0600B2B9CE /* TacoDialogView.xib */; };
+		B01B349D1DC117A900B2B9CE /* UploadSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01B349B1DC117A900B2B9CE /* UploadSelectorView.swift */; };
+		B01B34A01DC11A0600B2B9CE /* UploadSelectorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B01B349F1DC11A0600B2B9CE /* UploadSelectorView.xib */; };
 		B01B34A21DC15BC600B2B9CE /* DialogRow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B01B34A11DC15BC600B2B9CE /* DialogRow.xib */; };
 		B01B34A41DC15BDA00B2B9CE /* DialogRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01B34A31DC15BDA00B2B9CE /* DialogRow.swift */; };
+		B01B34A61DC17B5C00B2B9CE /* Upload.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01B34A51DC17B5C00B2B9CE /* Upload.swift */; };
 		B0236E131DC00E0A0083C720 /* CurrentUserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0236E121DC00E0A0083C720 /* CurrentUserProfileViewController.swift */; };
 		B0254F701DAFE00C0082D898 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0254F6F1DAFE00C0082D898 /* MessagesViewController.swift */; };
 		B0254F721DAFEF4A0082D898 /* ConversationViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0254F711DAFEF4A0082D898 /* ConversationViewCell.swift */; };
@@ -168,10 +169,11 @@
 		B00BA9251D9E4E1D00F5EA30 /* CreateProfileViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreateProfileViewController.xib; sourceTree = "<group>"; };
 		B017838F1D98EF040088AD33 /* FriendRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendRequest.swift; sourceTree = "<group>"; };
 		B01783911D9A20F10088AD33 /* Friend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
-		B01B349B1DC117A900B2B9CE /* TacoDialogView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TacoDialogView.swift; sourceTree = "<group>"; };
-		B01B349F1DC11A0600B2B9CE /* TacoDialogView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TacoDialogView.xib; sourceTree = "<group>"; };
+		B01B349B1DC117A900B2B9CE /* UploadSelectorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadSelectorView.swift; sourceTree = "<group>"; };
+		B01B349F1DC11A0600B2B9CE /* UploadSelectorView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UploadSelectorView.xib; sourceTree = "<group>"; };
 		B01B34A11DC15BC600B2B9CE /* DialogRow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DialogRow.xib; sourceTree = "<group>"; };
 		B01B34A31DC15BDA00B2B9CE /* DialogRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DialogRow.swift; sourceTree = "<group>"; };
+		B01B34A51DC17B5C00B2B9CE /* Upload.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Upload.swift; sourceTree = "<group>"; };
 		B0236E121DC00E0A0083C720 /* CurrentUserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentUserProfileViewController.swift; sourceTree = "<group>"; };
 		B0254F6F1DAFE00C0082D898 /* MessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
 		B0254F711DAFEF4A0082D898 /* ConversationViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationViewCell.swift; sourceTree = "<group>"; };
@@ -275,6 +277,7 @@
 				B0254F731DAFFC130082D898 /* Conversation.swift */,
 				B017838F1D98EF040088AD33 /* FriendRequest.swift */,
 				B01783911D9A20F10088AD33 /* Friend.swift */,
+				B01B34A51DC17B5C00B2B9CE /* Upload.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -418,8 +421,8 @@
 			isa = PBXGroup;
 			children = (
 				76FF2E6A1D566D6A00E04EE3 /* CameraViewController.swift */,
-				B01B349B1DC117A900B2B9CE /* TacoDialogView.swift */,
-				B01B349F1DC11A0600B2B9CE /* TacoDialogView.xib */,
+				B01B349B1DC117A900B2B9CE /* UploadSelectorView.swift */,
+				B01B349F1DC11A0600B2B9CE /* UploadSelectorView.xib */,
 				B01B34A31DC15BDA00B2B9CE /* DialogRow.swift */,
 				B01B34A11DC15BC600B2B9CE /* DialogRow.xib */,
 			);
@@ -654,7 +657,7 @@
 				76C0E7541D80D770004EFA4C /* VisitorCell.xib in Resources */,
 				76EE2B981D8766ED00EDB4CB /* ActivityFriendRequestCell.xib in Resources */,
 				B0BA326C1DA7163D004352A7 /* CreateProfileHeaderView.xib in Resources */,
-				B01B34A01DC11A0600B2B9CE /* TacoDialogView.xib in Resources */,
+				B01B34A01DC11A0600B2B9CE /* UploadSelectorView.xib in Resources */,
 				B08BBB941DBBE4FD00AD3FF1 /* EventsBannerView.xib in Resources */,
 				B0FF114F1D3EB32100D709CE /* LaunchScreen.storyboard in Resources */,
 				B00BA91E1D9D6DB600F5EA30 /* StoryItemViewController.xib in Resources */,
@@ -776,6 +779,7 @@
 				B00BA9261D9E4E1D00F5EA30 /* CreateProfileViewController.swift in Sources */,
 				B01783921D9A20F10088AD33 /* Friend.swift in Sources */,
 				B08BBB8C1DBAF42000AD3FF1 /* UsersListViewController.swift in Sources */,
+				B01B34A61DC17B5C00B2B9CE /* Upload.swift in Sources */,
 				B087E9CA1D9B7CDD0079E2BF /* Tree.swift in Sources */,
 				76B361D71D6519ED0024CDC7 /* LocationService.swift in Sources */,
 				76136D471D49600B003DB433 /* LocationActions.swift in Sources */,
@@ -823,7 +827,7 @@
 				B05ABD041D41211100364322 /* MainViewController.swift in Sources */,
 				763566D01D4A835F000BAA08 /* Extensions.swift in Sources */,
 				76FF2E6B1D566D6A00E04EE3 /* CameraViewController.swift in Sources */,
-				B01B349D1DC117A900B2B9CE /* TacoDialogView.swift in Sources */,
+				B01B349D1DC117A900B2B9CE /* UploadSelectorView.swift in Sources */,
 				B06D54C01D9ECB6D00F6A4A7 /* HoshiTextField.swift in Sources */,
 				B06D54C31D9ECB6D00F6A4A7 /* JiroTextField.swift in Sources */,
 				B08BBB901DBAF4C200AD3FF1 /* UserTableViewCell.swift in Sources */,

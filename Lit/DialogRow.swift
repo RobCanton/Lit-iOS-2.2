@@ -10,6 +10,7 @@ import UIKit
 
 class DialogRow: UIButton {
 
+    var key:String!
     var isActive = true
     @IBOutlet weak var locationImageView: UIImageView!
     
@@ -25,6 +26,7 @@ class DialogRow: UIButton {
     }
     
     func setToProfileRow() {
+        key = "profile"
         if let user = mainStore.state.userState.user {
             locationImageView.loadImageUsingCacheWithURLString(user.getImageUrl(), completion: { result in })
             locationImageView.layer.cornerRadius = locationImageView.frame.width/2
@@ -37,6 +39,7 @@ class DialogRow: UIButton {
     }
     
     func setToLocationRow(location:Location) {
+        key = location.getKey()
         locationImageView.loadImageUsingFileWithURLString(location, completion: { result in })
         locationImageView.layer.cornerRadius = 5
         locationImageView.clipsToBounds = true

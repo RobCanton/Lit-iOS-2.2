@@ -215,7 +215,6 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let destinationViewController = segue.destinationViewController as? CameraViewController {
-            self.setTabBarVisible(false, animated: true)
             destinationViewController.transitioningDelegate = self
             destinationViewController.interactor = interactor
         }

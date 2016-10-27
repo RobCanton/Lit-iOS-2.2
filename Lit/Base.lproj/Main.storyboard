@@ -513,29 +513,49 @@
                                     <action selector="sendButtonTapped:" destination="Kb5-7f-64C" eventType="touchUpInside" id="puu-Vn-Dsq"/>
                                 </connections>
                             </button>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Mgp-um-LHr">
+                                <rect key="frame" x="8" y="285" width="584" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LAV-no-vla">
+                                <rect key="frame" x="12" y="290" width="576" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstItem="Mgp-um-LHr" firstAttribute="centerX" secondItem="LJP-ME-48w" secondAttribute="centerX" id="0Zw-bB-Kuh"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="LAV-no-vla" secondAttribute="trailing" constant="-8" id="1j2-5A-pPx"/>
                             <constraint firstAttribute="bottomMargin" secondItem="10W-xw-TSZ" secondAttribute="bottom" constant="12" id="2oT-Gs-sLj"/>
                             <constraint firstItem="KR6-Qx-fq9" firstAttribute="trailing" secondItem="Ri8-OT-mqm" secondAttribute="trailing" id="8cP-Hz-uPJ"/>
+                            <constraint firstItem="LAV-no-vla" firstAttribute="centerY" secondItem="LJP-ME-48w" secondAttribute="centerY" id="CJN-VO-gPX"/>
+                            <constraint firstItem="LAV-no-vla" firstAttribute="leading" secondItem="LJP-ME-48w" secondAttribute="leadingMargin" constant="-8" id="HP3-Zx-bml"/>
+                            <constraint firstItem="Mgp-um-LHr" firstAttribute="leading" secondItem="LJP-ME-48w" secondAttribute="leadingMargin" constant="-12" id="HuZ-v8-uHi"/>
                             <constraint firstItem="Ri8-OT-mqm" firstAttribute="top" secondItem="LJP-ME-48w" secondAttribute="top" id="KMR-QR-ggh"/>
                             <constraint firstAttribute="trailing" secondItem="80H-Sb-wGz" secondAttribute="trailing" constant="12" id="KUB-Gh-HoQ"/>
                             <constraint firstItem="10W-xw-TSZ" firstAttribute="leading" secondItem="LJP-ME-48w" secondAttribute="leading" constant="12" id="KYE-4u-xrY"/>
                             <constraint firstItem="KR6-Qx-fq9" firstAttribute="bottom" secondItem="ORk-Dn-btY" secondAttribute="top" id="Kwo-x9-8FH"/>
+                            <constraint firstItem="LAV-no-vla" firstAttribute="centerX" secondItem="LJP-ME-48w" secondAttribute="centerX" id="MJw-DB-OzH"/>
                             <constraint firstItem="Ri8-OT-mqm" firstAttribute="leading" secondItem="LJP-ME-48w" secondAttribute="leading" id="QJe-RL-HoB"/>
                             <constraint firstItem="80H-Sb-wGz" firstAttribute="trailing" secondItem="LJP-ME-48w" secondAttribute="trailingMargin" id="QWz-Hn-dC4"/>
                             <constraint firstItem="ORk-Dn-btY" firstAttribute="top" secondItem="80H-Sb-wGz" secondAttribute="bottom" constant="8" symbolic="YES" id="bUF-Ev-9sI"/>
                             <constraint firstItem="KR6-Qx-fq9" firstAttribute="leading" secondItem="Ri8-OT-mqm" secondAttribute="leading" id="ez8-Z2-kwh"/>
                             <constraint firstItem="oio-DY-U1L" firstAttribute="top" secondItem="aZc-UQ-w0e" secondAttribute="bottom" constant="530" id="ffR-Yc-wNw"/>
                             <constraint firstItem="Ri8-OT-mqm" firstAttribute="centerX" secondItem="oio-DY-U1L" secondAttribute="centerX" id="hkA-oe-ggd"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Mgp-um-LHr" secondAttribute="trailing" constant="-12" id="nP6-tE-5ZJ"/>
                             <constraint firstAttribute="bottom" secondItem="oio-DY-U1L" secondAttribute="bottom" constant="20" symbolic="YES" id="nSG-vl-dfX"/>
                             <constraint firstItem="KR6-Qx-fq9" firstAttribute="top" secondItem="Ri8-OT-mqm" secondAttribute="top" id="qIa-6D-rkg"/>
                             <constraint firstAttribute="bottomMargin" secondItem="80H-Sb-wGz" secondAttribute="bottom" constant="12" id="qtf-nx-0H3"/>
                             <constraint firstItem="Ri8-OT-mqm" firstAttribute="bottom" secondItem="ORk-Dn-btY" secondAttribute="top" id="sL9-Ll-pN6"/>
                             <constraint firstAttribute="trailing" secondItem="Ri8-OT-mqm" secondAttribute="trailing" id="tfC-qH-Uf7"/>
+                            <constraint firstItem="Mgp-um-LHr" firstAttribute="centerY" secondItem="LJP-ME-48w" secondAttribute="centerY" id="ujk-Rn-2Wg"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
+                                <exclude reference="MJw-DB-OzH"/>
                                 <exclude reference="bUF-Ev-9sI"/>
                                 <exclude reference="QWz-Hn-dC4"/>
                             </mask>
@@ -547,6 +567,8 @@
                         <outlet property="imageView" destination="KR6-Qx-fq9" id="xHn-WR-UrM"/>
                         <outlet property="sendButton" destination="80H-Sb-wGz" id="LYD-9R-oHx"/>
                         <outlet property="snapButton" destination="oio-DY-U1L" id="ADR-1A-Kgw"/>
+                        <outlet property="textField" destination="Mgp-um-LHr" id="eJ6-fE-mtc"/>
+                        <outlet property="textLabel" destination="LAV-no-vla" id="kut-Jb-njK"/>
                         <outlet property="videoLayer" destination="btD-UE-qeB" id="q8m-F5-iAu"/>
                     </connections>
                 </viewController>

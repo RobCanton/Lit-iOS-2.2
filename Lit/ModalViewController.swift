@@ -157,6 +157,9 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
                         FirebaseService.deletePost(self.item!, completionHandler: {
                             self.delegate?.mediaDeleted()
                             self.navigationController?.popViewControllerAnimated(false)
+                            if let tab =  self.tabBarController as? PopUpTabBarController {
+                                tab.setTabBarVisible(true, animated: true)
+                            }
                         })
                         
                     }

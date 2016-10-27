@@ -45,31 +45,34 @@ class FirebaseService {
     }
     
 
-    internal static func sendImage(image:UIImage) -> FIRStorageUploadTask? {
+    internal static func sendImage(upload:Upload) -> FIRStorageUploadTask? {
+        
+        //If upload has no destination do not upload it
+        if !upload.toLocation() && !upload.toUserProfile() { return nil}
+        
         // Data in memory
         let city = mainStore.state.userState.activeCity!
-        let activeLocationKey = mainStore.state.userState.activeLocationKey
-        
+
         let dataRef = ref.child("uploads").childByAutoId()
         let postKey = dataRef.key
 
-        if let data = UIImageJPEGRepresentation(image, 0.5) {
+        if let data = UIImageJPEGRepresentation(upload.image!, 0.5) {
             // Create a reference to the file you want to upload
             // Create the file metadata
             let contentTypeStr = "image/jpg"
             let metadata = FIRStorageMetadata()
             metadata.contentType = contentTypeStr
             
-            // Upload file and metadata to the object 'images/mountains.jpg'
+            // Upload file and metadata to the object
             let uploadTask = storageRef.child("user_uploads/\(postKey))").putData(data, metadata: metadata) { metadata, error in
                 if (error != nil) {
-                    // Uh-oh, an error occurred!
+                    // HANDLE ERROR
                 } else {
                     // Metadata contains file metadata such as size, content-type, and download URL.
                     let downloadURL = metadata!.downloadURL()
                     let obj = [
                         "author": mainStore.state.userState.uid,
-                        "location": activeLocationKey,
+                        "location": upload.getLocationKey(),
                         "url": downloadURL!.absoluteString,
                         "contentType": contentTypeStr,
                         "dateCreated": [".sv": "timestamp"],
@@ -79,17 +82,21 @@ class FirebaseService {
                     ]
                     dataRef.child("meta").setValue(obj, withCompletionBlock: { error, _ in
                         if error == nil {
-                            let locationRef = ref.child("locations/\(city.getKey())/\(activeLocationKey)/uploads/\(postKey)")
-                            locationRef.setValue(true)
-                            let userRef = ref.child("users/uploads/\(mainStore.state.userState.uid)/\(postKey)")
-                            userRef.setValue(true)
+                            
+                            if upload.toLocation() {
+                                let locationRef = ref.child("locations/\(city.getKey())/\(upload.getLocationKey())/uploads/\(postKey)")
+                                locationRef.setValue(true)
+                            }
+                            if upload.toUserProfile() {
+                                let userRef = ref.child("users/uploads/\(mainStore.state.userState.uid)/\(postKey)")
+                                userRef.setValue(true)
+                            }
                         }
                     })
 
                 }
             }
             return uploadTask
-            
         }
         
         return nil
@@ -156,29 +163,32 @@ class FirebaseService {
             postRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
                 
                 if snapshot.exists() {
-                    let key = postKey
-                    let authorId = snapshot.value!["author"] as! String
-                    let locationKey = snapshot.value!["location"] as! String
-                    let downloadUrl = snapshot.value!["url"] as! String
-                    let contentTypeStr = snapshot.value!["contentType"] as! String
-                    var contentType = ContentType.Invalid
-                    if contentTypeStr == "image/jpg" {
-                        contentType = .Image
-                    } else if contentTypeStr == "video/mp4" {
-                        contentType = .Video
+                    if !snapshot.hasChild("delete") {
+                        let key = postKey
+                        
+                        let authorId = snapshot.value!["author"] as! String
+                        let locationKey = snapshot.value!["location"] as! String
+                        let downloadUrl = snapshot.value!["url"] as! String
+                        let contentTypeStr = snapshot.value!["contentType"] as! String
+                        var contentType = ContentType.Invalid
+                        if contentTypeStr == "image/jpg" {
+                            contentType = .Image
+                        } else if contentTypeStr == "video/mp4" {
+                            contentType = .Video
+                        }
+                        
+                        let dateCreated = snapshot.value!["dateCreated"] as! Double
+                        let length = snapshot.value!["length"] as! Double
+                        
+                        var likes = 0
+                        if snapshot.hasChild("likes") {
+                            likes = snapshot.value!["likes"] as! Int
+                        }
+                        
+                        
+                        let storyItem = StoryItem(key: key, authorId: authorId,locationKey: locationKey, downloadUrl: downloadUrl, contentType: contentType, dateCreated: dateCreated, length: length, likes: likes)
+                        story.append(storyItem)
                     }
-                    
-                    let dateCreated = snapshot.value!["dateCreated"] as! Double
-                    let length = snapshot.value!["length"] as! Double
-                    
-                    var likes = 0
-                    if snapshot.hasChild("likes") {
-                        likes = snapshot.value!["likes"] as! Int
-                    }
-                    
-                    
-                    let storyItem = StoryItem(key: key, authorId: authorId,locationKey: locationKey, downloadUrl: downloadUrl, contentType: contentType, dateCreated: dateCreated, length: length, likes: likes)
-                    story.append(storyItem)
                 }
                 
                 loadedCount += 1
