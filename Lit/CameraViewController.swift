@@ -112,6 +112,8 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
                 flipButton.hidden = false
                 textField.hidden = true
                 textField.text = ""
+                textLabel.hidden = true
+                textLabel.text = ""
                 view.removeGestureRecognizer(textTapGesture)
                 view.addGestureRecognizer(panGesture)
                 break
@@ -321,13 +323,17 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
         textField.keyboardAppearance = .Dark
         textField.delegate = self
         textField.enabled = false
+        textField.applyShadow(2, opacity: 0.7, height: 2, shouldRasterize: false)
         
-        textLabel.textColor = accentColor
+        
+        textLabel.textColor = UIColor.whiteColor()
         textLabel.font = UIFont(name: "Avenir-BlackOblique", size: 42.0)
         textLabel.textAlignment = .Center
         textLabel.center = textField.center
         textLabel.addGestureRecognizer(labelDragGesture)
-        textLabel.userInteractionEnabled = true
+        textLabel.applyShadow(2, opacity: 0.5, height: 2, shouldRasterize: false)
+        
+
     }
     
     func enableTextField(gesture:UITapGestureRecognizer) {
@@ -346,10 +352,9 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     }
     
     func textFieldDidBeginEditing(textField: UITextField) {
-        //textLabel.alpha = 0.0
         textField.hidden = false
-        //textLabel.removeGestureRecognizer(labelDragGesture)
-        //textLabel.userInteractionEnabled = false
+        textLabel.hidden = true
+        textLabel.userInteractionEnabled = false
     }
     
     
@@ -357,12 +362,11 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
         textField.hidden = true
         textField.enabled = false
         textLabel.text = textField.text
-        //textLabel.alpha = 1.0
-        //textLabel.addGestureRecognizer(labelDragGesture)
-        //textLabel.userInteractionEnabled = true
+        textLabel.hidden = false
+        textLabel.userInteractionEnabled = true
     }
     
-    
+    var labelCenter:CGPoint?
     func labelDragged(gesture: UIPanGestureRecognizer) {
         let translation = gesture.translationInView(self.view) // get the translation
         let label = gesture.view! // the view inside the gesture
@@ -372,6 +376,10 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
         
         // reset the translation that now, is already applied to the label
         gesture.setTranslation(CGPointZero, inView: self.view)
+        
+        if gesture.state == UIGestureRecognizerState.Ended {
+            labelCenter = label.center
+        }
     }
     
     
