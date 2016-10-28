@@ -70,6 +70,7 @@ PODS:
   - ReSwift (2.0.0)
   - SwiftLocation (1.0.5)
   - SwiftMessages (1.1.4)
+  - SwiftyJSON (2.4.0)
   - Whisper (3.1.1)
 
 DEPENDENCIES:
@@ -92,6 +93,7 @@ DEPENDENCIES:
   - ReSwift (= 2.0.0)
   - SwiftLocation (= 1.0.5)
   - SwiftMessages (~> 1.1.4)
+  - SwiftyJSON (= 2.4.0)
   - Whisper
 
 SPEC CHECKSUMS:
@@ -122,6 +124,7 @@ SPEC CHECKSUMS:
   ReSwift: 7abc536a87955c34bf60de3fd32ce9a02ee3ad87
   SwiftLocation: 310142ddfcfc1df770b05ee762592f6ee9896cee
   SwiftMessages: c7678758945a9123613cd77da98c2a89fa38eba3
+  SwiftyJSON: 96918c1bf505efa50c4f72957018dd3452090c9c
   Whisper: 74decae53daf8caff5acf8628e24b92d3f05a453
 
 COCOAPODS: 0.39.0

@@ -681,7 +681,7 @@
         <scene sceneID="0l9-U7-pGl">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="r5N-WM-LIr" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" tag="1" title="" image="feed" id="pso-by-sb3">
+                    <tabBarItem key="tabBarItem" tag="1" title="" image="search" id="pso-by-sb3">
                         <inset key="imageInsets" minX="0.0" minY="6" maxX="0.0" maxY="-6"/>
                     </tabBarItem>
                     <toolbarItems/>
@@ -693,42 +693,31 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="5db-Fn-7oY" kind="relationship" relationship="rootViewController" id="fsU-YT-xm9"/>
+                        <segue destination="VQL-1a-jsd" kind="relationship" relationship="rootViewController" id="8JK-Fc-qxM"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XQW-dN-guL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1460" y="315"/>
+            <point key="canvasLocation" x="1548" y="301"/>
         </scene>
-        <!--Activity View Controller-->
-        <scene sceneID="43G-Fo-np6">
+        <!--Activity Feed View Controller-->
+        <scene sceneID="mkh-V2-7Yq">
             <objects>
-                <tableViewController id="5db-Fn-7oY" customClass="ActivityViewController" customModule="Lit" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="bz9-1f-xnh">
+                <viewController storyboardIdentifier="ActivityFeedViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="VQL-1a-jsd" customClass="ActivityFeedViewController" customModule="Lit" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ub8-hZ-zjC"/>
+                        <viewControllerLayoutGuide type="bottom" id="YuS-bp-3Bc"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="N48-9w-b61">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="0.058315794210000001" green="0.058724774120000003" blue="0.060424214980000002" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="separatorColor" red="0.099820801113159732" green="0.10084121979726111" blue="0.10390247584956525" alpha="1" colorSpace="calibratedRGB"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="72" id="gMD-iJ-r80">
-                                <rect key="frame" x="0.0" y="92" width="600" height="72"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gMD-iJ-r80" id="vUD-lb-hgx">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="71"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="5db-Fn-7oY" id="tkz-19-cgT"/>
-                            <outlet property="delegate" destination="5db-Fn-7oY" id="evt-Rm-iaS"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" id="jj2-eM-fqK"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Bql-xw-NNl" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="iDX-9y-Rqa"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bgS-Sl-mJ9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2124" y="315"/>
+            <point key="canvasLocation" x="2144" y="315"/>
         </scene>
         <!--Current User Profile View Controller-->
         <scene sceneID="AbF-Zj-Kj8">
@@ -824,10 +813,10 @@
         <image name="Send" width="32" height="32"/>
         <image name="camera" width="32" height="32"/>
         <image name="delete_filled" width="32" height="32"/>
-        <image name="feed" width="32" height="32"/>
         <image name="home" width="32" height="32"/>
         <image name="lit" width="1944" height="1944"/>
         <image name="message" width="32" height="32"/>
+        <image name="search" width="32" height="32"/>
         <image name="settings" width="32" height="32"/>
         <image name="user" width="32" height="32"/>
     </resources>

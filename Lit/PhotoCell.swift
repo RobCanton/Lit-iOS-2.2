@@ -32,7 +32,7 @@ class PhotoCell: UICollectionViewCell {
         })
         
         self.layer.borderColor = UIColor.blackColor().CGColor
-        self.layer.borderWidth = 1.5
+        self.layer.borderWidth = 1.0
         
         likeTag.layer.cornerRadius = likeTag.frame.width/2
         likeTag.clipsToBounds = true

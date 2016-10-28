@@ -41,8 +41,8 @@ func getLikesString(numLikes:Int) -> String{
     }
     
     return "\(numLikes) likes"
-    
 }
+
 
 func printFonts() {
     let fontFamilyNames = UIFont.familyNames()

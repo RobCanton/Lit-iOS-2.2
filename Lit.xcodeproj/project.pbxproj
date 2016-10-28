@@ -94,6 +94,7 @@
 		B06D54D81D9EEFD700F6A4A7 /* intro4.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = B06D54D71D9EEFD400F6A4A7 /* intro4.mp4 */; };
 		B079BE861DA557B00042B586 /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079BE841DA557B00042B586 /* PhotoCell.swift */; };
 		B079BE871DA557B00042B586 /* PhotoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B079BE851DA557B00042B586 /* PhotoCell.xib */; };
+		B07D74BC1DC2E2AB001D66EA /* ActivityFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07D74BB1DC2E2AB001D66EA /* ActivityFeedViewController.swift */; };
 		B0873AC81D3EB8CC00862960 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0873AC51D3EB8CC00862960 /* FBSDKCoreKit.framework */; };
 		B0873AC91D3EB8CC00862960 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0873AC61D3EB8CC00862960 /* FBSDKLoginKit.framework */; };
 		B0873ACA1D3EB8CC00862960 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0873AC71D3EB8CC00862960 /* FBSDKShareKit.framework */; };
@@ -216,6 +217,7 @@
 		B06D54D71D9EEFD400F6A4A7 /* intro4.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = intro4.mp4; sourceTree = "<group>"; };
 		B079BE841DA557B00042B586 /* PhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
 		B079BE851DA557B00042B586 /* PhotoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoCell.xib; sourceTree = "<group>"; };
+		B07D74BB1DC2E2AB001D66EA /* ActivityFeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityFeedViewController.swift; sourceTree = "<group>"; };
 		B0873AC51D3EB8CC00862960 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		B0873AC61D3EB8CC00862960 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		B0873AC71D3EB8CC00862960 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
@@ -413,6 +415,7 @@
 				76EE2B951D8766ED00EDB4CB /* ActivityFriendRequestCell.swift */,
 				76EE2B961D8766ED00EDB4CB /* ActivityFriendRequestCell.xib */,
 				76EE2B931D87653700EDB4CB /* ActivityViewController.swift */,
+				B07D74BB1DC2E2AB001D66EA /* ActivityFeedViewController.swift */,
 			);
 			name = Activity;
 			sourceTree = "<group>";
@@ -831,6 +834,7 @@
 				B06D54C01D9ECB6D00F6A4A7 /* HoshiTextField.swift in Sources */,
 				B06D54C31D9ECB6D00F6A4A7 /* JiroTextField.swift in Sources */,
 				B08BBB901DBAF4C200AD3FF1 /* UserTableViewCell.swift in Sources */,
+				B07D74BC1DC2E2AB001D66EA /* ActivityFeedViewController.swift in Sources */,
 				B0BA326E1DA7165A004352A7 /* CreateProfileHeaderView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

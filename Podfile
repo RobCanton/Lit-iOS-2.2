@@ -25,6 +25,7 @@ pod "ARNTransitionAnimator"
 pod 'NVActivityIndicatorView', '2.0'
 pod 'SwiftLocation', '1.0.5'
 pod 'SwiftMessages', '~> 1.1.4'
+pod 'SwiftyJSON', '2.4.0'
 
 end
 

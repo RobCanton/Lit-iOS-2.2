@@ -85,11 +85,11 @@ class FirebaseService {
                             
                             if upload.toLocation() {
                                 let locationRef = ref.child("locations/\(city.getKey())/\(upload.getLocationKey())/uploads/\(postKey)")
-                                locationRef.setValue(true)
+                                locationRef.setValue([".sv": "timestamp"]) //rough time estimate, only for server use
                             }
                             if upload.toUserProfile() {
                                 let userRef = ref.child("users/uploads/\(mainStore.state.userState.uid)/\(postKey)")
-                                userRef.setValue(true)
+                                userRef.setValue([".sv": "timestamp"]) //rough time estimate, only for server use
                             }
                         }
                     })
