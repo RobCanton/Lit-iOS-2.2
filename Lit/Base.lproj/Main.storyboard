@@ -677,10 +677,10 @@
             </objects>
             <point key="canvasLocation" x="1460" y="1677"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Image Transition Navigation Controller-->
         <scene sceneID="0l9-U7-pGl">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="r5N-WM-LIr" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="r5N-WM-LIr" customClass="ARNImageTransitionNavigationController" customModule="Lit" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" tag="1" title="" image="search" id="pso-by-sb3">
                         <inset key="imageInsets" minX="0.0" minY="6" maxX="0.0" maxY="-6"/>
                     </tabBarItem>
@@ -688,8 +688,11 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="sWa-Z9-O7x">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" red="0.10369944031081504" green="0.10564003793901718" blue="0.1087333937239614" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="barTintColor" red="0.1036994403" green="0.1056400379" blue="0.1087333937" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="textShadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>

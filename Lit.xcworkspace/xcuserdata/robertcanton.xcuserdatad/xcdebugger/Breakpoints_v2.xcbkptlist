@@ -582,7 +582,7 @@
                   moduleName = "Lit"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/robertcanton/Desktop/Lit-iOS-development/Lit/FirstScreenViewController.swift"
-                  timestampString = "499327269.767048"
+                  timestampString = "499362542.284185"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "49"
@@ -597,7 +597,7 @@
                   moduleName = "Lit"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/robertcanton/Desktop/Lit-iOS-development/Lit/FirstScreenViewController.swift"
-                  timestampString = "499327269.767239"
+                  timestampString = "499362542.284413"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "50"
@@ -956,6 +956,22 @@
             startingLineNumber = "92"
             endingLineNumber = "92"
             landmarkName = "sendImage(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Lit/ActivityFeedViewController.swift"
+            timestampString = "499362317.355241"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "136"
+            endingLineNumber = "136"
+            landmarkName = "extractFeedFromJSON(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
