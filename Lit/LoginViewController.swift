@@ -54,7 +54,7 @@ class LoginViewController: UIViewController, StoreSubscriber {
             }
         }
         
-        if state.locations.count > 0 {
+        if state.locations.count > 0 && state.userState.isAuth{
             v3.view.removeFromSuperview()
             v3.removeFromParentViewController()
             self.performSegueWithIdentifier("showLit", sender: self)
@@ -115,6 +115,7 @@ class LoginViewController: UIViewController, StoreSubscriber {
         scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
          
         if let user = FIRAuth.auth()?.currentUser {
+            print("already signed in")
             FirebaseService.getUser(user.uid, completionHandler: { _user in
                 if _user != nil {
                     mainStore.dispatch(UserIsAuthenticated( user: _user!, flow: .ReturningUser))

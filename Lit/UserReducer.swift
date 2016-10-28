@@ -21,8 +21,7 @@ func UserStateReducer(action: Action, state: UserState?) -> UserState {
 
         break
     case _ as UserIsUnauthenticated:
-        state.isAuth = false
-        state.uid = ""
+        state = UserState()
         break
     case _ as SetActiveCity:
         let a = action as! SetActiveCity

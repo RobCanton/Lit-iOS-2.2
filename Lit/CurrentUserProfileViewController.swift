@@ -56,21 +56,13 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
     }
     
     func newState(state: AppState) {
-        checkFriendStatus()
+        headerView?.checkFriendStatus()
     }
     
     func mediaDeleted() {
         getKeys()
     }
     
-    
-    func checkFriendStatus() {
-        guard let _ = user else {return}
-        
-        let friendStatus = FirebaseService.checkFriendStatus(user!.getUserId())
-        headerView.setFriendStatus(friendStatus)
-        
-    }
     
     override func prefersStatusBarHidden() -> Bool {
         return false
@@ -135,9 +127,8 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
         
         if let _ = user {
             if let _ = headerView {
-                checkFriendStatus()
                 headerView.imageView.loadImageUsingCacheWithURLString(user!.getLargeImageUrl(), completion: {result in})
-                headerView.setUsername(user!.getDisplayName())
+                headerView.setUser(user!)
                 controlBar?.setFriendsBlock(user!.getNumFriends())
                 getKeys()
             }
@@ -391,15 +382,11 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
         // 2
         let logoutAction = UIAlertAction(title: "Logout", style: .Destructive, handler: {
             (alert: UIAlertAction!) -> Void in
-            
-            try! FIRAuth.auth()!.signOut()
             let loginManager = FBSDKLoginManager()
-            loginManager.logOut() // this is an instance function
+            loginManager.logOut()
             mainStore.dispatch(UserIsUnauthenticated())
-            self.dismissViewControllerAnimated(true, completion: {})
-            //            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            //            let vc = storyboard.instantiateViewControllerWithIdentifier("LoginViewController") as! LoginViewController
-            //            self.presentViewController(vc, animated: true, completion: nil)
+            try! FIRAuth.auth()!.signOut()
+            
             
         })
         

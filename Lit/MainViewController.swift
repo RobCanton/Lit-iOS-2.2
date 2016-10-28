@@ -38,7 +38,7 @@ class MainViewController: UICollectionViewController, StoreSubscriber, CLLocatio
     }
     @IBAction func nearMeTapped(sender: UIBarButtonItem) {
         
-        mainStore.dispatch(ViewUser(uid: mainStore.state.userState.uid))
+        //mainStore.dispatch(ViewUser(uid: mainStore.state.userState.uid))
     }
     @IBOutlet weak var nearMeButton: UIBarButtonItem!
     

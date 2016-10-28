@@ -84,7 +84,7 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     }
     
     func newState(state: AppState) {
-        checkFriendStatus()
+        headerView?.checkFriendStatus()
     }
     
     func mediaDeleted() {
@@ -92,14 +92,7 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     }
     
     
-    func checkFriendStatus() {
-        guard let _ = user else {return}
-        
-        let friendStatus = FirebaseService.checkFriendStatus(user!.getUserId())
-        headerView.setFriendStatus(friendStatus)
 
-    }
-    
     override func prefersStatusBarHidden() -> Bool {
         return true
     }
@@ -158,9 +151,8 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
             print("READY FOR USER")
             if let _ = headerView {
                 print("tings")
-                checkFriendStatus()
                 headerView.imageView.loadImageUsingCacheWithURLString(user!.getLargeImageUrl(), completion: {result in})
-                headerView.setUsername(user!.getDisplayName())
+                headerView.setUser(user!)
                 controlBar?.setFriendsBlock(user!.getNumFriends())
                 getKeys()
             }

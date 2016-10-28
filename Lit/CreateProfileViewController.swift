@@ -204,8 +204,10 @@ class CreateProfileViewController: UIViewController, UITextFieldDelegate {
                         largeTask.observeStatus(.Success, handler: { largeTaskSnapshot in
                             let privateRef = FIRDatabase.database().reference().child("users/private/\(user.uid)")
                             privateRef.setValue(["fullname":fullname], withCompletionBlock: {error, ref in
-                            
-                                if error == nil {
+                                if error != nil {
+                                    print(error?.localizedDescription)
+                                }
+                                else {
                                     let publicRef = FIRDatabase.database().reference().child("users/profile/\(user.uid)")
                                     publicRef.setValue([
                                         "username":username,
@@ -213,7 +215,10 @@ class CreateProfileViewController: UIViewController, UITextFieldDelegate {
                                         "largeProfilePicURL": largeTaskSnapshot.metadata!.downloadURL()!.absoluteString,
                                         "numFriends":0
                                         ], withCompletionBlock: {error, ref in
-                                            if error == nil {
+                                            if error != nil {
+                                                print(error!.localizedDescription)
+                                            }
+                                            else {
                                                 self.getNewUser()
                                             }
                                     })

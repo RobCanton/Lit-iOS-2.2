@@ -34,6 +34,7 @@ class CreateProfileHeaderView: UIView {
     
     
     var delegate:HeaderProtocol!
+    var user:User!
 
     @IBAction func backTapped(sender: AnyObject) {
         delegate.backTapped()
@@ -56,10 +57,11 @@ class CreateProfileHeaderView: UIView {
         messageBtnTap = UITapGestureRecognizer(target: self, action: #selector(messageBtnTapped))
     }
     
-    func setUsername(name:String) {
-        usernameLabel.text = name
+    func setUser(user:User) {
+        self.user = user
+        usernameLabel.text = user.getDisplayName()
         
-        bioTextView.text = "Tell me, who did I leave behind. You think it got to me. I can just read your mind. You think I'm so caught up in where I am right now."
+        bioTextView.text = "This is a temporary bio description."
     }
     
     
@@ -86,13 +88,13 @@ class CreateProfileHeaderView: UIView {
         case .FRIENDS:
             break
         case .NOT_FRIENDS:
-            FirebaseService.sendFriendRequest(mainStore.state.viewUser, completionHandler: { success in})
+            FirebaseService.sendFriendRequest(user.getUserId(), completionHandler: { success in})
             break
         case .PENDING_INCOMING:
-            FirebaseService.acceptFriendRequest(mainStore.state.viewUser)
+            FirebaseService.acceptFriendRequest(user.getUserId())
             break
         case .PENDING_INCOMING_SEEN:
-            FirebaseService.acceptFriendRequest(mainStore.state.viewUser)
+            FirebaseService.acceptFriendRequest(user.getUserId())
             break
         case .PENDING_OUTGOING:
             break
@@ -101,14 +103,17 @@ class CreateProfileHeaderView: UIView {
         }
     }
     
+    
+    
     func messageBtnTapped(gesture:UITapGestureRecognizer) {
         delegate.messageTapped()
     }
     
     var status:FriendStatus = .NOT_FRIENDS
     
-    func setFriendStatus(_status:FriendStatus) {
-        status = _status
+    
+    func checkFriendStatus() {
+        let status = FirebaseService.checkFriendStatus(user.getUserId())
         switch status {
         case .IS_CURRENT_USER:
             friendBtn.hidden = true

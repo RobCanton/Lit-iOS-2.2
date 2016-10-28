@@ -367,8 +367,13 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
         textView.hidden = false
         textLabel.hidden = true
         textLabel.userInteractionEnabled = false
+        
+        UIView.animateWithDuration(0.2, animations: {
+            self.editingFadeLayer.alpha = 0.24
+        })
     }
     
+    @IBOutlet weak var editingFadeLayer: UIView!
     func textViewDidEndEditing(textView: UITextView) {
         textView.hidden = true
         textView.editable = false
@@ -389,6 +394,9 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
 
         textLabel.hidden = false
         textLabel.userInteractionEnabled = true
+        UIView.animateWithDuration(0.2, animations: {
+            self.editingFadeLayer.alpha = 0.0
+        })
     }
     
     

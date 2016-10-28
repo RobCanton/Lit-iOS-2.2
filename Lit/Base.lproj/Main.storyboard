@@ -491,16 +491,26 @@
                                             </mask>
                                         </variation>
                                     </imageView>
+                                    <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NAD-ro-tQj">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                        <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    </view>
                                 </subviews>
                                 <constraints>
+                                    <constraint firstItem="NAD-ro-tQj" firstAttribute="leading" secondItem="s5z-rE-T5E" secondAttribute="leading" id="0tf-HE-CiE"/>
                                     <constraint firstItem="sjD-xV-zGV" firstAttribute="centerX" secondItem="s5z-rE-T5E" secondAttribute="centerX" id="294-WE-xn2"/>
                                     <constraint firstItem="sjD-xV-zGV" firstAttribute="leading" secondItem="s5z-rE-T5E" secondAttribute="leading" id="30M-K1-fbl"/>
                                     <constraint firstAttribute="trailing" secondItem="sjD-xV-zGV" secondAttribute="trailing" id="3JE-Lc-ybO"/>
+                                    <constraint firstItem="NAD-ro-tQj" firstAttribute="centerX" secondItem="s5z-rE-T5E" secondAttribute="centerX" id="3mg-3f-zeb"/>
                                     <constraint firstItem="sjD-xV-zGV" firstAttribute="centerY" secondItem="s5z-rE-T5E" secondAttribute="centerY" id="4ET-k5-cj6"/>
+                                    <constraint firstAttribute="trailing" secondItem="NAD-ro-tQj" secondAttribute="trailing" id="6b8-La-Nfq"/>
+                                    <constraint firstItem="NAD-ro-tQj" firstAttribute="centerY" secondItem="s5z-rE-T5E" secondAttribute="centerY" id="FNI-tC-nBu"/>
                                     <constraint firstItem="sjD-xV-zGV" firstAttribute="centerX" secondItem="s5z-rE-T5E" secondAttribute="centerX" id="HS4-Ou-kz1"/>
                                     <constraint firstItem="sjD-xV-zGV" firstAttribute="top" secondItem="s5z-rE-T5E" secondAttribute="top" id="Tlh-EV-aqa"/>
+                                    <constraint firstItem="NAD-ro-tQj" firstAttribute="top" secondItem="s5z-rE-T5E" secondAttribute="top" id="geG-Qd-K3Q"/>
                                     <constraint firstItem="sjD-xV-zGV" firstAttribute="centerY" secondItem="s5z-rE-T5E" secondAttribute="centerY" id="k3i-ip-4Is"/>
                                     <constraint firstAttribute="bottom" secondItem="sjD-xV-zGV" secondAttribute="bottom" id="lyG-ha-IBm"/>
+                                    <constraint firstAttribute="bottom" secondItem="NAD-ro-tQj" secondAttribute="bottom" id="uXr-cS-lwN"/>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="constraints">
@@ -588,6 +598,7 @@
                     <connections>
                         <outlet property="cameraView" destination="Ri8-OT-mqm" id="HPm-DC-TAp"/>
                         <outlet property="cancelButton" destination="10W-xw-TSZ" id="HVm-9p-meX"/>
+                        <outlet property="editingFadeLayer" destination="NAD-ro-tQj" id="1uI-sK-wNx"/>
                         <outlet property="editingLayer" destination="s5z-rE-T5E" id="mpm-60-1R7"/>
                         <outlet property="imageCaptureView" destination="sjD-xV-zGV" id="hkd-Mg-qM1"/>
                         <outlet property="sendButton" destination="80H-Sb-wGz" id="LYD-9R-oHx"/>
@@ -645,11 +656,12 @@
                         <segue destination="ewM-YJ-C2n" kind="relationship" relationship="viewControllers" id="jul-Qa-Os3"/>
                         <segue destination="geg-Nk-tJH" kind="relationship" relationship="viewControllers" id="Erj-qK-U7r"/>
                         <segue destination="Kb5-7f-64C" kind="presentation" identifier="toCamera" id="Prn-vU-9ef"/>
+                        <segue destination="BYZ-38-t0r" kind="show" identifier="logout" animates="NO" id="02T-pM-5XC"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Sx-mp-9Zd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="598" y="881"/>
+            <point key="canvasLocation" x="491" y="958"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Y6l-jB-1hI">

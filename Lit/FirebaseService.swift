@@ -262,8 +262,10 @@ class FirebaseService {
     static func sendFriendRequest(friend_uid:String, completionHandler:(success:Bool)->()) {
         
         let uid = mainStore.state.userState.uid
+        print("FRIEND UID \(friend_uid)")
         let userRef = FirebaseService.ref.child("users/social/requestsOut/\(uid)/\(friend_uid)")
         userRef.setValue(false)
+        print("USERREF: \(userRef)")
         let friendRef = FirebaseService.ref.child("users/social/requestsIn/\(friend_uid)/\(uid)")
         friendRef.setValue(false, withCompletionBlock: {
             error, ref in
