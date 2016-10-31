@@ -8,12 +8,12 @@
 
 import Foundation
 
-class User {
-    private var uid: String
-    private var displayName: String
-    private var imageUrl: String
-    private var largeImageUrl: String
-    private var numFriends: Int
+class User:NSObject, NSCoding {
+    var uid: String
+    var displayName: String
+    var imageUrl: String
+    var largeImageUrl: String
+    var numFriends: Int
     
     init(uid:String, displayName:String, imageUrl: String, largeImageUrl:String, numFriends: Int)
     {
@@ -23,6 +23,29 @@ class User {
         self.largeImageUrl = largeImageUrl
         self.numFriends    = numFriends
     }
+    
+    required convenience init(coder decoder: NSCoder) {
+        
+        let uid = decoder.decodeObjectForKey("uid") as! String
+        let displayName = decoder.decodeObjectForKey("displayName") as! String
+        let imageUrl = decoder.decodeObjectForKey("imageUrl") as! String
+        let largeImageUrl = decoder.decodeObjectForKey("largeImageUrl") as! String
+        let numFriends = decoder.decodeObjectForKey("numFriends") as! Int
+        self.init(uid: uid, displayName: displayName, imageUrl: imageUrl, largeImageUrl: largeImageUrl, numFriends: numFriends)
+
+    }
+
+    
+    func encodeWithCoder(coder: NSCoder) {
+        coder.encodeObject(uid, forKey: "uid")
+        coder.encodeObject(displayName, forKey: "displayName")
+        coder.encodeObject(imageUrl, forKey: "imageUrl")
+        coder.encodeObject(largeImageUrl, forKey: "largeImageUrl")
+        coder.encodeObject(numFriends, forKey: "numFriends")
+        
+    }
+    
+
     
     func getUserId() -> String {
         return uid

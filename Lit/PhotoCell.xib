@@ -54,20 +54,30 @@
                             <constraint firstItem="06h-rF-pK8" firstAttribute="leading" secondItem="yeF-Kd-6xm" secondAttribute="leading" constant="4" id="xNF-EW-bcX"/>
                         </constraints>
                     </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gzq-rO-GQm">
+                        <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    </view>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
             <constraints>
                 <constraint firstItem="FZs-dU-jtY" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="8" id="0dw-EC-lPh"/>
+                <constraint firstItem="gzq-rO-GQm" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="BMb-fU-StP"/>
                 <constraint firstItem="24F-Lj-LPE" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="FuU-ka-5Av"/>
                 <constraint firstItem="oO1-PZ-pll" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="8" id="Odm-jn-IbQ"/>
                 <constraint firstAttribute="bottom" secondItem="oO1-PZ-pll" secondAttribute="bottom" constant="8" id="PER-16-v3r"/>
                 <constraint firstAttribute="bottom" secondItem="UZ5-k5-KDw" secondAttribute="bottom" constant="8" id="Xw3-gE-XRE"/>
                 <constraint firstAttribute="trailing" secondItem="yeF-Kd-6xm" secondAttribute="trailing" constant="8" id="aGq-w0-Kpm"/>
+                <constraint firstItem="gzq-rO-GQm" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="g5f-Qq-ygl"/>
+                <constraint firstAttribute="bottom" secondItem="gzq-rO-GQm" secondAttribute="bottom" id="hrY-Fy-dnJ"/>
                 <constraint firstItem="FZs-dU-jtY" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="i9d-9Z-7uX"/>
+                <constraint firstItem="gzq-rO-GQm" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="jOB-vD-7BS"/>
                 <constraint firstAttribute="trailing" secondItem="FZs-dU-jtY" secondAttribute="trailing" constant="8" id="l4T-3t-BxC"/>
                 <constraint firstItem="FZs-dU-jtY" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="mrw-Z2-kHe"/>
+                <constraint firstAttribute="trailing" secondItem="gzq-rO-GQm" secondAttribute="trailing" id="pn3-nx-I6S"/>
+                <constraint firstItem="gzq-rO-GQm" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="roJ-Fr-E8O"/>
                 <constraint firstAttribute="trailing" secondItem="24F-Lj-LPE" secondAttribute="trailing" id="rr8-KB-wxM"/>
                 <constraint firstItem="24F-Lj-LPE" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="s5n-8b-elu"/>
                 <constraint firstAttribute="bottom" secondItem="24F-Lj-LPE" secondAttribute="bottom" id="sV3-wV-JZn"/>
@@ -77,6 +87,7 @@
             <size key="customSize" width="283" height="274"/>
             <connections>
                 <outlet property="authorImage" destination="oO1-PZ-pll" id="cUA-7c-Dku"/>
+                <outlet property="fadeCover" destination="gzq-rO-GQm" id="idl-0J-AOT"/>
                 <outlet property="imageView" destination="24F-Lj-LPE" id="8pI-qO-CK9"/>
                 <outlet property="likeTag" destination="yeF-Kd-6xm" id="yJf-iZ-MxB"/>
                 <outlet property="timeLabel" destination="UZ5-k5-KDw" id="Syj-Tc-E01"/>

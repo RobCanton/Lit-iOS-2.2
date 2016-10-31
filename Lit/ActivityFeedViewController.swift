@@ -31,6 +31,8 @@ class ActivityFeedViewController: UIViewController, UICollectionViewDelegate, UI
         super.viewDidLoad()
         let topInset = navigationController!.navigationBar.frame.height
 
+        self.navigationController?.navigationBar.titleTextAttributes =
+            [NSFontAttributeName: UIFont(name: "Avenir-Book", size: 20.0)!]
         self.navigationController?.navigationBar.backgroundColor = UIColor.clearColor()
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: .Default)
         self.navigationController?.navigationBar.shadowImage = UIImage()

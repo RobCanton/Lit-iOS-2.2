@@ -59,7 +59,6 @@ class MainViewController: UICollectionViewController, StoreSubscriber, CLLocatio
     var activeLocation:Location?
     
     func newState(state: AppState) {
-        print("MainViewController: New State")
         locations = state.locations
         locations.sortInPlace({ $0.getVisitorsCount() > $1.getVisitorsCount() })
         

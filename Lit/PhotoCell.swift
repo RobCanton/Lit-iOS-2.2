@@ -17,6 +17,7 @@ class PhotoCell: UICollectionViewCell {
     @IBOutlet weak var timeLabel: UILabel!
     
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var fadeCover: UIView!
     
     @IBOutlet weak var likeTag: UIView!
     override func awakeFromNib() {
@@ -27,8 +28,10 @@ class PhotoCell: UICollectionViewCell {
     
     func setPhoto(item:StoryItem) {
         imageView.image = nil
-        imageView.loadImageUsingCacheWithURLString(item.getDownloadUrl()!.absoluteString, completion: {_ in 
-        
+        imageView.loadImageUsingCacheWithURLString(item.getDownloadUrl()!.absoluteString, completion: { fromCache in
+            UIView.animateWithDuration(0.3, animations: {
+                self.fadeCover.alpha = 0.0
+            })
         })
         
         self.layer.borderColor = UIColor.blackColor().CGColor

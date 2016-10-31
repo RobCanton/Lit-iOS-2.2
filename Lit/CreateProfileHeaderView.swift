@@ -57,7 +57,7 @@ class CreateProfileHeaderView: UIView {
         messageBtnTap = UITapGestureRecognizer(target: self, action: #selector(messageBtnTapped))
     }
     
-    func setUser(user:User) {
+    func populateUser(user:User) {
         self.user = user
         usernameLabel.text = user.getDisplayName()
         
@@ -113,7 +113,7 @@ class CreateProfileHeaderView: UIView {
     
     
     func checkFriendStatus() {
-        let status = FirebaseService.checkFriendStatus(user.getUserId())
+        status = FirebaseService.checkFriendStatus(user.getUserId())
         switch status {
         case .IS_CURRENT_USER:
             friendBtn.hidden = true

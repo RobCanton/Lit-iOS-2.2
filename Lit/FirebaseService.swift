@@ -11,7 +11,12 @@ import ReSwift
 import IngeoSDK
 import AVFoundation
 
+
+
 class FirebaseService {
+    
+    static let dataCache = NSCache()
+    
     static let ref = FIRDatabase.database().reference()
     // Get a reference to the storage service, using the default Firebase App
     static let storage = FIRStorage.storage()
@@ -23,25 +28,28 @@ class FirebaseService {
     
     
     static func getUser(uid:String, completionHandler: (user:User?)->()) {
-        ref.child("users/profile/\(uid)").observeSingleEventOfType(.Value, withBlock: { (snapshot) in
-            var user:User?
-            if snapshot.exists() {
-                let displayName      = snapshot.value!["username"] as! String
-                let imageUrl         = snapshot.value!["smallProfilePicURL"] as! String
-                let largeImageUrl    = snapshot.value!["largeProfilePicURL"] as! String
-                let numFriends       = snapshot.value!["numFriends"] as! Int
+        
+        if let cachedUser = dataCache.objectForKey("user-\(uid)") as? User {
+            print("From cache: \(uid)")
+            completionHandler(user: cachedUser)
+        } else {
+            ref.child("users/profile/\(uid)").observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+                var user:User?
+                if snapshot.exists() {
+                    let displayName      = snapshot.value!["username"] as! String
+                    let imageUrl         = snapshot.value!["smallProfilePicURL"] as! String
+                    let largeImageUrl    = snapshot.value!["largeProfilePicURL"] as! String
+                    let numFriends       = snapshot.value!["numFriends"] as! Int
+                    user = User(uid: uid, displayName: displayName, imageUrl: imageUrl, largeImageUrl: largeImageUrl, numFriends: numFriends)
+                    dataCache.setObject(user!, forKey: "user-\(uid)")
+                    print("Downloaded user: \(uid)")
+                }
                 
-//                var friends = [String:Bool]()
-//                if snapshot.hasChild("friends") {
-//                    friends = snapshot.value!["friends"] as! [String:Bool]
-//                    print("Friends: \(friends)")
-//                }
-                user = User(uid: uid, displayName: displayName, imageUrl: imageUrl, largeImageUrl: largeImageUrl, numFriends: numFriends)
-            }
+                completionHandler(user: user)
+                
+            })
+        }
 
-            completionHandler(user: user)
-            
-        })
     }
     
 
@@ -84,7 +92,7 @@ class FirebaseService {
                         if error == nil {
                             
                             if upload.toLocation() {
-                                let locationRef = ref.child("locations/\(city.getKey())/\(upload.getLocationKey())/uploads/\(postKey)")
+                                let locationRef = ref.child("locations/uploads/\(upload.getLocationKey())/\(postKey)")
                                 locationRef.setValue([".sv": "timestamp"]) //rough time estimate, only for server use
                             }
                             if upload.toUserProfile() {
@@ -154,50 +162,56 @@ class FirebaseService {
         })
     }
     
+    static func getUpload(key:String, completionHandler: (item:StoryItem?)->()) {
+        let postRef = ref.child("uploads/\(key)/meta")
+        postRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+            var item:StoryItem?
+            if snapshot.exists() {
+                if !snapshot.hasChild("delete") {
+                    let key = key
+                    let authorId = snapshot.value!["author"] as! String
+                    let locationKey = snapshot.value!["location"] as! String
+                    let downloadUrl = snapshot.value!["url"] as! String
+                    let contentTypeStr = snapshot.value!["contentType"] as! String
+                    var contentType = ContentType.Invalid
+                    if contentTypeStr == "image/jpg" {
+                        contentType = .Image
+                    } else if contentTypeStr == "video/mp4" {
+                        contentType = .Video
+                    }
+                    
+                    let dateCreated = snapshot.value!["dateCreated"] as! Double
+                    let length = snapshot.value!["length"] as! Double
+                    
+                    var likes = 0
+                    if snapshot.hasChild("likes") {
+                        likes = snapshot.value!["likes"] as! Int
+                    }
+                    item = StoryItem(key: key, authorId: authorId,locationKey: locationKey, downloadUrl: downloadUrl, contentType: contentType, dateCreated: dateCreated, length: length, likes: likes)
+                    
+                }
+            }
+            completionHandler(item: item)
+        })
+    }
+    
     static func downloadStory(postKeys:[String], completionHandler: (story:[StoryItem])->()) {
         var story = [StoryItem]()
         var loadedCount = 0
         for postKey in postKeys {
-            let postRef = FirebaseService.ref.child("uploads/\(postKey)/meta")
             
-            postRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
-                
-                if snapshot.exists() {
-                    if !snapshot.hasChild("delete") {
-                        let key = postKey
-                        
-                        let authorId = snapshot.value!["author"] as! String
-                        let locationKey = snapshot.value!["location"] as! String
-                        let downloadUrl = snapshot.value!["url"] as! String
-                        let contentTypeStr = snapshot.value!["contentType"] as! String
-                        var contentType = ContentType.Invalid
-                        if contentTypeStr == "image/jpg" {
-                            contentType = .Image
-                        } else if contentTypeStr == "video/mp4" {
-                            contentType = .Video
-                        }
-                        
-                        let dateCreated = snapshot.value!["dateCreated"] as! Double
-                        let length = snapshot.value!["length"] as! Double
-                        
-                        var likes = 0
-                        if snapshot.hasChild("likes") {
-                            likes = snapshot.value!["likes"] as! Int
-                        }
-                        
-                        
-                        let storyItem = StoryItem(key: key, authorId: authorId,locationKey: locationKey, downloadUrl: downloadUrl, contentType: contentType, dateCreated: dateCreated, length: length, likes: likes)
-                        story.append(storyItem)
-                    }
+            getUpload(postKey, completionHandler: { item in
+            
+                if let _ = item {
+                    story.append(item!)
                 }
-                
                 loadedCount += 1
                 if loadedCount >= postKeys.count {
-                    
                     dispatch_async(dispatch_get_main_queue(), {
                         completionHandler(story: story)
                     })
                 }
+                
             })
         }
     }
@@ -219,7 +233,6 @@ class FirebaseService {
             })
         }
     }
-    
     
     static func compressVideo(inputURL: NSURL, outputURL: NSURL, handler:(session: AVAssetExportSession)-> Void) {
         let urlAsset = AVURLAsset(URL: inputURL, options: nil)
@@ -279,6 +292,7 @@ class FirebaseService {
     }
     
     static func acceptFriendRequest(friend_uid:String) {
+        print("ACCEPT FRIEND REQUEST: \(friend_uid)")
         let uid = mainStore.state.userState.uid
         ref.child("users/social/friends/\(uid)/\(friend_uid)").setValue(true)
         ref.child("users/social/friends/\(friend_uid)/\(uid)").setValue(true)

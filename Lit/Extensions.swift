@@ -19,7 +19,9 @@ extension UIImageView {
         // Check for cached image
         if let cachedImage = imageCache.objectForKey(_url) as? UIImage {
             self.image = cachedImage
+            //print("From cache: \(_url)")
             return completion(result: false)
+            
         }
         
         // Otherwise, download image
@@ -44,6 +46,7 @@ extension UIImageView {
                     }
                     
                     self.image = UIImage(data: data!)
+                    //print("Downloaded image: \(_url)")
                     completion(result: true)
                 })
                 
@@ -54,7 +57,6 @@ extension UIImageView {
     func loadImageUsingFileWithURLString(location:Location, completion: (result: Bool)->()) {
         
         if let file = location.imageOnDiskURL {
-            print("loaded \(location.getKey()) from file")
             self.image = UIImage(contentsOfFile: file.path!)
             completion(result: false)
         } else {
@@ -84,7 +86,6 @@ extension UIImageView {
                     }
                     
                     dispatch_async(dispatch_get_main_queue(), {
-                        print("downloaded \(location.getKey())")
                         self.image = UIImage(data: data!)
                         completion(result: true)
                     })

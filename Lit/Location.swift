@@ -21,7 +21,6 @@ class Location {
     private var number:String
     private var website:String
     var isActive: Bool = false
-    private var storyCount: Int?
     
     private var story: [StoryItem]?
     
@@ -34,7 +33,7 @@ class Location {
     var imageOnDiskURL:NSURL?
     
     
-    init(key:String, name:String, coordinates:CLLocation, imageURL:String, address:String, description:String, number:String, website:String,storyCount: Int)
+    init(key:String, name:String, coordinates:CLLocation, imageURL:String, address:String, description:String, number:String, website:String)
     {
         self.key          = key
         self.name         = name
@@ -44,8 +43,6 @@ class Location {
         self.description  = description
         self.number       = number
         self.website      = website
-        self.storyCount   = storyCount
-        
     }
     
     /* Getters */
@@ -102,10 +99,6 @@ class Location {
     
     func getStory() -> [StoryItem]? {
         return self.story
-    }
-    
-    func getStoryCount() -> Int? {
-        return storyCount
     }
     
     func addVisitor(visitor:String) {

@@ -73,7 +73,7 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
     }
     
     func newState(state: AppState) {
-        if FIRAuth.auth()?.currentUser == nil {
+        if !state.userState.isAuth {
            self.performSegueWithIdentifier("logout", sender: self)
         }
         

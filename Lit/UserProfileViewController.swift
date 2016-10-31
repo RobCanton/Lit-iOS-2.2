@@ -152,7 +152,7 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
             if let _ = headerView {
                 print("tings")
                 headerView.imageView.loadImageUsingCacheWithURLString(user!.getLargeImageUrl(), completion: {result in})
-                headerView.setUser(user!)
+                headerView.populateUser(user!)
                 controlBar?.setFriendsBlock(user!.getNumFriends())
                 getKeys()
             }

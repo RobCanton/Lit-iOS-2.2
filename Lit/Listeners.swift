@@ -48,34 +48,33 @@ class Listeners {
     static func listenToLocations() {
         if !listeningToLocations {
             listeningToLocations = true
-            let city = mainStore.state.userState.activeCity!.getKey()
             let locations = mainStore.state.locations
             
             
             for i in 0 ..< locations.count {
                 let location = locations[i]
-                let locationRef = ref.child("locations/\(city)/\(location.getKey())")
+                let locationRef = ref.child("locations")
                 
-                locationRef.child("visitors").observeEventType(.ChildAdded, withBlock: { snapshot in
+                locationRef.child("visitors/\(location.getKey())").observeEventType(.ChildAdded, withBlock: { snapshot in
                     if snapshot.exists() {
                         mainStore.dispatch(AddVisitorToLocation(locationIndex: i, uid: snapshot.key))
                     }
                 })
                 
-                locationRef.child("visitors").observeEventType(.ChildRemoved, withBlock: { snapshot in
+                locationRef.child("visitors/\(location.getKey())").observeEventType(.ChildRemoved, withBlock: { snapshot in
                     if snapshot.exists() {
                         mainStore.dispatch(RemoveVisitorFromLocation(locationIndex: i, uid: snapshot.key))
                     }
                 })
                 
                 
-                locationRef.child("uploads").observeEventType(.ChildAdded, withBlock: { snapshot in
+                locationRef.child("uploads/\(location.getKey())").observeEventType(.ChildAdded, withBlock: { snapshot in
                     if snapshot.exists() {
                         mainStore.dispatch(AddPostToLocation(locationIndex: i, key: snapshot.key))
                     }
                 })
                 
-                locationRef.child("uploads").observeEventType(.ChildRemoved, withBlock: { snapshot in
+                locationRef.child("uploads/\(location.getKey())").observeEventType(.ChildRemoved, withBlock: { snapshot in
                     if snapshot.exists() {
                         mainStore.dispatch(RemovePostFromLocation(locationIndex: i, key: snapshot.key))
                     }

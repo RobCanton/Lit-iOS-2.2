@@ -128,7 +128,7 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
         if let _ = user {
             if let _ = headerView {
                 headerView.imageView.loadImageUsingCacheWithURLString(user!.getLargeImageUrl(), completion: {result in})
-                headerView.setUser(user!)
+                headerView.populateUser(user!)
                 controlBar?.setFriendsBlock(user!.getNumFriends())
                 getKeys()
             }
@@ -384,8 +384,8 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
             (alert: UIAlertAction!) -> Void in
             let loginManager = FBSDKLoginManager()
             loginManager.logOut()
-            mainStore.dispatch(UserIsUnauthenticated())
             try! FIRAuth.auth()!.signOut()
+            mainStore.dispatch(UserIsUnauthenticated())
             
             
         })

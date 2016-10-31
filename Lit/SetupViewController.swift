@@ -103,7 +103,11 @@ class SetupViewController: UIViewController, StoreSubscriber, LocationServiceDel
     func retrieveLocationsForCity() {
         
         print("retrieveLocationsForCity")
-        FIRDatabase.database().reference().child("locations/\(activeCity!.getKey())").observeSingleEventOfType(FIRDataEventType.Value, withBlock: { (snapshot) in
+        let city = activeCity!.getKey()
+        let ref = FIRDatabase.database().reference().child("locations/info")
+        let query = ref.queryOrderedByChild("city").queryEqualToValue(city)
+        print(city)
+        query.observeSingleEventOfType(.Value, withBlock: { snapshot in
             var locations = [Location]()
             for child in snapshot.children {
                 let key = child.key!!
@@ -116,16 +120,12 @@ class SetupViewController: UIViewController, StoreSubscriber, LocationServiceDel
                 let description = child.value["description"] as! String
                 let number = child.value["number"] as! String
                 let website = child.value["website"] as! String
-                let storyCount = child.value["story_count"] as! Int
                 
-                let loc = Location(key: key, name: name, coordinates: coord, imageURL: imageURL, address: address, description: description, number: number, website: website, storyCount: storyCount)
-                
+                let loc = Location(key: key, name: name, coordinates: coord, imageURL: imageURL, address: address, description: description, number: number, website: website)
                 locations.append(loc)
             }
             self.locations = locations
-
             self.setupComplete()
-            
         })
     }
     

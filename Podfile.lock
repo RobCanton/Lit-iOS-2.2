@@ -9,6 +9,7 @@ PODS:
   - BRYXBanner (0.5.2):
     - BRYXBanner/Core (= 0.5.2)
   - BRYXBanner/Core (0.5.2)
+  - DataCache (1.1)
   - Firebase (3.4.0):
     - Firebase/Core (= 3.4.0)
   - Firebase/Analytics (3.4.0):
@@ -77,6 +78,7 @@ DEPENDENCIES:
   - ARNTransitionAnimator
   - Bolts (= 1.8.4)
   - BRYXBanner
+  - DataCache (= 1.1)
   - Firebase
   - Firebase/Auth
   - Firebase/Database
@@ -100,6 +102,7 @@ SPEC CHECKSUMS:
   ARNTransitionAnimator: b8b35ce733d08f137eadb0e0c6e53011ea3fb28d
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
   BRYXBanner: 5f0911d52e0a77e088f7ea7ddcdebd02afb7828a
+  DataCache: 0acf603ad1865736507f3ab8dc09302f7a774d45
   Firebase: 754562547af419cc2f4b15247fee419081924bc2
   FirebaseAnalytics: 228be2991cb28efb96cdafc4d62f64680e615c69
   FirebaseAuth: 26fd291c3b552fc9658420b867520d5ae080421c
