@@ -35,9 +35,4 @@ class Upload {
     func getLocationKey() -> String {
         return locationKey
     }
-    
-    
-    
-    
-
 }

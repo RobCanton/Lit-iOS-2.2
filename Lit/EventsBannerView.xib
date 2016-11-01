@@ -11,20 +11,20 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="200"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" alpha="0.84999999999999998" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cubeevent1" translatesAutoresizingMaskIntoConstraints="NO" id="Gcf-hc-XsU">
+                <imageView userInteractionEnabled="NO" alpha="0.84999999999999998" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Gcf-hc-XsU">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="200"/>
                 </imageView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ERD-8f-pRB">
-                    <rect key="frame" x="0.0" y="120" width="600" height="80"/>
+                    <rect key="frame" x="0.0" y="110" width="600" height="90"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="80" id="9Sp-kx-eJV"/>
+                        <constraint firstAttribute="height" constant="90" id="9Sp-kx-eJV"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cLb-vL-PmD">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="200"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="DJ Unimerce + Guests" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n7j-6a-xEN">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n7j-6a-xEN">
                             <rect key="frame" x="8" y="164" width="584" height="28"/>
                             <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="22"/>
                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -38,6 +38,7 @@
                         </label>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Send" translatesAutoresizingMaskIntoConstraints="NO" id="aF0-0p-3ko">
                             <rect key="frame" x="562" y="85" width="30" height="30"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="25" id="3kO-Bq-3y0"/>
                                 <constraint firstAttribute="width" constant="30" id="EFY-3J-Pgx"/>
@@ -87,13 +88,15 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="dateLabel" destination="Kyd-bb-AdZ" id="fKD-7y-ZkY"/>
+                <outlet property="eventImageView" destination="Gcf-hc-XsU" id="5F3-8A-dU7"/>
                 <outlet property="gradientView" destination="ERD-8f-pRB" id="vHR-fB-hjL"/>
+                <outlet property="titleLabel" destination="n7j-6a-xEN" id="Ouf-8c-3Zn"/>
             </connections>
             <point key="canvasLocation" x="390" y="359"/>
         </view>
     </objects>
     <resources>
-        <image name="Send" width="50" height="50"/>
-        <image name="cubeevent1" width="1920" height="1080"/>
+        <image name="Send" width="32" height="32"/>
     </resources>
 </document>

@@ -64,6 +64,7 @@
 		B026A84A1DAD76FB00DD2CCD /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B026A8481DAD76FB00DD2CCD /* UserProfileViewController.swift */; };
 		B02B37D91DB814C400174DE7 /* LeftTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02B37D81DB814C400174DE7 /* LeftTransition.swift */; };
 		B02D4C381DC7B125004E2673 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02D4C371DC7B125004E2673 /* SearchViewController.swift */; };
+		B02D4C3A1DC85A0F004E2673 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02D4C391DC85A0F004E2673 /* Event.swift */; };
 		B0305A521DBE6F15009B5F74 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0305A511DBE6F15009B5F74 /* WebViewController.swift */; };
 		B03095E51DB7D65C008A4DFA /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03095E41DB7D65C008A4DFA /* MapViewController.swift */; };
 		B0321EC21DB52BEB00AD4C53 /* DummyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0321EC11DB52BEB00AD4C53 /* DummyViewController.swift */; };
@@ -186,6 +187,7 @@
 		B026A8481DAD76FB00DD2CCD /* UserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
 		B02B37D81DB814C400174DE7 /* LeftTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeftTransition.swift; sourceTree = "<group>"; };
 		B02D4C371DC7B125004E2673 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		B02D4C391DC85A0F004E2673 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		B0305A511DBE6F15009B5F74 /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		B03095E41DB7D65C008A4DFA /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		B0321EC11DB52BEB00AD4C53 /* DummyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DummyViewController.swift; sourceTree = "<group>"; };
@@ -282,6 +284,7 @@
 				B017838F1D98EF040088AD33 /* FriendRequest.swift */,
 				B01783911D9A20F10088AD33 /* Friend.swift */,
 				B01B34A51DC17B5C00B2B9CE /* Upload.swift */,
+				B02D4C391DC85A0F004E2673 /* Event.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -815,6 +818,7 @@
 				768FB9781D5BB55000251035 /* User.swift in Sources */,
 				B05ABCFD1D41185200364322 /* Reducer.swift in Sources */,
 				B0254F7A1DB07F080082D898 /* helper.swift in Sources */,
+				B02D4C3A1DC85A0F004E2673 /* Event.swift in Sources */,
 				767729841D5116930052CA17 /* CWStatusBarNotificationUtils.swift in Sources */,
 				B0254F781DB01FAE0082D898 /* JSQMessagesService.swift in Sources */,
 				B0305A521DBE6F15009B5F74 /* WebViewController.swift in Sources */,

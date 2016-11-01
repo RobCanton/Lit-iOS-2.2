@@ -257,11 +257,19 @@ class SearchViewController:UIViewController, UITableViewDelegate, UITableViewDat
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! UserTableViewCell
-        
-        let controller = UIStoryboard(name: "Main", bundle: nil)
-            .instantiateViewControllerWithIdentifier("UserProfileViewController") as! UserProfileViewController
-        controller.user = users[indexPath.item]
-        self.navigationController?.pushViewController(controller, animated: true)
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if indexPath.section == 0 {
+            let controller = storyboard.instantiateViewControllerWithIdentifier("UserProfileViewController") as! UserProfileViewController
+            controller.user = users[indexPath.item]
+            self.navigationController?.pushViewController(controller, animated: true)
+
+        } else {
+            let location = locations[indexPath.item]
+            mainStore.dispatch(ViewLocationDetail(locationKey: location.getKey()))
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let controller = storyboard.instantiateViewControllerWithIdentifier("LocViewController") as! LocViewController
+            navigationController?.pushViewController(controller, animated: true)
+        }
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     

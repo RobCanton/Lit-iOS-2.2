@@ -146,6 +146,38 @@ class FirebaseService {
         return uploadTask
     }
     
+    
+    static func getLocationEventKeys(locationKey:String, completionHandler:(eventKeys:[String])->()) {
+        let eventsRef = ref.child("locations/events/\(locationKey)")
+        eventsRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+            var events = [String]()
+            if snapshot.exists() {
+                for child in snapshot.children {
+                    let eventKey = child.key!!
+                    events.append(eventKey)
+                }
+            }
+            print("events: \(events)")
+            completionHandler(eventKeys: events)
+        })
+    }
+    
+    static func getEvent(eventKey:String, completionHandler:(event:Event?)->()) {
+        let eventRef = ref.child("events/\(eventKey)")
+        eventRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+            var event:Event?
+            if snapshot.exists() {
+                let name                = snapshot.value!["name"] as! String
+                let date                = snapshot.value!["date"] as! String
+                let imageUrl            = snapshot.value!["imageUrl"] as! String
+                
+                event = Event(key: eventKey, name: name, date: date, imageUrl: imageUrl)
+            }
+            print("event: \(event?.getKey())")
+            completionHandler(event: event)
+        })
+    }
+    
     static func deletePost(postItem:StoryItem, completionHandler:()->()) {
         let postKey = postItem.getKey()
         let uid = mainStore.state.userState.uid

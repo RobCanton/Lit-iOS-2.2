@@ -50,6 +50,7 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
                 headerView.setLocation(self.location!)
                 titleLabel.styleLocationTitle(self.location!.getName(), size: 32.0)
                 detailsView.setLocation(self.location!)
+                eventsBanner!.setLocation(self.location!)
                 downloadMedia()
             }
         }
