@@ -67,4 +67,10 @@ class User:NSObject, NSCoding {
         return numFriends
     }
     
+    func printUser() {
+        print("uid: \(uid)")
+        print("displayName: \(displayName)")
+        print("imageUrl: \(imageUrl)")
+    }
+    
 }

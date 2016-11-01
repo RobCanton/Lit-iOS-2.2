@@ -189,7 +189,7 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
     
     func getItemSize(indexPath:NSIndexPath) -> CGSize {
         
-        if photos.count > 9 {
+        if photos.count > 12 {
             return CGSize(width: screenWidth/4, height: screenWidth/4);
         }
         return CGSize(width: screenWidth/3, height: screenWidth/3);

@@ -16,8 +16,14 @@
                 <rect key="frame" x="0.0" y="0.0" width="362" height="69"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MqG-HS-YOO">
+                        <rect key="frame" x="69" y="24" width="211" height="21"/>
+                        <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="20"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yAH-Kh-Iuv">
-                        <rect key="frame" x="8" y="8" width="53" height="53"/>
+                        <rect key="frame" x="12" y="12" width="45" height="45"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="53" id="E1N-2n-jEQ"/>
                             <constraint firstAttribute="height" constant="53" id="XvD-q3-YKP"/>
@@ -30,21 +36,24 @@
                             </mask>
                         </variation>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MqG-HS-YOO">
-                        <rect key="frame" x="69" y="24" width="211" height="21"/>
-                        <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="20"/>
-                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                 </subviews>
-                <color key="backgroundColor" white="0.040000000000000001" alpha="1" colorSpace="calibratedWhite"/>
                 <constraints>
-                    <constraint firstItem="MqG-HS-YOO" firstAttribute="leading" secondItem="yAH-Kh-Iuv" secondAttribute="trailing" constant="8" id="Ldx-iW-TuA"/>
+                    <constraint firstItem="yAH-Kh-Iuv" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="12" id="1yW-NK-IOk"/>
+                    <constraint firstItem="yAH-Kh-Iuv" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="Hog-WY-3wS"/>
+                    <constraint firstItem="MqG-HS-YOO" firstAttribute="leading" secondItem="yAH-Kh-Iuv" secondAttribute="trailing" constant="12" id="Ldx-iW-TuA"/>
+                    <constraint firstAttribute="bottom" secondItem="yAH-Kh-Iuv" secondAttribute="bottom" constant="12" id="NMG-j3-caS"/>
                     <constraint firstItem="MqG-HS-YOO" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Sd0-T0-iiP"/>
                     <constraint firstAttribute="topMargin" secondItem="yAH-Kh-Iuv" secondAttribute="top" id="X1C-YH-9y3"/>
                     <constraint firstAttribute="bottomMargin" secondItem="yAH-Kh-Iuv" secondAttribute="bottom" id="lfP-gz-V96"/>
                     <constraint firstAttribute="leadingMargin" secondItem="yAH-Kh-Iuv" secondAttribute="leading" id="s9l-ta-enG"/>
                 </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="X1C-YH-9y3"/>
+                        <exclude reference="lfP-gz-V96"/>
+                        <exclude reference="s9l-ta-enG"/>
+                    </mask>
+                </variation>
             </tableViewCellContentView>
             <connections>
                 <outlet property="profileImageView" destination="yAH-Kh-Iuv" id="eTv-iT-jqJ"/>

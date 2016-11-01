@@ -47,7 +47,7 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
                 let uid = mainStore.state.userState.uid
                 let ref = FirebaseService.ref.child("users/visits/\(uid)/\(key)")
                 ref.setValue([".sv": "timestamp"])
-                let locRef = FirebaseService.ref.child("locations/toronto/\(key)/visitors/\(uid)")
+                let locRef = FirebaseService.ref.child("locations/visitors/\(key)/\(uid)")
                 locRef.setValue([".sv": "timestamp"])
                 
             } else {

@@ -22,25 +22,11 @@ class LocationDetailsView: UIView {
     var delegate: LocationDetailsProtocol?
     var addressTap:UITapGestureRecognizer!
     @IBAction func websiteLink(sender: AnyObject) {
-        let url = NSURL(string: location.getWebsite())!
-        if UIApplication.sharedApplication().canOpenURL(url) {
-            UIApplication.sharedApplication().openURL(url)
-        }
+
     }
     
     @IBAction func phoneLink(sender: AnyObject) {
-        let prompt = "telprompt://\(location.getNumber())";
-        let fallBack = "tel://\(location.getNumber())";
-        let promptURL:NSURL = NSURL(string:prompt)!;
-        let fallBackURL:NSURL = NSURL(string:fallBack)!;
-        
-        if UIApplication.sharedApplication().canOpenURL(promptURL) {
-            UIApplication.sharedApplication().openURL(promptURL)
-        } else if UIApplication.sharedApplication().canOpenURL(fallBackURL) {
-            UIApplication.sharedApplication().openURL(fallBackURL)
-        } else {
-            //
-        }
+
     }
     
     override func awakeFromNib() {

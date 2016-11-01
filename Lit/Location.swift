@@ -15,11 +15,8 @@ class Location {
     private var name:String
     private var coordinates:CLLocation
     private var imageURL:String
-    
     private var address:String
-    private var description:String
-    private var number:String
-    private var website:String
+
     var isActive: Bool = false
     
     private var story: [StoryItem]?
@@ -33,16 +30,13 @@ class Location {
     var imageOnDiskURL:NSURL?
     
     
-    init(key:String, name:String, coordinates:CLLocation, imageURL:String, address:String, description:String, number:String, website:String)
+    init(key:String, name:String, coordinates:CLLocation, imageURL:String, address:String)
     {
         self.key          = key
         self.name         = name
         self.coordinates  = coordinates
         self.imageURL     = imageURL
         self.address      = address
-        self.description  = description
-        self.number       = number
-        self.website      = website
     }
     
     /* Getters */
@@ -72,26 +66,6 @@ class Location {
         return address
     }
     
-    func getDescription() -> String
-    {
-        return description
-    }
-    
-    func getNumber() -> String
-    {
-        return number
-    }
-    
-    func getWebsite() -> String
-    {
-        return website
-    }
-    
-    func getWebsitePretty() -> String {
-        let s = website.stringByReplacingOccurrencesOfString("http://", withString: "")
-        let t = s.stringByReplacingOccurrencesOfString("www.", withString: "")
-        return t
-    }
     
     func setStory(story:[StoryItem]) {
         self.story = story

@@ -11,7 +11,7 @@ import ReSwift
 import SwiftyJSON
 import ARNTransitionAnimator
 
-class ActivityFeedViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UISearchBarDelegate, ARNImageTransitionZoomable, ZoomProtocol {
+class ActivityFeedViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, ARNImageTransitionZoomable, ZoomProtocol {
  
     
     let cellIdentifier = "photoCell"
@@ -25,12 +25,15 @@ class ActivityFeedViewController: UIViewController, UICollectionViewDelegate, UI
     
     var photos = [StoryItem]()
     var collectionView:UICollectionView!
+    
+    var statusBarBG:UIView!
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
         let topInset = navigationController!.navigationBar.frame.height
-
+        self.automaticallyAdjustsScrollViewInsets = false
+        
         self.navigationController?.navigationBar.titleTextAttributes =
             [NSFontAttributeName: UIFont(name: "Avenir-Book", size: 20.0)!]
         self.navigationController?.navigationBar.backgroundColor = UIColor.clearColor()
@@ -66,7 +69,20 @@ class ActivityFeedViewController: UIViewController, UICollectionViewDelegate, UI
         collectionView!.backgroundColor = UIColor.blackColor()
         view.addSubview(collectionView!)
         
+        statusBarBG = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: topInset + screenStatusBarHeight))
+        statusBarBG.backgroundColor = UIColor(white: 0.0, alpha: 1.0)
+        view.addSubview(statusBarBG)
+        
         self.addSearchBar()
+        
+        let coverTapView = UIView(frame: searchBar!.frame)
+        coverTapView.backgroundColor = UIColor.clearColor()
+        view.addSubview(coverTapView)
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(toSearchView))
+        coverTapView.addGestureRecognizer(tap)
+        
+        
         
 
     }
@@ -76,15 +92,15 @@ class ActivityFeedViewController: UIViewController, UICollectionViewDelegate, UI
             self.searchBarBoundsY = screenStatusBarHeight
             
             self.searchBar = UISearchBar(frame: CGRectMake(0,screenStatusBarHeight, UIScreen.mainScreen().bounds.size.width, navigationController!.navigationBar.frame.height))
-            self.searchBar!.delegate = self;
             self.searchBar!.searchBarStyle       = UISearchBarStyle.Minimal
             self.searchBar!.tintColor            = UIColor.whiteColor()
             self.searchBar!.barTintColor         = UIColor(white: 0.05, alpha: 1.0)
-            self.searchBar!.delegate             = self;
+            
             self.searchBar!.placeholder          = "search here";
             self.searchBar!.sizeToFit()
             self.searchBar!.setTextColor(UIColor.whiteColor())
-            self.searchBar!.showsCancelButton = true
+            self.searchBar!.userInteractionEnabled = false
+
         }
         
         if !self.searchBar!.isDescendantOfView(self.view){
@@ -93,19 +109,8 @@ class ActivityFeedViewController: UIViewController, UICollectionViewDelegate, UI
         }
     }
     
-    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
-        self.cancelSearching()
-        self.collectionView?.reloadData()
-    }
-    
-    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        
-    }
-    
-    func cancelSearching(){
-        self.searchBarActive = false
-        self.searchBar!.resignFirstResponder()
-        self.searchBar!.text = ""
+    func toSearchView(gesture:UITapGestureRecognizer) {
+        self.performSegueWithIdentifier("toSearchView", sender: self)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -116,7 +121,8 @@ class ActivityFeedViewController: UIViewController, UICollectionViewDelegate, UI
     
     func requestActivityFeed() {
         let uid = mainStore.state.userState.uid
-        let url = NSURL(string: "http://159.203.16.13:4278/api/activityfeed/\(uid)")
+        let city = mainStore.state.userState.activeCity!.getKey()
+        let url = NSURL(string: "http://159.203.16.13:4278/api/activityfeed/\(uid)/\(city)")
         
         let task = NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
             if error != nil {
@@ -150,6 +156,8 @@ class ActivityFeedViewController: UIViewController, UICollectionViewDelegate, UI
             self.collectionView!.reloadData()
         })
     }
+    
+    
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return photos.count

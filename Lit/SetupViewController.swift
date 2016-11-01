@@ -117,11 +117,8 @@ class SetupViewController: UIViewController, StoreSubscriber, LocationServiceDel
                 let coord = CLLocation(latitude: lat, longitude: lon)
                 let imageURL = child.value["imageURL"] as! String
                 let address = child.value["address"] as! String
-                let description = child.value["description"] as! String
-                let number = child.value["number"] as! String
-                let website = child.value["website"] as! String
                 
-                let loc = Location(key: key, name: name, coordinates: coord, imageURL: imageURL, address: address, description: description, number: number, website: website)
+                let loc = Location(key: key, name: name, coordinates: coord, imageURL: imageURL, address: address)
                 locations.append(loc)
             }
             self.locations = locations
@@ -145,17 +142,5 @@ class SetupViewController: UIViewController, StoreSubscriber, LocationServiceDel
         Listeners.listenToConversations()
         
     }
-    
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

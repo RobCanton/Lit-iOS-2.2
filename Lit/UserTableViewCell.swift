@@ -18,6 +18,25 @@ class UserTableViewCell: UITableViewCell {
         didSet{
             profileImageView.loadImageUsingCacheWithURLString(user!.getImageUrl(), completion: { result in })
             usernameLabel.text = user!.getDisplayName()
+            if isFriend(user!.getUserId()) {
+                usernameLabel.textColor = accentColor
+                profileImageView.layer.borderWidth = 2.0
+                profileImageView.layer.borderColor = accentColor.CGColor
+            } else {
+                usernameLabel.textColor = UIColor.whiteColor()
+                profileImageView.layer.borderWidth = 2.0
+                profileImageView.layer.borderColor = UIColor.whiteColor().CGColor
+            }
+        }
+    }
+    
+    var location:Location? {
+        didSet{
+            usernameLabel.textColor = UIColor.whiteColor()
+            profileImageView.loadImageUsingCacheWithURLString(location!.getImageURL(), completion: { result in })
+            usernameLabel.text = location!.getName()
+            profileImageView.layer.borderWidth = 2.0
+            profileImageView.layer.borderColor = UIColor.whiteColor().CGColor
         }
     }
     
@@ -27,7 +46,10 @@ class UserTableViewCell: UITableViewCell {
         profileImageView.layer.cornerRadius = profileImageView.frame.width/2
         profileImageView.clipsToBounds = true
         
+        
         selectionStyle = .None
+        
+        backgroundColor = UIColor.clearColor()
         
     }
 

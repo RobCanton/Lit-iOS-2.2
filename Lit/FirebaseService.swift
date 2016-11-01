@@ -151,7 +151,7 @@ class FirebaseService {
         let uid = mainStore.state.userState.uid
         let location = postItem.getLocationKey()
         
-        let locationRef = ref.child("locations/toronto/\(location)/uploads/\(postKey)")
+        let locationRef = ref.child("locations/uploads/\(location)/\(postKey)")
         let userRef = ref.child("users/uploads/\(uid)/\(postKey)")
         let postRef = ref.child("uploads/\(postKey)")
         locationRef.removeValueWithCompletionBlock({ error, ref in

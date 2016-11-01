@@ -434,6 +434,25 @@
             </objects>
             <point key="canvasLocation" x="3462" y="-364"/>
         </scene>
+        <!--Search View Controller-->
+        <scene sceneID="O7O-fy-vQY">
+            <objects>
+                <viewController id="c2V-jB-XPW" customClass="SearchViewController" customModule="Lit" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="44V-CT-uWJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="sKu-JT-n8P"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="DIp-dg-q73">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="3x5-05-2cj"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Tup-lm-kRg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3696" y="301"/>
+        </scene>
         <!--Story View Controller-->
         <scene sceneID="RAI-08-kKH">
             <objects>
@@ -493,7 +512,7 @@
                                     </imageView>
                                     <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NAD-ro-tQj">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                        <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     </view>
                                 </subviews>
                                 <constraints>
@@ -729,10 +748,13 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="iDX-9y-Rqa"/>
+                    <connections>
+                        <segue destination="aGO-XA-4EI" kind="presentation" identifier="toSearchView" animates="NO" modalPresentationStyle="overCurrentContext" id="fdd-Os-VhL"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bgS-Sl-mJ9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2144" y="315"/>
+            <point key="canvasLocation" x="2174" y="301"/>
         </scene>
         <!--Current User Profile View Controller-->
         <scene sceneID="AbF-Zj-Kj8">
@@ -821,6 +843,25 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6eb-rG-csF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1460" y="995"/>
+        </scene>
+        <!--Image Transition Navigation Controller-->
+        <scene sceneID="s7s-Lb-lDk">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="aGO-XA-4EI" customClass="ARNImageTransitionNavigationController" customModule="Lit" customModuleProvider="target" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="PyX-a6-rME">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="c2V-jB-XPW" kind="relationship" relationship="rootViewController" id="9eu-4e-8du"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VnK-dt-f1Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2884" y="301"/>
         </scene>
     </scenes>
     <resources>
