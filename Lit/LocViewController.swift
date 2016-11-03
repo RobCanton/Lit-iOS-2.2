@@ -26,6 +26,7 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
     var controlBar:UserProfileControlBar?
     var headerView:LocationHeaderView!
     var eventsBanner:EventsBannerView?
+    var eventsBannerTap:UITapGestureRecognizer!
     
     var location: Location?
     override func viewWillAppear(animated: Bool) {
@@ -116,6 +117,8 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
         eventsBanner?.clipsToBounds = true
         eventsBanner!.frame = CGRectMake(0,detailsView.frame.height, collectionView!.frame.width, eventsHeight)
         collectionView!.addSubview(eventsBanner!)
+        eventsBannerTap = UITapGestureRecognizer(target: self, action: #selector(showEvents))
+        eventsBanner?.addGestureRecognizer(eventsBannerTap)
         
         statusBarBG = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: navHeight))
         statusBarBG!.backgroundColor = UIColor(white: 0.0, alpha: 0.0)
@@ -158,6 +161,15 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
             controller.showStatusBar = true
             controller.title = "guests"
             controller.getLocationGuests(location!)
+            self.navigationController?.pushViewController(controller, animated: true)
+        }
+    }
+    
+    func showEvents(gesture:UITapGestureRecognizer) {
+        if let _ = location {
+            let controller = UIStoryboard(name: "EventsViewController", bundle: nil)
+            .instantiateViewControllerWithIdentifier("EventsViewController") as! EventsViewController
+            controller.location = location!
             self.navigationController?.pushViewController(controller, animated: true)
         }
     }

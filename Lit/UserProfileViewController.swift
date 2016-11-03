@@ -94,7 +94,7 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     
 
     override func prefersStatusBarHidden() -> Bool {
-        return true
+        return false
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {

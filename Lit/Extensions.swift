@@ -16,12 +16,20 @@ extension UIImageView {
     
     func loadImageUsingCacheWithURLString(_url:String, completion: (result: Bool)->()) {
         
+        if self.image != nil {
+            if self.restorationIdentifier == _url {
+                return completion(result: false)
+            } else {
+                self.image = nil
+            }
+        }
+
         // Check for cached image
         if let cachedImage = imageCache.objectForKey(_url) as? UIImage {
             self.image = cachedImage
             //print("From cache: \(_url)")
-            return completion(result: false)
-            
+            self.restorationIdentifier = _url
+            return completion(result: true)
         }
         
         // Otherwise, download image
@@ -47,7 +55,8 @@ extension UIImageView {
                     
                     self.image = UIImage(data: data!)
                     //print("Downloaded image: \(_url)")
-                    completion(result: true)
+                    self.restorationIdentifier = _url
+                    return completion(result: true)
                 })
                 
         }).resume()

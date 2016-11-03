@@ -102,8 +102,10 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
         self.likeBtn.layer.opacity = 0.0
         
         navigationController?.setNavigationBarHidden(false, animated: true)
-        
-        UIView.animateWithDuration(0.75, animations: {
+    }
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        UIView.animateWithDuration(0.2, animations: {
             self.authorImage.layer.opacity = 1.0
             self.authorLabel.layer.opacity = 1.0
             self.timeLabel.layer.opacity = 1.0
@@ -163,7 +165,6 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
                         if let tab =  self.tabBarController as? PopUpTabBarController {
                             tab.setTabBarVisible(true, animated: true)
                         }
-                        
                     }
                     
                 })
@@ -353,7 +354,6 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
         if let _ = item {
             self.imageView.loadImageUsingCacheWithURLString(item!.getDownloadUrl()!.absoluteString, completion: { result in })
         }
-        
     }
     
     // MARK: - ARNImageTransitionZoomable
@@ -390,8 +390,7 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
     }
     
     override func prefersStatusBarHidden() -> Bool {
-        return true
-        
+        return false
     }
 
 }

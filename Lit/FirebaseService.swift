@@ -146,6 +146,25 @@ class FirebaseService {
         return uploadTask
     }
     
+    static func getLocationEvents(locationKey:String, completionHandler: (events:[Event])->()) {
+        getLocationEventKeys(locationKey, completionHandler: { eventKeys in
+            var events = [Event]()
+            var count = 0
+            for key in eventKeys {
+                getEvent(key, completionHandler: { event in
+                    if event != nil {
+                        events.append(event!)
+                    }
+                    count += 1
+                    if count >= eventKeys.count {
+                        dispatch_async(dispatch_get_main_queue(), {
+                            completionHandler(events: events)
+                        })
+                    }
+                })
+            }
+        })
+    }
     
     static func getLocationEventKeys(locationKey:String, completionHandler:(eventKeys:[String])->()) {
         let eventsRef = ref.child("locations/events/\(locationKey)")
