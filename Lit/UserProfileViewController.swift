@@ -12,7 +12,7 @@ import MXParallaxHeader
 import ARNTransitionAnimator
 
 
-class UserProfileViewController: UIViewController, StoreSubscriber, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, HeaderProtocol, ControlBarProtocol, ZoomProtocol {
+class UserProfileViewController: UIViewController, StoreSubscriber, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, ControlBarProtocol, ZoomProtocol {
 
     var statusBarBG:UIView?
 
@@ -25,7 +25,9 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     var collectionView:UICollectionView?
     var controlBar:UserProfileControlBar?
     var headerView:CreateProfileHeaderView!
-    var user:User?
+    var user:User!
+    
+    var status:FriendStatus = .NOT_FRIENDS
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -41,9 +43,7 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
 
     }
     
-    func messageTapped() {
-        //mainStore.dispatch(OpenConversation(uid: user!.getUserId()))
-        //tabBarController?.selectedIndex = 1
+    func messageBlockTapped() {
         let uid = mainStore.state.userState.uid
         let partner_uid = user!.getUserId()
         if let conversation = checkForExistingConversation(partner_uid) {
@@ -84,14 +84,13 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     }
     
     func newState(state: AppState) {
-        headerView?.checkFriendStatus()
+        checkFriendStatus()
+        
     }
     
     func mediaDeleted() {
         getKeys()
     }
-    
-    
 
     override func prefersStatusBarHidden() -> Bool {
         return false
@@ -101,13 +100,19 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         return .LightContent
     }
     
+    var friend_ids = [String]()
+    {
+        didSet{
+            controlBar?.setNumFriends(friend_ids.count)
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.title = " "
         self.automaticallyAdjustsScrollViewInsets = false
 
         headerView = UINib(nibName: "CreateProfileHeaderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! CreateProfileHeaderView
-        headerView.delegate = self
         screenSize = self.view.frame
         screenWidth = screenSize.width
         screenHeight = screenSize.height
@@ -147,16 +152,28 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         view.addSubview(statusBarBG!)
         statusBarBG!.hidden = true
         
-        if let _ = user {
-            print("READY FOR USER")
-            if let _ = headerView {
-                print("tings")
-                headerView.imageView.loadImageUsingCacheWithURLString(user!.getLargeImageUrl(), completion: {result in})
-                headerView.populateUser(user!)
-                controlBar?.setFriendsBlock(user!.getNumFriends())
-                getKeys()
+        headerView.imageView.loadImageUsingCacheWithURLString(user!.getLargeImageUrl(), completion: {result in})
+        headerView.populateUser(user!)
+        controlBar?.populateUser(user!)
+        getKeys()
+        
+        let ref = FirebaseService.ref.child("users/social/friends/\(user!.getUserId())")
+        ref.observeSingleEventOfType(.Value, withBlock: { snapshot in
+            var _users = [String]()
+            if snapshot.exists() {
+                for user in snapshot.children {
+                    let uid = user.key!!
+                    _users.append(uid)
+                }
             }
-        }
+            self.friend_ids = _users
+        })
+    }
+    
+    func checkFriendStatus() {
+        status =  FirebaseService.checkFriendStatus(user.getUserId())
+        controlBar?.setFriendStatus(status)
+        headerView?.checkFriendStatus()
     }
     
     func getKeys() {
@@ -170,12 +187,11 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
                 }
                 self.downloadStory(postKeys)
             }
-            
         })
     }
     
     func downloadStory(postKeys:[String]) {
-        controlBar?.setPostsBlock(postKeys.count)
+        controlBar?.setPosts(postKeys.count)
         self.photos = [StoryItem]()
         collectionView?.reloadData()
         FirebaseService.downloadStory(postKeys, completionHandler: { story in
@@ -216,13 +232,7 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
             
             let scale = abs(progress)
             if let _ = controlBar {
-                let shift = controlBar!.centerBlock.frame.height/5
-                let scaleTransform = CGAffineTransformMakeScale(1 - scale/5, 1 - scale/5)
-                let translateTransform = CGAffineTransformMakeTranslation(0, scale * shift)
-                let transform = CGAffineTransformConcat(scaleTransform, translateTransform)
-                controlBar!.leftBlock.transform = transform
-                controlBar!.centerBlock.transform = transform
-                controlBar!.rightBlock.transform = transform
+                controlBar!.setBarScale(scale)
             }
             
             if progress <= -1.0 {
@@ -393,6 +403,12 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     func dismissalCompletionAction(completeTransition: Bool) {
         
         self.selectedImageView?.hidden = false
+        if completeTransition {
+            if let tabBar = self.tabBarController as? PopUpTabBarController {
+                tabBar.setTabBarVisible(true, animated: true)
+            }
+        }
+
     }
     
 

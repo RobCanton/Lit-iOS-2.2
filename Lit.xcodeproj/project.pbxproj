@@ -47,6 +47,7 @@
 		B00BA9231D9E4E0700F5EA30 /* FirstScreenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B00BA9211D9E4E0700F5EA30 /* FirstScreenViewController.xib */; };
 		B00BA9261D9E4E1D00F5EA30 /* CreateProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00BA9241D9E4E1D00F5EA30 /* CreateProfileViewController.swift */; };
 		B00BA9271D9E4E1D00F5EA30 /* CreateProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B00BA9251D9E4E1D00F5EA30 /* CreateProfileViewController.xib */; };
+		B014410A1DCCFC5C00D95FCB /* ControlButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01441091DCCFC5C00D95FCB /* ControlButton.swift */; };
 		B01783901D98EF040088AD33 /* FriendRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B017838F1D98EF040088AD33 /* FriendRequest.swift */; };
 		B01783921D9A20F10088AD33 /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01783911D9A20F10088AD33 /* Friend.swift */; };
 		B01B349D1DC117A900B2B9CE /* UploadSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01B349B1DC117A900B2B9CE /* UploadSelectorView.swift */; };
@@ -174,6 +175,7 @@
 		B00BA9211D9E4E0700F5EA30 /* FirstScreenViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FirstScreenViewController.xib; sourceTree = "<group>"; };
 		B00BA9241D9E4E1D00F5EA30 /* CreateProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateProfileViewController.swift; sourceTree = "<group>"; };
 		B00BA9251D9E4E1D00F5EA30 /* CreateProfileViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreateProfileViewController.xib; sourceTree = "<group>"; };
+		B01441091DCCFC5C00D95FCB /* ControlButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControlButton.swift; sourceTree = "<group>"; };
 		B017838F1D98EF040088AD33 /* FriendRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendRequest.swift; sourceTree = "<group>"; };
 		B01783911D9A20F10088AD33 /* Friend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
 		B01B349B1DC117A900B2B9CE /* UploadSelectorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadSelectorView.swift; sourceTree = "<group>"; };
@@ -367,6 +369,7 @@
 				B0236E121DC00E0A0083C720 /* CurrentUserProfileViewController.swift */,
 				B03DED111DAED45A0062357A /* UserProfileControlBar.swift */,
 				B03DED0F1DAED40D0062357A /* UserProfileControlBarView.xib */,
+				B01441091DCCFC5C00D95FCB /* ControlButton.swift */,
 			);
 			name = UserProfile;
 			sourceTree = "<group>";
@@ -806,6 +809,7 @@
 				B05DB12A1DA22D9600567996 /* LocationFriendsViewController.swift in Sources */,
 				B0BA32691DA7158B004352A7 /* HeaderView.swift in Sources */,
 				B026A84A1DAD76FB00DD2CCD /* UserProfileViewController.swift in Sources */,
+				B014410A1DCCFC5C00D95FCB /* ControlButton.swift in Sources */,
 				76A5166E1D618CAD005E2815 /* LocationViewController.swift in Sources */,
 				76C0E74F1D80D4BA004EFA4C /* VisitorsViewController.swift in Sources */,
 				B00BA9261D9E4E1D00F5EA30 /* CreateProfileViewController.swift in Sources */,

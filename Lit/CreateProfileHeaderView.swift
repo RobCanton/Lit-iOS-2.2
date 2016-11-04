@@ -113,52 +113,52 @@ class CreateProfileHeaderView: UIView {
     
     
     func checkFriendStatus() {
-        status = FirebaseService.checkFriendStatus(user.getUserId())
-        switch status {
-        case .IS_CURRENT_USER:
-            friendBtn.hidden = true
-            messageBtn.hidden = true
-            break
-        case .FRIENDS:
-            friendBtnImage.setImage(UIImage(named: "checkmark_filled"), forState: .Normal)
-            friendBtnLabel.text = "Friends"
-            friendBtn.backgroundColor = UIColor(white: 0.5, alpha: 1.0)
-            friendBtn.hidden = false
-            messageBtn.hidden = false
-            break
-        case .NOT_FRIENDS:
-            
-            friendBtnImage.setImage(UIImage(named: "plus_plain"), forState: .Normal)
-            friendBtnLabel.text = "Add Friend"
-            friendBtn.backgroundColor = accentColor
-            friendBtn.hidden = false
-            messageBtn.hidden = false
-            break
-        case .PENDING_INCOMING:
-            friendBtnImage.setImage(UIImage(named: "plus_plain"), forState: .Normal)
-            friendBtnLabel.text = "Accept"
-            friendBtn.backgroundColor = accentColor
-            friendBtn.hidden = false
-            messageBtn.hidden = false
-            break
-        case .PENDING_INCOMING_SEEN:
-            friendBtnImage.setImage(UIImage(named: "plus_plain"), forState: .Normal)
-            friendBtnLabel.text = "Accept"
-            friendBtn.backgroundColor = accentColor
-            friendBtn.hidden = false
-            messageBtn.hidden = false
-            break
-        case .PENDING_OUTGOING:
-            friendBtnImage.setImage(UIImage(named: "plus_plain"), forState: .Normal)
-            friendBtnLabel.text = "Added"
-            friendBtn.backgroundColor = UIColor(white: 0.5, alpha: 1.0)
-            friendBtn.hidden = false
-            messageBtn.hidden = false
-            break
-        }
-        
-        friendBtn.addGestureRecognizer(friendBtnTap)
-        messageBtn.addGestureRecognizer(messageBtnTap)
+//        status = FirebaseService.checkFriendStatus(user.getUserId())
+//        switch status {
+//        case .IS_CURRENT_USER:
+//            friendBtn.hidden = true
+//            messageBtn.hidden = true
+//            break
+//        case .FRIENDS:
+//            friendBtnImage.setImage(UIImage(named: "checkmark_filled"), forState: .Normal)
+//            friendBtnLabel.text = "Friends"
+//            friendBtn.backgroundColor = UIColor(white: 0.5, alpha: 1.0)
+//            friendBtn.hidden = false
+//            messageBtn.hidden = false
+//            break
+//        case .NOT_FRIENDS:
+//            
+//            friendBtnImage.setImage(UIImage(named: "plus_plain"), forState: .Normal)
+//            friendBtnLabel.text = "Add Friend"
+//            friendBtn.backgroundColor = accentColor
+//            friendBtn.hidden = false
+//            messageBtn.hidden = false
+//            break
+//        case .PENDING_INCOMING:
+//            friendBtnImage.setImage(UIImage(named: "plus_plain"), forState: .Normal)
+//            friendBtnLabel.text = "Accept"
+//            friendBtn.backgroundColor = accentColor
+//            friendBtn.hidden = false
+//            messageBtn.hidden = false
+//            break
+//        case .PENDING_INCOMING_SEEN:
+//            friendBtnImage.setImage(UIImage(named: "plus_plain"), forState: .Normal)
+//            friendBtnLabel.text = "Accept"
+//            friendBtn.backgroundColor = accentColor
+//            friendBtn.hidden = false
+//            messageBtn.hidden = false
+//            break
+//        case .PENDING_OUTGOING:
+//            friendBtnImage.setImage(UIImage(named: "plus_plain"), forState: .Normal)
+//            friendBtnLabel.text = "Added"
+//            friendBtn.backgroundColor = UIColor(white: 0.5, alpha: 1.0)
+//            friendBtn.hidden = false
+//            messageBtn.hidden = false
+//            break
+//        }
+//        
+//        friendBtn.addGestureRecognizer(friendBtnTap)
+//        messageBtn.addGestureRecognizer(messageBtnTap)
         
     }
 }

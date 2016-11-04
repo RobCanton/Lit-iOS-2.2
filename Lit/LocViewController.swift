@@ -28,7 +28,7 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
     var eventsBanner:EventsBannerView?
     var eventsBannerTap:UITapGestureRecognizer!
     
-    var location: Location?
+    var location: Location!
     override func viewWillAppear(animated: Bool) {
         mainStore.subscribe(self)
         //navigationController?.hidesBarsOnSwipe = true
@@ -45,25 +45,6 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
     
     func newState(state: AppState) {
         print("New State!")
-        let key = state.viewLocationKey
-        let locations = state.locations
-        for location in locations {
-            if key == location.getKey() {
-                self.location = location
-                headerView.setLocation(self.location!)
-                titleLabel.styleLocationTitle(self.location!.getName(), size: 32.0)
-                detailsView.setLocation(self.location!)
-                //eventsBanner!.setLocation(self.location!)
-                downloadMedia()
-                
-                FirebaseService.getLocationEvents(location.getKey(), completionHandler: { events in
-                    if events.count > 0 {
-                        self.events = events
-                        self.buildEventsBanner()
-                    }
-                })
-            }
-        }
     }
     
     func downloadMedia() {
@@ -134,8 +115,17 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
         titleLabel.hidden = true
         
         view.addSubview(statusBarBG!)
+        headerView.setLocation(location)
+        titleLabel.styleLocationTitle(location.getName(), size: 32.0)
+        detailsView.setLocation(location)
+        downloadMedia()
         
-        
+        FirebaseService.getLocationEvents(location.getKey(), completionHandler: { events in
+            if events.count > 0 {
+                self.events = events
+                self.buildEventsBanner()
+            }
+        })
         
     }
     
@@ -258,13 +248,7 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
             detailsView.alpha = 1 + progress * 1.75
             let scale = abs(progress)
             if let _ = controlBar {
-                let shift = controlBar!.centerBlock.frame.height/5
-                let scaleTransform = CGAffineTransformMakeScale(1 - scale/5, 1 - scale/5)
-                let translateTransform = CGAffineTransformMakeTranslation(0, scale * shift)
-                let transform = CGAffineTransformConcat(scaleTransform, translateTransform)
-                controlBar!.leftBlock.transform = transform
-                controlBar!.centerBlock.transform = transform
-                controlBar!.rightBlock.transform = transform
+
             }
             if scale > 0.80 {
                 let prop = ((scale - 0.80) / 0.20) * 1.15
@@ -287,9 +271,7 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
         if let nav = navigationController as? ARNImageTransitionNavigationController {
             nav.doZoomTransition = true
         }
-        
-        
-        
+
         showInteractive()
     }
     
@@ -310,10 +292,6 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
         
         animator.presentationBeforeHandler = { [weak self] containerView, transitionContext in
             containerView.addSubview(self!.controller.view)
-            
-            if let tabBar = self!.tabBarController as? PopUpTabBarController {
-                tabBar.setTabBarVisible(false, animated: true)
-            }
             
             self!.controller.view.layoutIfNeeded()
             
@@ -427,11 +405,6 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
     
     func dismissalCompletionAction(completeTransition: Bool) {
         self.selectedImageView?.hidden = false
-        if completeTransition {
-            if let tabBar = self.tabBarController as? PopUpTabBarController {
-                tabBar.setTabBarVisible(true, animated: true)
-            }
-        }
     }
     
     

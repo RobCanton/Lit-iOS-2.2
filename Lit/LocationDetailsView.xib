@@ -46,6 +46,7 @@
                         <constraint firstItem="AcB-fu-kNu" firstAttribute="centerY" secondItem="Htc-U6-cyx" secondAttribute="centerY" id="CFG-Og-9Ya"/>
                         <constraint firstItem="Htc-U6-cyx" firstAttribute="baseline" secondItem="mOi-Cp-uf9" secondAttribute="baseline" id="FXg-DX-Z4T"/>
                         <constraint firstItem="Htc-U6-cyx" firstAttribute="leading" secondItem="mOi-Cp-uf9" secondAttribute="trailing" constant="8" id="GgT-gI-yPf"/>
+                        <constraint firstItem="Htc-U6-cyx" firstAttribute="centerY" secondItem="mOi-Cp-uf9" secondAttribute="centerY" id="HTu-I3-Jrg"/>
                         <constraint firstItem="Htc-U6-cyx" firstAttribute="centerY" secondItem="wKc-bI-Ybg" secondAttribute="centerY" id="VIj-3J-Wxz"/>
                         <constraint firstAttribute="trailing" secondItem="AcB-fu-kNu" secondAttribute="trailing" constant="8" id="XKh-WP-zz0"/>
                         <constraint firstItem="AcB-fu-kNu" firstAttribute="baseline" secondItem="Htc-U6-cyx" secondAttribute="baseline" id="thL-O1-zcL"/>
@@ -54,6 +55,7 @@
                     <variation key="default">
                         <mask key="constraints">
                             <exclude reference="6rQ-2y-Ekn"/>
+                            <exclude reference="FXg-DX-Z4T"/>
                             <exclude reference="VIj-3J-Wxz"/>
                             <exclude reference="CFG-Og-9Ya"/>
                             <exclude reference="thL-O1-zcL"/>

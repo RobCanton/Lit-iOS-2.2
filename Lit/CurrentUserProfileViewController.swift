@@ -42,6 +42,10 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
         
     }
     
+    func messageBlockTapped() {
+        
+    }
+    
     func messageTapped() {
         mainStore.dispatch(OpenConversation(uid: user!.getUserId()))
         tabBarController?.selectedIndex = 1
@@ -56,7 +60,7 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
     }
     
     func newState(state: AppState) {
-        headerView?.checkFriendStatus()
+        checkFriendStatus()
     }
     
     func mediaDeleted() {
@@ -129,10 +133,15 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
             if let _ = headerView {
                 headerView.imageView.loadImageUsingCacheWithURLString(user!.getLargeImageUrl(), completion: {result in})
                 headerView.populateUser(user!)
-                controlBar?.setFriendsBlock(user!.getNumFriends())
+                controlBar?.populateUser(user!)
                 getKeys()
             }
         }
+    }
+    
+    func checkFriendStatus() {
+        controlBar?.setFriendStatus(FriendStatus.IS_CURRENT_USER)
+        headerView?.checkFriendStatus()
     }
     
     func getKeys() {
@@ -151,7 +160,7 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
     }
     
     func downloadStory(postKeys:[String]) {
-        controlBar?.setPostsBlock(postKeys.count)
+        controlBar?.setPosts(postKeys.count)
         self.photos = [StoryItem]()
         collectionView?.reloadData()
         FirebaseService.downloadStory(postKeys, completionHandler: { story in
@@ -191,13 +200,7 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
             
             let scale = abs(progress)
             if let _ = controlBar {
-                let shift = controlBar!.centerBlock.frame.height/5
-                let scaleTransform = CGAffineTransformMakeScale(1 - scale/5, 1 - scale/5)
-                let translateTransform = CGAffineTransformMakeTranslation(0, scale * shift)
-                let transform = CGAffineTransformConcat(scaleTransform, translateTransform)
-                controlBar!.leftBlock.transform = transform
-                controlBar!.centerBlock.transform = transform
-                controlBar!.rightBlock.transform = transform
+                controlBar!.setBarScale(scale)
             }
             
             if progress <= -1.0 {

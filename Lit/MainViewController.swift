@@ -265,10 +265,10 @@ extension MainViewController {
                 location = locations[indexPath.item]
             }
 
-            mainStore.dispatch(ViewLocationDetail(locationKey: location.getKey()))
-            mainStore.unsubscribe(self)
+
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let controller = storyboard.instantiateViewControllerWithIdentifier("LocViewController") as! LocViewController
+            controller.location = locations[indexPath.item]
             navigationController?.navigationBar.tintColor = UIColor.whiteColor()
             navigationController?.pushViewController(controller, animated: true)
             

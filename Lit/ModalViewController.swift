@@ -93,38 +93,48 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
         super.viewWillAppear(animated)
         let backButton = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: navigationController, action: nil)
         navigationItem.leftBarButtonItem = backButton
-        //navigationItem.setHidesBackButton(true, animated: false)
         listenForLikes()
-        self.authorImage.layer.opacity = 0
-        self.authorLabel.layer.opacity = 0
-        self.timeLabel.layer.opacity = 0
-        self.locationLabel.layer.opacity = 0
-        self.likesLabel.layer.opacity = 0.0
-        self.likeBtn.layer.opacity = 0.0
+        self.authorImage.alpha = 0
+        self.authorLabel.alpha = 0
+        self.timeLabel.alpha = 0
+        self.locationLabel.alpha = 0
+        self.likesLabel.alpha = 0.0
+        self.likeBtn.alpha = 0.0
+        self.gradientView.alpha = 0.0
         
         navigationController?.setNavigationBarHidden(false, animated: true)
+        
+        if let tabBar = self.tabBarController as? PopUpTabBarController {
+            tabBar.setTabBarVisible(false, animated: true)
+        }
     }
+    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         UIView.animateWithDuration(0.2, animations: {
-            self.authorImage.layer.opacity = 1.0
-            self.authorLabel.layer.opacity = 1.0
-            self.timeLabel.layer.opacity = 1.0
-            self.locationLabel.layer.opacity = 1.0
-            self.likeBtn.layer.opacity = 1.0
-            self.likesLabel.layer.opacity = 1.0
+            self.authorImage.alpha = 1.0
+            self.authorLabel.alpha = 1.0
+            self.timeLabel.alpha = 1.0
+            self.locationLabel.alpha = 1.0
+            self.likeBtn.alpha = 1.0
+            self.likesLabel.alpha = 1.0
+            self.gradientView.alpha = 1.0
         })
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         stopListeningForLikes()
-        self.authorImage.layer.opacity = 0
-        self.authorLabel.layer.opacity = 0
-        self.timeLabel.layer.opacity = 0
-        self.locationLabel.layer.opacity = 0
-        self.likeBtn.layer.opacity = 0
-        self.likesLabel.layer.opacity = 0
+        self.authorImage.alpha = 0
+        self.authorLabel.alpha = 0
+        self.timeLabel.alpha = 0
+        self.locationLabel.alpha = 0
+        self.likeBtn.alpha = 0
+        self.likesLabel.alpha = 0
+        self.gradientView.alpha = 0.0
+        if let tabBar = self.tabBarController as? PopUpTabBarController {
+            tabBar.setTabBarVisible(true, animated: true)
+        }
     }
     
     func profileTapped(gesture:UITapGestureRecognizer) {
@@ -135,7 +145,6 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
     func viewUser() {
         if mode == .Location {
             if let _ = user {
-                let uid = item!.getAuthorId()
                 if let nav = navigationController as? ARNImageTransitionNavigationController {
                     nav.doZoomTransition = false
                 }
@@ -324,14 +333,6 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
         
         imageView.userInteractionEnabled = true
         imageView.addGestureRecognizer(likeTap)
-        let key = mainStore.state.viewLocationKey
-        let locations = mainStore.state.locations
-
-        for location in locations {
-            if key == location.getKey() {
-                self.title = location.getName().lowercaseString
-            }
-        }
         
         let barButton = UIBarButtonItem(image: UIImage(named: "more"), style: .Plain, target: self, action: #selector(moreTap))
         barButton.imageInsets = UIEdgeInsetsMake(0, -10, 0, 10)
