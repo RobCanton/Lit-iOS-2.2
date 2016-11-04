@@ -348,7 +348,7 @@ extension UILabel
     }
     
     
-    func styleProfileBlockText(count:Int, text:String, color:UIColor) {
+    func styleProfileBlockText(count:Int, text:String, color:UIColor, color2:UIColor) {
         self.numberOfLines = 2
         self.textAlignment = .Center
 
@@ -367,7 +367,7 @@ extension UILabel
             let index = str.startIndex.distanceTo(range.startIndex)
             let a: [String: AnyObject] = [
                 NSFontAttributeName : UIFont(name: "Avenir-Book", size: 20)!,
-                NSForegroundColorAttributeName : color
+                NSForegroundColorAttributeName : color2
             ]
             title.addAttributes(a, range: NSRange(location: index, length: countStr.characters.count))
         }

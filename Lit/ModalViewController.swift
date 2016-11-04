@@ -38,6 +38,7 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
     @IBOutlet weak var likeBtn: UIView!
     //@IBOutlet weak var likesLabel: UILabel!
     @IBOutlet weak var likesLabel: UIButton!
+    @IBOutlet weak var gradientView: UIView!
     
     var delegate:ZoomProtocol?
     var mode:ModalMode = .Location
@@ -312,6 +313,14 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
         likeBtn.layer.cornerRadius = likeBtn.frame.width/2
         likeBtn.addGestureRecognizer(likeBtnTap)
         
+        
+        let gradient: CAGradientLayer = CAGradientLayer()
+        
+        gradient.colors = [UIColor.clearColor().CGColor, UIColor(white: 0.0, alpha: 0.6).CGColor]
+        gradient.locations = [0.0 , 1.0]
+        
+        gradient.frame = gradientView.bounds
+        gradientView.layer.insertSublayer(gradient, atIndex: 0)
         
         imageView.userInteractionEnabled = true
         imageView.addGestureRecognizer(likeTap)

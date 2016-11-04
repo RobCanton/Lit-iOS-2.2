@@ -21,6 +21,13 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="XHY-DZ-v0p">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2P1-R4-bgb">
+                                <rect key="frame" x="0.0" y="561" width="375" height="106"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="106" id="AtD-Uq-ucF"/>
+                                </constraints>
+                            </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JlU-0u-pfs">
                                 <rect key="frame" x="20" y="599" width="48" height="48"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -118,9 +125,12 @@
                             <constraint firstItem="GfA-9t-bT0" firstAttribute="top" secondItem="xhp-UQ-jhK" secondAttribute="bottom" constant="20" id="MS0-nm-Fmd"/>
                             <constraint firstItem="mbO-g9-TeI" firstAttribute="leading" secondItem="JlU-0u-pfs" secondAttribute="trailing" constant="8" id="TpF-G1-EE8"/>
                             <constraint firstItem="oyk-VP-ped" firstAttribute="leading" secondItem="JlU-0u-pfs" secondAttribute="trailing" constant="8" id="Vc8-LU-KNM"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="2P1-R4-bgb" secondAttribute="bottom" id="ZYU-IV-Auu"/>
                             <constraint firstItem="xhp-UQ-jhK" firstAttribute="top" secondItem="KOW-tP-lZn" secondAttribute="bottom" constant="8" id="b3y-k1-qkK"/>
+                            <constraint firstAttribute="trailing" secondItem="2P1-R4-bgb" secondAttribute="trailing" id="cM8-eX-JGn"/>
                             <constraint firstItem="GfA-9t-bT0" firstAttribute="top" secondItem="xhp-UQ-jhK" secondAttribute="bottom" constant="20" id="frf-WG-x0j"/>
                             <constraint firstItem="XHY-DZ-v0p" firstAttribute="leading" secondItem="U0U-wj-u1A" secondAttribute="leading" id="ghQ-wF-D8n"/>
+                            <constraint firstItem="2P1-R4-bgb" firstAttribute="leading" secondItem="U0U-wj-u1A" secondAttribute="leading" id="gqh-nf-KsL"/>
                             <constraint firstItem="oyk-VP-ped" firstAttribute="top" secondItem="JlU-0u-pfs" secondAttribute="top" id="hjb-Pj-mlP"/>
                             <constraint firstItem="oyk-VP-ped" firstAttribute="centerY" secondItem="JlU-0u-pfs" secondAttribute="centerY" id="hz5-MQ-QkX"/>
                             <constraint firstItem="mbO-g9-TeI" firstAttribute="bottom" secondItem="JlU-0u-pfs" secondAttribute="bottom" id="kiF-Jo-BQB"/>
@@ -147,6 +157,7 @@
                     <connections>
                         <outlet property="authorImage" destination="JlU-0u-pfs" id="1lU-KO-QTe"/>
                         <outlet property="authorLabel" destination="oyk-VP-ped" id="BdX-tY-eA2"/>
+                        <outlet property="gradientView" destination="2P1-R4-bgb" id="sN2-tC-Z0G"/>
                         <outlet property="imageView" destination="XHY-DZ-v0p" id="pop-sa-Tyn"/>
                         <outlet property="likeBtn" destination="xhp-UQ-jhK" id="eDn-X9-jI6"/>
                         <outlet property="likesLabel" destination="KOW-tP-lZn" id="DWo-y4-098"/>
