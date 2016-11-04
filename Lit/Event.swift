@@ -13,16 +13,22 @@ class Event {
     
     private var key:String
     private var name:String
-    private var date:String
+    private var date:NSDate
     private var imageUrl:String
+    
     
     
     init(key: String, name:String, date:String, imageUrl:String)
     {
         self.key       = key
         self.name      = name
-        self.date      = date
         self.imageUrl  = imageUrl
+        
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        
+        self.date = dateFormatter.dateFromString(date)!
+        
     }
     
     func getKey() -> String {
@@ -33,11 +39,15 @@ class Event {
         return name
     }
     
-    func getDate() -> String {
+    func getDate() -> NSDate {
         return date
     }
     
     func getImageUrl() -> String {
         return imageUrl
+    }
+    
+    func hasPassed() -> Bool {
+        return date.timeIntervalSinceNow < 0
     }
 }

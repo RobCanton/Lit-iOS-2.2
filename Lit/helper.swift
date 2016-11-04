@@ -53,3 +53,28 @@ func printFonts() {
         print("Font Names = [\(names)]")
     }
 }
+
+
+func getDateString(date:NSDate) -> String {
+    let weekFromDay = NSDate().xDays(7)
+    
+    if date.timeIntervalSinceDate(weekFromDay) < 0 {
+        if NSCalendar.currentCalendar().isDateInToday(date) {
+            return "Tonight"
+        } else if NSCalendar.currentCalendar().isDateInTomorrow(date) {
+            return "Tomorrow"
+        } else if NSCalendar.currentCalendar().isDateInYesterday(date) {
+            return "Yesterday"
+        }
+        
+        return date.dayOfTheWeek()
+    }
+    
+    let formatter = NSDateFormatter()
+    formatter.dateStyle = NSDateFormatterStyle.LongStyle
+    formatter.timeStyle = .NoStyle
+    
+    return formatter.stringFromDate(date)
+    
+}
+

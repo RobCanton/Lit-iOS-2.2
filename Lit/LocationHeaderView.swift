@@ -48,7 +48,7 @@ class LocationHeaderView: UIView {
         super.awakeFromNib()
         let gradient: CAGradientLayer = CAGradientLayer()
         
-        gradient.colors = [UIColor.clearColor().CGColor, UIColor(white: 0.0, alpha: 0.85).CGColor]
+        gradient.colors = [UIColor.clearColor().CGColor, UIColor(white: 0.0, alpha: 0.5).CGColor]
         gradient.locations = [0.0 , 1.0]
         
         gradient.frame = gradientView.bounds

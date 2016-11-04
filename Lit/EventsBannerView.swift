@@ -15,16 +15,16 @@ class EventsBannerView: UIView {
     
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
+    
     var location:Location?
     var event:Event?
     {
         didSet {
+            dateLabel.text = getDateString(event!.getDate())
             titleLabel.text = event!.getName()
             eventImageView.loadImageUsingCacheWithURLString(event!.getImageUrl(), completion: { result in })
-            
         }
     }
-    
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -39,24 +39,6 @@ class EventsBannerView: UIView {
         
         self.layer.borderColor = UIColor.blackColor().CGColor
         self.layer.borderWidth = 1.0
-        
-    }
-    
-    func setLocation(location:Location) {
-        self.location = location
-        
-        FirebaseService.getLocationEventKeys(location.getKey(), completionHandler: { eventKeys in
-            if !eventKeys.isEmpty {
-                let mostRecentEventKey = eventKeys[eventKeys.count-1]
-                FirebaseService.getEvent(mostRecentEventKey, completionHandler: { event in
-                    if event != nil {
-                        self.event = event
-                    }
-                })
-            }
-        })
-        
-        
     }
 
 }

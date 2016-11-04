@@ -154,6 +154,17 @@ extension UIImage {
 
 extension NSDate
 {
+    func xDays(days:Int) -> NSDate {
+
+        return NSCalendar.currentCalendar().dateByAddingUnit( .Day, value: days, toDate: self, options: NSCalendarOptions.MatchFirst)!
+    }
+    
+    func dayOfTheWeek() -> String! {
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "EEEE"
+        return dateFormatter.stringFromDate(self)
+    }
+    
     
     func timeStringSinceNow() -> String
     {

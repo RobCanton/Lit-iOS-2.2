@@ -54,7 +54,8 @@
 		B01B34A21DC15BC600B2B9CE /* DialogRow.xib in Resources */ = {isa = PBXBuildFile; fileRef = B01B34A11DC15BC600B2B9CE /* DialogRow.xib */; };
 		B01B34A41DC15BDA00B2B9CE /* DialogRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01B34A31DC15BDA00B2B9CE /* DialogRow.swift */; };
 		B01B34A61DC17B5C00B2B9CE /* Upload.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01B34A51DC17B5C00B2B9CE /* Upload.swift */; };
-		B01CD8101DCBF8E700AA3499 /* EventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01CD80F1DCBF8E700AA3499 /* EventCell.swift */; };
+		B01CD8131DCC136800AA3499 /* EventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01CD8111DCC136800AA3499 /* EventCell.swift */; };
+		B01CD8141DCC136800AA3499 /* EventCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B01CD8121DCC136800AA3499 /* EventCell.xib */; };
 		B0236E131DC00E0A0083C720 /* CurrentUserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0236E121DC00E0A0083C720 /* CurrentUserProfileViewController.swift */; };
 		B0254F701DAFE00C0082D898 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0254F6F1DAFE00C0082D898 /* MessagesViewController.swift */; };
 		B0254F721DAFEF4A0082D898 /* ConversationViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0254F711DAFEF4A0082D898 /* ConversationViewCell.swift */; };
@@ -180,7 +181,8 @@
 		B01B34A11DC15BC600B2B9CE /* DialogRow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DialogRow.xib; sourceTree = "<group>"; };
 		B01B34A31DC15BDA00B2B9CE /* DialogRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DialogRow.swift; sourceTree = "<group>"; };
 		B01B34A51DC17B5C00B2B9CE /* Upload.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Upload.swift; sourceTree = "<group>"; };
-		B01CD80F1DCBF8E700AA3499 /* EventCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventCell.swift; sourceTree = "<group>"; };
+		B01CD8111DCC136800AA3499 /* EventCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventCell.swift; sourceTree = "<group>"; };
+		B01CD8121DCC136800AA3499 /* EventCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventCell.xib; sourceTree = "<group>"; };
 		B0236E121DC00E0A0083C720 /* CurrentUserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentUserProfileViewController.swift; sourceTree = "<group>"; };
 		B0254F6F1DAFE00C0082D898 /* MessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
 		B0254F711DAFEF4A0082D898 /* ConversationViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationViewCell.swift; sourceTree = "<group>"; };
@@ -425,7 +427,8 @@
 			children = (
 				B08007891DCAEABC00695D5F /* EventsViewController.swift */,
 				B080078B1DCAEAD300695D5F /* EventsViewController.storyboard */,
-				B01CD80F1DCBF8E700AA3499 /* EventCell.swift */,
+				B01CD8111DCC136800AA3499 /* EventCell.swift */,
+				B01CD8121DCC136800AA3499 /* EventCell.xib */,
 			);
 			name = Events;
 			sourceTree = "<group>";
@@ -680,6 +683,7 @@
 				B00BA9271D9E4E1D00F5EA30 /* CreateProfileViewController.xib in Resources */,
 				B0BA326A1DA7158B004352A7 /* HeaderView.xib in Resources */,
 				B0321ED01DB56C0500AD4C53 /* LocationHeaderView.xib in Resources */,
+				B01CD8141DCC136800AA3499 /* EventCell.xib in Resources */,
 				76C0E7541D80D770004EFA4C /* VisitorCell.xib in Resources */,
 				76EE2B981D8766ED00EDB4CB /* ActivityFriendRequestCell.xib in Resources */,
 				B0BA326C1DA7163D004352A7 /* CreateProfileHeaderView.xib in Resources */,
@@ -792,7 +796,7 @@
 				76EE2B971D8766ED00EDB4CB /* ActivityFriendRequestCell.swift in Sources */,
 				B08BBB961DBBE51400AD3FF1 /* EventsBannerView.swift in Sources */,
 				B0ED4B691DBD85130040E5F0 /* LocationDetailsView.swift in Sources */,
-				B01CD8101DCBF8E700AA3499 /* EventCell.swift in Sources */,
+				B01CD8131DCC136800AA3499 /* EventCell.swift in Sources */,
 				762F82941D62573300549E1B /* GalleryViewController.swift in Sources */,
 				B06D54C51D9ECB6D00F6A4A7 /* MadokaTextField.swift in Sources */,
 				B087E9C61D9B531A0079E2BF /* FriendsReducer.swift in Sources */,

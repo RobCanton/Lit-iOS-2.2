@@ -153,7 +153,9 @@ class FirebaseService {
             for key in eventKeys {
                 getEvent(key, completionHandler: { event in
                     if event != nil {
-                        events.append(event!)
+                        if !event!.hasPassed() {
+                            events.append(event!)
+                        }
                     }
                     count += 1
                     if count >= eventKeys.count {

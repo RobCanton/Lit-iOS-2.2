@@ -41,6 +41,8 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
         print("LocationViewController Unsubscribed")
     }
     
+    var events = [Event]()
+    
     func newState(state: AppState) {
         print("New State!")
         let key = state.viewLocationKey
@@ -51,8 +53,15 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
                 headerView.setLocation(self.location!)
                 titleLabel.styleLocationTitle(self.location!.getName(), size: 32.0)
                 detailsView.setLocation(self.location!)
-                eventsBanner!.setLocation(self.location!)
+                //eventsBanner!.setLocation(self.location!)
                 downloadMedia()
+                
+                FirebaseService.getLocationEvents(location.getKey(), completionHandler: { events in
+                    if events.count > 0 {
+                        self.events = events
+                        self.buildEventsBanner()
+                    }
+                })
             }
         }
     }
@@ -76,7 +85,7 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
         let navHeight = screenStatusBarHeight + navigationController!.navigationBar.frame.height
         let slack:CGFloat = 1.0
         let controlBarHeight:CGFloat = navHeight
-        let eventsHeight:CGFloat = 140.0
+        let eventsHeight:CGFloat = 0
         let topInset:CGFloat = navHeight + eventsHeight + slack
         
         headerView = UINib(nibName: "LocationHeaderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! LocationHeaderView
@@ -113,13 +122,6 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
         detailsView.delegate = self
         collectionView?.addSubview(detailsView)
         
-        eventsBanner = UINib(nibName: "EventsBannerView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as? EventsBannerView
-        eventsBanner?.clipsToBounds = true
-        eventsBanner!.frame = CGRectMake(0,detailsView.frame.height, collectionView!.frame.width, eventsHeight)
-        collectionView!.addSubview(eventsBanner!)
-        eventsBannerTap = UITapGestureRecognizer(target: self, action: #selector(showEvents))
-        eventsBanner?.addGestureRecognizer(eventsBannerTap)
-        
         statusBarBG = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: navHeight))
         statusBarBG!.backgroundColor = UIColor(white: 0.0, alpha: 0.0)
         
@@ -132,6 +134,8 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
         titleLabel.hidden = true
         
         view.addSubview(statusBarBG!)
+        
+        
         
     }
     
@@ -169,9 +173,35 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
         if let _ = location {
             let controller = UIStoryboard(name: "EventsViewController", bundle: nil)
             .instantiateViewControllerWithIdentifier("EventsViewController") as! EventsViewController
-            controller.location = location!
+            controller._events = events
             self.navigationController?.pushViewController(controller, animated: true)
         }
+    }
+    
+    func buildEventsBanner() {
+        let navHeight = screenStatusBarHeight + navigationController!.navigationBar.frame.height
+        let eventsHeight:CGFloat = 150.0
+        let slack:CGFloat = 1.0
+        let topInset:CGFloat = navHeight + eventsHeight + slack
+        
+        eventsBanner = UINib(nibName: "EventsBannerView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as? EventsBannerView
+        eventsBanner!.clipsToBounds = true
+        eventsBanner!.frame = CGRectMake(0,detailsView.frame.height, collectionView!.frame.width, eventsHeight)
+        
+        eventsBannerTap = UITapGestureRecognizer(target: self, action: #selector(showEvents))
+        eventsBanner!.addGestureRecognizer(eventsBannerTap)
+        
+        let collectionViewLayout = collectionView!.collectionViewLayout as? UICollectionViewFlowLayout
+        
+        collectionViewLayout?.sectionInset = UIEdgeInsets(top: topInset, left: 0, bottom: 200, right: 0)
+        collectionViewLayout?.invalidateLayout()
+        
+        collectionView!.addSubview(eventsBanner!)
+        
+        if events.count > 0 {
+            eventsBanner!.event = events[0]
+        }
+
     }
     
     func mediaDeleted() {
