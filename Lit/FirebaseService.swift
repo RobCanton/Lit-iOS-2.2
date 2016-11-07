@@ -58,8 +58,6 @@ class FirebaseService {
         //If upload has no destination do not upload it
         if !upload.toLocation() && !upload.toUserProfile() { return nil}
         
-        // Data in memory
-        let city = mainStore.state.userState.activeCity!
 
         let dataRef = ref.child("uploads").childByAutoId()
         let postKey = dataRef.key

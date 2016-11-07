@@ -79,7 +79,7 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         let controller = UIStoryboard(name: "Main", bundle: nil)
             .instantiateViewControllerWithIdentifier("UsersListViewController") as! UsersListViewController
         controller.title = "\(user!.getDisplayName())'s friends"
-        controller.getUserFriends(user!.getUserId())
+        controller.setTypeToFriends(user!.getUserId())
         self.navigationController?.pushViewController(controller, animated: true)
     }
     
@@ -111,6 +111,7 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         super.viewDidLoad()
         self.navigationItem.title = " "
         self.automaticallyAdjustsScrollViewInsets = false
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Plain, target: nil, action: nil)
 
         headerView = UINib(nibName: "CreateProfileHeaderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! CreateProfileHeaderView
         screenSize = self.view.frame
@@ -227,7 +228,6 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     func scrollViewDidScroll(scrollView: UIScrollView) {
         let progress = scrollView.parallaxHeader.progress
         headerView.setProgress(progress)
-        print("progress: \(progress)")
         if progress < 0 {
             
             let scale = abs(progress)

@@ -62,6 +62,7 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
         
         self.navigationItem.title = " "
         self.automaticallyAdjustsScrollViewInsets = false
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Plain, target: nil, action: nil)
 
         let navHeight = screenStatusBarHeight + navigationController!.navigationBar.frame.height
         let slack:CGFloat = 1.0
@@ -154,7 +155,7 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
                 .instantiateViewControllerWithIdentifier("UsersListViewController") as! UsersListViewController
             controller.showStatusBar = true
             controller.title = "guests"
-            controller.getLocationGuests(location!)
+            controller.setTypeToGuests(location!)
             self.navigationController?.pushViewController(controller, animated: true)
         }
     }

@@ -314,7 +314,7 @@ class CreateProfileViewController: UIViewController, UITextFieldDelegate {
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
-        NSLog("progress %f", scrollView.parallaxHeader.progress)
+        
     }
 
     /*

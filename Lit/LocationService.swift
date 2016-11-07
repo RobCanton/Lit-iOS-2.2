@@ -35,10 +35,14 @@ class LocationService {
         var locationKeys = [String]()
         let json = JSON(data: data)
         print("EXTRACTING DATA")
-        for (index,key):(String, JSON) in json["locations"] {
+        for (_,key):(String, JSON) in json["locations"] {
             
             locationKeys.append(key.stringValue)
         }
+        
+        let activeLocationKey = json["active_location"].stringValue
+        
+        print("ACTIVE LOCATION KEY: \(activeLocationKey)")
         
         getLocations(locationKeys, completionHandler:  { locations in
             
@@ -51,8 +55,18 @@ class LocationService {
                 Listeners.startListeningToLocations()
             }
             
-            
+            checkActiveLocation(activeLocationKey)
         })
+    }
+    
+    static func checkActiveLocation(activeLocationKey:String) {
+
+        let currentLocationKey = mainStore.state.userState.activeLocationKey
+        
+        if activeLocationKey != currentLocationKey {
+            mainStore.dispatch(SetActiveLocation(locationKey: activeLocationKey))
+        }
+        
     }
     
     static func compareLocationsList(listA: [Location] , listB: [Location]) -> Bool {

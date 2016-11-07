@@ -54,7 +54,7 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
         let controller = UIStoryboard(name: "Main", bundle: nil)
             .instantiateViewControllerWithIdentifier("UsersListViewController") as! UsersListViewController
         controller.title = "likes"
-        controller.getLikers(item!.getKey())
+        controller.setTypeToLikes(item!.getKey())
         self.navigationController?.pushViewController(controller, animated: true)
     }
     

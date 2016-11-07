@@ -55,7 +55,7 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
         let controller = UIStoryboard(name: "Main", bundle: nil)
             .instantiateViewControllerWithIdentifier("UsersListViewController") as! UsersListViewController
         controller.title = "\(user!.getDisplayName())'s friends"
-        controller.getUserFriends(user!.getUserId())
+        controller.setTypeToFriends(user!.getUserId())
         self.navigationController?.pushViewController(controller, animated: true)
     }
     

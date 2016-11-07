@@ -31,35 +31,6 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
         let lat = currentLocation.coordinate.latitude
         let lon = currentLocation.coordinate.longitude
         LocationService.requestNearbyLocations(lat, longitude: lon)
-
-//        let currentKey = mainStore.state.userState.activeLocationKey
-//        var key = ""
-//        
-//        let locations = mainStore.state.locations
-//        var minDistance = Double(MAXFLOAT)
-//        
-//        for location in locations {
-//            let distance = location.getCoordinates().distanceFromLocation(currentLocation)
-//            if distance < minDistance {
-//                minDistance = distance
-//                key = location.getKey()
-//            }
-//        }
-//        
-//        if key != currentKey {
-//            if minDistance < 500 {
-//                let uid = mainStore.state.userState.uid
-//                let ref = FirebaseService.ref.child("users/visits/\(uid)/\(key)")
-//                ref.setValue([".sv": "timestamp"])
-//                let locRef = FirebaseService.ref.child("locations/visitors/\(key)/\(uid)")
-//                locRef.setValue([".sv": "timestamp"])
-//                
-//            } else {
-//                key = ""
-//            }
-//        }
-//        
-//        mainStore.dispatch(SetActiveLocation(locationKey: key))
     }
     
     func tracingLocationDidFailWithError(error: NSError) {

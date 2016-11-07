@@ -27,6 +27,8 @@ class ARNImageTransitionNavigationController: UINavigationController, UINavigati
         
         self.interactivePopGestureRecognizer?.enabled = false
         self.delegate = self
+        
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Plain, target: nil, action: nil)
     }
     
     func navigationController(navigationController: UINavigationController,

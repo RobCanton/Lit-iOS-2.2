@@ -133,6 +133,7 @@ class MainViewController: UICollectionViewController, StoreSubscriber, CLLocatio
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.barStyle = .Black
         self.navigationController?.navigationBar.translucent = true
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Plain, target: nil, action: nil)
         
         //locationManager.startUpdatingLocation()
         
