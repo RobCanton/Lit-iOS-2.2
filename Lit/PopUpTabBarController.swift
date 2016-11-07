@@ -12,7 +12,7 @@ import ReSwift
 import Firebase
 import CoreLocation
 
-class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarControllerDelegate, LocationServiceDelegate {
+class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarControllerDelegate, GPSServiceDelegate {
     
     var activeLocation:Location?
     
@@ -27,35 +27,39 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
     
     func tracingLocation(currentLocation: CLLocation){
         print("New Location:\n\(currentLocation)")
+        
+        let lat = currentLocation.coordinate.latitude
+        let lon = currentLocation.coordinate.longitude
+        LocationService.requestNearbyLocations(lat, longitude: lon)
 
-        let currentKey = mainStore.state.userState.activeLocationKey
-        var key = ""
-        
-        let locations = mainStore.state.locations
-        var minDistance = Double(MAXFLOAT)
-        
-        for location in locations {
-            let distance = location.getCoordinates().distanceFromLocation(currentLocation)
-            if distance < minDistance {
-                minDistance = distance
-                key = location.getKey()
-            }
-        }
-        
-        if key != currentKey {
-            if minDistance < 500 {
-                let uid = mainStore.state.userState.uid
-                let ref = FirebaseService.ref.child("users/visits/\(uid)/\(key)")
-                ref.setValue([".sv": "timestamp"])
-                let locRef = FirebaseService.ref.child("locations/visitors/\(key)/\(uid)")
-                locRef.setValue([".sv": "timestamp"])
-                
-            } else {
-                key = ""
-            }
-        }
-        
-        mainStore.dispatch(SetActiveLocation(locationKey: key))
+//        let currentKey = mainStore.state.userState.activeLocationKey
+//        var key = ""
+//        
+//        let locations = mainStore.state.locations
+//        var minDistance = Double(MAXFLOAT)
+//        
+//        for location in locations {
+//            let distance = location.getCoordinates().distanceFromLocation(currentLocation)
+//            if distance < minDistance {
+//                minDistance = distance
+//                key = location.getKey()
+//            }
+//        }
+//        
+//        if key != currentKey {
+//            if minDistance < 500 {
+//                let uid = mainStore.state.userState.uid
+//                let ref = FirebaseService.ref.child("users/visits/\(uid)/\(key)")
+//                ref.setValue([".sv": "timestamp"])
+//                let locRef = FirebaseService.ref.child("locations/visitors/\(key)/\(uid)")
+//                locRef.setValue([".sv": "timestamp"])
+//                
+//            } else {
+//                key = ""
+//            }
+//        }
+//        
+//        mainStore.dispatch(SetActiveLocation(locationKey: key))
     }
     
     func tracingLocationDidFailWithError(error: NSError) {
@@ -181,8 +185,8 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
         tabBar.addSubview(bgView)
         tabBar.sendSubviewToBack(bgView)
         
-        LocationService.sharedInstance.delegate = self
-        LocationService.sharedInstance.startUpdatingLocation()
+        GPSService.sharedInstance.delegate = self
+        GPSService.sharedInstance.startUpdatingLocation()
     }
     
     override func viewWillLayoutSubviews() {

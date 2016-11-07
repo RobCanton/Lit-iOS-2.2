@@ -51,7 +51,7 @@ class ActivityFeedViewController: UIViewController, UICollectionViewDelegate, UI
 
         
         let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: topInset, left: 0, bottom: 0, right: 0)
+        layout.sectionInset = UIEdgeInsets(top: topInset + screenStatusBarHeight, left: 0, bottom: 0, right: 0)
         layout.itemSize = CGSize(width: screenWidth/3, height: screenWidth/3)
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
@@ -120,20 +120,24 @@ class ActivityFeedViewController: UIViewController, UICollectionViewDelegate, UI
     }
     
     func requestActivityFeed() {
-        let uid = mainStore.state.userState.uid
-        let city = mainStore.state.userState.activeCity!.getKey()
-        let url = NSURL(string: "http://159.203.16.13:4278/api/activityfeed/\(uid)/\(city)")
-        
-        let task = NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
-            if error != nil {
-                print(error!.localizedDescription)
-            } else {
-                print(NSString(data: data!, encoding: NSUTF8StringEncoding))
-                self.extractFeedFromJSON(data!)
+        if let location = GPSService.sharedInstance.lastLocation {
+            let uid = mainStore.state.userState.uid
+            let lat = location.coordinate.latitude
+            let lon = location.coordinate.longitude
+            
+            let url = NSURL(string: "\(apiURL)/activityfeed/\(uid)/\(lat)/\(lon)")
+            
+            let task = NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
+                if error != nil {
+                    print(error!.localizedDescription)
+                } else {
+                    print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+                    self.extractFeedFromJSON(data!)
+                }
             }
+            
+            task.resume()
         }
-        
-        task.resume()
     }
     
     func extractFeedFromJSON(data:NSData) {

@@ -121,7 +121,7 @@ class SearchViewController:UIViewController, UITableViewDelegate, UITableViewDat
         if searchText.isNotEmpty && searchText.characters.count > 1 {
             let newString = searchText.stringByReplacingOccurrencesOfString(" ", withString: "+").lowercaseString
             
-            let url = NSURL(string: "http://159.203.16.13:4278/api/search/\(newString)")
+            let url = NSURL(string: "\(apiURL)/search/\(newString)")
             task = NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
                 if error != nil {
                     print(error!.localizedDescription)
@@ -175,11 +175,10 @@ class SearchViewController:UIViewController, UITableViewDelegate, UITableViewDat
                 let name             = location["name"].stringValue
                 let lat              = location["coordinates"]["latitude"].doubleValue
                 let lon              = location["coordinates"]["longitude"].doubleValue
-                let coord = CLLocation(latitude: lat, longitude: lon)
                 let imageURL         = location["imageURL"].stringValue
                 let address          = location["address"].stringValue
                 
-                let loc = Location(key: key, name: name, coordinates: coord, imageURL: imageURL, address: address)
+                let loc = Location(key: key, name: name, latitude: lat, longitude: lon, imageURL: imageURL, address: address)
                 _locations.append(loc)
             }
         }
@@ -265,9 +264,10 @@ class SearchViewController:UIViewController, UITableViewDelegate, UITableViewDat
 
         } else {
             let location = locations[indexPath.item]
-            mainStore.dispatch(ViewLocationDetail(locationKey: location.getKey()))
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let controller = storyboard.instantiateViewControllerWithIdentifier("LocViewController") as! LocViewController
+            controller.location = locations[indexPath.item]
+            navigationController?.navigationBar.tintColor = UIColor.whiteColor()
             navigationController?.pushViewController(controller, animated: true)
         }
         tableView.deselectRowAtIndexPath(indexPath, animated: true)

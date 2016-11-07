@@ -30,11 +30,11 @@ class Location {
     var imageOnDiskURL:NSURL?
     
     
-    init(key:String, name:String, coordinates:CLLocation, imageURL:String, address:String)
+    init(key:String, name:String, latitude:Double, longitude: Double, imageURL:String, address:String)
     {
         self.key          = key
         self.name         = name
-        self.coordinates  = coordinates
+        self.coordinates  = CLLocation(latitude: latitude, longitude: longitude)
         self.imageURL     = imageURL
         self.address      = address
     }

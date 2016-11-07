@@ -47,16 +47,19 @@ class LoginViewController: UIViewController, StoreSubscriber {
                 break
             case .ReturningUser:
                 print("ReturningUser")
-                toSetup()
+                //toSetup()
                 break
             default:
                 break
             }
         }
         
-        if state.locations.count > 0 && state.userState.isAuth{
-            v3.view.removeFromSuperview()
-            v3.removeFromParentViewController()
+        if state.userState.isAuth{
+            
+            Listeners.listenToFriends()
+            Listeners.listenToFriendRequests()
+            Listeners.listenToConversations()
+            
             self.performSegueWithIdentifier("showLit", sender: self)
             
         }
@@ -83,24 +86,24 @@ class LoginViewController: UIViewController, StoreSubscriber {
         scrollView.setContentOffset(CGPoint(x: v1.view.frame.width, y: 0), animated: true)
 
     }
-    func toSetup() {
-        v3 = SetupViewController(nibName: "SetupViewController", bundle: nil)
-
-        addChildViewController(v3)
-        scrollView.addSubview(v3.view)
-        v3.didMoveToParentViewController(self)
-        
-        var v3Frame = v1.view.frame
-        v3Frame.origin.x = self.view.frame.width * 2
-        v3.view.frame = v3Frame
-        
-        self.scrollView.contentSize = CGSizeMake(self.view.frame.width * 3, self.view.frame.height)
-        scrollView.setContentOffset(CGPoint(x: self.view.frame.width * 2, y: 0), animated: true)
-    }
+//    func toSetup() {
+//        v3 = SetupViewController(nibName: "SetupViewController", bundle: nil)
+//
+//        addChildViewController(v3)
+//        scrollView.addSubview(v3.view)
+//        v3.didMoveToParentViewController(self)
+//        
+//        var v3Frame = v1.view.frame
+//        v3Frame.origin.x = self.view.frame.width * 2
+//        v3.view.frame = v3Frame
+//        
+//        self.scrollView.contentSize = CGSizeMake(self.view.frame.width * 3, self.view.frame.height)
+//        scrollView.setContentOffset(CGPoint(x: self.view.frame.width * 2, y: 0), animated: true)
+//    }
     
     var v1:FirstScreenViewController!
     var v2:CreateProfileViewController!
-    var v3:SetupViewController!
+    //var v3:SetupViewController!
     
     override func viewDidLoad() {
         super.viewDidLoad()

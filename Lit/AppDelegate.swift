@@ -17,8 +17,11 @@ let mainStore = Store<AppState>(
     state: nil
 )
 
+
 let accentColor:UIColor = UIColor(red: 0, green: 128/255, blue: 1, alpha: 1) // #FFAB00
 let errorColor:UIColor = UIColor(red: 1, green: 80/255, blue: 50/255, alpha: 1)
+
+let apiURL = "http://159.203.16.13:4278/api"
 
 var screenStatusBarHeight: CGFloat {
     return UIApplication.sharedApplication().statusBarFrame.height

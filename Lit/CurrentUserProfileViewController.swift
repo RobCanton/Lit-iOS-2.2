@@ -31,8 +31,8 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         mainStore.subscribe(self)
-        
     }
+    
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         mainStore.unsubscribe(self)
@@ -155,7 +155,6 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
                 }
                 self.downloadStory(postKeys)
             }
-            
         })
     }
     
@@ -176,19 +175,16 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(cellIdentifier, forIndexPath: indexPath) as! PhotoCell
-        
         cell.setPhoto(photos[indexPath.item])
         return cell
     }
     
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        
         return getItemSize(indexPath)
     }
     
     func getItemSize(indexPath:NSIndexPath) -> CGSize {
-        
         return CGSize(width: screenWidth/3, height: screenWidth/3);
     }
     
@@ -269,8 +265,6 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
             self!.controller.view.alpha = 0.0
             
             animator.presentationAnimationHandler = { containerView, percentComplete in
-                //print(percentComplete)
-                //self!.tabBarController?.setTabBarOffsetY(percentComplete)
                 
                 sourceImageView.frame = destinationImageView.frame
                 
@@ -307,8 +301,6 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
             }
             
             animator.dismissalAnimationHandler = { containerView, percentComplete in
-                //print(percentComplete)
-                //self!.tabBarController?.setTabBarOffsetY(-1 *  (1 - percentComplete))
                 if percentComplete < -0.05 { return }
                 let frame = CGRectMake(
                     destFrame.origin.x - (destFrame.origin.x - sourceFrame.origin.x) * (1 - percentComplete),
@@ -334,7 +326,6 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
             controller.transitioningDelegate = self.animator
             self.presentViewController(controller, animated: true, completion: nil)
         } else {
-            //self.tabBarController?.setTabBarVisible(false, animated: true)
             self.animator!.interactiveType = .Pop
             if let _nav = self.navigationController as? ARNImageTransitionNavigationController {
                 _nav.interactiveAnimator = self.animator!
@@ -377,34 +368,34 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
         }
     }
     
-    @IBAction func settingsTapped(sender: AnyObject) {
-        
-        // 1
-        let optionMenu = UIAlertController(title: nil, message: "Options", preferredStyle: .ActionSheet)
-        
-        // 2
-        let logoutAction = UIAlertAction(title: "Logout", style: .Destructive, handler: {
-            (alert: UIAlertAction!) -> Void in
-            let loginManager = FBSDKLoginManager()
-            loginManager.logOut()
-            try! FIRAuth.auth()!.signOut()
-            mainStore.dispatch(UserIsUnauthenticated())
-            
-            
-        })
-        
-        //
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
-            (alert: UIAlertAction!) -> Void in
-        })
-        
-        
-        // 4
-        optionMenu.addAction(logoutAction)
-        optionMenu.addAction(cancelAction)
-        
-        // 5
-        self.presentViewController(optionMenu, animated: true, completion: nil)
-    }
+//    @IBAction func settingsTapped(sender: AnyObject) {
+//        
+//        // 1
+//        let optionMenu = UIAlertController(title: nil, message: "Options", preferredStyle: .ActionSheet)
+//        
+//        // 2
+//        let logoutAction = UIAlertAction(title: "Logout", style: .Destructive, handler: {
+//            (alert: UIAlertAction!) -> Void in
+//            let loginManager = FBSDKLoginManager()
+//            loginManager.logOut()
+//            try! FIRAuth.auth()!.signOut()
+//            mainStore.dispatch(UserIsUnauthenticated())
+//            
+//            
+//        })
+//        
+//        //
+//        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
+//            (alert: UIAlertAction!) -> Void in
+//        })
+//        
+//        
+//        // 4
+//        optionMenu.addAction(logoutAction)
+//        optionMenu.addAction(cancelAction)
+//        
+//        // 5
+//        self.presentViewController(optionMenu, animated: true, completion: nil)
+//    }
     
 }

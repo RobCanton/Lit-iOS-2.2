@@ -1,93 +1,116 @@
-import Foundation
-import CoreLocation
+//
+//  LocationService.swift
+//  Lit
+//
+//  Created by Robert Canton on 2016-11-06.
+//  Copyright © 2016 Robert Canton. All rights reserved.
+//
 
-protocol LocationServiceDelegate {
-    func tracingLocation(currentLocation: CLLocation)
-    func tracingLocationDidFailWithError(error: NSError)
-}
+import Firebase
+import ReSwift
+import SwiftyJSON
 
-class LocationService: NSObject, CLLocationManagerDelegate {
+
+class LocationService {
+
+    static private let ref = FIRDatabase.database().reference().child("locations")
     
-    class var sharedInstance: LocationService {
-        struct Static {
-            static var onceToken: dispatch_once_t = 0
+    static func requestNearbyLocations(latitude:Double, longitude:Double) {
+        let uid = mainStore.state.userState.uid
+        let url = NSURL(string: "\(apiURL)/nearby/50/\(latitude)/\(longitude)")
+        print("Requesting Nearby Locations: \(url!.absoluteString)")
+        let task = NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
+            if error != nil {
+                print(error!.localizedDescription)
+            } else {
+                print(NSString(data: data!, encoding: NSUTF8StringEncoding))
+                self.extractFeedFromJSON(data!)
+            }
+        }
+        
+        task.resume()
+    }
+    
+    static func extractFeedFromJSON(data:NSData) {
+        var locationKeys = [String]()
+        let json = JSON(data: data)
+        print("EXTRACTING DATA")
+        for (index,key):(String, JSON) in json["locations"] {
             
-            static var instance: LocationService? = nil
-        }
-        dispatch_once(&Static.onceToken) {
-            Static.instance = LocationService()
-        }
-        return Static.instance!
-    }
-    
-    var locationManager: CLLocationManager?
-    var lastLocation: CLLocation?
-    var delegate: LocationServiceDelegate?
-    
-    override init() {
-        super.init()
-        
-        self.locationManager = CLLocationManager()
-        guard let locationManager = self.locationManager else {
-            return
+            locationKeys.append(key.stringValue)
         }
         
-        if CLLocationManager.authorizationStatus() == .NotDetermined {
-            // requestWhenInUseAuthorization
-            locationManager.requestWhenInUseAuthorization()
+        getLocations(locationKeys, completionHandler:  { locations in
+            
+            if compareLocationsList(locations, listB: mainStore.state.locations) {
+                print("Locations are equal. No action required")
+            } else {
+                print("Locations changed. Dispatch required")
+                Listeners.stopListeningToLocations()
+                mainStore.dispatch(LocationsRetrieved(locations: locations))
+                Listeners.startListeningToLocations()
+            }
+            
+            
+        })
+    }
+    
+    static func compareLocationsList(listA: [Location] , listB: [Location]) -> Bool {
+        
+        if listA.count != listB.count {
+            return false
         }
         
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest // The accuracy of the location data
-        locationManager.distanceFilter = 50 // The minimum distance (measured in meters) a device must move horizontally before an update event is generated.
-        locationManager.delegate = self
-    }
-    
-    func startUpdatingLocation() {
-        print("Starting Location Updates")
-        self.locationManager?.startUpdatingLocation()
-    }
-    
-    func stopUpdatingLocation() {
-        print("Stop Location Updates")
-        self.locationManager?.stopUpdatingLocation()
-    }
-    
-    // CLLocationManagerDelegate
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let sortedListA = listA.sort({ $0.getKey() > $1.getKey()})
+        let sortedListB = listB.sort({ $0.getKey() > $1.getKey()})
         
-        guard let location = locations.last else {
-            return
+        for i in 0 ..< sortedListA.count {
+            if sortedListA[i].getKey() != sortedListB[i].getKey() {
+                return false
+            }
         }
         
-        // singleton for get last location
-        self.lastLocation = location
-        
-        // use for real time update location
-        updateLocation(location)
+        return true
     }
     
-    func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
-        
-        // do on error
-        updateLocationDidFailWithError(error)
-    }
     
-    // Private function
-    private func updateLocation(currentLocation: CLLocation){
+    static func getLocations(locationKeys:[String], completionHandler:(locations: [Location]) -> ()) {
+        var locations = [Location]()
+        var count = 0
         
-        guard let delegate = self.delegate else {
-            return
+        for key in locationKeys {
+            getLocation(key, completionHandler: { location in
+                if location != nil {
+                    locations.append(location!)
+                }
+                count += 1
+                
+                if count >= locationKeys.count {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        completionHandler(locations: locations)
+                    })
+                }
+            })
         }
-        
-        delegate.tracingLocation(currentLocation)
     }
     
-    private func updateLocationDidFailWithError(error: NSError) {
-        
-        guard let delegate = self.delegate else {
-            return
-        }
-        
-        delegate.tracingLocationDidFailWithError(error)
+    static func getLocation(locationKey:String, completionHandler:(location:Location?)->()) {
+        let locRef = FirebaseService.ref.child("locations/info/\(locationKey)")
+        locRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+            var location:Location?
+            if snapshot.exists() {
+                let key         = snapshot.key
+                let name        = snapshot.value!["name"] as! String
+                let lat         = snapshot.childSnapshotForPath("coordinates").value!["latitude"] as! Double
+                let lon         = snapshot.childSnapshotForPath("coordinates").value!["longitude"] as! Double
+                let imageURL    = snapshot.value!["imageURL"] as! String
+                let address     = snapshot.value!["address"] as! String
+                
+                location = Location(key: key, name: name, latitude: lat, longitude: lon, imageURL: imageURL, address: address)
+            }
+            completionHandler(location: location)
+        })
     }
+    
+    
 }

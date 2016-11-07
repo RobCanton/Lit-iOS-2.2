@@ -117,6 +117,7 @@
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="CHt-sy-jju" secondAttribute="trailing" id="4Um-5U-KsJ"/>
                                     <constraint firstItem="KEl-nf-S2l" firstAttribute="top" secondItem="CHt-sy-jju" secondAttribute="bottom" constant="7" id="6X6-qG-2ek"/>
@@ -169,26 +170,11 @@
                     </collectionView>
                     <navigationItem key="navigationItem" id="lWs-V3-TeV">
                         <barButtonItem key="backBarButtonItem" title=" " id="DNQ-4e-x1g"/>
-                        <barButtonItem key="leftBarButtonItem" image="NearMe" id="tm2-Lw-SrB">
-                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <connections>
-                                <action selector="nearMeTapped:" destination="Xf8-dM-TRa" id="1gR-Q3-ahU"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="search" id="FSp-AZ-TxV">
-                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <connections>
-                                <action selector="searchTapped:" destination="Xf8-dM-TRa" id="WAZ-nT-FVg"/>
-                            </connections>
-                        </barButtonItem>
                     </navigationItem>
-                    <connections>
-                        <outlet property="nearMeButton" destination="tm2-Lw-SrB" id="6IG-bo-RDC"/>
-                    </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZAN-ux-y3c" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2124" y="-364"/>
+            <point key="canvasLocation" x="2117" y="-409"/>
         </scene>
         <!--Loc View Controller-->
         <scene sceneID="dRf-pp-rEC">
@@ -644,12 +630,12 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="Xf8-dM-TRa" kind="relationship" relationship="rootViewController" id="Txw-Tj-LSB"/>
+                        <segue destination="Xf8-dM-TRa" kind="relationship" relationship="rootViewController" id="OvA-ZZ-xQN"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YIp-zO-Gza" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1460" y="-364"/>
+            <point key="canvasLocation" x="1494" y="-409"/>
         </scene>
         <!--Pop Up Tab Bar Controller-->
         <scene sceneID="5o8-sR-ap6">
@@ -732,7 +718,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XQW-dN-guL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1548" y="301"/>
+            <point key="canvasLocation" x="1554" y="301"/>
         </scene>
         <!--Activity Feed View Controller-->
         <scene sceneID="mkh-V2-7Yq">
@@ -769,13 +755,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
-                    <navigationItem key="navigationItem" id="6Nb-7W-3DH">
-                        <barButtonItem key="rightBarButtonItem" image="settings" id="tJD-WM-BSK">
-                            <connections>
-                                <action selector="settingsTapped:" destination="j2M-qo-4D8" id="hwJ-7r-QUL"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="6Nb-7W-3DH"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="600" height="900"/>
                 </viewController>
@@ -865,7 +845,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="NearMe" width="25" height="25"/>
         <image name="Send" width="32" height="32"/>
         <image name="camera" width="32" height="32"/>
         <image name="delete_filled" width="32" height="32"/>
@@ -873,7 +852,6 @@
         <image name="lit" width="1944" height="1944"/>
         <image name="message" width="32" height="32"/>
         <image name="search" width="32" height="32"/>
-        <image name="settings" width="32" height="32"/>
         <image name="user" width="32" height="32"/>
     </resources>
 </document>

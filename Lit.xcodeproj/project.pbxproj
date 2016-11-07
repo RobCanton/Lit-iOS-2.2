@@ -28,7 +28,7 @@
 		76B361CB1D64E8160024CDC7 /* RatingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76B361C91D64E8160024CDC7 /* RatingViewController.xib */; };
 		76B361CD1D64E85F0024CDC7 /* PopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B361CC1D64E85F0024CDC7 /* PopupViewController.swift */; };
 		76B361D51D6517A50024CDC7 /* PopUpTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B361D41D6517A50024CDC7 /* PopUpTabBarController.swift */; };
-		76B361D71D6519ED0024CDC7 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B361D61D6519ED0024CDC7 /* LocationService.swift */; };
+		76B361D71D6519ED0024CDC7 /* GPSService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B361D61D6519ED0024CDC7 /* GPSService.swift */; };
 		76B7212B1D5E377D002B4491 /* StoryProgressIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B7212A1D5E377D002B4491 /* StoryProgressIndicator.swift */; };
 		76C0E74F1D80D4BA004EFA4C /* VisitorsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C0E74D1D80D4BA004EFA4C /* VisitorsViewController.swift */; };
 		76C0E7501D80D4BA004EFA4C /* VisitorsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76C0E74E1D80D4BA004EFA4C /* VisitorsViewController.xib */; };
@@ -77,6 +77,8 @@
 		B0321ED01DB56C0500AD4C53 /* LocationHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0321ECF1DB56C0500AD4C53 /* LocationHeaderView.xib */; };
 		B032C9921DA807C000811779 /* SetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B032C9901DA807C000811779 /* SetupViewController.swift */; };
 		B032C9931DA807C000811779 /* SetupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B032C9911DA807C000811779 /* SetupViewController.xib */; };
+		B03504BD1DCFB2E000C9C83F /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03504BC1DCFB2E000C9C83F /* ListViewController.swift */; };
+		B03504BF1DD017BB00C9C83F /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03504BE1DD017BB00C9C83F /* LocationService.swift */; };
 		B03DED101DAED40D0062357A /* UserProfileControlBarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B03DED0F1DAED40D0062357A /* UserProfileControlBarView.xib */; };
 		B03DED121DAED45A0062357A /* UserProfileControlBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03DED111DAED45A0062357A /* UserProfileControlBar.swift */; };
 		B05ABCF91D41178D00364322 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05ABCF81D41178D00364322 /* AppState.swift */; };
@@ -156,7 +158,7 @@
 		76B361C91D64E8160024CDC7 /* RatingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RatingViewController.xib; sourceTree = "<group>"; };
 		76B361CC1D64E85F0024CDC7 /* PopupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopupViewController.swift; sourceTree = "<group>"; };
 		76B361D41D6517A50024CDC7 /* PopUpTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopUpTabBarController.swift; sourceTree = "<group>"; };
-		76B361D61D6519ED0024CDC7 /* LocationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
+		76B361D61D6519ED0024CDC7 /* GPSService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GPSService.swift; sourceTree = "<group>"; };
 		76B7212A1D5E377D002B4491 /* StoryProgressIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryProgressIndicator.swift; sourceTree = "<group>"; };
 		76C0E74D1D80D4BA004EFA4C /* VisitorsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisitorsViewController.swift; sourceTree = "<group>"; };
 		76C0E74E1D80D4BA004EFA4C /* VisitorsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VisitorsViewController.xib; sourceTree = "<group>"; };
@@ -205,6 +207,8 @@
 		B0321ECF1DB56C0500AD4C53 /* LocationHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LocationHeaderView.xib; sourceTree = "<group>"; };
 		B032C9901DA807C000811779 /* SetupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetupViewController.swift; sourceTree = "<group>"; };
 		B032C9911DA807C000811779 /* SetupViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SetupViewController.xib; sourceTree = "<group>"; };
+		B03504BC1DCFB2E000C9C83F /* ListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
+		B03504BE1DD017BB00C9C83F /* LocationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
 		B03DED0F1DAED40D0062357A /* UserProfileControlBarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserProfileControlBarView.xib; sourceTree = "<group>"; };
 		B03DED111DAED45A0062357A /* UserProfileControlBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileControlBar.swift; sourceTree = "<group>"; };
 		B05ABCF81D41178D00364322 /* AppState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
@@ -321,7 +325,8 @@
 			children = (
 				76136D441D495E8E003DB433 /* FirebaseService.swift */,
 				B0254F771DB01FAE0082D898 /* JSQMessagesService.swift */,
-				76B361D61D6519ED0024CDC7 /* LocationService.swift */,
+				76B361D61D6519ED0024CDC7 /* GPSService.swift */,
+				B03504BE1DD017BB00C9C83F /* LocationService.swift */,
 				B087E9C11D9B4D760079E2BF /* Listeners.swift */,
 			);
 			name = Services;
@@ -464,6 +469,7 @@
 			isa = PBXGroup;
 			children = (
 				B05ABD031D41211100364322 /* MainViewController.swift */,
+				B03504BC1DCFB2E000C9C83F /* ListViewController.swift */,
 				76136D3B1D493713003DB433 /* LocationCell.swift */,
 				76136D381D4933F6003DB433 /* UltravisualLayout.swift */,
 			);
@@ -817,7 +823,7 @@
 				B08BBB8C1DBAF42000AD3FF1 /* UsersListViewController.swift in Sources */,
 				B01B34A61DC17B5C00B2B9CE /* Upload.swift in Sources */,
 				B087E9CA1D9B7CDD0079E2BF /* Tree.swift in Sources */,
-				76B361D71D6519ED0024CDC7 /* LocationService.swift in Sources */,
+				76B361D71D6519ED0024CDC7 /* GPSService.swift in Sources */,
 				76136D471D49600B003DB433 /* LocationActions.swift in Sources */,
 				76C0E7531D80D770004EFA4C /* VisitorCell.swift in Sources */,
 				76B361CA1D64E8160024CDC7 /* RatingViewController.swift in Sources */,
@@ -837,6 +843,7 @@
 				B079BE861DA557B00042B586 /* PhotoCell.swift in Sources */,
 				B02B37D91DB814C400174DE7 /* LeftTransition.swift in Sources */,
 				B0254F761DAFFCDC0082D898 /* ConversationsReducer.swift in Sources */,
+				B03504BD1DCFB2E000C9C83F /* ListViewController.swift in Sources */,
 				B087E9C21D9B4D760079E2BF /* Listeners.swift in Sources */,
 				B0321ECE1DB56BF900AD4C53 /* LocationHeaderView.swift in Sources */,
 				B06D54C61D9ECB6D00F6A4A7 /* MinoruTextField.swift in Sources */,
@@ -860,6 +867,7 @@
 				76136D451D495E8E003DB433 /* FirebaseService.swift in Sources */,
 				B09D5FD31DA57CE9004A188E /* ModalViewController.swift in Sources */,
 				76EE2B941D87653700EDB4CB /* ActivityViewController.swift in Sources */,
+				B03504BF1DD017BB00C9C83F /* LocationService.swift in Sources */,
 				B0321EC21DB52BEB00AD4C53 /* DummyViewController.swift in Sources */,
 				B03DED121DAED45A0062357A /* UserProfileControlBar.swift in Sources */,
 				76EC36041D58EB600056D4CF /* CircleProgressView.swift in Sources */,

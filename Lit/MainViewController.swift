@@ -30,17 +30,17 @@ class MainViewController: UICollectionViewController, StoreSubscriber, CLLocatio
     var searchBar:UISearchBar?
 
     
-    @IBAction func searchTapped(sender: AnyObject) {
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
-        searchBar?.hidden = false
-        self.searchBar?.setShowsCancelButton(true, animated: false)
-        searchBar?.becomeFirstResponder()
-    }
-    @IBAction func nearMeTapped(sender: UIBarButtonItem) {
-        
-        //mainStore.dispatch(ViewUser(uid: mainStore.state.userState.uid))
-    }
-    @IBOutlet weak var nearMeButton: UIBarButtonItem!
+//    @IBAction func searchTapped(sender: AnyObject) {
+//        self.navigationController?.setNavigationBarHidden(true, animated: false)
+//        searchBar?.hidden = false
+//        self.searchBar?.setShowsCancelButton(true, animated: false)
+//        searchBar?.becomeFirstResponder()
+//    }
+//    @IBAction func nearMeTapped(sender: UIBarButtonItem) {
+//        
+//        //mainStore.dispatch(ViewUser(uid: mainStore.state.userState.uid))
+//    }
+//    @IBOutlet weak var nearMeButton: UIBarButtonItem!
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -126,7 +126,7 @@ class MainViewController: UICollectionViewController, StoreSubscriber, CLLocatio
         
         collectionView!.backgroundColor = UIColor.clearColor()
         
-        self.navigationController?.navigationBar.topItem!.title = mainStore.state.userState.activeCity?.getName()
+        //self.navigationController?.navigationBar.topItem!.title = mainStore.state.userState.activeCity?.getName()
         self.navigationController?.navigationBar.titleTextAttributes =
             [NSFontAttributeName: UIFont(name: "Avenir-Book", size: 20.0)!]
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: .Default)

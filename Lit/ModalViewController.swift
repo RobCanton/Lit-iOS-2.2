@@ -313,6 +313,8 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.navigationItem.title = " "
+        
         tap = UITapGestureRecognizer(target: self, action: #selector(profileTapped))
         likeTap = UITapGestureRecognizer(target: self, action: #selector(like))
         

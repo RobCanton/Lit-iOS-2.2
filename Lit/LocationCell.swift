@@ -78,7 +78,6 @@ class LocationCell: UICollectionViewCell {
                 postsCountLabel.text = "\(location.getPostKeys().count)"
                 
                 setGuests()
-                
             }
         }
     }
@@ -217,7 +216,7 @@ class LocationCell: UICollectionViewCell {
         imageCoverView.alpha = getImageCoverAlpha()
         
         if delta > 0 {
-            titleLabel.applyShadow(4, opacity: 0.8, height: 4, shouldRasterize: false)
+            titleLabel.applyShadow(2, opacity: 0.8, height: 2, shouldRasterize: false)
             guestsView.applyShadow(2, opacity: 0.8, height: 2, shouldRasterize: false)
             guestsLabel.applyShadow(2, opacity: 0.8, height: 2, shouldRasterize: false)
         } else {
@@ -245,7 +244,6 @@ class LocationCell: UICollectionViewCell {
         }
         
         if let file = location!.imageOnDiskURL {
-            print("loaded \(location!.getKey()) from file")
             self.imageView.image = UIImage(contentsOfFile: file.path!)
             completion(result: false)
         } else {
@@ -275,7 +273,6 @@ class LocationCell: UICollectionViewCell {
                     }
                     
                     dispatch_async(dispatch_get_main_queue(), {
-                        print("downloaded \(self.location!.getKey())")
                         self.imageView.image = UIImage(data: data!)
                         completion(result: true)
                     })

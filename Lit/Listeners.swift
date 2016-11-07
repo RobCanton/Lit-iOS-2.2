@@ -45,7 +45,7 @@ class Listeners {
         }
     }
     
-    static func listenToLocations() {
+    static func startListeningToLocations() {
         if !listeningToLocations {
             listeningToLocations = true
             let locations = mainStore.state.locations
@@ -82,6 +82,17 @@ class Listeners {
             }
             
         }
+    }
+    
+    static func stopListeningToLocations() {
+        let locations = mainStore.state.locations
+        
+        for location in locations {
+            let locationRef = ref.child("locations")
+            locationRef.child("visitors/\(location.getKey())").removeAllObservers()
+            locationRef.child("uploads/\(location.getKey())").removeAllObservers()
+        }
+        listeningToLocations = false
     }
     
     static func listenToFriendRequests() {
