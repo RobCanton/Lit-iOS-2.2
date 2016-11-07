@@ -11,6 +11,7 @@ import UIKit
 import ReSwift
 import Firebase
 import CoreLocation
+import SwiftMessages
 
 class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarControllerDelegate, GPSServiceDelegate {
     
@@ -74,17 +75,33 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
         }
     }
     
+    var messageView:MessageView?
     func activateLocation(location:Location) {
         activeLocation = location
         print("ACTIVE LOCATION: \(activeLocation!.getKey())")
         
-        //array[2].alpha = 0.3
+        messageView = MessageView.viewFromNib(layout: .MessageView)
+        
+        // Add a drop shadow.
+        messageView!.configureDropShadow()
+        
+        // Set message title, body, and icon. Here, we're overriding the default warning
+        // image with an emoji character.
+        let iconText = ["🤔"].sm_random()!
+        messageView!.configureContent(title: "\(activeLocation!.getName())", body: "You are here. Share a photo!", iconText: iconText)
+        
+        var config = SwiftMessages.defaultConfig
+        config.duration = .Forever
+        config.presentationContext = .Window(windowLevel: UIWindowLevelNormal)
+        SwiftMessages.show(config: config, view: messageView!)
       
     }
     
     func deactivateLocation() {
         activeLocation = nil
         array[2].alpha = 0.0
+        
+        SwiftMessages.hide()
         
     }
     
