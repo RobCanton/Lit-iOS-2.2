@@ -27,6 +27,7 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
     var headerView:LocationHeaderView!
     var eventsBanner:EventsBannerView?
     var eventsBannerTap:UITapGestureRecognizer!
+    var footerView:LocationFooterView!
     
     var location: Location!
     override func viewWillAppear(animated: Bool) {
@@ -104,6 +105,10 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
         detailsView.delegate = self
         collectionView?.addSubview(detailsView)
         
+        footerView = UINib(nibName: "LocationFooterView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! LocationFooterView
+        footerView.frame = CGRectMake(0, 0, collectionView!.frame.width, 120)
+        //collectionView?.registerClass(footerView, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: "myFooterView")
+        
         statusBarBG = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: navHeight))
         statusBarBG!.backgroundColor = UIColor(white: 0.0, alpha: 0.0)
         
@@ -166,6 +171,16 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
             .instantiateViewControllerWithIdentifier("EventsViewController") as! EventsViewController
             controller._events = events
             self.navigationController?.pushViewController(controller, animated: true)
+        }
+    }
+    
+    func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+        switch kind {
+        case UICollectionElementKindSectionFooter:
+            let view = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionFooter, withReuseIdentifier: "myFooterView", forIndexPath: indexPath)
+            return view
+        default:
+            return UICollectionReusableView()
         }
     }
     
@@ -406,6 +421,11 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
     
     func dismissalCompletionAction(completeTransition: Bool) {
         self.selectedImageView?.hidden = false
+        if completeTransition {
+            if let tabBar = self.tabBarController as? PopUpTabBarController {
+                tabBar.setTabBarVisible(true, animated: true)
+            }
+        }
     }
     
     

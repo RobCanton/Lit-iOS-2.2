@@ -79,6 +79,8 @@
 		B032C9931DA807C000811779 /* SetupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B032C9911DA807C000811779 /* SetupViewController.xib */; };
 		B03504BD1DCFB2E000C9C83F /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03504BC1DCFB2E000C9C83F /* ListViewController.swift */; };
 		B03504BF1DD017BB00C9C83F /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03504BE1DD017BB00C9C83F /* LocationService.swift */; };
+		B03504C11DD0661F00C9C83F /* LocationFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03504C01DD0661F00C9C83F /* LocationFooterView.swift */; };
+		B03504C31DD0663100C9C83F /* LocationFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B03504C21DD0663100C9C83F /* LocationFooterView.xib */; };
 		B03DED101DAED40D0062357A /* UserProfileControlBarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B03DED0F1DAED40D0062357A /* UserProfileControlBarView.xib */; };
 		B03DED121DAED45A0062357A /* UserProfileControlBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03DED111DAED45A0062357A /* UserProfileControlBar.swift */; };
 		B05ABCF91D41178D00364322 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05ABCF81D41178D00364322 /* AppState.swift */; };
@@ -209,6 +211,8 @@
 		B032C9911DA807C000811779 /* SetupViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SetupViewController.xib; sourceTree = "<group>"; };
 		B03504BC1DCFB2E000C9C83F /* ListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		B03504BE1DD017BB00C9C83F /* LocationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
+		B03504C01DD0661F00C9C83F /* LocationFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationFooterView.swift; sourceTree = "<group>"; };
+		B03504C21DD0663100C9C83F /* LocationFooterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LocationFooterView.xib; sourceTree = "<group>"; };
 		B03DED0F1DAED40D0062357A /* UserProfileControlBarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserProfileControlBarView.xib; sourceTree = "<group>"; };
 		B03DED111DAED45A0062357A /* UserProfileControlBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileControlBar.swift; sourceTree = "<group>"; };
 		B05ABCF81D41178D00364322 /* AppState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
@@ -492,6 +496,8 @@
 				B0321ECF1DB56C0500AD4C53 /* LocationHeaderView.xib */,
 				B03095E41DB7D65C008A4DFA /* MapViewController.swift */,
 				B0305A511DBE6F15009B5F74 /* WebViewController.swift */,
+				B03504C01DD0661F00C9C83F /* LocationFooterView.swift */,
+				B03504C21DD0663100C9C83F /* LocationFooterView.xib */,
 			);
 			name = Location;
 			sourceTree = "<group>";
@@ -691,6 +697,7 @@
 				B0ED4B671DBD84D20040E5F0 /* LocationDetailsView.xib in Resources */,
 				B00BA9271D9E4E1D00F5EA30 /* CreateProfileViewController.xib in Resources */,
 				B0BA326A1DA7158B004352A7 /* HeaderView.xib in Resources */,
+				B03504C31DD0663100C9C83F /* LocationFooterView.xib in Resources */,
 				B0321ED01DB56C0500AD4C53 /* LocationHeaderView.xib in Resources */,
 				B01CD8141DCC136800AA3499 /* EventCell.xib in Resources */,
 				76C0E7541D80D770004EFA4C /* VisitorCell.xib in Resources */,
@@ -839,6 +846,7 @@
 				76B361CD1D64E85F0024CDC7 /* PopupViewController.swift in Sources */,
 				B0FF11451D3EB32100D709CE /* AppDelegate.swift in Sources */,
 				B087E9C41D9B51EB0079E2BF /* FriendsActions.swift in Sources */,
+				B03504C11DD0661F00C9C83F /* LocationFooterView.swift in Sources */,
 				B09D5FCF1DA57C80004A188E /* ARNModalImageTransitionViewController.swift in Sources */,
 				B079BE861DA557B00042B586 /* PhotoCell.swift in Sources */,
 				B02B37D91DB814C400174DE7 /* LeftTransition.swift in Sources */,

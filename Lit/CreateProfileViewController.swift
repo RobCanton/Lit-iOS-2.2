@@ -6,13 +6,14 @@
 //  Copyright © 2016 Robert Canton. All rights reserved.
 //
 
+import ReSwift
 import Firebase
 import UIKit
 import FBSDKCoreKit
 import MXParallaxHeader
 import AudioToolbox
 
-class CreateProfileViewController: UIViewController, UITextFieldDelegate {
+class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     let usernameLengthLimit = 16
 //    @IBOutlet weak var editorArea: UIView!
@@ -30,16 +31,43 @@ class CreateProfileViewController: UIViewController, UITextFieldDelegate {
     var bodyView:UIView!
     var headerView:CreateProfileHeaderView!
     
+    var headerTap:UILongPressGestureRecognizer!
+    let imagePicker = UIImagePickerController()
+    
     var tap: UITapGestureRecognizer!
     var continueButton:UIView!
     
     var userInfo:[String : String] = [
         "displayName": ""
     ]
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        mainStore.subscribe(self)
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        mainStore.unsubscribe(self)
+    }
+    
+    func newState(state:AppState) {
+    
+        if state.userState.isAuth && state.userState.user != nil {
+            
+            Listeners.listenToFriends()
+            Listeners.listenToFriendRequests()
+            Listeners.listenToConversations()
+            
+            self.performSegueWithIdentifier("showLit", sender: self)
+            
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        self.automaticallyAdjustsScrollViewInsets = false
         
         headerView = UINib(nibName: "CreateProfileHeaderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! CreateProfileHeaderView
 
@@ -57,7 +85,7 @@ class CreateProfileViewController: UIViewController, UITextFieldDelegate {
         scrollView.addSubview(bodyView)
         view.addSubview(scrollView)
         
-        usernameField = MadokaTextField(frame: CGRect(x: 0, y: 0, width: self.view.frame.width * 0.75, height: 80))
+        usernameField = MadokaTextField(frame: CGRect(x: 0, y: 0, width: self.view.frame.width * 0.85, height: 80))
         usernameField.placeholderColor = .whiteColor()
         usernameField.borderColor = .whiteColor()
         usernameField.textColor = .whiteColor()
@@ -65,10 +93,11 @@ class CreateProfileViewController: UIViewController, UITextFieldDelegate {
         usernameField.delegate = self
         usernameField.font = UIFont(name: "Avenir-Book", size: 26.0)
         usernameField.textAlignment = .Center
+        usernameField.autocapitalizationType = .None
         usernameField.addTarget(self, action: "textViewChanged", forControlEvents: .EditingChanged);
 
         
-        fullnameField = MadokaTextField(frame: CGRect(x: 0, y: 0, width: self.view.frame.width * 0.75, height: 80))
+        fullnameField = MadokaTextField(frame: CGRect(x: 0, y: 0, width: self.view.frame.width * 0.85, height: 80))
         fullnameField.placeholderColor = .whiteColor()
         fullnameField.borderColor = .whiteColor()
         fullnameField.textColor = .whiteColor()
@@ -94,12 +123,50 @@ class CreateProfileViewController: UIViewController, UITextFieldDelegate {
         continueButton.addSubview(label)
         
         tap = UITapGestureRecognizer(target: self, action: #selector(proceed))
+        
+        headerTap = UILongPressGestureRecognizer(target: self, action: #selector(headerTapped))
+        headerTap.minimumPressDuration = 0
+        headerView.addGestureRecognizer(headerTap)
     
         view.addSubview(continueButton)
+        imagePicker.delegate = self
+        
+        doSet()
 
     }
     
+    // called by gesture recognizer
+    func headerTapped(gesture: UITapGestureRecognizer) {
+        
+        // handle touch down and touch up events separately
+        if gesture.state == .Began {
+            headerView.animateDown()
+            
+        } else if gesture.state == .Ended { // optional for touch up event catching
+            headerView.animateUp()
+            imagePicker.allowsEditing = false
+            imagePicker.sourceType = .PhotoLibrary
+            
+            presentViewController(imagePicker, animated: true, completion: nil)
+        }
+    }
+    
+    
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+        if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+            headerView.imageView.image = pickedImage
+        }
+        
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
     var smallProfileImageView:UIImageView!
+    
+    
     
     func doSet() {
         
@@ -126,11 +193,6 @@ class CreateProfileViewController: UIViewController, UITextFieldDelegate {
                 print("\(error)")
             }
         })
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     func uploadLargeProfilePicture() -> FIRStorageUploadTask? {
@@ -159,7 +221,7 @@ class CreateProfileViewController: UIViewController, UITextFieldDelegate {
         guard let user = FIRAuth.auth()?.currentUser else { return nil}
         
         let imageRef = FirebaseService.storageRef.child("user_profiles/\(user.uid)/small")
-        let image = smallProfileImageView.image
+        let image = headerView.imageView.image
         if let picData = UIImageJPEGRepresentation(image!, 1.0) {
             let contentTypeStr = "image/jpg"
             let metadata = FIRStorageMetadata()
@@ -281,7 +343,24 @@ class CreateProfileViewController: UIViewController, UITextFieldDelegate {
         
         guard let text = textField.text else { return true }
         let newLength = text.characters.count + string.characters.count - range.length
-        return newLength <= usernameLengthLimit
+        //return newLength <= usernameLengthLimit
+        if newLength > usernameLengthLimit { return false }
+        
+        // Create an `NSCharacterSet` set which includes everything *but* the digits
+        let inverseSet = NSCharacterSet(charactersInString:"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ").invertedSet
+        
+        // At every character in this "inverseSet" contained in the string,
+        // split the string up into components which exclude the characters
+        // in this inverse set
+        let components = string.componentsSeparatedByCharactersInSet(inverseSet)
+        
+        // Rejoin these components
+        let filtered = components.joinWithSeparator("")  // use join("", components) if you are using Swift 1.2
+        
+        // If the original string is equal to the filtered string, i.e. if no
+        // inverse characters were present to be eliminated, the input is valid
+        // and the statement returns true; else it returns false
+        return string == filtered
     }
     
     func textFieldDidBeginEditing(textField: UITextField) {
@@ -317,14 +396,12 @@ class CreateProfileViewController: UIViewController, UITextFieldDelegate {
         
     }
 
-    /*
-    // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    override func willMoveToParentViewController(parent: UIViewController?) {
+        if parent == nil {
+            // Back btn Event handler
+            print("back tapped")
+        }
     }
-    */
 
 }

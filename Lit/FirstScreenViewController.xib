@@ -30,12 +30,6 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pdr-Wr-iuZ">
                     <rect key="frame" x="62" y="509" width="476" height="60"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Login with Facebook" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RML-Mz-M6M">
-                            <rect key="frame" x="54" y="8" width="408" height="44"/>
-                            <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="18"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <nil key="highlightedColor"/>
-                        </label>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="fb" translatesAutoresizingMaskIntoConstraints="NO" id="LRi-JO-pxu">
                             <rect key="frame" x="20" y="14" width="26" height="26"/>
                             <constraints>
@@ -43,6 +37,12 @@
                                 <constraint firstAttribute="height" constant="26" id="VLA-Zy-Glr"/>
                             </constraints>
                         </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Login with Facebook" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RML-Mz-M6M">
+                            <rect key="frame" x="54" y="8" width="408" height="44"/>
+                            <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="18"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>

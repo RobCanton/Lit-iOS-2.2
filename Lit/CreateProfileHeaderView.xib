@@ -22,7 +22,7 @@
                         <constraint firstAttribute="height" constant="75" id="nik-Tg-qzj"/>
                     </constraints>
                 </view>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Toronto, ON" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sxb-IN-AQ9">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sxb-IN-AQ9">
                     <rect key="frame" x="51" y="533" width="225" height="24"/>
                     <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="17"/>
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -34,7 +34,7 @@
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="NearMe" translatesAutoresizingMaskIntoConstraints="NO" id="6OQ-3r-dRO">
+                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="NearMe" translatesAutoresizingMaskIntoConstraints="NO" id="6OQ-3r-dRO">
                     <rect key="frame" x="15" y="530" width="20" height="20"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="6OQ-3r-dRO" secondAttribute="height" multiplier="1:1" id="9yd-0Y-U5V"/>

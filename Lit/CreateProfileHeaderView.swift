@@ -112,6 +112,18 @@ class CreateProfileHeaderView: UIView {
     var status:FriendStatus = .NOT_FRIENDS
     
     
+    func animateDown() {
+        UIView.animateWithDuration(0.15, animations: {
+            self.alpha = 0.6
+        })
+    }
+    
+    func animateUp() {
+        UIView.animateWithDuration(0.3, animations: {
+            self.alpha = 1.0
+        })
+    }
+    
     func checkFriendStatus() {
 //        status = FirebaseService.checkFriendStatus(user.getUserId())
 //        switch status {

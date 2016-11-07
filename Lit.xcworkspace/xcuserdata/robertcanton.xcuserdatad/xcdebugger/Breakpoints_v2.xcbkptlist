@@ -152,11 +152,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Lit/CreateProfileHeaderView.swift"
-            timestampString = "499384783.376571"
+            timestampString = "500233905.933676"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "162"
-            endingLineNumber = "162"
+            startingLineNumber = "174"
+            endingLineNumber = "174"
             landmarkName = "checkFriendStatus()"
             landmarkType = "5">
          </BreakpointContent>
@@ -168,11 +168,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Lit/CreateProfileHeaderView.swift"
-            timestampString = "499384783.376571"
+            timestampString = "500233905.933676"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "162"
-            endingLineNumber = "162"
+            startingLineNumber = "174"
+            endingLineNumber = "174"
             landmarkName = "checkFriendStatus()"
             landmarkType = "5">
          </BreakpointContent>
@@ -216,11 +216,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Lit/LocViewController.swift"
-            timestampString = "500191369.628858"
+            timestampString = "500229411.205151"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "322"
-            endingLineNumber = "322"
+            startingLineNumber = "320"
+            endingLineNumber = "320"
             landmarkName = "showInteractive()"
             landmarkType = "5">
          </BreakpointContent>
@@ -232,11 +232,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Lit/LocViewController.swift"
-            timestampString = "500191369.628858"
+            timestampString = "500229411.205151"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "326"
-            endingLineNumber = "326"
+            startingLineNumber = "324"
+            endingLineNumber = "324"
             landmarkName = "showInteractive()"
             landmarkType = "5">
          </BreakpointContent>
@@ -248,7 +248,23 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Lit/LocViewController.swift"
-            timestampString = "500191369.628858"
+            timestampString = "500229411.205151"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "331"
+            endingLineNumber = "331"
+            landmarkName = "showInteractive()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Lit/LocViewController.swift"
+            timestampString = "500229411.205151"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "333"
@@ -264,27 +280,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Lit/LocViewController.swift"
-            timestampString = "500191369.628858"
+            timestampString = "500229411.205151"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "335"
-            endingLineNumber = "335"
-            landmarkName = "showInteractive()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Lit/LocViewController.swift"
-            timestampString = "500191369.628858"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "342"
-            endingLineNumber = "342"
+            startingLineNumber = "340"
+            endingLineNumber = "340"
             landmarkName = "showInteractive()"
             landmarkType = "5">
             <Locations>
@@ -328,11 +328,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Lit/LocViewController.swift"
-            timestampString = "500191369.628858"
+            timestampString = "500229411.205151"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "344"
-            endingLineNumber = "344"
+            startingLineNumber = "342"
+            endingLineNumber = "342"
             landmarkName = "showInteractive()"
             landmarkType = "5">
          </BreakpointContent>
@@ -344,39 +344,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Lit/LocViewController.swift"
-            timestampString = "500191369.628858"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "345"
-            endingLineNumber = "345"
-            landmarkName = "showInteractive()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Lit/LocViewController.swift"
-            timestampString = "500191369.628858"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "351"
-            endingLineNumber = "351"
-            landmarkName = "showInteractive()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Lit/LocViewController.swift"
-            timestampString = "500191369.628858"
+            timestampString = "500229411.205151"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "343"
@@ -392,11 +360,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Lit/LocViewController.swift"
-            timestampString = "500191369.628858"
+            timestampString = "500229411.205151"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "350"
-            endingLineNumber = "350"
+            startingLineNumber = "349"
+            endingLineNumber = "349"
             landmarkName = "showInteractive()"
             landmarkType = "5">
          </BreakpointContent>
@@ -408,11 +376,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Lit/LocViewController.swift"
-            timestampString = "500191369.628858"
+            timestampString = "500229411.205151"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "355"
-            endingLineNumber = "355"
+            startingLineNumber = "341"
+            endingLineNumber = "341"
             landmarkName = "showInteractive()"
             landmarkType = "5">
          </BreakpointContent>
@@ -424,11 +392,43 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Lit/LocViewController.swift"
-            timestampString = "500191369.628858"
+            timestampString = "500229411.205151"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "321"
-            endingLineNumber = "321"
+            startingLineNumber = "348"
+            endingLineNumber = "348"
+            landmarkName = "showInteractive()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Lit/LocViewController.swift"
+            timestampString = "500229411.205151"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "353"
+            endingLineNumber = "353"
+            landmarkName = "showInteractive()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Lit/LocViewController.swift"
+            timestampString = "500229411.205151"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "319"
+            endingLineNumber = "319"
             landmarkName = "showInteractive()"
             landmarkType = "5">
          </BreakpointContent>
@@ -459,8 +459,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "50"
             endingLineNumber = "50"
-            landmarkName = "downloadMedia()"
-            landmarkType = "5">
+            landmarkName = "LocViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

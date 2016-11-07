@@ -132,9 +132,9 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
         self.likeBtn.alpha = 0
         self.likesLabel.alpha = 0
         self.gradientView.alpha = 0.0
-        if let tabBar = self.tabBarController as? PopUpTabBarController {
-            tabBar.setTabBarVisible(true, animated: true)
-        }
+//        if let tabBar = self.tabBarController as? PopUpTabBarController {
+//            tabBar.setTabBarVisible(true, animated: true)
+//        }
     }
     
     func profileTapped(gesture:UITapGestureRecognizer) {

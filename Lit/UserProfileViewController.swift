@@ -32,8 +32,15 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         mainStore.subscribe(self)
-        
     }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        if let tabBar = self.tabBarController as? PopUpTabBarController {
+            tabBar.setTabBarVisible(true, animated: true)
+        }
+    }
+    
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         mainStore.unsubscribe(self)

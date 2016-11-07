@@ -23,11 +23,13 @@ class LoginViewController: UIViewController, StoreSubscriber {
     }
     
     var flowState:FlowState = .None
+    
+    var tap: UITapGestureRecognizer!
 
-    @IBOutlet weak var scrollView: UIScrollView!
+
     override func viewWillAppear(animated: Bool) {
         mainStore.subscribe(self)
-        scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
+
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -43,7 +45,7 @@ class LoginViewController: UIViewController, StoreSubscriber {
             switch flowState {
             case .CreateNewUser:
                 print("CreateNewUser")
-                toCreateProfile()
+                createProfile()
                 break
             case .ReturningUser:
                 print("ReturningUser")
@@ -54,7 +56,7 @@ class LoginViewController: UIViewController, StoreSubscriber {
             }
         }
         
-        if state.userState.isAuth{
+        if state.userState.isAuth && state.userState.user != nil {
             
             Listeners.listenToFriends()
             Listeners.listenToFriendRequests()
@@ -70,52 +72,33 @@ class LoginViewController: UIViewController, StoreSubscriber {
         mainStore.dispatch(UserIsUnauthenticated())
     }
     
-    func toCreateProfile() {
-        v2 = CreateProfileViewController(nibName: "CreateProfileViewController", bundle: nil)
-        
-        addChildViewController(v2)
-        scrollView.addSubview(v2.view)
-        v2.didMoveToParentViewController(self)
-        
-        v2.doSet()
-        var v2Frame = v1.view.frame
-        v2Frame.origin.x = self.view.frame.width
-        v2.view.frame = v2Frame
-        
-        self.scrollView.contentSize = CGSizeMake(self.view.frame.width * 2, self.view.frame.height)
-        scrollView.setContentOffset(CGPoint(x: v1.view.frame.width, y: 0), animated: true)
-
+    func createProfile(){
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewControllerWithIdentifier("CreateProfileViewController") as! CreateProfileViewController
+        navigationController?.navigationBar.tintColor = UIColor.whiteColor()
+        navigationController?.pushViewController(controller, animated: true)
     }
-//    func toSetup() {
-//        v3 = SetupViewController(nibName: "SetupViewController", bundle: nil)
-//
-//        addChildViewController(v3)
-//        scrollView.addSubview(v3.view)
-//        v3.didMoveToParentViewController(self)
-//        
-//        var v3Frame = v1.view.frame
-//        v3Frame.origin.x = self.view.frame.width * 2
-//        v3.view.frame = v3Frame
-//        
-//        self.scrollView.contentSize = CGSizeMake(self.view.frame.width * 3, self.view.frame.height)
-//        scrollView.setContentOffset(CGPoint(x: self.view.frame.width * 2, y: 0), animated: true)
-//    }
     
-    var v1:FirstScreenViewController!
-    var v2:CreateProfileViewController!
-    //var v3:SetupViewController!
+
+    @IBOutlet weak var loginButton: UIView!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        v1 = FirstScreenViewController(nibName: "FirstScreenViewController", bundle: nil)
+        self.navigationController?.navigationBar.titleTextAttributes =
+            [NSFontAttributeName: UIFont(name: "Avenir-Book", size: 20.0)!]
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: .Default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.barStyle = .Black
+        self.navigationController?.navigationBar.translucent = true
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Plain, target: nil, action: nil)
         
-        addChildViewController(v1)
-        scrollView.addSubview(v1.view)
-        v1.didMoveToParentViewController(self)
-        
-        self.scrollView.contentSize = CGSizeMake(self.view.frame.width, self.view.frame.height)
-        scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
+
+        loginButton.layer.borderColor = UIColor.whiteColor().CGColor
+        loginButton.layer.borderWidth = 2.0
+        tap = UITapGestureRecognizer(target: self, action: #selector(initiateFBLogin))
+        deactivateLoginButton()
          
         if let user = FIRAuth.auth()?.currentUser {
             print("already signed in")
@@ -124,20 +107,101 @@ class LoginViewController: UIViewController, StoreSubscriber {
                     mainStore.dispatch(UserIsAuthenticated( user: _user!, flow: .ReturningUser))
                 } else {
                    // Do nothing
-                    self.v1.activateLoginButton()
+                    self.activateLoginButton()
                 }
             })
         } else {
-            self.v1.activateLoginButton()
+            activateLoginButton()
         }
         
     }
     
+    func activateLoginButton() {
+        loginButton.hidden = false
+        loginButton.addGestureRecognizer(tap)
+    }
+    
+    func deactivateLoginButton() {
+        loginButton.hidden = true
+        loginButton.removeGestureRecognizer(tap)
+    }
+    
+    
+    
 
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    func initiateFBLogin() {
+        loginButton.layer.opacity = 0.4
+        loginButton.removeGestureRecognizer(tap)
+        let loginManager = FBSDKLoginManager()
+        
+        loginManager.logInWithReadPermissions(["public_profile", "user_photos"], fromViewController: self, handler: {(result:FBSDKLoginManagerLoginResult!, error:NSError!) -> Void in
+            if (error != nil) {
+                // Process error
+                self.removeFbData()
+                self.activateLoginButton()
+            } else if result.isCancelled {
+                // User Cancellation
+                self.removeFbData()
+                self.activateLoginButton()
+            } else {
+                //Success
+                if result.grantedPermissions.contains("user_photos") && result.grantedPermissions.contains("public_profile") {
+                    //Do work
+                    self.fetchFacebookProfile()
+                } else {
+                    //Handle error
+                    self.removeFbData()
+                    self.activateLoginButton()
+                }
+            }
+        })
+    }
+    
+    func removeFbData() {
+        //Remove FB Data
+        let fbManager = FBSDKLoginManager()
+        fbManager.logOut()
+        FBSDKAccessToken.setCurrentAccessToken(nil)
+    }
+    
+    func fetchFacebookProfile()
+    {
+        if FBSDKAccessToken.currentAccessToken() != nil {
+            let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me", parameters: nil)
+            graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
+                
+                if ((error) != nil) {
+                    //Handle error
+                } else {
+                    //Handle Profile Photo URL String
+                    let userId =  result["id"] as! String
+                    let profilePictureUrl = "https://graph.facebook.com/\(userId)/picture?type=large"
+                    
+                    let accessToken = FBSDKAccessToken.currentAccessToken().tokenString
+                    let fbUser = ["accessToken": accessToken, "user": result]
+                    
+                    let credential = FIRFacebookAuthProvider.credentialWithAccessToken(accessToken)
+                    
+                    
+                    FIRAuth.auth()?.signInWithCredential(credential) { (user, error) in
+                        if let error = error {
+                            print(error.localizedDescription)
+                            return
+                        }
+                        
+                        FirebaseService.getUser(user!.uid, completionHandler: { _user in
+                            if _user != nil {
+                                mainStore.dispatch(UserIsAuthenticated( user: _user!, flow: .ReturningUser))
+                            } else {
+                                // Do nothing
+                                mainStore.dispatch(UserIsAuthenticated( user: nil, flow: .CreateNewUser))
+                            }
+                        })
+                    }
+                }
+            })
+        }
     }
 }
 
