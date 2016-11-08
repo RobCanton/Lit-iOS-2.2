@@ -66,7 +66,9 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
         self.automaticallyAdjustsScrollViewInsets = false
         
         headerView = UINib(nibName: "CreateProfileHeaderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! CreateProfileHeaderView
-
+        headerView.locationIcon.hidden = true
+        headerView.locationLabel.hidden = true
+        headerView.bioTextView.hidden = true
         scrollView = MXScrollView()
         scrollView.parallaxHeader.view = headerView
         scrollView.parallaxHeader.height = 300
@@ -147,10 +149,24 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
         }
     }
     
+    func resizeImage(image: UIImage, newWidth: CGFloat) -> UIImage {
+        
+        let scale = newWidth / image.size.width
+        let newHeight = image.size.height * scale
+        UIGraphicsBeginImageContext(CGSizeMake(newWidth, newHeight))
+        image.drawInRect(CGRectMake(0, 0, newWidth, newHeight))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage
+    }
+    
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
-            headerView.imageView.image = pickedImage
+            
+            headerView.imageView.image = resizeImage(pickedImage, newWidth: 720)
+            smallProfileImageView.image = resizeImage(pickedImage, newWidth: 150)
         }
         
         dismissViewControllerAnimated(true, completion: nil)
@@ -176,14 +192,16 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
         smallProfileImageView = UIImageView()
         smallProfileImageView.loadImageUsingCacheWithURLString(userInfo["photoURL"]!, completion: {result in})
         
-        let pictureRequest = FBSDKGraphRequest(graphPath: "me/picture??width=1080&height=1080&redirect=false", parameters: nil)
+        let pictureRequest = FBSDKGraphRequest(graphPath: "me/picture??width=720&height=720&redirect=false", parameters: nil)
         pictureRequest.startWithCompletionHandler({
             (connection, result, error: NSError!) -> Void in
             if error == nil {
                 let dictionary = result as? NSDictionary
                 let data = dictionary?.objectForKey("data")
                 let urlPic = (data?.objectForKey("url"))! as! String
-                self.headerView.imageView.loadImageUsingCacheWithURLString(urlPic, completion: {result in})
+                self.headerView.imageView.loadImageUsingCacheWithURLString(urlPic, completion: {result in
+                    self.smallProfileImageView.image = self.resizeImage( self.headerView.imageView.image!, newWidth: 150)
+                })
 
             } else {
                 print("\(error)")
@@ -217,8 +235,8 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
         guard let user = FIRAuth.auth()?.currentUser else { return nil}
         
         let imageRef = FirebaseService.storageRef.child("user_profiles/\(user.uid)/small")
-        let image = headerView.imageView.image
-        if let picData = UIImageJPEGRepresentation(image!, 1.0) {
+        let image = smallProfileImageView.image
+        if let picData = UIImageJPEGRepresentation(image!, 0.9) {
             let contentTypeStr = "image/jpg"
             let metadata = FIRStorageMetadata()
             metadata.contentType = contentTypeStr

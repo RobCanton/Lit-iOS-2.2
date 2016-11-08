@@ -16,7 +16,7 @@ class LocationService {
 
     static private let ref = FIRDatabase.database().reference().child("locations")
     
-    static var shouldCalculateNearbyArea:Bool = false
+    static var shouldCalculateNearbyArea:Bool = true
     
     static func requestNearbyLocations(latitude:Double, longitude:Double) {
         
@@ -33,8 +33,10 @@ class LocationService {
         
         task.resume()
         
-        if shouldCalculateNearbyArea && mainStore.state.cities.count > 0 {
-            calculateNearbyArea(latitude, longitude: longitude)
+        if shouldCalculateNearbyArea {
+            getCities({ _ in
+                calculateNearbyArea(latitude, longitude: longitude)
+            })
         }
     }
     
@@ -133,7 +135,7 @@ class LocationService {
         })
     }
     
-    static func getCities() {
+    static func getCities(completionHandler:(cities:[City])->()) {
         FIRDatabase.database().reference().child("cities")
             .observeSingleEventOfType(.Value, withBlock: {(snapshot) in
                 var cities = [City]()
@@ -149,6 +151,7 @@ class LocationService {
                     cities.append(city)
                 }
                 mainStore.dispatch(CitiesRetrieved(cities: cities))
+                completionHandler(cities: cities)
             })
     }
     
@@ -166,15 +169,10 @@ class LocationService {
                 nearestCity = city
             }
         }
-        
-        var lastLocationString = "Unknown"
-        if minDistance < 50 {
-            lastLocationString = "\(nearestCity.getName()), \(nearestCity.getRegion()), \(nearestCity.getCountry())"
-        }
-        
+
+        let lastLocationString = nearestCity.getKey()
         let ref = FIRDatabase.database().reference().child("users/lastLocation/\(mainStore.state.userState.uid)")
         ref.setValue(lastLocationString)
-        
     }
 
     

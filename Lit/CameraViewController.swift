@@ -202,7 +202,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
         if cameraState == .PhotoTaken {
             
             if let image = imageCaptureView.image {
-                print("Sending dat image")
+                
                 upload.image = printTextOnImage()
                 if let uploadTask = FirebaseService.sendImage(upload)
                 {

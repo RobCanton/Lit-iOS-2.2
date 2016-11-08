@@ -82,6 +82,7 @@ class LoginViewController: UIViewController, StoreSubscriber {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+
         self.navigationController?.navigationBar.titleTextAttributes =
             [NSFontAttributeName: UIFont(name: "Avenir-Book", size: 20.0)!]
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: .Default)

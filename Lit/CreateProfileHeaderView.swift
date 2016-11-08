@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 protocol HeaderProtocol {
     func backTapped()
@@ -60,8 +61,24 @@ class CreateProfileHeaderView: UIView {
     func populateUser(user:User) {
         self.user = user
         usernameLabel.text = user.getDisplayName()
-        
-        bioTextView.text = "This is a temporary bio description."
+
+        FirebaseService.ref.child("users/lastLocation/\(user.getUserId())").observeSingleEventOfType(.Value, withBlock: { snapshot in
+            
+            var string = "Unknown"
+
+            if snapshot.exists() {
+                print(snapshot)
+                let key = snapshot.value! as! String
+                for city in mainStore.state.cities {
+                    if key == city.getKey() {
+                        string = "\(city.getName()), \(city.getRegion()), \(city.getCountry())"
+
+                    }
+                }
+            }
+            
+            self.locationLabel.text     = string
+        })
     }
     
     

@@ -28,6 +28,8 @@ class FirebaseService {
         let loginManager = FBSDKLoginManager()
         loginManager.logOut()
         try! FIRAuth.auth()!.signOut()
+        GPSService.sharedInstance.stopUpdatingLocation()
+        LocationService.shouldCalculateNearbyArea = true
         Listeners.stopListeningToAll()
         mainStore.dispatch(ClearConversations())
         mainStore.dispatch(ClearCities())
