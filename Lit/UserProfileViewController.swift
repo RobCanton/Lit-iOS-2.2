@@ -91,7 +91,7 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     }
     
     func newState(state: AppState) {
-        checkFriendStatus()
+        updateFriendStatus()
         
     }
     
@@ -178,10 +178,9 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         })
     }
     
-    func checkFriendStatus() {
-        status =  FirebaseService.checkFriendStatus(user.getUserId())
+    func updateFriendStatus() {
+        status =  checkFriendStatus(user.getUserId())
         controlBar?.setFriendStatus(status)
-        headerView?.checkFriendStatus()
     }
     
     func getKeys() {

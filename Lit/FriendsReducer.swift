@@ -14,6 +14,30 @@ func isFriend(user:String) -> Bool {
     return mainStore.state.friends.contains(user)
 }
 
+func checkFriendStatus(friend_uid:String) -> FriendStatus {
+    
+    if friend_uid == mainStore.state.userState.uid {
+        return FriendStatus.IS_CURRENT_USER
+    }
+    
+    let friends = mainStore.state.friends
+    if friends.contains(friend_uid) {
+        return FriendStatus.FRIENDS
+    }
+    
+    let requests = mainStore.state.friendRequestsIn
+    if let _ = requests[friend_uid] {
+        return FriendStatus.PENDING_INCOMING
+    }
+    
+    let requestsOut = mainStore.state.friendRequestsOut
+    if let _ = requestsOut[friend_uid] {
+        return FriendStatus.PENDING_OUTGOING
+    }
+    
+    return FriendStatus.NOT_FRIENDS
+}
+
 func sortUsersArrayByFriends(users:[String]) -> [String] {
     let friends = mainStore.state.friends
     var sortedArray = [String]()
@@ -27,6 +51,19 @@ func sortUsersArrayByFriends(users:[String]) -> [String] {
     }
     
     return sortedArray
+}
+
+func getUsersArrayWithoutFriends(users:[String]) -> [String] {
+    let friends = mainStore.state.friends
+    var slicedArray = [String]()
+    
+    for user in users {
+        if !friends.contains(user) {
+            slicedArray.append(user)
+        }
+    }
+    
+    return slicedArray
 }
 
 func FriendsReducer(action: Action, state:Tree<String>?) -> Tree<String> {

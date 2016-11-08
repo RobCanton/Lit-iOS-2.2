@@ -132,23 +132,7 @@ class UserProfileControlBar: UIView {
     
     func friendBlockTapped(gesture:UITapGestureRecognizer) {
         friendBlock.removeGestureRecognizer(friendTap)
-        switch status {
-        case .FRIENDS:
-            break
-        case .NOT_FRIENDS:
-            FirebaseService.sendFriendRequest(user.getUserId(), completionHandler: { success in})
-            break
-        case .PENDING_INCOMING:
-            FirebaseService.acceptFriendRequest(user.getUserId())
-            break
-        case .PENDING_INCOMING_SEEN:
-            FirebaseService.acceptFriendRequest(user.getUserId())
-            break
-        case .PENDING_OUTGOING:
-            break
-        default:
-            break
-        }
+        FirebaseService.handleFriendAction(user.getUserId(), status: status)
     }
     
     func numFriendsBlockTapped(gesture:UITapGestureRecognizer) {

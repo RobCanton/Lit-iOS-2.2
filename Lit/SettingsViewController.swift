@@ -11,6 +11,8 @@ import SwiftMessages
 
 class SettingsViewController: UITableViewController {
 
+    
+    @IBOutlet weak var addFacebookFriends: UITableViewCell!
     @IBOutlet weak var logout: UITableViewCell!
     var logoutView:LogoutView?
     var config: SwiftMessages.Config?
@@ -32,10 +34,21 @@ class SettingsViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let cell = self.tableView.cellForRowAtIndexPath(indexPath)
+        if cell === addFacebookFriends {
+            showAddFacebookFriendsView()
+        }
         if cell === logout {
             print("logout")
             showLogoutView()
         }
+    }
+    
+    func showAddFacebookFriendsView(){
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewControllerWithIdentifier("UsersListViewController") as! UsersListViewController
+        controller.title = "Add Facebook Friends"
+        controller.type = UsersListType.FacebookFriends
+        navigationController?.pushViewController(controller, animated: true)
     }
     
     func showLogoutView() {

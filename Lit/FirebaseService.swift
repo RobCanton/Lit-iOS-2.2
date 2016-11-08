@@ -310,33 +310,28 @@ class FirebaseService {
         }
     }
     
-    static func checkFriendStatus(friend_uid:String) -> FriendStatus {
-        
-        if friend_uid == mainStore.state.userState.uid {
-            return FriendStatus.IS_CURRENT_USER
+    static func handleFriendAction(uid:String, status:FriendStatus) {
+        switch status {
+        case .FRIENDS:
+            break
+        case .NOT_FRIENDS:
+            FirebaseService.sendFriendRequest(uid)
+            break
+        case .PENDING_INCOMING:
+            FirebaseService.acceptFriendRequest(uid)
+            break
+        case .PENDING_INCOMING_SEEN:
+            FirebaseService.acceptFriendRequest(uid)
+            break
+        case .PENDING_OUTGOING:
+            break
+        default:
+            break
         }
-        
-        let friends = mainStore.state.friends
-        if friends.contains(friend_uid) {
-            return FriendStatus.FRIENDS
-        }
-        
-        let requests = mainStore.state.friendRequestsIn
-        if let _ = requests[friend_uid] {
-            return FriendStatus.PENDING_INCOMING
-        }
-        
-        let requestsOut = mainStore.state.friendRequestsOut
-        if let _ = requestsOut[friend_uid] {
-            return FriendStatus.PENDING_OUTGOING
-        }
-        
-        return FriendStatus.NOT_FRIENDS
-        
     }
     
     
-    static func sendFriendRequest(friend_uid:String, completionHandler:(success:Bool)->()) {
+    static func sendFriendRequest(friend_uid:String) {
         
         let uid = mainStore.state.userState.uid
         print("FRIEND UID \(friend_uid)")
@@ -346,12 +341,6 @@ class FirebaseService {
         let friendRef = FirebaseService.ref.child("users/social/requestsIn/\(friend_uid)/\(uid)")
         friendRef.setValue(false, withCompletionBlock: {
             error, ref in
-            
-            if error != nil {
-                completionHandler(success: false)
-            } else {
-                completionHandler(success: true)
-            }
         })
     }
     

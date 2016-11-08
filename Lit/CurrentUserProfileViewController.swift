@@ -59,7 +59,7 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
     }
     
     func newState(state: AppState) {
-        checkFriendStatus()
+        updateFriendStatus()
     }
     
     func mediaDeleted() {
@@ -138,9 +138,8 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
         }
     }
     
-    func checkFriendStatus() {
+    func updateFriendStatus() {
         controlBar?.setFriendStatus(FriendStatus.IS_CURRENT_USER)
-        headerView?.checkFriendStatus()
     }
     
     func getKeys() {

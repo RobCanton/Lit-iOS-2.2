@@ -6,13 +6,15 @@
 //  Copyright © 2016 Robert Canton. All rights reserved.
 //
 
+import ReSwift
 import UIKit
+import FBSDKCoreKit
 
 enum UsersListType {
-    case Friends, Likes, Visitors, None
+    case Friends, Likes, Visitors, FacebookFriends, None
 }
 
-class UsersListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class UsersListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, StoreSubscriber {
     
     var statusBarBG:UIView!
     var showStatusBar = false
@@ -41,6 +43,21 @@ class UsersListViewController: UIViewController, UITableViewDelegate, UITableVie
         }
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        mainStore.subscribe(self)
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        mainStore.unsubscribe(self)
+    }
+    
+    func newState(state: AppState) {
+        
+        tableView.reloadData()
+    }
+    
     var tableView:UITableView!
     
     override func viewDidAppear(animated: Bool) {
@@ -52,6 +69,7 @@ class UsersListViewController: UIViewController, UITableViewDelegate, UITableVie
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         
         navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Plain, target: nil, action: nil)
         
@@ -90,10 +108,61 @@ class UsersListViewController: UIViewController, UITableViewDelegate, UITableVie
         case .Likes:
             getLikers()
             break
+        case .FacebookFriends:
+            getFacebookFriendIds({ ids in
+                self.getFacebookFriends(ids)
+            })
+            break
         default:
             
             break
         }
+    }
+    
+    func getFacebookFriendIds(completionHandler:(fb_ids:[String])->()) {
+        let request = FBSDKGraphRequest(graphPath: "me/friends", parameters: nil)
+        request.startWithCompletionHandler { (connection : FBSDKGraphRequestConnection!, result : AnyObject!, error : NSError!) -> Void in
+            
+            if error != nil {
+                //let errorMessage = error.localizedDescription
+                /* Handle error */
+            }
+            else {
+                /*  handle response */
+                var fb_ids = [String]()
+                let data = result["data"] as! [NSDictionary]
+                for item in data {
+                    if let id = item["id"] as? String {
+                        fb_ids.append(id)
+                    }
+                }
+                completionHandler(fb_ids: fb_ids)
+            }
+        }
+    }
+    
+    func getFacebookFriends(fb_ids:[String]) {
+        print("FACEBOOK IDS \(fb_ids)")
+        var _users = [String]()
+        var count = 0
+        for id in fb_ids {
+            
+            let ref = FirebaseService.ref.child("users/facebook/\(id)")
+            print(ref)
+            ref.observeSingleEventOfType(.Value, withBlock: { snapshot in
+                if snapshot.exists()
+                {
+                    print(snapshot.value!)
+                    _users.append(snapshot.value! as! String)
+                }
+                count += 1
+                if count >= fb_ids.count {
+                    self.userIds = _users
+                }
+            })
+        }
+
+        
     }
     
     func getUserFriends() {

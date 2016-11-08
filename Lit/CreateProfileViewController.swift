@@ -62,6 +62,7 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = " "
         
         self.automaticallyAdjustsScrollViewInsets = false
         
@@ -178,14 +179,14 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
     
     var smallProfileImageView:UIImageView!
     
-    
+    var facebook_uid = ""
     
     func doSet() {
         
         if let user = FIRAuth.auth()!.currentUser {
             
             for item in user.providerData {
-                print("\(item.uid)")
+                facebook_uid = item.uid
             }
             
             userInfo["displayName"] = ((user.displayName ?? "").isEmpty ? "" : user.displayName!)
@@ -212,20 +213,6 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
                 print("\(error)")
             }
         })
-        
-        let params = ["fields": "id, first_name, last_name, middle_name, name, email, picture"]
-        let request = FBSDKGraphRequest(graphPath: "me/friends", parameters: nil)
-        request.startWithCompletionHandler { (connection : FBSDKGraphRequestConnection!, result : AnyObject!, error : NSError!) -> Void in
-            
-            if error != nil {
-                let errorMessage = error.localizedDescription
-                /* Handle error */
-            }
-            else {
-                /*  handle response */
-                print("FRIENDS ARE \(result)")
-            }
-        }
     }
     
     func uploadLargeProfilePicture() -> FIRStorageUploadTask? {
@@ -291,13 +278,16 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
         let username = usernameField.text!
         
         if let user = FIRAuth.auth()?.currentUser {
-            
             if let smallTask = uploadSmallProfilePicture() {
                 smallTask.observeStatus(.Success, handler: { smallTaskSnapshot in
                     if let largeTask = self.uploadLargeProfilePicture() {
                         largeTask.observeStatus(.Success, handler: { largeTaskSnapshot in
+                            let ref = FirebaseService.ref.child("users/facebook/\(self.facebook_uid)")
+                            ref.setValue(user.uid)
                             let privateRef = FIRDatabase.database().reference().child("users/private/\(user.uid)")
-                            privateRef.setValue(["fullname":fullname], withCompletionBlock: {error, ref in
+                            privateRef.setValue([
+                                "fullname":fullname
+                                ], withCompletionBlock: {error, ref in
                                 if error != nil {
                                     print(error?.localizedDescription)
                                 }

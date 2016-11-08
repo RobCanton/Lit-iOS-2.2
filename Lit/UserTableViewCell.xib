@@ -36,26 +36,41 @@
                             </mask>
                         </variation>
                     </imageView>
+                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ql5-nB-iSi">
+                        <rect key="frame" x="273" y="14" width="81" height="42"/>
+                        <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="14"/>
+                        <inset key="contentEdgeInsets" minX="10" minY="6" maxX="10" maxY="6"/>
+                        <connections>
+                            <action selector="friendButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="vYl-15-NWo"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstItem="yAH-Kh-Iuv" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="12" id="1yW-NK-IOk"/>
+                    <constraint firstItem="ql5-nB-iSi" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="5N5-Hq-S3r"/>
                     <constraint firstItem="yAH-Kh-Iuv" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="Hog-WY-3wS"/>
                     <constraint firstItem="MqG-HS-YOO" firstAttribute="leading" secondItem="yAH-Kh-Iuv" secondAttribute="trailing" constant="12" id="Ldx-iW-TuA"/>
                     <constraint firstAttribute="bottom" secondItem="yAH-Kh-Iuv" secondAttribute="bottom" constant="12" id="NMG-j3-caS"/>
                     <constraint firstItem="MqG-HS-YOO" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Sd0-T0-iiP"/>
                     <constraint firstAttribute="topMargin" secondItem="yAH-Kh-Iuv" secondAttribute="top" id="X1C-YH-9y3"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="ql5-nB-iSi" secondAttribute="bottom" constant="11" id="g9g-8s-t0p"/>
                     <constraint firstAttribute="bottomMargin" secondItem="yAH-Kh-Iuv" secondAttribute="bottom" id="lfP-gz-V96"/>
                     <constraint firstAttribute="leadingMargin" secondItem="yAH-Kh-Iuv" secondAttribute="leading" id="s9l-ta-enG"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="ql5-nB-iSi" secondAttribute="trailing" constant="8" id="wRn-5b-KSK"/>
+                    <constraint firstItem="ql5-nB-iSi" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="12" id="y7L-Z6-sbL"/>
                 </constraints>
                 <variation key="default">
                     <mask key="constraints">
                         <exclude reference="X1C-YH-9y3"/>
                         <exclude reference="lfP-gz-V96"/>
                         <exclude reference="s9l-ta-enG"/>
+                        <exclude reference="g9g-8s-t0p"/>
+                        <exclude reference="y7L-Z6-sbL"/>
                     </mask>
                 </variation>
             </tableViewCellContentView>
             <connections>
+                <outlet property="friendButton" destination="ql5-nB-iSi" id="cbs-7z-jx2"/>
                 <outlet property="profileImageView" destination="yAH-Kh-Iuv" id="eTv-iT-jqJ"/>
                 <outlet property="usernameLabel" destination="MqG-HS-YOO" id="MN9-fg-2by"/>
             </connections>

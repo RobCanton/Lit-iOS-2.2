@@ -174,12 +174,10 @@ class LoginViewController: UIViewController, StoreSubscriber {
                     //Handle error
                 } else {
                     //Handle Profile Photo URL String
-                    let userId =  result["id"] as! String
-                    print("FACEBOOK")
+                    let facebook_id =  result["id"] as! String
+
                     print(result.debugDescription)
-                    let profilePictureUrl = "https://graph.facebook.com/\(userId)/picture?type=large"
-                    
-                    print("FACEBOOK USER ID: \(userId)")
+                    let profilePictureUrl = "https://graph.facebook.com/\(facebook_id)/picture?type=large"
                     
                     let accessToken = FBSDKAccessToken.currentAccessToken().tokenString
                     let fbUser = ["accessToken": accessToken, "user": result]
@@ -195,6 +193,8 @@ class LoginViewController: UIViewController, StoreSubscriber {
                         
                         FirebaseService.getUser(user!.uid, completionHandler: { _user in
                             if _user != nil {
+                                let ref = FirebaseService.ref.child("users/facebook/\(facebook_id)")
+                                ref.setValue(_user!.getUserId())
                                 mainStore.dispatch(UserIsAuthenticated( user: _user!, flow: .ReturningUser))
                             } else {
                                 // Do nothing

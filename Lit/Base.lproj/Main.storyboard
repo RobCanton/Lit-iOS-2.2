@@ -26,7 +26,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c1G-7e-Oae">
-                                <rect key="frame" x="48" y="510" width="504" height="60"/>
+                                <rect key="frame" x="36" y="504" width="528" height="60"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="fb" translatesAutoresizingMaskIntoConstraints="NO" id="GJx-hb-A67">
                                         <rect key="frame" x="20" y="14" width="26" height="26"/>
@@ -36,7 +36,7 @@
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Login with Facebook" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OHd-B7-Nm4">
-                                        <rect key="frame" x="54" y="8" width="436" height="44"/>
+                                        <rect key="frame" x="54" y="8" width="460" height="44"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="18"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -57,12 +57,22 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="bottomMargin" secondItem="c1G-7e-Oae" secondAttribute="bottom" constant="36" id="1iP-S2-8rq"/>
                             <constraint firstItem="c1G-7e-Oae" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="28" id="CTT-Xi-SJo"/>
+                            <constraint firstItem="c1G-7e-Oae" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="36" id="D05-DW-3QO"/>
                             <constraint firstItem="Ybl-dO-mKd" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Dtz-2y-MGd"/>
+                            <constraint firstAttribute="trailing" secondItem="c1G-7e-Oae" secondAttribute="trailing" constant="36" id="XSi-kQ-l1u"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="c1G-7e-Oae" secondAttribute="bottom" constant="30" id="alP-m6-KCg"/>
                             <constraint firstItem="Ybl-dO-mKd" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="qbG-ZO-g0S"/>
                             <constraint firstAttribute="trailingMargin" secondItem="c1G-7e-Oae" secondAttribute="trailing" constant="28" id="rE7-pg-qUn"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="CTT-Xi-SJo"/>
+                                <exclude reference="rE7-pg-qUn"/>
+                                <exclude reference="alP-m6-KCg"/>
+                            </mask>
+                        </variation>
                     </view>
                     <navigationItem key="navigationItem" id="Jfq-2S-y7N"/>
                     <connections>
@@ -815,7 +825,6 @@
         <!--Settings View Controller-->
         <scene sceneID="EPY-jE-vp6">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="vjR-EI-nAo" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tableViewController id="BHJ-RQ-70v" customClass="SettingsViewController" customModule="Lit" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="bOv-kL-93X">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="1200"/>
@@ -834,12 +843,21 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.17000000000000001" alpha="1" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="S6E-p6-q8j">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="Hb6-oz-0Ht" style="IBUITableViewCellStyleDefault" id="S6E-p6-q8j">
                                         <rect key="frame" x="0.0" y="158" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="S6E-p6-q8j" id="BTS-sv-zaa">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Add Facebook Friends" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Hb6-oz-0Ht">
+                                                    <rect key="frame" x="15" y="0.0" width="570" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="16"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
                                             <color key="backgroundColor" white="0.17000000000000001" alpha="1" colorSpace="calibratedWhite"/>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.17000000000000001" alpha="1" colorSpace="calibratedWhite"/>
@@ -980,9 +998,11 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="600" height="1200"/>
                     <connections>
+                        <outlet property="addFacebookFriends" destination="S6E-p6-q8j" id="5Rz-x1-Ele"/>
                         <outlet property="logout" destination="8fE-YF-pr0" id="dcS-aI-9HL"/>
                     </connections>
                 </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vjR-EI-nAo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2776" y="2664"/>
         </scene>
