@@ -183,6 +183,11 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
     func doSet() {
         
         if let user = FIRAuth.auth()!.currentUser {
+            
+            for item in user.providerData {
+                print("\(item.uid)")
+            }
+            
             userInfo["displayName"] = ((user.displayName ?? "").isEmpty ? "" : user.displayName!)
             userInfo["photoURL"] = ((user.photoURL?.absoluteString ?? "").isEmpty ? "" : user.photoURL!.absoluteString)
         }
@@ -207,6 +212,20 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
                 print("\(error)")
             }
         })
+        
+        let params = ["fields": "id, first_name, last_name, middle_name, name, email, picture"]
+        let request = FBSDKGraphRequest(graphPath: "me/friends", parameters: nil)
+        request.startWithCompletionHandler { (connection : FBSDKGraphRequestConnection!, result : AnyObject!, error : NSError!) -> Void in
+            
+            if error != nil {
+                let errorMessage = error.localizedDescription
+                /* Handle error */
+            }
+            else {
+                /*  handle response */
+                print("FRIENDS ARE \(result)")
+            }
+        }
     }
     
     func uploadLargeProfilePicture() -> FIRStorageUploadTask? {
@@ -257,7 +276,6 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
         if let user = FIRAuth.auth()?.currentUser {
             FirebaseService.getUser(user.uid, completionHandler: { _user in
                 if _user != nil {
-                    print("We here")
                     mainStore.dispatch(UserIsAuthenticated( user: _user!, flow: .ReturningUser))
                 }
             })

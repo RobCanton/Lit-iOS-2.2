@@ -132,7 +132,7 @@ class LoginViewController: UIViewController, StoreSubscriber {
         loginButton.removeGestureRecognizer(tap)
         let loginManager = FBSDKLoginManager()
         
-        loginManager.logInWithReadPermissions(["public_profile", "user_photos"], fromViewController: self, handler: {(result:FBSDKLoginManagerLoginResult!, error:NSError!) -> Void in
+        loginManager.logInWithReadPermissions(["public_profile", "email", "user_friends", "user_photos"], fromViewController: self, handler: {(result:FBSDKLoginManagerLoginResult!, error:NSError!) -> Void in
             if (error != nil) {
                 // Process error
                 self.removeFbData()
@@ -143,6 +143,8 @@ class LoginViewController: UIViewController, StoreSubscriber {
                 self.activateLoginButton()
             } else {
                 //Success
+                
+                print("FACEBOOK LOGIN STUFF")
                 if result.grantedPermissions.contains("user_photos") && result.grantedPermissions.contains("public_profile") {
                     //Do work
                     self.fetchFacebookProfile()
@@ -173,7 +175,11 @@ class LoginViewController: UIViewController, StoreSubscriber {
                 } else {
                     //Handle Profile Photo URL String
                     let userId =  result["id"] as! String
+                    print("FACEBOOK")
+                    print(result.debugDescription)
                     let profilePictureUrl = "https://graph.facebook.com/\(userId)/picture?type=large"
+                    
+                    print("FACEBOOK USER ID: \(userId)")
                     
                     let accessToken = FBSDKAccessToken.currentAccessToken().tokenString
                     let fbUser = ["accessToken": accessToken, "user": result]
