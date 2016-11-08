@@ -10,6 +10,8 @@ import Firebase
 import ReSwift
 import IngeoSDK
 import AVFoundation
+import FBSDKCoreKit
+import FBSDKLoginKit
 
 
 
@@ -22,8 +24,18 @@ class FirebaseService {
     static let storage = FIRStorage.storage()
     static let storageRef = storage.referenceForURL("gs://lit-data.appspot.com")
 
-    static func signOut() {
+    static func logout() {
+        let loginManager = FBSDKLoginManager()
+        loginManager.logOut()
         try! FIRAuth.auth()!.signOut()
+        Listeners.stopListeningToAll()
+        mainStore.dispatch(ClearConversations())
+        mainStore.dispatch(ClearCities())
+        mainStore.dispatch(ClearLocations())
+        mainStore.dispatch(ClearFriendRequestsIn())
+        mainStore.dispatch(ClearFriendRequestsOut())
+        mainStore.dispatch(ClearFriends())
+        mainStore.dispatch(UserIsUnauthenticated())
     }
     
     

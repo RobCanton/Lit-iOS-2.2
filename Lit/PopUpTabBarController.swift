@@ -137,6 +137,10 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        Listeners.startListeningToFriends()
+        Listeners.startListeningToFriendRequests()
+        Listeners.startListeningToConversations()
+        
         delegate = self
         tabBarController?.delegate = self
         tabBar.backgroundImage = UIImage()

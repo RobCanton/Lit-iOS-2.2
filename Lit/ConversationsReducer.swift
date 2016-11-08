@@ -54,9 +54,6 @@ func userHasSeenMessage(seen:NSDate?, message:JSQMessage?) -> Bool{
 
 func ConversationsReducer(action: Action, state:[Conversation]?) -> [Conversation] {
     var state = state ?? [Conversation]()
-    
-    
-    
     switch action {
     case _ as ConversationAdded:
         let a = action as! ConversationAdded
@@ -76,6 +73,9 @@ func ConversationsReducer(action: Action, state:[Conversation]?) -> [Conversatio
             conversation.seenDate = a.seenDate
             conversation.seen = userHasSeenMessage(conversation.seenDate, message: conversation.lastMessage)
         }
+        break
+    case _ as ClearConversations:
+        state = [Conversation]()
         break
     default:
         break
@@ -105,3 +105,6 @@ struct SeenConversation: Action {
     let conversationKey:String
 }
 
+/* Destructive Actions */
+
+struct ClearConversations: Action {}

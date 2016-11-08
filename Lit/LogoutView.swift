@@ -45,10 +45,7 @@ class LogoutView: MessageView {
         
         contentView.addArrangedSubview(logoutButton)
     }
-    
-
-
-    
+        
     func logout(sender:UIButton) {
         if logoutHandler != nil {
             logoutHandler!()

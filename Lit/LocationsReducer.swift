@@ -10,7 +10,7 @@ import Foundation
 import ReSwift
 
 func LocationsReducer(action: Action, state:[Location]?) -> [Location] {
-    var state = state ?? []
+    var state = state ?? [Location]()
     
     switch action {
     case _ as LocationsRetrieved:
@@ -31,6 +31,25 @@ func LocationsReducer(action: Action, state:[Location]?) -> [Location] {
     case _ as RemovePostFromLocation:
         let a = action as! RemovePostFromLocation
         state[a.locationIndex].removePost(a.key)
+        break
+    case _ as ClearLocations:
+        state = [Location]()
+    default:
+        break
+    }
+    return state
+}
+
+func CitiesReducer(action: Action, state:[City]?) -> [City] {
+    var state = state ?? [City]()
+    
+    switch action {
+    case _ as CitiesRetrieved:
+        let a = action as! CitiesRetrieved
+        state = a.cities
+        break
+    case _ as ClearCities:
+        state = [City]()
         break
     default:
         break

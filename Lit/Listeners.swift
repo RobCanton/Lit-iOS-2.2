@@ -19,7 +19,15 @@ class Listeners {
     private static var listeningToLocations = false
     private static var listeningToConversations = false
     
-    static func listenToFriends() {
+    
+    static func stopListeningToAll() {
+        stopListeningToFriends()
+        stopListeningToLocations()
+        stopListeningToConversatons()
+        stopListeningToFriendRequests()
+    }
+    
+    static func startListeningToFriends() {
         if !listeningToFriends {
             listeningToFriends = true
             let uid = mainStore.state.userState.uid
@@ -43,6 +51,14 @@ class Listeners {
                 }
             })
         }
+    }
+    
+    static func stopListeningToFriends() {
+        let uid = mainStore.state.userState.uid
+        let friendsRef = ref.child("users/social/friends/\(uid)")
+        friendsRef.removeAllObservers()
+        
+        listeningToFriends = false
     }
     
     static func startListeningToLocations() {
@@ -95,7 +111,7 @@ class Listeners {
         listeningToLocations = false
     }
     
-    static func listenToFriendRequests() {
+    static func startListeningToFriendRequests() {
         if !listeningToFriendRequests {
             listeningToFriendRequests = true
             let uid = mainStore.state.userState.uid
@@ -136,7 +152,6 @@ class Listeners {
                     if let seen = snapshot.value! as? Bool {
                         mainStore.dispatch(RemoveFriendRequestIn(uid: snapshot.key, seen: seen))
                     }
-                    
                 }
             })
             
@@ -150,7 +165,6 @@ class Listeners {
                     if let seen = snapshot.value! as? Bool {
                         mainStore.dispatch(AddFriendRequestOut(uid: snapshot.key, seen: seen))
                     }
-                    
                 }
             })
             
@@ -168,7 +182,16 @@ class Listeners {
         }
     }
     
-    static func listenToConversations() {
+    static func stopListeningToFriendRequests() {
+        let uid = mainStore.state.userState.uid
+        let requestsInRef = ref.child("users/social/requestsIn/\(uid)")
+        requestsInRef.removeAllObservers()
+        let requestsOutRef = ref.child("users/social/requestsOut/\(uid)")
+        requestsOutRef.removeAllObservers()
+        listeningToFriendRequests = false
+    }
+    
+    static func startListeningToConversations() {
         if !listeningToConversations {
             listeningToConversations = true
             let uid = mainStore.state.userState.uid
@@ -188,7 +211,11 @@ class Listeners {
         }
     }
     
-    static func listenToConversation(key:String) {
-        
+    static func stopListeningToConversatons() {
+        let uid = mainStore.state.userState.uid
+        let conversationsRef = ref.child("users/conversations/\(uid)")
+        conversationsRef.removeAllObservers()
+        listeningToConversations = false
     }
+    
 }

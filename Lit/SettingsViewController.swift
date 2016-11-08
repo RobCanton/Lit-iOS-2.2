@@ -8,9 +8,6 @@
 
 import UIKit
 import SwiftMessages
-import FBSDKCoreKit
-import FBSDKLoginKit
-import Firebase
 
 class SettingsViewController: UITableViewController {
 
@@ -46,11 +43,8 @@ class SettingsViewController: UITableViewController {
         logoutView!.configureDropShadow()
         
         logoutView!.logoutHandler = {
-            let loginManager = FBSDKLoginManager()
-            loginManager.logOut()
-            try! FIRAuth.auth()!.signOut()
-            mainStore.dispatch(UserIsUnauthenticated())
             SwiftMessages.hide()
+            FirebaseService.logout()
         }
         
         logoutView!.cancelHandler = {

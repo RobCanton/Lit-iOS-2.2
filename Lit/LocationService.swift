@@ -9,14 +9,17 @@
 import Firebase
 import ReSwift
 import SwiftyJSON
+import CoreLocation
 
 
 class LocationService {
 
     static private let ref = FIRDatabase.database().reference().child("locations")
     
+    static var shouldCalculateNearbyArea:Bool = false
+    
     static func requestNearbyLocations(latitude:Double, longitude:Double) {
-        let uid = mainStore.state.userState.uid
+        
         let url = NSURL(string: "\(apiURL)/nearby/50/\(latitude)/\(longitude)")
         print("Requesting Nearby Locations: \(url!.absoluteString)")
         let task = NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
@@ -29,6 +32,10 @@ class LocationService {
         }
         
         task.resume()
+        
+        if shouldCalculateNearbyArea && mainStore.state.cities.count > 0 {
+            calculateNearbyArea(latitude, longitude: longitude)
+        }
     }
     
     static func extractFeedFromJSON(data:NSData) {
@@ -126,5 +133,49 @@ class LocationService {
         })
     }
     
+    static func getCities() {
+        FIRDatabase.database().reference().child("cities")
+            .observeSingleEventOfType(.Value, withBlock: {(snapshot) in
+                var cities = [City]()
+                for city in snapshot.children {
+                    let key = city.key!!
+                    let name = city.value["name"] as! String
+                    let lat = city.childSnapshotForPath("coordinates").value!["latitude"] as! Double
+                    let lon = city.childSnapshotForPath("coordinates").value!["longitude"] as! Double
+                    let country = city.value["country"] as! String
+                    let region = city.value["region"] as! String
+                    
+                    let city = City(key: key, name: name, latitude: lat, longitude: lon, country: country, region: region)
+                    cities.append(city)
+                }
+                mainStore.dispatch(CitiesRetrieved(cities: cities))
+            })
+    }
+    
+    static func calculateNearbyArea(latitude:Double, longitude:Double){
+        shouldCalculateNearbyArea = false
+        let coord = CLLocation(latitude: latitude, longitude: longitude)
+        var minDistance = Double(MAXFLOAT)
+        var nearestCity:City!
+        let cities = mainStore.state.cities
+        for city in cities {
+            let cityCoords = city.getCoordinates()
+            let distance = cityCoords.distanceFromLocation(coord)
+            if distance < minDistance {
+                minDistance = distance
+                nearestCity = city
+            }
+        }
+        
+        var lastLocationString = "Unknown"
+        if minDistance < 50 {
+            lastLocationString = "\(nearestCity.getName()), \(nearestCity.getRegion()), \(nearestCity.getCountry())"
+        }
+        
+        let ref = FIRDatabase.database().reference().child("users/lastLocation/\(mainStore.state.userState.uid)")
+        ref.setValue(lastLocationString)
+        
+    }
+
     
 }

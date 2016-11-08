@@ -47,6 +47,9 @@ func FriendsReducer(action: Action, state:Tree<String>?) -> Tree<String> {
             print(" * \(body)")
             })
         break
+    case _ as ClearFriends:
+        state = Tree<String>()
+        break
     default:
         break
     }
@@ -70,6 +73,9 @@ func FriendRequestsInReducer(action: Action, state:[String:Bool]?) -> [String:Bo
         let a = action as! RemoveFriendRequestIn
         state.removeValueForKey(a.uid)
         break
+    case _ as ClearFriendRequestsIn:
+        state = [String:Bool]()
+        break
     default:
         break
     }
@@ -88,6 +94,9 @@ func FriendRequestsOutReducer(action: Action, state:[String:Bool]?) -> [String:B
     case _ as RemoveFriendRequestOut:
         let a = action as! RemoveFriendRequestOut
         state.removeValueForKey(a.uid)
+        break
+    case _ as ClearFriendRequestsIn:
+        state = [String:Bool]()
         break
     default:
         break

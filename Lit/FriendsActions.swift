@@ -39,3 +39,8 @@ struct RemoveFriendRequestOut: Action {
     let uid: String
     let seen: Bool
 }
+
+/* Destructive Actions */
+struct ClearFriends: Action {}
+struct ClearFriendRequestsIn: Action {}
+struct ClearFriendRequestsOut: Action {}

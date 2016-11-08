@@ -18,11 +18,11 @@ class City {
 
     
     
-    init(key:String, name:String, coordinates:CLLocation, country:String, region:String)
+    init(key:String, name:String, latitude:Double, longitude:Double, country:String, region:String)
     {
         self.key          = key
         self.name         = name
-        self.coordinates  = coordinates
+        self.coordinates  = CLLocation(latitude: latitude, longitude: longitude)
         self.country      = country
         self.region       = region
     }

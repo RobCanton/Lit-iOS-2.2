@@ -55,10 +55,6 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
     
         if state.userState.isAuth && state.userState.user != nil {
             
-            Listeners.listenToFriends()
-            Listeners.listenToFriendRequests()
-            Listeners.listenToConversations()
-            
             self.performSegueWithIdentifier("showLit", sender: self)
             
         }

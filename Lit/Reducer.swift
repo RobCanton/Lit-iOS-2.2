@@ -24,18 +24,3 @@ struct AppReducer: Reducer {
         )
     }
 }
-
-
-func CitiesReducer(action: Action, state:[City]?) -> [City] {
-    var state = state ?? []
-    
-    switch action {
-    case _ as CitiesRetrieved:
-        let a = action as! CitiesRetrieved
-        state = a.cities
-        break
-    default:
-        break
-    }
-    return state
-}
