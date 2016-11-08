@@ -19,45 +19,10 @@ struct LocationsRetrieved: Action {
     let locations: [Location]
 }
 
-struct ActivateLocation: Action {
-    let locationIndex: Int
-}
-
-struct LocationStoryLoaded: Action {
-    let locationIndex: Int
-    let story: [StoryItem]
-}
-
-struct LocationSetupComplete: Action {
-    let cities: [City]
-    let activeCity:City
-    let locations:[Location]
-}
-
-struct ViewStory: Action {
-    let index: Int
-}
-
-
-struct ViewLocationDetail: Action {
-    let locationKey: String
-}
-
-struct UpdateUserLocation: Action {
-    let location: IGLocation
-}
-
-struct SetActiveCity: Action {
-    let city:City
-}
-
 struct SetActiveLocation: Action {
     let locationKey: String
 }
 
-struct Vote: Action {
-    let state:RatingState
-}
 
 struct AddVisitorToLocation: Action {
     let locationIndex:Int

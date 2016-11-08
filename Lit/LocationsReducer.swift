@@ -17,11 +17,6 @@ func LocationsReducer(action: Action, state:[Location]?) -> [Location] {
         let a = action as! LocationsRetrieved
         state = a.locations
         break
-    case _ as LocationStoryLoaded:
-        let a = action as! LocationStoryLoaded
-        let index = a.locationIndex
-        state[index].setStory(a.story)
-        break
     case _ as AddVisitorToLocation:
         let a = action as! AddVisitorToLocation
         state[a.locationIndex].addVisitor(a.uid)

@@ -110,38 +110,37 @@ class FirebaseService {
     
     internal static func uploadVideo(url:NSURL) -> FIRStorageUploadTask? {
         
-        let city = mainStore.state.userState.activeCity!
-        let activeLocationKey = mainStore.state.userState.activeLocationKey
+//        let activeLocationKey = mainStore.state.userState.activeLocationKey
+//        
+//        let saveRef = ref.child("/uploads/\(city.getKey())/\(activeLocationKey)").childByAutoId()
+//        let metadata = FIRStorageMetadata()
+//        let contentTypeStr = "video/mp4"
+//        let playerItem = AVAsset(URL: url)
+//        let length = CMTimeGetSeconds(playerItem.duration)
+//        metadata.contentType = contentTypeStr
+//        
+//        let data = NSData(contentsOfURL: url)
+//        
+//        // Upload file and metadata to the object 'images/mountains.jpg'
+//        let uploadTask = storageRef.child("user_uploads/\(saveRef.key))").putData(data!, metadata: metadata) { metadata, error in
+//            if (error != nil) {
+//                // Uh-oh, an error occurred!
+//                saveRef.removeValue()
+//            } else {
+//                // Metadata contains file metadata such as size, content-type, and download URL.
+//                let downloadURL = metadata!.downloadURL()
+//                saveRef.setValue([
+//                    "author": mainStore.state.userState.uid,
+//                    "url": downloadURL!.absoluteString,
+//                    "contentType": contentTypeStr,
+//                    "dateCreated": [".sv": "timestamp"],
+//                    "length": length,
+//                    "likes": 0
+//                    ])
+//            }
+//        }
         
-        let saveRef = ref.child("/uploads/\(city.getKey())/\(activeLocationKey)").childByAutoId()
-        let metadata = FIRStorageMetadata()
-        let contentTypeStr = "video/mp4"
-        let playerItem = AVAsset(URL: url)
-        let length = CMTimeGetSeconds(playerItem.duration)
-        metadata.contentType = contentTypeStr
-        
-        let data = NSData(contentsOfURL: url)
-        
-        // Upload file and metadata to the object 'images/mountains.jpg'
-        let uploadTask = storageRef.child("user_uploads/\(saveRef.key))").putData(data!, metadata: metadata) { metadata, error in
-            if (error != nil) {
-                // Uh-oh, an error occurred!
-                saveRef.removeValue()
-            } else {
-                // Metadata contains file metadata such as size, content-type, and download URL.
-                let downloadURL = metadata!.downloadURL()
-                saveRef.setValue([
-                    "author": mainStore.state.userState.uid,
-                    "url": downloadURL!.absoluteString,
-                    "contentType": contentTypeStr,
-                    "dateCreated": [".sv": "timestamp"],
-                    "length": length,
-                    "likes": 0
-                    ])
-            }
-        }
-        
-        return uploadTask
+        return nil
     }
     
     static func getLocationEvents(locationKey:String, completionHandler: (events:[Event])->()) {

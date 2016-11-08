@@ -30,10 +30,7 @@ class MessagesViewController: UITableViewController, StoreSubscriber {
         conversations = getNonEmptyConversations()
 
         tableView.reloadData()
-        
-        if state.messageUser != "" {
-            openConversation(state.messageUser)
-        }
+
     }
     
     func openConversation(recipient_uid:String) {

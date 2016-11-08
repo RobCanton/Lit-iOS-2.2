@@ -80,10 +80,6 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol, StoreSubsc
     }
     
     func newState(state: AppState) {
-        if state.viewUser != "" {
-            let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("UserProfileViewController") as! UserProfileViewController
-            self.navigationController?.pushViewController(controller, animated: true)
-        }
     }
     
     

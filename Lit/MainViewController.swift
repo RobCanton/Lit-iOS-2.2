@@ -73,9 +73,6 @@ class MainViewController: UICollectionViewController, StoreSubscriber, CLLocatio
 
         collectionView?.reloadData()
         
-        if state.viewUser != "" {
-            push(state.viewUser)
-        }
         let currentKey = state.userState.activeLocationKey
         if let _ = activeLocation {
             if currentKey == activeLocation?.getKey() { return }
@@ -275,11 +272,4 @@ extension MainViewController {
             
         }
     }
-    
-    func push(uid:String) {
-        let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("UserProfileViewController")
-        navigationController?.pushViewController(controller, animated: true)
-    }
-    
-    
 }

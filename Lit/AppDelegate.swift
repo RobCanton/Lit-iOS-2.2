@@ -21,6 +21,8 @@ let mainStore = Store<AppState>(
 let accentColor:UIColor = UIColor(red: 0, green: 128/255, blue: 1, alpha: 1) // #FFAB00
 let errorColor:UIColor = UIColor(red: 1, green: 80/255, blue: 50/255, alpha: 1)
 
+let selectedColor:UIColor = UIColor(white: 0.15, alpha: 1.0)
+
 let apiURL = "http://159.203.16.13:4278/api"
 
 var screenStatusBarHeight: CGFloat {
@@ -42,6 +44,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
         
         UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.LightContent
+        
+        let colorView = UIView()
+        colorView.backgroundColor = selectedColor
+        
+        // use UITableViewCell.appearance() to configure
+        // the default appearance of all UITableViewCells in your app
+        UITableViewCell.appearance().selectedBackgroundView = colorView
         
         return true
     }

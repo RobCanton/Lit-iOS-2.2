@@ -10,8 +10,7 @@ import ReSwift
 import MXParallaxHeader
 import ARNTransitionAnimator
 import Firebase
-import FBSDKCoreKit
-import FBSDKLoginKit
+
 
 class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, HeaderProtocol, ControlBarProtocol, ZoomProtocol {
     
@@ -43,7 +42,7 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
     }
     
     func messageBlockTapped() {
-        
+        self.performSegueWithIdentifier("toSettings", sender: self)
     }
     
     func messageTapped() {

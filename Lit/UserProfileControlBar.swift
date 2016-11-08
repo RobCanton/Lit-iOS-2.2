@@ -32,7 +32,8 @@ class UserProfileControlBar: UIView {
     
     var friendTap:UITapGestureRecognizer!
     var numFriendsTap:UITapGestureRecognizer!
-    var messageBlockTap:UITapGestureRecognizer!
+    var messageBlockTap:UILongPressGestureRecognizer!
+    
     
     var status:FriendStatus = .NOT_FRIENDS
     var user:User!
@@ -45,7 +46,8 @@ class UserProfileControlBar: UIView {
         friendBlock.userInteractionEnabled = true
         friendBlock.addGestureRecognizer(friendTap)
         
-        messageBlockTap = UITapGestureRecognizer(target: self, action: #selector(messageBlockTapped))
+        messageBlockTap = UILongPressGestureRecognizer(target: self, action: #selector(messageBlockTapped))
+        messageBlockTap.minimumPressDuration = 0
         messageBlock.userInteractionEnabled = true
         messageBlock.addGestureRecognizer(messageBlockTap)
         
@@ -154,7 +156,20 @@ class UserProfileControlBar: UIView {
     }
     
     func messageBlockTapped(gesture:UITapGestureRecognizer) {
-        delegate?.messageBlockTapped()
+        
+        // handle touch down and touch up events separately
+        if gesture.state == .Began {
+            UIView.animateWithDuration(0.15, animations: {
+                self.messageBlock.alpha = 0.5
+            })
+            
+        } else if gesture.state == .Ended { // optional for touch up event catching
+            UIView.animateWithDuration(0.3, animations: {
+                self.messageBlock.alpha = 1.0
+            })
+            delegate?.messageBlockTapped()
+        }
+
     }
     
     func setBarScale(scale:CGFloat) {

@@ -30,10 +30,3 @@ struct UpdateFriendRequestsOut: Action {
 struct UpdateFriends: Action {
     let friends:[String:Friend]
 }
-
-struct ViewUser: Action {
-    let uid: String
-}
-
-struct UserViewed: Action {
-}
