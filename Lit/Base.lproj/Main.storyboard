@@ -100,11 +100,33 @@
                     <navigationItem key="navigationItem" id="SbO-Nr-4Pl"/>
                     <connections>
                         <segue destination="7CI-4W-XuA" kind="presentation" identifier="showLit" animates="NO" id="Nkt-CF-wkw"/>
+                        <segue destination="hl3-no-mZL" kind="show" identifier="toAddFriends" id="w3h-Kv-yUZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kFS-Vg-BBG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-367" y="1677"/>
+            <point key="canvasLocation" x="-355" y="1581"/>
+        </scene>
+        <!--Users List View Controller-->
+        <scene sceneID="SCk-Zh-9TD">
+            <objects>
+                <viewController id="hl3-no-mZL" customClass="UsersListViewController" customModule="Lit" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Kan-ih-V3D"/>
+                        <viewControllerLayoutGuide type="bottom" id="o8f-1W-yHt"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="xxE-s2-YHl">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <segue destination="7CI-4W-XuA" kind="presentation" identifier="showLit" animates="NO" id="HMC-fr-N5t"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Idv-O0-hrD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-355" y="2310"/>
         </scene>
         <!--Main View Controller-->
         <scene sceneID="Oah-tB-QG4">
@@ -843,15 +865,15 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.17000000000000001" alpha="1" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="Hb6-oz-0Ht" style="IBUITableViewCellStyleDefault" id="S6E-p6-q8j">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="Hb6-oz-0Ht" style="IBUITableViewCellStyleDefault" id="S6E-p6-q8j">
                                         <rect key="frame" x="0.0" y="158" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="S6E-p6-q8j" id="BTS-sv-zaa">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Add Facebook Friends" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Hb6-oz-0Ht">
-                                                    <rect key="frame" x="15" y="0.0" width="570" height="43"/>
+                                                    <rect key="frame" x="15" y="0.0" width="550" height="43"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="16"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -937,12 +959,21 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="About" id="wOh-L2-1N5">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="OUI-tp-NCV">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="lVt-hg-D7f" style="IBUITableViewCellStyleDefault" id="OUI-tp-NCV">
                                         <rect key="frame" x="0.0" y="663" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="OUI-tp-NCV" id="Nbp-HW-4U7">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Privacy Policy" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="lVt-hg-D7f">
+                                                    <rect key="frame" x="15" y="0.0" width="550" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="16"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
                                             <color key="backgroundColor" white="0.17000000000000001" alpha="1" colorSpace="calibratedWhite"/>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.17000000000000001" alpha="1" colorSpace="calibratedWhite"/>
@@ -1000,6 +1031,7 @@
                     <connections>
                         <outlet property="addFacebookFriends" destination="S6E-p6-q8j" id="5Rz-x1-Ele"/>
                         <outlet property="logout" destination="8fE-YF-pr0" id="dcS-aI-9HL"/>
+                        <outlet property="privacyPolicy" destination="OUI-tp-NCV" id="bhl-Nv-4HP"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vjR-EI-nAo" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1117,6 +1149,6 @@
         <image name="user" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="yDv-f8-GYO"/>
+        <segue reference="HMC-fr-N5t"/>
     </inferredMetricsTieBreakers>
 </document>

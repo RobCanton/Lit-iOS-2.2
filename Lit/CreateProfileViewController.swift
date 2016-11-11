@@ -53,11 +53,6 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
     
     func newState(state:AppState) {
     
-        if state.userState.isAuth && state.userState.user != nil {
-            
-            self.performSegueWithIdentifier("showLit", sender: self)
-            
-        }
     }
     
     override func viewDidLoad() {
@@ -261,13 +256,39 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
     
     func getNewUser() {
         if let user = FIRAuth.auth()?.currentUser {
+            
             FirebaseService.getUser(user.uid, completionHandler: { _user in
                 if _user != nil {
-                    mainStore.dispatch(UserIsAuthenticated( user: _user!, flow: .ReturningUser))
+                    FacebookGraph.getFacebookFriends({ _userIds in
+                        FirebaseService.login(_user!)
+                        if _userIds.count == 0 {
+                            self.performSegueWithIdentifier("showLit", sender: self)
+                        } else {
+                            dispatch_async(dispatch_get_main_queue(), {
+                                self.user = _user
+                                self.fbFriend_uids = _userIds
+                                self.performSegueWithIdentifier("toAddFriends", sender: self)
+                            })
+                        }
+                    })
                 }
             })
         }
     }
+    
+    var fbFriend_uids:[String]?
+    var user: User?
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "toAddFriends" {
+            let controller = segue.destinationViewController as! UsersListViewController
+            controller.title = "Add Friends"
+            controller.addDoneButton()
+            controller.userIds = fbFriend_uids!
+            controller.user = user!
+        }
+    }
+    
     
     func proceed() {
         deactivateCreateProfileButton()
@@ -334,8 +355,8 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
     func usernameTaken() {
         deactivateCreateProfileButton()
         AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
-        usernameField.borderColor = UIColor.redColor()
-        usernameField.placeholderColor = UIColor.redColor()
+        usernameField.borderColor = errorColor
+        usernameField.placeholderColor = errorColor
         usernameField.placeholderLabel.text = "Username taken"
         usernameField.shake()
         deactivateCreateProfileButton()
@@ -343,8 +364,8 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
     
     func usernameAvailable() {
         activateCreateProfileButton()
-        usernameField.borderColor = UIColor.greenColor()
-        usernameField.placeholderColor = UIColor.greenColor()
+        usernameField.borderColor = accentColor
+        usernameField.placeholderColor = accentColor
         usernameField.placeholderLabel.text = "Username Available"
         activateCreateProfileButton()
     }

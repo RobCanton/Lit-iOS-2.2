@@ -38,28 +38,8 @@ class LoginViewController: UIViewController, StoreSubscriber {
     }
     
     func newState(state:AppState) {
-        
-        if flowState != state.userState.flow {
-            flowState = state.userState.flow
-            
-            switch flowState {
-            case .CreateNewUser:
-                print("CreateNewUser")
-                createProfile()
-                break
-            case .ReturningUser:
-                print("ReturningUser")
-                //toSetup()
-                break
-            default:
-                break
-            }
-        }
-        
         if state.userState.isAuth && state.userState.user != nil {
-            
             self.performSegueWithIdentifier("showLit", sender: self)
-            
         }
     }
 
@@ -101,10 +81,9 @@ class LoginViewController: UIViewController, StoreSubscriber {
             print("already signed in")
             FirebaseService.getUser(user.uid, completionHandler: { _user in
                 if _user != nil {
-                    mainStore.dispatch(UserIsAuthenticated( user: _user!, flow: .ReturningUser))
+                    FirebaseService.login(_user!)
                 } else {
-                   // Do nothing
-                    self.activateLoginButton()
+                   self.createProfile()
                 }
             })
         } else {
@@ -195,10 +174,9 @@ class LoginViewController: UIViewController, StoreSubscriber {
                             if _user != nil {
                                 let ref = FirebaseService.ref.child("users/facebook/\(facebook_id)")
                                 ref.setValue(_user!.getUserId())
-                                mainStore.dispatch(UserIsAuthenticated( user: _user!, flow: .ReturningUser))
+                                FirebaseService.login(_user!)
                             } else {
-                                // Do nothing
-                                mainStore.dispatch(UserIsAuthenticated( user: nil, flow: .CreateNewUser))
+                                self.createProfile()
                             }
                         })
                     }

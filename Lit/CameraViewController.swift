@@ -206,7 +206,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
                 upload.image = printTextOnImage()
                 if let uploadTask = FirebaseService.sendImage(upload)
                 {
-                    SwiftMessages.hide()
+                    uploadWrapper.hide()
                     cameraState = .Sent
                 }
             }
@@ -215,7 +215,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     
     @IBAction func sendButtonTapped(sender: UIButton) {
         print("fam")
-        SwiftMessages.show(config: config!, view: uploadSelector!)
+        uploadWrapper.show(config: config!, view: uploadSelector!)
         
 //        if cameraState == .PhotoTaken {
 //            if let image = imageView.image {
@@ -263,6 +263,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     var recordButton: RecordButton!
     var flashButton: UIButton!
     var flipButton: UIButton!
+    var uploadWrapper = SwiftMessages()
     
     override func viewDidLoad() {
         super.viewDidLoad()

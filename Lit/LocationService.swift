@@ -73,6 +73,11 @@ class LocationService {
         let currentLocationKey = mainStore.state.userState.activeLocationKey
         
         if activeLocationKey != currentLocationKey {
+            let uid = mainStore.state.userState.uid
+            let locationRef = ref.child("visitors/\(activeLocationKey)/\(uid)")
+            locationRef.setValue(true)
+            let userRef = FirebaseService.ref.child("users/visits/\(uid)/\(activeLocationKey)")
+            userRef.setValue(true)
             mainStore.dispatch(SetActiveLocation(locationKey: activeLocationKey))
         }
         

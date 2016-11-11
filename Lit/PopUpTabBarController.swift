@@ -75,25 +75,22 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
         }
     }
     
-    var messageView:MessageView?
+    var messageView:ActiveLocationView?
+    var bannerWrapper = SwiftMessages()
     func activateLocation(location:Location) {
         activeLocation = location
         print("ACTIVE LOCATION: \(activeLocation!.getKey())")
         
-        messageView = MessageView.viewFromNib(layout: .MessageView)
-        
-        // Add a drop shadow.
+        messageView = try! SwiftMessages.viewFromNib() as? ActiveLocationView
         messageView!.configureDropShadow()
         
-        // Set message title, body, and icon. Here, we're overriding the default warning
-        // image with an emoji character.
-        let iconText = ["🤔"].sm_random()!
-        messageView!.configureContent(title: "\(activeLocation!.getName())", body: "You are here. Share a photo!", iconText: iconText)
         
-        var config = SwiftMessages.defaultConfig
+        var config = SwiftMessages.Config()
+        config.presentationContext = .Window(windowLevel: UIWindowLevelAlert)
         config.duration = .Forever
-        config.presentationContext = .Window(windowLevel: UIWindowLevelNormal)
-        SwiftMessages.show(config: config, view: messageView!)
+        config.presentationStyle = .Top
+        config.dimMode = .None
+        //SwiftMessages.show(config: config, view: messageView!)
       
     }
     
@@ -128,18 +125,16 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
         }
         
         if count > 0 {
-            tabBar.items?[1].badgeValue = "\(count)"
+            tabBar.items?[4].badgeValue = "\(count)"
         } else {
-            tabBar.items?[1].badgeValue = nil
+            tabBar.items?[4].badgeValue = nil
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        Listeners.startListeningToFriends()
-        Listeners.startListeningToFriendRequests()
-        Listeners.startListeningToConversations()
+        
         
         delegate = self
         tabBarController?.delegate = self

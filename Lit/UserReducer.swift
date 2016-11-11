@@ -12,14 +12,12 @@ func UserStateReducer(action: Action, state: UserState?) -> UserState {
     switch action {
     case _ as UserIsAuthenticated:
         let a = action as! UserIsAuthenticated
-        state.flow = a.flow
         state.isAuth = true
-        if let user = a.user {
-            state.uid = user.getUserId()
-            state.user = user
-        }
+        state.uid = a.user.getUserId()
+        state.user = a.user
         break
     case _ as UserIsUnauthenticated:
+        Listeners.stopListeningToAll()
         state = UserState()
         break
 

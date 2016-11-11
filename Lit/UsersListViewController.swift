@@ -109,60 +109,14 @@ class UsersListViewController: UIViewController, UITableViewDelegate, UITableVie
             getLikers()
             break
         case .FacebookFriends:
-            getFacebookFriendIds({ ids in
-                self.getFacebookFriends(ids)
+            FacebookGraph.getFacebookFriends({ _userIds in
+                self.userIds = _userIds
             })
             break
         default:
             
             break
         }
-    }
-    
-    func getFacebookFriendIds(completionHandler:(fb_ids:[String])->()) {
-        let request = FBSDKGraphRequest(graphPath: "me/friends", parameters: nil)
-        request.startWithCompletionHandler { (connection : FBSDKGraphRequestConnection!, result : AnyObject!, error : NSError!) -> Void in
-            
-            if error != nil {
-                //let errorMessage = error.localizedDescription
-                /* Handle error */
-            }
-            else {
-                /*  handle response */
-                var fb_ids = [String]()
-                let data = result["data"] as! [NSDictionary]
-                for item in data {
-                    if let id = item["id"] as? String {
-                        fb_ids.append(id)
-                    }
-                }
-                completionHandler(fb_ids: fb_ids)
-            }
-        }
-    }
-    
-    func getFacebookFriends(fb_ids:[String]) {
-        print("FACEBOOK IDS \(fb_ids)")
-        var _users = [String]()
-        var count = 0
-        for id in fb_ids {
-            
-            let ref = FirebaseService.ref.child("users/facebook/\(id)")
-            print(ref)
-            ref.observeSingleEventOfType(.Value, withBlock: { snapshot in
-                if snapshot.exists()
-                {
-                    print(snapshot.value!)
-                    _users.append(snapshot.value! as! String)
-                }
-                count += 1
-                if count >= fb_ids.count {
-                    self.userIds = _users
-                }
-            })
-        }
-
-        
     }
     
     func getUserFriends() {
@@ -236,6 +190,15 @@ class UsersListViewController: UIViewController, UITableViewDelegate, UITableVie
         controller.user = users[indexPath.item]
         self.navigationController?.pushViewController(controller, animated: true)
          tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
+    
+    func addDoneButton() {
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: #selector(doneTapped))
+        self.navigationItem.rightBarButtonItem  = doneButton
+    }
+    
+    func doneTapped() {
+        self.performSegueWithIdentifier("showLit", sender: self)
     }
     
 

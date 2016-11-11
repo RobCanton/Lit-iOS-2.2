@@ -30,18 +30,21 @@ class LocationCell: UICollectionViewCell {
         let size = guestsView.frame.height
         
         centerGuest = UIImageView()
+        centerGuest.contentMode = .ScaleAspectFill
         centerGuest.backgroundColor = UIColor.blackColor()
         centerGuest.frame = CGRectMake(0, 0, size * 1.05, size * 1.05)
         centerGuest.layer.cornerRadius = centerGuest.frame.width/2
         centerGuest.clipsToBounds = true
         
         leftGuest = UIImageView()
+        leftGuest.contentMode = .ScaleAspectFill
         leftGuest.backgroundColor = UIColor.blackColor()
         leftGuest.frame = CGRectMake(0, 0, size, size)
         leftGuest.layer.cornerRadius = leftGuest.frame.width/2
         leftGuest.clipsToBounds = true
         
         rightGuest = UIImageView()
+        rightGuest.contentMode = .ScaleAspectFill
         rightGuest.backgroundColor = UIColor.blackColor()
         rightGuest.frame = CGRectMake(0, 0, size, size)
         rightGuest.layer.cornerRadius = rightGuest.frame.width/2

@@ -57,7 +57,4 @@ class LogoutView: MessageView {
             cancelHandler!()
         }
     }
-    
-    
-    
 }

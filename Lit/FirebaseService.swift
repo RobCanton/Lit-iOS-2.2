@@ -40,6 +40,13 @@ class FirebaseService {
         mainStore.dispatch(UserIsUnauthenticated())
     }
     
+    static func login(user:User) {
+        mainStore.dispatch(UserIsAuthenticated(user: user))
+        Listeners.startListeningToFriends()
+        Listeners.startListeningToFriendRequests()
+        Listeners.startListeningToConversations()
+    }
+    
     
     static func getUser(uid:String, completionHandler: (user:User?)->()) {
         

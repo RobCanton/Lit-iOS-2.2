@@ -13,9 +13,13 @@ class SettingsViewController: UITableViewController {
 
     
     @IBOutlet weak var addFacebookFriends: UITableViewCell!
+    @IBOutlet weak var privacyPolicy: UITableViewCell!
     @IBOutlet weak var logout: UITableViewCell!
+    
+    
     var logoutView:LogoutView?
     var config: SwiftMessages.Config?
+    var logoutWrapper = SwiftMessages()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,21 +37,36 @@ class SettingsViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let cell = self.tableView.cellForRowAtIndexPath(indexPath)
-        if cell === addFacebookFriends {
-            showAddFacebookFriendsView()
-        }
-        if cell === logout {
-            print("logout")
-            showLogoutView()
+        if let cell = self.tableView.cellForRowAtIndexPath(indexPath) {
+        
+            switch cell {
+            case addFacebookFriends:
+                showAddFacebookFriendsView()
+                break
+            case privacyPolicy:
+                showPrivacyPolicy()
+                break
+            case logout:
+                showLogoutView()
+                break
+            default:
+                break
+            }
         }
     }
     
     func showAddFacebookFriendsView(){
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewControllerWithIdentifier("UsersListViewController") as! UsersListViewController
-        controller.title = "Add Facebook Friends"
+        controller.title = "Add Friends"
         controller.type = UsersListType.FacebookFriends
+        navigationController?.pushViewController(controller, animated: true)
+    }
+    
+    func showPrivacyPolicy() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewControllerWithIdentifier("WebViewController") as! WebViewController
+        controller.title = "Privacy Policy"
         navigationController?.pushViewController(controller, animated: true)
     }
     
@@ -56,12 +75,12 @@ class SettingsViewController: UITableViewController {
         logoutView!.configureDropShadow()
         
         logoutView!.logoutHandler = {
-            SwiftMessages.hide()
+            self.logoutWrapper.hide()
             FirebaseService.logout()
         }
         
         logoutView!.cancelHandler = {
-            SwiftMessages.hide()
+            self.logoutWrapper.hide()
         }
         
         config = SwiftMessages.Config()
@@ -69,6 +88,6 @@ class SettingsViewController: UITableViewController {
         config!.duration = .Forever
         config!.presentationStyle = .Bottom
         config!.dimMode = .Gray(interactive: true)
-        SwiftMessages.show(config: config!, view: logoutView!)
+        logoutWrapper.show(config: config!, view: logoutView!)
     }
 }
