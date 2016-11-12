@@ -18,6 +18,8 @@ class Listeners {
     private static var listeningToFriendRequests = false
     private static var listeningToLocations = false
     private static var listeningToConversations = false
+    private static var listeningToFollowers = false
+    private static var listeningToFollowing = false
     
     
     static func stopListeningToAll() {
@@ -25,6 +27,8 @@ class Listeners {
         stopListeningToLocations()
         stopListeningToConversatons()
         stopListeningToFriendRequests()
+        stopListeningToFollowers()
+        stopListeningToFollowing()
     }
     
     static func startListeningToFriends() {
@@ -216,6 +220,88 @@ class Listeners {
         let conversationsRef = ref.child("users/conversations/\(uid)")
         conversationsRef.removeAllObservers()
         listeningToConversations = false
+    }
+    
+    static func startListeningToFollowers() {
+        if !listeningToFollowers {
+            listeningToFollowers = true
+            let current_uid = mainStore.state.userState.uid
+            let followersRef = ref.child("users/social/followers/\(current_uid)")
+            
+            /**
+             Listen for a Follower Added
+             */
+            followersRef.observeEventType(.ChildAdded, withBlock: { snapshot in
+                if snapshot.exists() {
+                    if let seen = snapshot.value! as? Bool {
+                        print("Friend request in!")
+                        mainStore.dispatch(AddFollower(uid: snapshot.key))
+                    }
+                    
+                }
+            })
+            
+            
+            /**
+             Listen for a Follower Removed
+             */
+            followersRef.observeEventType(.ChildRemoved, withBlock: { snapshot in
+                if snapshot.exists() {
+                    if let seen = snapshot.value! as? Bool {
+                        mainStore.dispatch(RemoveFollower(uid: snapshot.key))
+                    }
+                }
+            })
+            
+            
+        }
+    }
+    
+    static func startListeningToFollowing() {
+        if !listeningToFollowing {
+            listeningToFollowing = true
+            let current_uid = mainStore.state.userState.uid
+            let followingRef = ref.child("users/social/following/\(current_uid)")
+            
+            /**
+             Listen for a Following Added
+             */
+            followingRef.observeEventType(.ChildAdded, withBlock: { snapshot in
+                if snapshot.exists() {
+                    if let seen = snapshot.value! as? Bool {
+                        print("Friend request in!")
+                        mainStore.dispatch(AddFollowing(uid: snapshot.key))
+                    }
+                    
+                }
+            })
+            
+            
+            /**
+             Listen for a Following Removed
+             */
+            followingRef.observeEventType(.ChildRemoved, withBlock: { snapshot in
+                if snapshot.exists() {
+                    if let seen = snapshot.value! as? Bool {
+                        mainStore.dispatch(RemoveFollowing(uid: snapshot.key))
+                    }
+                }
+            })
+            
+            
+        }
+    }
+    
+    static func stopListeningToFollowers() {
+        let current_uid = mainStore.state.userState.uid
+        ref.child("users/social/followers/\(current_uid)").removeAllObservers()
+        listeningToFollowers = false
+    }
+    
+    static func stopListeningToFollowing() {
+        let current_uid = mainStore.state.userState.uid
+        ref.child("users/social/followers/\(current_uid)").removeAllObservers()
+        listeningToFollowing = false
     }
     
 }

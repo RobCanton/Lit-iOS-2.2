@@ -92,7 +92,12 @@ class UsersListViewController: UIViewController, UITableViewDelegate, UITableVie
         view.backgroundColor = UIColor.clearColor()
         
         statusBarBG = UIView(frame: CGRectMake(0,0,view.frame.width, navHeight))
-        statusBarBG.backgroundColor = UIColor.blackColor()
+        statusBarBG.backgroundColor = UIColor(white: 0.0, alpha: 0.7)
+        
+        let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .Dark))
+        blurView.frame = statusBarBG.bounds
+        statusBarBG.addSubview(blurView)
+        
         view.addSubview(statusBarBG)
         
         tableView.backgroundColor = UIColor.blackColor()

@@ -45,6 +45,8 @@ class FirebaseService {
         Listeners.startListeningToFriends()
         Listeners.startListeningToFriendRequests()
         Listeners.startListeningToConversations()
+        Listeners.startListeningToFollowers()
+        Listeners.startListeningToFollowing()
     }
     
     

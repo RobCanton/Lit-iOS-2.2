@@ -134,6 +134,10 @@
 		B0E5915D1DD2988D00C032D6 /* ActiveLocationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0E5915C1DD2988D00C032D6 /* ActiveLocationView.xib */; };
 		B0E5915F1DD298A700C032D6 /* ActiveLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5915E1DD298A700C032D6 /* ActiveLocationView.swift */; };
 		B0E591611DD3831600C032D6 /* FacebookGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E591601DD3831600C032D6 /* FacebookGraph.swift */; };
+		B0E8E30C1DD7739B0077D1BC /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E8E30B1DD7739B0077D1BC /* ContainerViewController.swift */; };
+		B0E8E3101DD7AC190077D1BC /* FollowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E8E30F1DD7AC190077D1BC /* FollowButton.swift */; };
+		B0E8E3121DD7B2A50077D1BC /* SocialService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E8E3111DD7B2A50077D1BC /* SocialService.swift */; };
+		B0E8E3141DD7B64D0077D1BC /* SocialReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E8E3131DD7B64D0077D1BC /* SocialReducer.swift */; };
 		B0ED4B671DBD84D20040E5F0 /* LocationDetailsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0ED4B661DBD84D20040E5F0 /* LocationDetailsView.xib */; };
 		B0ED4B691DBD85130040E5F0 /* LocationDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0ED4B681DBD85130040E5F0 /* LocationDetailsView.swift */; };
 		B0FF11451D3EB32100D709CE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FF11441D3EB32100D709CE /* AppDelegate.swift */; };
@@ -274,6 +278,10 @@
 		B0E5915C1DD2988D00C032D6 /* ActiveLocationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActiveLocationView.xib; sourceTree = "<group>"; };
 		B0E5915E1DD298A700C032D6 /* ActiveLocationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActiveLocationView.swift; sourceTree = "<group>"; };
 		B0E591601DD3831600C032D6 /* FacebookGraph.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookGraph.swift; sourceTree = "<group>"; };
+		B0E8E30B1DD7739B0077D1BC /* ContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
+		B0E8E30F1DD7AC190077D1BC /* FollowButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowButton.swift; sourceTree = "<group>"; };
+		B0E8E3111DD7B2A50077D1BC /* SocialService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialService.swift; sourceTree = "<group>"; };
+		B0E8E3131DD7B64D0077D1BC /* SocialReducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialReducer.swift; sourceTree = "<group>"; };
 		B0ED4B661DBD84D20040E5F0 /* LocationDetailsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LocationDetailsView.xib; sourceTree = "<group>"; };
 		B0ED4B681DBD85130040E5F0 /* LocationDetailsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationDetailsView.swift; sourceTree = "<group>"; };
 		B0FF11411D3EB32000D709CE /* Lit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lit.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -340,6 +348,7 @@
 			isa = PBXGroup;
 			children = (
 				76136D441D495E8E003DB433 /* FirebaseService.swift */,
+				B0E8E3111DD7B2A50077D1BC /* SocialService.swift */,
 				B0E591601DD3831600C032D6 /* FacebookGraph.swift */,
 				B0254F771DB01FAE0082D898 /* JSQMessagesService.swift */,
 				76B361D61D6519ED0024CDC7 /* GPSService.swift */,
@@ -388,11 +397,13 @@
 			isa = PBXGroup;
 			children = (
 				B026A8481DAD76FB00DD2CCD /* UserProfileViewController.swift */,
+				B0E8E30F1DD7AC190077D1BC /* FollowButton.swift */,
 				B0236E121DC00E0A0083C720 /* CurrentUserProfileViewController.swift */,
 				B03DED111DAED45A0062357A /* UserProfileControlBar.swift */,
 				B03DED0F1DAED40D0062357A /* UserProfileControlBarView.xib */,
 				B01441091DCCFC5C00D95FCB /* ControlButton.swift */,
 				B0E591561DD1218D00C032D6 /* SettingsViewController.swift */,
+				B0E8E30B1DD7739B0077D1BC /* ContainerViewController.swift */,
 				B0E591581DD126C900C032D6 /* LogoutView.swift */,
 				B0E5915A1DD126D600C032D6 /* LogoutView.xib */,
 			);
@@ -406,6 +417,7 @@
 				B0254F751DAFFCDC0082D898 /* ConversationsReducer.swift */,
 				B06D54CC1D9ED55A00F6A4A7 /* UserReducer.swift */,
 				B087E9C51D9B531A0079E2BF /* FriendsReducer.swift */,
+				B0E8E3131DD7B64D0077D1BC /* SocialReducer.swift */,
 				B087E9CB1D9B88700079E2BF /* LocationsReducer.swift */,
 			);
 			name = Reducers;
@@ -814,12 +826,14 @@
 			files = (
 				B01B34A41DC15BDA00B2B9CE /* DialogRow.swift in Sources */,
 				768C67681D586C26003A76D5 /* StoryViewController.swift in Sources */,
+				B0E8E3101DD7AC190077D1BC /* FollowButton.swift in Sources */,
 				B00BA9221D9E4E0700F5EA30 /* FirstScreenViewController.swift in Sources */,
 				B00BA91D1D9D6DB600F5EA30 /* StoryItemViewController.swift in Sources */,
 				B0E591571DD1218D00C032D6 /* SettingsViewController.swift in Sources */,
 				B0236E131DC00E0A0083C720 /* CurrentUserProfileViewController.swift in Sources */,
 				B09D5FCD1DA57C80004A188E /* ARNImageTransitionNavigationController.swift in Sources */,
 				B032C9921DA807C000811779 /* SetupViewController.swift in Sources */,
+				B0E8E3121DD7B2A50077D1BC /* SocialService.swift in Sources */,
 				76D2E46B1D7F50AF00B7C939 /* City.swift in Sources */,
 				B0321EC41DB5337900AD4C53 /* DismissAnimator.swift in Sources */,
 				B0FF11471D3EB32100D709CE /* LoginViewController.swift in Sources */,
@@ -829,6 +843,7 @@
 				767729831D5116930052CA17 /* CWStatusBarNotification.swift in Sources */,
 				B09D5FCE1DA57C80004A188E /* ARNImageZoomTransition.swift in Sources */,
 				B06D54BF1D9ECB6D00F6A4A7 /* AkiraTextField.swift in Sources */,
+				B0E8E3141DD7B64D0077D1BC /* SocialReducer.swift in Sources */,
 				B0254F721DAFEF4A0082D898 /* ConversationViewCell.swift in Sources */,
 				76EE2B971D8766ED00EDB4CB /* ActivityFriendRequestCell.swift in Sources */,
 				B08BBB961DBBE51400AD3FF1 /* EventsBannerView.swift in Sources */,
@@ -852,6 +867,7 @@
 				B01B34A61DC17B5C00B2B9CE /* Upload.swift in Sources */,
 				B087E9CA1D9B7CDD0079E2BF /* Tree.swift in Sources */,
 				76B361D71D6519ED0024CDC7 /* GPSService.swift in Sources */,
+				B0E8E30C1DD7739B0077D1BC /* ContainerViewController.swift in Sources */,
 				76136D471D49600B003DB433 /* LocationActions.swift in Sources */,
 				76C0E7531D80D770004EFA4C /* VisitorCell.swift in Sources */,
 				76B361CA1D64E8160024CDC7 /* RatingViewController.swift in Sources */,

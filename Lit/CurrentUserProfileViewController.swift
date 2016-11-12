@@ -60,6 +60,8 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
     
     func newState(state: AppState) {
         updateFriendStatus()
+        let friends = mainStore.state.friends
+        controlBar?.setNumFriends(friends.count)
     }
     
     func mediaDeleted() {
@@ -74,6 +76,7 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return .LightContent
     }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -135,7 +138,10 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
                 controlBar?.populateUser(user!)
                 getKeys()
             }
+            
+            
         }
+        
     }
     
     func updateFriendStatus() {

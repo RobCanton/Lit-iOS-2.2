@@ -20,9 +20,7 @@ struct AppState: StateType {
     var friendRequestsIn = [String:Bool]()
     var friendRequestsOut = [String:Bool]()
     var conversations = [Conversation]()
-    func printStore() {
-        
-    }
+    var socialState: SocialState
 }
 
 struct UserState {
@@ -33,3 +31,7 @@ struct UserState {
     var activeLocationKey:String=""
 }
 
+struct SocialState {
+    var followers = Tree<String>()
+    var following = Tree<String>()
+}

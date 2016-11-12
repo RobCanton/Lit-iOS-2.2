@@ -20,7 +20,8 @@ struct AppReducer: Reducer {
             friends: FriendsReducer(action, state: state?.friends),
             friendRequestsIn: FriendRequestsInReducer(action, state: state?.friendRequestsIn),
             friendRequestsOut: FriendRequestsOutReducer(action, state: state?.friendRequestsOut),
-            conversations: ConversationsReducer(action, state: state?.conversations)
+            conversations: ConversationsReducer(action, state: state?.conversations),
+            socialState:  SocialReducer(action, state: state?.socialState)
         )
     }
 }

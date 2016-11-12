@@ -44,3 +44,19 @@ struct RemoveFriendRequestOut: Action {
 struct ClearFriends: Action {}
 struct ClearFriendRequestsIn: Action {}
 struct ClearFriendRequestsOut: Action {}
+
+struct AddFollower: Action {
+    let uid: String
+}
+
+struct RemoveFollower: Action {
+    let uid: String
+}
+
+struct AddFollowing: Action {
+    let uid: String
+}
+
+struct RemoveFollowing: Action {
+    let uid: String
+}

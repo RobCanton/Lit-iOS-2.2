@@ -21,14 +21,28 @@ class SettingsViewController: UITableViewController {
     var config: SwiftMessages.Config?
     var logoutWrapper = SwiftMessages()
     
+    var statusBarBG:UIView!
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+
+    }
+    
+    override func loadView() {
+        super.loadView()
+        
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
+//        let navHeight = screenStatusBarHeight + navigationController!.navigationBar.frame.height
+//        statusBarBG = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: navHeight))
+//        statusBarBG.backgroundColor = UIColor.clearColor()
+        self.parentViewController?.title = "Settings"
+        
 
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
 
     override func didReceiveMemoryWarning() {
@@ -60,14 +74,14 @@ class SettingsViewController: UITableViewController {
         let controller = storyboard.instantiateViewControllerWithIdentifier("UsersListViewController") as! UsersListViewController
         controller.title = "Add Friends"
         controller.type = UsersListType.FacebookFriends
-        navigationController?.pushViewController(controller, animated: true)
+        self.parentViewController?.navigationController?.pushViewController(controller, animated: true)
     }
     
     func showPrivacyPolicy() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewControllerWithIdentifier("WebViewController") as! WebViewController
         controller.title = "Privacy Policy"
-        navigationController?.pushViewController(controller, animated: true)
+        self.parentViewController?.navigationController?.pushViewController(controller, animated: true)
     }
     
     func showLogoutView() {

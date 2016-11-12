@@ -3,7 +3,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -21,22 +20,11 @@
                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oxQ-lR-Nre">
-                            <rect key="frame" x="84" y="8" width="30" height="30"/>
-                            <constraints>
-                                <constraint firstAttribute="width" secondItem="oxQ-lR-Nre" secondAttribute="height" multiplier="1:1" id="sat-5N-WLU"/>
-                            </constraints>
-                            <color key="tintColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
-                            <state key="normal" image="friend_add_filled"/>
-                        </button>
                     </subviews>
                     <constraints>
                         <constraint firstItem="OGr-RW-U3k" firstAttribute="top" secondItem="1az-Hq-tDf" secondAttribute="top" id="7bw-Bd-VQu"/>
                         <constraint firstAttribute="trailing" secondItem="OGr-RW-U3k" secondAttribute="trailing" id="MHX-ok-OQm"/>
                         <constraint firstAttribute="bottom" secondItem="OGr-RW-U3k" secondAttribute="bottom" id="Z3F-zR-0I5"/>
-                        <constraint firstItem="oxQ-lR-Nre" firstAttribute="centerX" secondItem="1az-Hq-tDf" secondAttribute="centerX" id="d5W-El-96Q"/>
-                        <constraint firstItem="oxQ-lR-Nre" firstAttribute="top" secondItem="1az-Hq-tDf" secondAttribute="top" constant="11" id="efM-jk-Anj"/>
-                        <constraint firstAttribute="bottom" secondItem="oxQ-lR-Nre" secondAttribute="bottom" constant="28" id="vFD-Xg-o1d"/>
                         <constraint firstItem="OGr-RW-U3k" firstAttribute="leading" secondItem="1az-Hq-tDf" secondAttribute="leading" id="wdF-wP-hkB"/>
                     </constraints>
                 </view>
@@ -49,21 +37,10 @@
                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X9N-GM-ZLR">
-                            <rect key="frame" x="84" y="7" width="30" height="30"/>
-                            <constraints>
-                                <constraint firstAttribute="width" secondItem="X9N-GM-ZLR" secondAttribute="height" multiplier="1:1" id="waN-3M-yhd"/>
-                            </constraints>
-                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <state key="normal" image="paperplane"/>
-                        </button>
                     </subviews>
                     <constraints>
                         <constraint firstItem="pw5-Mf-CUo" firstAttribute="leading" secondItem="iB2-bA-vId" secondAttribute="leading" id="EmA-VG-AaA"/>
                         <constraint firstAttribute="trailing" secondItem="pw5-Mf-CUo" secondAttribute="trailing" id="JNh-Ed-p1n"/>
-                        <constraint firstItem="X9N-GM-ZLR" firstAttribute="top" secondItem="iB2-bA-vId" secondAttribute="top" constant="11" id="Qeu-bs-UF0"/>
-                        <constraint firstItem="X9N-GM-ZLR" firstAttribute="centerX" secondItem="iB2-bA-vId" secondAttribute="centerX" id="R9d-cm-RDL"/>
-                        <constraint firstAttribute="bottom" secondItem="X9N-GM-ZLR" secondAttribute="bottom" constant="28" id="W9i-WT-eJW"/>
                         <constraint firstItem="pw5-Mf-CUo" firstAttribute="top" secondItem="iB2-bA-vId" secondAttribute="top" id="ecW-JR-tdV"/>
                         <constraint firstAttribute="bottom" secondItem="pw5-Mf-CUo" secondAttribute="bottom" id="msI-Vh-06t"/>
                     </constraints>
@@ -88,6 +65,11 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1xR-Cm-mDD">
                     <rect key="frame" x="600" y="0.0" width="200" height="60"/>
                     <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ip6-Jg-trH">
+                            <rect key="frame" x="84" y="10" width="32" height="24"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <state key="normal" image="message"/>
+                        </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ubj-xe-MEu">
                             <rect key="frame" x="0.0" y="0.0" width="200" height="60"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -96,10 +78,13 @@
                         </label>
                     </subviews>
                     <constraints>
+                        <constraint firstAttribute="bottom" secondItem="Ip6-Jg-trH" secondAttribute="bottom" constant="26" id="8OT-qc-t5a"/>
                         <constraint firstItem="Ubj-xe-MEu" firstAttribute="leading" secondItem="1xR-Cm-mDD" secondAttribute="leading" id="ScZ-7f-QVz"/>
                         <constraint firstAttribute="trailing" secondItem="Ubj-xe-MEu" secondAttribute="trailing" id="UWC-hp-yRM"/>
+                        <constraint firstItem="Ip6-Jg-trH" firstAttribute="centerX" secondItem="1xR-Cm-mDD" secondAttribute="centerX" id="WDT-t4-hC9"/>
                         <constraint firstAttribute="bottom" secondItem="Ubj-xe-MEu" secondAttribute="bottom" id="WMk-3D-4YU"/>
                         <constraint firstItem="Ubj-xe-MEu" firstAttribute="top" secondItem="1xR-Cm-mDD" secondAttribute="top" id="elf-JB-e3E"/>
+                        <constraint firstItem="Ip6-Jg-trH" firstAttribute="top" secondItem="1xR-Cm-mDD" secondAttribute="top" constant="10" id="qjz-wa-W0Q"/>
                     </constraints>
                 </view>
             </subviews>
@@ -124,22 +109,19 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
-                <outlet property="friendBlock" destination="1az-Hq-tDf" id="HhE-sz-2qV"/>
-                <outlet property="friendBtn" destination="oxQ-lR-Nre" id="hE7-s3-bnz"/>
-                <outlet property="friendLabel" destination="OGr-RW-U3k" id="Xqj-U9-Wyj"/>
-                <outlet property="messageBlock" destination="iB2-bA-vId" id="nPO-Eo-kYm"/>
-                <outlet property="messageBtn" destination="X9N-GM-ZLR" id="NUe-yd-rO1"/>
-                <outlet property="messageLabel" destination="pw5-Mf-CUo" id="gmp-d2-OyZ"/>
-                <outlet property="numFriendsBlock" destination="1xR-Cm-mDD" id="Cnc-go-VjB"/>
-                <outlet property="numFriendsLabel" destination="Ubj-xe-MEu" id="UXe-Vg-Lqj"/>
-                <outlet property="postsBlock" destination="vZI-4s-FNq" id="B7U-86-deI"/>
-                <outlet property="postsLabel" destination="GPv-lO-zLs" id="dER-tX-bZw"/>
+                <outlet property="followersBlock" destination="iB2-bA-vId" id="923-hu-4aC"/>
+                <outlet property="followersLabel" destination="pw5-Mf-CUo" id="NM0-NE-YzR"/>
+                <outlet property="followingBlock" destination="vZI-4s-FNq" id="4UZ-Uh-XHE"/>
+                <outlet property="followingLabel" destination="GPv-lO-zLs" id="MFO-FU-ArZ"/>
+                <outlet property="messageBlock" destination="1xR-Cm-mDD" id="qBf-zE-bj8"/>
+                <outlet property="messageLabel" destination="Ubj-xe-MEu" id="gJd-yv-O1Z"/>
+                <outlet property="postsBlock" destination="1az-Hq-tDf" id="rVK-lr-NLi"/>
+                <outlet property="postsLabel" destination="OGr-RW-U3k" id="CFZ-Uh-OQo"/>
             </connections>
             <point key="canvasLocation" x="563" y="219"/>
         </view>
     </objects>
     <resources>
-        <image name="friend_add_filled" width="32" height="32"/>
-        <image name="paperplane" width="32" height="32"/>
+        <image name="message" width="32" height="32"/>
     </resources>
 </document>

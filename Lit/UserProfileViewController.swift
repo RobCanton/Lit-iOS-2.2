@@ -27,6 +27,8 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     var headerView:CreateProfileHeaderView!
     var user:User!
     
+    var followButton = FollowButton()
+    
     var status:FriendStatus = .NOT_FRIENDS
     
     override func viewWillAppear(animated: Bool) {
@@ -155,7 +157,8 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         controlBar!.delegate = self
         collectionView?.addSubview(controlBar!)
         
-        statusBarBG = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: screenStatusBarHeight))
+        let navHeight = screenStatusBarHeight + navigationController!.navigationBar.frame.height
+        statusBarBG = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: navHeight))
         statusBarBG!.backgroundColor = UIColor.blackColor()
         view.addSubview(statusBarBG!)
         statusBarBG!.hidden = true
@@ -176,11 +179,17 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
             }
             self.friend_ids = _users
         })
+
+        
+        let barButton = UIBarButtonItem(customView: followButton)
+        self.navigationItem.rightBarButtonItem = barButton
     }
+    
     
     func updateFriendStatus() {
         status =  checkFriendStatus(user.getUserId())
-        controlBar?.setFriendStatus(status)
+        //controlBar?.setFriendStatus(status)
+        followButton.setUser(user)
     }
     
     func getKeys() {
