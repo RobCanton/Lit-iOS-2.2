@@ -36,7 +36,7 @@
                             </mask>
                         </variation>
                     </imageView>
-                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ql5-nB-iSi">
+                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ql5-nB-iSi" customClass="FollowButton" customModule="Lit" customModuleProvider="target">
                         <rect key="frame" x="273" y="14" width="81" height="42"/>
                         <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="14"/>
                         <inset key="contentEdgeInsets" minX="10" minY="6" maxX="10" maxY="6"/>

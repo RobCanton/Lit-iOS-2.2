@@ -247,7 +247,6 @@ class SearchViewController:UIViewController, UITableViewDelegate, UITableViewDat
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! UserTableViewCell
         if indexPath.section == 0 {
             cell.user = users[indexPath.item]
-            cell.friendButton.hidden = true
         } else if indexPath.section == 1 {
             cell.location = locations[indexPath.item]
         }

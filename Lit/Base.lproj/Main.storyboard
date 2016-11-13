@@ -835,7 +835,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
-                    <navigationItem key="navigationItem" id="6Nb-7W-3DH"/>
+                    <navigationItem key="navigationItem" id="6Nb-7W-3DH">
+                        <barButtonItem key="rightBarButtonItem" image="settings" id="dAi-Ys-Zxf">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <segue destination="Wjq-Hm-cI5" kind="show" id="jAP-C0-0vE"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="600" height="900"/>
                     <connections>
@@ -882,7 +889,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="D9g-Dc-mnj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2205" y="3634"/>
+            <point key="canvasLocation" x="2835" y="2520"/>
         </scene>
         <!--Settings View Controller-->
         <scene sceneID="EPY-jE-vp6">
@@ -1237,6 +1244,10 @@
         <scene sceneID="SpD-68-wTY">
             <objects>
                 <viewController id="hlx-Ke-pY6" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="qvR-l7-RlZ"/>
+                        <viewControllerLayoutGuide type="bottom" id="1ZV-KF-hjh"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="vqO-wg-DWb">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1256,9 +1267,11 @@
         <image name="lit" width="1944" height="1944"/>
         <image name="message" width="32" height="32"/>
         <image name="search" width="32" height="32"/>
+        <image name="settings" width="32" height="32"/>
         <image name="user" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="HMC-fr-N5t"/>
+        <segue reference="oDu-O4-IVp"/>
     </inferredMetricsTieBreakers>
 </document>

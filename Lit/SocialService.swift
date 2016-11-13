@@ -36,4 +36,46 @@ class SocialService {
         let currentUserRef = FirebaseService.ref.child("users/social/following/\(current_uid)/\(uid)")
         currentUserRef.removeValue()
     }
+    
+    static func listenToFollowers(uid:String, completionHandler:(followers:[String])->()) {
+        let followersRef = FirebaseService.ref.child("users/social/followers/\(uid)")
+        followersRef.observeEventType(.Value, withBlock: { snapshot in
+            var _users = [String]()
+            if snapshot.exists() {
+                for user in snapshot.children {
+                    let uid = user.key!!
+                    _users.append(uid)
+                }
+            }
+            completionHandler(followers: _users)
+        })
+    }
+    
+    
+    
+    static func listenToFollowing(uid:String, completionHandler:(following:[String])->()) {
+        let followingRef = FirebaseService.ref.child("users/social/following/\(uid)")
+        followingRef.observeEventType(.Value, withBlock: { snapshot in
+            var _users = [String]()
+            if snapshot.exists() {
+                for user in snapshot.children {
+                    let uid = user.key!!
+                    _users.append(uid)
+                }
+            }
+            completionHandler(following: _users)
+        })
+    }
+    
+    static func stopListeningToFollowers(uid:String) {
+        if uid != mainStore.state.userState.uid {
+           FirebaseService.ref.child("users/social/followers/\(uid)").removeAllObservers()
+        }
+    }
+    
+    static func stopListeningToFollowing(uid:String) {
+        if uid != mainStore.state.userState.uid {
+            FirebaseService.ref.child("users/social/following/\(uid)").removeAllObservers()
+        }
+    }
 }

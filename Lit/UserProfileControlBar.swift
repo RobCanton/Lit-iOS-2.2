@@ -9,7 +9,8 @@
 import UIKit
 
 protocol ControlBarProtocol {
-    func friendBlockTapped()
+    func followersBlockTapped()
+    func followingBlockTapped()
     func messageBlockTapped()
 }
 
@@ -22,6 +23,9 @@ class UserProfileControlBar: UIView {
     
     var friendTap:UITapGestureRecognizer!
     var numFriendsTap:UITapGestureRecognizer!
+    
+    var followersBlockTap:UILongPressGestureRecognizer!
+    var followingBlockTap:UILongPressGestureRecognizer!
     var messageBlockTap:UILongPressGestureRecognizer!
     
     
@@ -38,84 +42,29 @@ class UserProfileControlBar: UIView {
     @IBOutlet weak var messageLabel: UILabel!
     
     var status:FriendStatus = .NOT_FRIENDS
-    var user:User!
-    
+
     func setControlBar() {
         postsLabel.styleProfileBlockText(0, text: "Posts", color: UIColor.whiteColor(), color2: UIColor.whiteColor())
         followersLabel.styleProfileBlockText(0, text: "Followers", color: UIColor.whiteColor(), color2: UIColor.whiteColor())
         followingLabel.styleProfileBlockText(0, text: "Following", color: UIColor.whiteColor(), color2: UIColor.whiteColor())
         messageLabel.styleProfileBlockText(0, text: "Message", color: UIColor.whiteColor(), color2: UIColor.clearColor())
-//
-//        friendTap = UITapGestureRecognizer(target: self, action: #selector(friendBlockTapped))
-//        friendBlock.userInteractionEnabled = true
-//        friendBlock.addGestureRecognizer(friendTap)
-//        
-//        messageBlockTap = UILongPressGestureRecognizer(target: self, action: #selector(messageBlockTapped))
-//        messageBlockTap.minimumPressDuration = 0
-//        messageBlock.userInteractionEnabled = true
-//        messageBlock.addGestureRecognizer(messageBlockTap)
-//        
-//        numFriendsTap = UITapGestureRecognizer(target: self, action: #selector(numFriendsBlockTapped))
-//        numFriendsBlock.userInteractionEnabled = true
-//        numFriendsBlock.addGestureRecognizer(numFriendsTap)
-    }
-    
-    func setFriendStatus(_status:FriendStatus) {
-//        self.status = _status
-//        switch status {
-//        case .IS_CURRENT_USER:
-//            friendLabel.styleProfileBlockText(0, text: "Edit Profile", color: UIColor.whiteColor(), color2: UIColor.clearColor())
-//            friendBtn.setImage(UIImage(named: "edit"), forState: .Normal)
-//            friendBtn.tintColor = UIColor.whiteColor()
-//            friendBtn.enabled = true
-//            messageLabel.styleProfileBlockText(0, text: "Settings", color: UIColor.whiteColor(), color2: UIColor.clearColor())
-//            messageBtn.setImage(UIImage(named: "settings"), forState: .Normal)
-//            break
-//        case .FRIENDS:
-//            friendLabel.styleProfileBlockText(0, text: "Friends", color: UIColor.whiteColor(), color2: UIColor.clearColor())
-//            friendBtn.setImage(UIImage(named: "friend_checked"), forState: .Normal)
-//            friendBtn.tintColor = UIColor.whiteColor()
-//            friendBtn.enabled = true
-//            messageLabel.styleProfileBlockText(0, text: "Message", color: UIColor.whiteColor(), color2: UIColor.clearColor())
-//            messageBtn.setImage(UIImage(named: "paperplane"), forState: .Normal)
-//            break
-//        case .PENDING_INCOMING:
-//            friendLabel.styleProfileBlockText(0, text: "Confirm", color: accentColor, color2: UIColor.clearColor())
-//            friendBtn.setImage(UIImage(named: "friend_add_filled"), forState: .Normal)
-//            friendBtn.tintColor = accentColor
-//            friendBtn.enabled = true
-//            messageLabel.styleProfileBlockText(0, text: "Message", color: UIColor.whiteColor(), color2: UIColor.clearColor())
-//            messageBtn.setImage(UIImage(named: "paperplane"), forState: .Normal)
-//            break
-//        case .PENDING_INCOMING_SEEN:
-//            friendLabel.styleProfileBlockText(0, text: "Confirm", color: accentColor, color2: UIColor.clearColor())
-//            friendBtn.setImage(UIImage(named: "friend_add_filled"), forState: .Normal)
-//            friendBtn.tintColor = accentColor
-//            friendBtn.enabled = true
-//            messageLabel.styleProfileBlockText(0, text: "Message", color: UIColor.whiteColor(), color2: UIColor.clearColor())
-//            messageBtn.setImage(UIImage(named: "paperplane"), forState: .Normal)
-//            break
-//        case .PENDING_OUTGOING:
-//            friendLabel.styleProfileBlockText(0, text: "Added", color: UIColor.lightGrayColor(), color2: UIColor.clearColor())
-//            friendBtn.setImage(UIImage(named: "friend_add_filled"), forState: .Normal)
-//            friendBtn.tintColor = UIColor.whiteColor()
-//            friendBtn.enabled = false
-//            messageLabel.styleProfileBlockText(0, text: "Message", color: UIColor.whiteColor(), color2: UIColor.clearColor())
-//            messageBtn.setImage(UIImage(named: "paperplane"), forState: .Normal)
-//            break
-//        case .NOT_FRIENDS:
-//            friendLabel.styleProfileBlockText(0, text: "Add Friend", color: UIColor.whiteColor(), color2: UIColor.clearColor())
-//            friendBtn.setImage(UIImage(named: "friend_add_filled"), forState: .Normal)
-//            friendBtn.tintColor = UIColor.whiteColor()
-//            friendBtn.enabled = true
-//            messageLabel.styleProfileBlockText(0, text: "Message", color: UIColor.whiteColor(), color2: UIColor.clearColor())
-//            messageBtn.setImage(UIImage(named: "paperplane"), forState: .Normal)
-//            break
-//        }
-    }
-    
-    func populateUser(_user:User) {
-        user = _user
+
+        followersBlockTap = UILongPressGestureRecognizer(target: self, action: #selector(followersBlockTapped))
+        followersBlockTap.minimumPressDuration = 0
+        followersBlock.userInteractionEnabled = true
+        followersBlock.addGestureRecognizer(followersBlockTap)
+        
+        followingBlockTap = UILongPressGestureRecognizer(target: self, action: #selector(followingBlockTapped))
+        followingBlockTap.minimumPressDuration = 0
+        followingBlock.userInteractionEnabled = true
+        followingBlock.addGestureRecognizer(followingBlockTap)
+        
+        messageBlockTap = UILongPressGestureRecognizer(target: self, action: #selector(messageBlockTapped))
+        messageBlockTap.minimumPressDuration = 0
+        messageBlock.userInteractionEnabled = true
+        messageBlock.addGestureRecognizer(messageBlockTap)
+        
+
     }
     
     func setPosts(numPosts:Int) {
@@ -126,38 +75,70 @@ class UserProfileControlBar: UIView {
         }
     }
     
-    func setNumFriends(numFriends:Int) {
-//        if numFriends != 1 {
-//            numFriendsLabel.styleProfileBlockText(numFriends, text: "Friends", color: UIColor.whiteColor(), color2: UIColor.whiteColor())
-//        } else {
-//            numFriendsLabel.styleProfileBlockText(numFriends, text: "Friend", color: UIColor.whiteColor(), color2: UIColor.whiteColor())
-//        }
+    func setFollowers(numFollowers:Int) {
+        if numFollowers != 1 {
+            followersLabel.styleProfileBlockText(numFollowers, text: "Followers", color: UIColor.whiteColor(), color2: UIColor.whiteColor())
+        } else {
+            followersLabel.styleProfileBlockText(numFollowers, text: "Follower", color: UIColor.whiteColor(), color2: UIColor.whiteColor())
+        }
     }
     
-    func friendBlockTapped(gesture:UITapGestureRecognizer) {
-//        friendBlock.removeGestureRecognizer(friendTap)
-//        FirebaseService.handleFriendAction(user.getUserId(), status: status)
+    func setFollowing(numFollowing:Int) {
+        if numFollowing != 1 {
+            followingLabel.styleProfileBlockText(numFollowing, text: "Following", color: UIColor.whiteColor(), color2: UIColor.whiteColor())
+        } else {
+            followingLabel.styleProfileBlockText(numFollowing, text: "Following", color: UIColor.whiteColor(), color2: UIColor.whiteColor())
+        }
     }
     
-    func numFriendsBlockTapped(gesture:UITapGestureRecognizer) {
-//        delegate?.friendBlockTapped()
+
+    
+    func followersBlockTapped(gesture:UITapGestureRecognizer) {
+        
+        // handle touch down and touch up events separately
+        if gesture.state == .Began {
+            UIView.animateWithDuration(0.15, animations: {
+                self.followersBlock.alpha = 0.5
+            })
+            
+        } else if gesture.state == .Ended { // optional for touch up event catching
+            UIView.animateWithDuration(0.3, animations: {
+                self.followersBlock.alpha = 1.0
+            })
+            delegate?.followersBlockTapped()
+        }
+    }
+    
+    func followingBlockTapped(gesture:UITapGestureRecognizer) {
+        
+        // handle touch down and touch up events separately
+        if gesture.state == .Began {
+            UIView.animateWithDuration(0.15, animations: {
+                self.followingBlock.alpha = 0.5
+            })
+            
+        } else if gesture.state == .Ended { // optional for touch up event catching
+            UIView.animateWithDuration(0.3, animations: {
+                self.followingBlock.alpha = 1.0
+            })
+            delegate?.followingBlockTapped()
+        }
     }
     
     func messageBlockTapped(gesture:UITapGestureRecognizer) {
         
-//        // handle touch down and touch up events separately
-//        if gesture.state == .Began {
-//            UIView.animateWithDuration(0.15, animations: {
-//                self.messageBlock.alpha = 0.5
-//            })
-//            
-//        } else if gesture.state == .Ended { // optional for touch up event catching
-//            UIView.animateWithDuration(0.3, animations: {
-//                self.messageBlock.alpha = 1.0
-//            })
-//            delegate?.messageBlockTapped()
-//        }
-
+        // handle touch down and touch up events separately
+        if gesture.state == .Began {
+            UIView.animateWithDuration(0.15, animations: {
+                self.messageBlock.alpha = 0.5
+            })
+            
+        } else if gesture.state == .Ended { // optional for touch up event catching
+            UIView.animateWithDuration(0.3, animations: {
+                self.messageBlock.alpha = 1.0
+            })
+            delegate?.messageBlockTapped()
+        }
     }
     
     func setBarScale(scale:CGFloat) {

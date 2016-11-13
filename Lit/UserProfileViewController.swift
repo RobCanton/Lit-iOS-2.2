@@ -31,9 +31,30 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     
     var status:FriendStatus = .NOT_FRIENDS
     
+    var followers = [String]()
+    {
+        didSet {
+            self.controlBar?.setFollowers(followers.count)
+        }
+    }
+    var following = [String]()
+        {
+        didSet {
+            self.controlBar?.setFollowing(following.count)
+            
+        }
+    }
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         mainStore.subscribe(self)
+        SocialService.listenToFollowers(user!.getUserId(), completionHandler: { followers in
+            self.followers = followers
+        })
+        
+        SocialService.listenToFollowing(user!.getUserId(), completionHandler: { following in
+            self.following = following
+        })
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -46,10 +67,28 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         mainStore.unsubscribe(self)
+        SocialService.stopListeningToFollowers(user!.getUserId())
+        SocialService.stopListeningToFollowing(user!.getUserId())
     }
     
     func backTapped() {
 
+    }
+    
+    func followersBlockTapped() {
+        let controller = UIStoryboard(name: "Main", bundle: nil)
+            .instantiateViewControllerWithIdentifier("UsersListViewController") as! UsersListViewController
+        controller.title = "Followers"
+        controller.tempIds = followers
+        self.navigationController?.pushViewController(controller, animated: true)
+    }
+    
+    func followingBlockTapped() {
+        let controller = UIStoryboard(name: "Main", bundle: nil)
+            .instantiateViewControllerWithIdentifier("UsersListViewController") as! UsersListViewController
+        controller.title = "Following"
+        controller.tempIds = following
+        self.navigationController?.pushViewController(controller, animated: true)
     }
     
     func messageBlockTapped() {
@@ -84,14 +123,6 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         navigationController?.pushViewController(controller, animated: true)
     }
     
-    func friendBlockTapped() {
-        let controller = UIStoryboard(name: "Main", bundle: nil)
-            .instantiateViewControllerWithIdentifier("UsersListViewController") as! UsersListViewController
-        controller.title = "\(user!.getDisplayName())'s friends"
-        controller.setTypeToFriends(user!.getUserId())
-        self.navigationController?.pushViewController(controller, animated: true)
-    }
-    
     func newState(state: AppState) {
         updateFriendStatus()
         
@@ -109,19 +140,13 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         return .LightContent
     }
     
-    var friend_ids = [String]()
-    {
-        didSet{
-            controlBar?.setNumFriends(friend_ids.count)
-        }
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.title = " "
         self.automaticallyAdjustsScrollViewInsets = false
         navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Plain, target: nil, action: nil)
 
+        let navHeight = screenStatusBarHeight + navigationController!.navigationBar.frame.height
         headerView = UINib(nibName: "CreateProfileHeaderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! CreateProfileHeaderView
         screenSize = self.view.frame
         screenWidth = screenSize.width
@@ -152,12 +177,11 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         self.view.addSubview(collectionView!)
         
         controlBar = UINib(nibName: "UserProfileControlBarView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! UserProfileControlBar
-        controlBar!.frame = CGRectMake(0,0, collectionView!.frame.width, 60)
+        controlBar!.frame = CGRectMake(0,0, collectionView!.frame.width, navHeight)
         controlBar!.setControlBar()
         controlBar!.delegate = self
         collectionView?.addSubview(controlBar!)
         
-        let navHeight = screenStatusBarHeight + navigationController!.navigationBar.frame.height
         statusBarBG = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: navHeight))
         statusBarBG!.backgroundColor = UIColor.blackColor()
         view.addSubview(statusBarBG!)
@@ -165,24 +189,16 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         
         headerView.imageView.loadImageUsingCacheWithURLString(user!.getLargeImageUrl(), completion: {result in})
         headerView.populateUser(user!)
-        controlBar?.populateUser(user!)
+        //controlBar?.populateUser(user!)
         getKeys()
         
-        let ref = FirebaseService.ref.child("users/social/friends/\(user!.getUserId())")
-        ref.observeSingleEventOfType(.Value, withBlock: { snapshot in
-            var _users = [String]()
-            if snapshot.exists() {
-                for user in snapshot.children {
-                    let uid = user.key!!
-                    _users.append(uid)
-                }
-            }
-            self.friend_ids = _users
-        })
-
-        
+        followButton.setFollowButton()
         let barButton = UIBarButtonItem(customView: followButton)
         self.navigationItem.rightBarButtonItem = barButton
+        
+        controlBar?.setFollowing(followers.count)
+        controlBar?.setFollowing(following.count)
+        
     }
     
     

@@ -15,11 +15,9 @@ class FollowButton: UIButton {
     
     var status:FollowingStatus = FollowingStatus.None
     var _user:User?
-    
-    override init(frame: CGRect) {
 
-        
-        super.init(frame: frame)
+    
+    func setFollowButton(){
         self.hidden = true
         
         self.titleLabel!.font = UIFont(name: "Avenir-Medium", size: 15.0)
@@ -29,10 +27,6 @@ class FollowButton: UIButton {
         self.sizeToFit()
         self.addTarget(self, action: #selector(down), forControlEvents: .TouchDown)
         self.addTarget(self, action: #selector(tapped), forControlEvents: .TouchUpInside)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
     func down(sender:UIButton) {

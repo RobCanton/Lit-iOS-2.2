@@ -41,6 +41,14 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
         
     }
     
+    func followersBlockTapped() {
+        
+    }
+    
+    func followingBlockTapped() {
+        
+    }
+    
     func messageBlockTapped() {
         self.performSegueWithIdentifier("toSettings", sender: self)
     }
@@ -60,8 +68,10 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
     
     func newState(state: AppState) {
         updateFriendStatus()
-        let friends = mainStore.state.friends
-        controlBar?.setNumFriends(friends.count)
+        let followers = mainStore.state.socialState.followers
+        let following = mainStore.state.socialState.following
+        controlBar?.setFollowers(followers.count)
+        controlBar?.setFollowing(following.count)
     }
     
     func mediaDeleted() {
@@ -135,7 +145,7 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
             if let _ = headerView {
                 headerView.imageView.loadImageUsingCacheWithURLString(user!.getLargeImageUrl(), completion: {result in})
                 headerView.populateUser(user!)
-                controlBar?.populateUser(user!)
+
                 getKeys()
             }
             
@@ -145,7 +155,7 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
     }
     
     func updateFriendStatus() {
-        controlBar?.setFriendStatus(FriendStatus.IS_CURRENT_USER)
+        
     }
     
     func getKeys() {

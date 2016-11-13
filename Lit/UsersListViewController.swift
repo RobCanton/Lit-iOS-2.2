@@ -43,6 +43,8 @@ class UsersListViewController: UIViewController, UITableViewDelegate, UITableVie
         }
     }
     
+    var tempIds = [String]()
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         mainStore.subscribe(self)
@@ -119,7 +121,7 @@ class UsersListViewController: UIViewController, UITableViewDelegate, UITableVie
             })
             break
         default:
-            
+            userIds = tempIds
             break
         }
     }
@@ -188,7 +190,7 @@ class UsersListViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! UserTableViewCell
+        let cell = tableView.cellForRowAtIndexPath(indexPath) as! UserTableViewCell
 
         let controller = UIStoryboard(name: "Main", bundle: nil)
                 .instantiateViewControllerWithIdentifier("UserProfileViewController") as! UserProfileViewController
