@@ -153,7 +153,7 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         screenHeight = screenSize.height
         
         let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: 40 + screenStatusBarHeight, left: 0, bottom: 200, right: 0)
+        layout.sectionInset = UIEdgeInsets(top: navHeight, left: 0, bottom: 200, right: 0)
         layout.itemSize = CGSize(width: screenWidth/3, height: screenWidth/3)
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
@@ -181,6 +181,11 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         controlBar!.setControlBar()
         controlBar!.delegate = self
         collectionView?.addSubview(controlBar!)
+        
+        if user.getUserId() == mainStore.state.userState.uid {
+            controlBar?.messageBlock.userInteractionEnabled = false
+            controlBar?.messageBlock.alpha = 0.5
+        }
         
         statusBarBG = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: navHeight))
         statusBarBG!.backgroundColor = UIColor.blackColor()
@@ -264,6 +269,13 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
             let scale = abs(progress)
             if let _ = controlBar {
                 controlBar!.setBarScale(scale)
+            }
+            
+            if scale > 0.80 {
+                let prop = ((scale - 0.80) / 0.20) * 1.15
+                controlBar?.alpha = 1 - prop
+            } else {
+                controlBar?.alpha = 1
             }
             
             if progress <= -1.0 {

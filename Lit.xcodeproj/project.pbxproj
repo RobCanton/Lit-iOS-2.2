@@ -397,8 +397,8 @@
 			isa = PBXGroup;
 			children = (
 				B026A8481DAD76FB00DD2CCD /* UserProfileViewController.swift */,
-				B0E8E30F1DD7AC190077D1BC /* FollowButton.swift */,
 				B0236E121DC00E0A0083C720 /* CurrentUserProfileViewController.swift */,
+				B0E8E30F1DD7AC190077D1BC /* FollowButton.swift */,
 				B03DED111DAED45A0062357A /* UserProfileControlBar.swift */,
 				B03DED0F1DAED40D0062357A /* UserProfileControlBarView.xib */,
 				B01441091DCCFC5C00D95FCB /* ControlButton.swift */,

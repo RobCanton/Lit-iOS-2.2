@@ -59,13 +59,13 @@ class UserTableViewCell: UITableViewCell {
     
     var location:Location? {
         didSet{
-//            usernameLabel.textColor = UIColor.whiteColor()
-//            profileImageView.image = nil
-//            profileImageView.loadImageUsingCacheWithURLString(location!.getImageURL(), completion: { result in })
-//            usernameLabel.text = location!.getName()
-//            profileImageView.layer.borderWidth = 1.0
-//            profileImageView.layer.borderColor = UIColor.whiteColor().CGColor
-//            profileImageView.layer.cornerRadius = profileImageView.frame.size.width/6
+            usernameLabel.textColor = UIColor.whiteColor()
+            profileImageView.image = nil
+            profileImageView.loadImageUsingCacheWithURLString(location!.getImageURL(), completion: { result in })
+            usernameLabel.text = location!.getName()
+            profileImageView.layer.borderWidth = 1.0
+            profileImageView.layer.borderColor = UIColor.whiteColor().CGColor
+            profileImageView.layer.cornerRadius = profileImageView.frame.size.width/6
         }
     }
     
@@ -80,7 +80,7 @@ class UserTableViewCell: UITableViewCell {
         backgroundColor = UIColor.clearColor()
         
         
-        friendButton.layer.cornerRadius = 5
+        friendButton.layer.cornerRadius = 4
         friendButton.clipsToBounds = true
         friendButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         

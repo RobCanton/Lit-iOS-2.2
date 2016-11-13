@@ -100,6 +100,8 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
         self.navigationController?.navigationBar.barStyle = .Black
         self.navigationController?.navigationBar.translucent = true
         
+        let navHeight = screenStatusBarHeight + navigationController!.navigationBar.frame.height
+        
         headerView = UINib(nibName: "CreateProfileHeaderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! CreateProfileHeaderView
         headerView.delegate = self
         screenSize = self.view.frame
@@ -107,7 +109,7 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
         screenHeight = screenSize.height
         
         let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: 40 + screenStatusBarHeight, left: 0, bottom: 200, right: 0)
+        layout.sectionInset = UIEdgeInsets(top: navHeight, left: 0, bottom: 200, right: 0)
         layout.itemSize = CGSize(width: screenWidth/3, height: screenWidth/3)
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
@@ -131,7 +133,7 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
         self.view.addSubview(collectionView!)
         
         controlBar = UINib(nibName: "UserProfileControlBarView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! UserProfileControlBar
-        controlBar!.frame = CGRectMake(0,0, collectionView!.frame.width, 60)
+        controlBar!.frame = CGRectMake(0,0, collectionView!.frame.width, navHeight)
         controlBar!.setControlBar()
         controlBar!.delegate = self
         collectionView?.addSubview(controlBar!)
@@ -211,6 +213,13 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
             let scale = abs(progress)
             if let _ = controlBar {
                 controlBar!.setBarScale(scale)
+            }
+            
+            if scale > 0.80 {
+                let prop = ((scale - 0.80) / 0.20) * 1.15
+                controlBar?.alpha = 1 - prop
+            } else {
+                controlBar?.alpha = 1
             }
             
             if progress <= -1.0 {

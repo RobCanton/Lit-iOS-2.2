@@ -67,7 +67,6 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
 
         let navHeight = screenStatusBarHeight + navigationController!.navigationBar.frame.height
         let slack:CGFloat = 1.0
-        let controlBarHeight:CGFloat = navHeight
         let eventsHeight:CGFloat = 0
         let topInset:CGFloat = navHeight + eventsHeight + slack
         

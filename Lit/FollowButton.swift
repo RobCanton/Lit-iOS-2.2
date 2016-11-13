@@ -21,7 +21,7 @@ class FollowButton: UIButton {
         self.hidden = true
         
         self.titleLabel!.font = UIFont(name: "Avenir-Medium", size: 15.0)
-        self.layer.cornerRadius = 5
+        self.layer.cornerRadius = 4
         self.clipsToBounds = true
         self.contentEdgeInsets = UIEdgeInsets(top: 4, left: 14, bottom: 4, right: 14)
         self.sizeToFit()
