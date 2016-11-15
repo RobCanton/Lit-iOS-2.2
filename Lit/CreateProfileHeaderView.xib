@@ -24,12 +24,12 @@
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Fetching..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sxb-IN-AQ9">
                     <rect key="frame" x="51" y="533" width="225" height="24"/>
-                    <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="16"/>
+                    <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="14"/>
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="No bio." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jxZ-88-RSp">
-                    <rect key="frame" x="15" y="566" width="571" height="21"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="No bio." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jxZ-88-RSp">
+                    <rect key="frame" x="15" y="565" width="571" height="22"/>
                     <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="15"/>
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
@@ -38,7 +38,14 @@
                     <rect key="frame" x="15" y="530" width="20" height="20"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="6OQ-3r-dRO" secondAttribute="height" multiplier="1:1" id="9yd-0Y-U5V"/>
+                        <constraint firstAttribute="height" constant="18" id="Gaz-Kl-EOL"/>
+                        <constraint firstAttribute="width" constant="18" id="NAM-bn-dTA"/>
                     </constraints>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="9yd-0Y-U5V"/>
+                        </mask>
+                    </variation>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K38-Iv-6NC">
                     <rect key="frame" x="15" y="474" width="165" height="51"/>
@@ -62,6 +69,7 @@
                 <constraint firstAttribute="trailing" secondItem="gNO-dm-a0s" secondAttribute="trailing" id="fqj-79-GGn"/>
                 <constraint firstItem="QEM-bq-DwW" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="hRP-LV-Oip"/>
                 <constraint firstAttribute="bottom" secondItem="jxZ-88-RSp" secondAttribute="bottom" constant="8" id="jcD-w9-ZQd"/>
+                <constraint firstItem="sxb-IN-AQ9" firstAttribute="centerY" secondItem="6OQ-3r-dRO" secondAttribute="centerY" id="kFj-TK-BWf"/>
                 <constraint firstItem="sxb-IN-AQ9" firstAttribute="leading" secondItem="6OQ-3r-dRO" secondAttribute="trailing" constant="8" id="pVs-px-ZE6"/>
                 <constraint firstItem="sxb-IN-AQ9" firstAttribute="top" secondItem="K38-Iv-6NC" secondAttribute="bottom" constant="4" id="pnN-Ky-Y6q"/>
                 <constraint firstAttribute="trailing" secondItem="QEM-bq-DwW" secondAttribute="trailing" id="px7-ND-h8R"/>
