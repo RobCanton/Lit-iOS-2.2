@@ -25,6 +25,10 @@ func UserStateReducer(action: Action, state: UserState?) -> UserState {
         let a = action as! SetActiveLocation
         state.activeLocationKey = a.locationKey
         break
+    case _ as UpdateProfileImageURL:
+        let a = action as! UpdateProfileImageURL
+        state.user!.setImageURLS(a.largeImageURL, smallImageURL: a.smallImageURL)
+        break
     default:
         break
     }

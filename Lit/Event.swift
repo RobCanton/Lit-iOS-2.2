@@ -48,6 +48,7 @@ class Event {
     }
     
     func hasPassed() -> Bool {
-        return date.timeIntervalSinceNow < 0
+        return date.timeIntervalSinceNow < -86399999
+        
     }
 }

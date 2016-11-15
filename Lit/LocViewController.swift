@@ -11,7 +11,7 @@ import Firebase
 import ReSwift
 import ARNTransitionAnimator
 
-class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, LocationHeaderProtocol, ARNImageTransitionZoomable, ZoomProtocol, LocationDetailsProtocol {
+class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, LocationHeaderProtocol, ARNImageTransitionZoomable, ZoomProtocol {
     
     var statusBarBG:UIView?
     
@@ -64,11 +64,26 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
         self.navigationItem.title = " "
         self.automaticallyAdjustsScrollViewInsets = false
         navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Plain, target: nil, action: nil)
+        
+        detailsView = UINib(nibName: "LocationDetailsView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as? LocationDetailsView
+        
+        detailsView.frame = CGRectMake(0, 0, self.view.frame.width, detailsView.frame.height)
 
         let navHeight = screenStatusBarHeight + navigationController!.navigationBar.frame.height
         let slack:CGFloat = 1.0
         let eventsHeight:CGFloat = 0
-        let topInset:CGFloat = navHeight + eventsHeight + slack
+        let topInset:CGFloat = navHeight + detailsView.frame.height + eventsHeight + slack
+        
+        
+        print("BEFORE : \(detailsView.descriptionLabel.frame.height)")
+        let prevHeight = detailsView.descriptionLabel.frame.height
+        detailsView.descriptionLabel.text = "Swanky black & gold interior with metallic finishes, plus buzzing music for dancing crowds."
+        detailsView.descriptionLabel.sizeToFit()
+        detailsView.sizeToFit()
+        print("AFTER : \(detailsView.descriptionLabel.frame.height)")
+        let difference  = detailsView.descriptionLabel.frame.height
+        detailsView.frame = CGRectMake(0, 0, self.view.frame.width, detailsView.frame.height + difference)
+        
         
         headerView = UINib(nibName: "LocationHeaderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! LocationHeaderView
         headerView.delegate = self
@@ -77,7 +92,7 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
         screenHeight = screenSize.height
         
         let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: topInset, left: 0, bottom: 200, right: 0)
+        layout.sectionInset = UIEdgeInsets(top: topInset , left: 0, bottom: 200, right: 0)
         layout.itemSize = CGSize(width: screenWidth/3, height: screenWidth/3)
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
@@ -99,9 +114,7 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
         collectionView!.backgroundColor = UIColor.blackColor()
         view.addSubview(collectionView!)
         
-        detailsView = UINib(nibName: "LocationDetailsView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as? LocationDetailsView
-        detailsView.frame = CGRectMake(0, 0, collectionView!.frame.width, navHeight)
-        detailsView.delegate = self
+        
         collectionView?.addSubview(detailsView)
         
         footerView = UINib(nibName: "LocationFooterView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! LocationFooterView
@@ -131,6 +144,8 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
                 self.buildEventsBanner()
             }
         })
+        
+        
         
     }
     
@@ -187,7 +202,7 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
         let navHeight = screenStatusBarHeight + navigationController!.navigationBar.frame.height
         let eventsHeight:CGFloat = 150.0
         let slack:CGFloat = 1.0
-        let topInset:CGFloat = navHeight + eventsHeight + slack
+        let topInset:CGFloat = detailsView.frame.height + eventsHeight + slack
         
         eventsBanner = UINib(nibName: "EventsBannerView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as? EventsBannerView
         eventsBanner!.clipsToBounds = true
@@ -206,6 +221,7 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
         if events.count > 0 {
             eventsBanner!.event = events[0]
         }
+        //eventsBanner?.hidden = true
 
     }
     
@@ -260,7 +276,7 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
         }
         
         if progress < 0 {
-            detailsView.alpha = 1 + progress * 1.75
+            //detailsView.alpha = 1 + progress * 1.75
             let scale = abs(progress)
             if let _ = controlBar {
 

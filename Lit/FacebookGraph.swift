@@ -58,7 +58,22 @@ class FacebookGraph {
             }
             
         })
-        
-        
+    }
+    
+    static func getProfilePicture(completionHandler:(imageURL:String?)->()) {
+        let pictureRequest = FBSDKGraphRequest(graphPath: "me/picture??width=720&height=720&redirect=false", parameters: nil)
+        pictureRequest.startWithCompletionHandler({
+            (connection, result, error: NSError!) -> Void in
+            var imageUrl:String?
+            if error == nil {
+                let dictionary = result as? NSDictionary
+                let data = dictionary?.objectForKey("data")
+                imageUrl = (data?.objectForKey("url"))! as! String
+                
+            } else {
+                print("\(error)")
+            }
+            completionHandler(imageURL: imageUrl)
+        })
     }
 }

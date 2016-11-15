@@ -138,6 +138,9 @@
 		B0E8E3101DD7AC190077D1BC /* FollowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E8E30F1DD7AC190077D1BC /* FollowButton.swift */; };
 		B0E8E3121DD7B2A50077D1BC /* SocialService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E8E3111DD7B2A50077D1BC /* SocialService.swift */; };
 		B0E8E3141DD7B64D0077D1BC /* SocialReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E8E3131DD7B64D0077D1BC /* SocialReducer.swift */; };
+		B0E8E3161DD989F30077D1BC /* ProfilePictureMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E8E3151DD989F30077D1BC /* ProfilePictureMessageView.swift */; };
+		B0E8E3181DD98A060077D1BC /* ProfilePictureMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0E8E3171DD98A060077D1BC /* ProfilePictureMessageView.xib */; };
+		B0E8E31A1DDACE490077D1BC /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E8E3191DDACE480077D1BC /* UserService.swift */; };
 		B0ED4B671DBD84D20040E5F0 /* LocationDetailsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0ED4B661DBD84D20040E5F0 /* LocationDetailsView.xib */; };
 		B0ED4B691DBD85130040E5F0 /* LocationDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0ED4B681DBD85130040E5F0 /* LocationDetailsView.swift */; };
 		B0FF11451D3EB32100D709CE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FF11441D3EB32100D709CE /* AppDelegate.swift */; };
@@ -282,6 +285,9 @@
 		B0E8E30F1DD7AC190077D1BC /* FollowButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowButton.swift; sourceTree = "<group>"; };
 		B0E8E3111DD7B2A50077D1BC /* SocialService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialService.swift; sourceTree = "<group>"; };
 		B0E8E3131DD7B64D0077D1BC /* SocialReducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialReducer.swift; sourceTree = "<group>"; };
+		B0E8E3151DD989F30077D1BC /* ProfilePictureMessageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilePictureMessageView.swift; sourceTree = "<group>"; };
+		B0E8E3171DD98A060077D1BC /* ProfilePictureMessageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfilePictureMessageView.xib; sourceTree = "<group>"; };
+		B0E8E3191DDACE480077D1BC /* UserService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		B0ED4B661DBD84D20040E5F0 /* LocationDetailsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LocationDetailsView.xib; sourceTree = "<group>"; };
 		B0ED4B681DBD85130040E5F0 /* LocationDetailsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationDetailsView.swift; sourceTree = "<group>"; };
 		B0FF11411D3EB32000D709CE /* Lit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lit.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -349,6 +355,7 @@
 			children = (
 				76136D441D495E8E003DB433 /* FirebaseService.swift */,
 				B0E8E3111DD7B2A50077D1BC /* SocialService.swift */,
+				B0E8E3191DDACE480077D1BC /* UserService.swift */,
 				B0E591601DD3831600C032D6 /* FacebookGraph.swift */,
 				B0254F771DB01FAE0082D898 /* JSQMessagesService.swift */,
 				76B361D61D6519ED0024CDC7 /* GPSService.swift */,
@@ -406,6 +413,8 @@
 				B0E8E30B1DD7739B0077D1BC /* ContainerViewController.swift */,
 				B0E591581DD126C900C032D6 /* LogoutView.swift */,
 				B0E5915A1DD126D600C032D6 /* LogoutView.xib */,
+				B0E8E3151DD989F30077D1BC /* ProfilePictureMessageView.swift */,
+				B0E8E3171DD98A060077D1BC /* ProfilePictureMessageView.xib */,
 			);
 			name = UserProfile;
 			sourceTree = "<group>";
@@ -744,6 +753,7 @@
 				B08BBB911DBAF4C200AD3FF1 /* UserTableViewCell.xib in Resources */,
 				B080078C1DCAEAD300695D5F /* EventsViewController.storyboard in Resources */,
 				B00BA9231D9E4E0700F5EA30 /* FirstScreenViewController.xib in Resources */,
+				B0E8E3181DD98A060077D1BC /* ProfilePictureMessageView.xib in Resources */,
 				76C0E7501D80D4BA004EFA4C /* VisitorsViewController.xib in Resources */,
 				B079BE871DA557B00042B586 /* PhotoCell.xib in Resources */,
 				B0FF114C1D3EB32100D709CE /* Assets.xcassets in Resources */,
@@ -856,6 +866,7 @@
 				B0254F741DAFFC130082D898 /* Conversation.swift in Sources */,
 				76A5166C1D6103AF005E2815 /* ProfileViewController.swift in Sources */,
 				B05DB12A1DA22D9600567996 /* LocationFriendsViewController.swift in Sources */,
+				B0E8E31A1DDACE490077D1BC /* UserService.swift in Sources */,
 				B0BA32691DA7158B004352A7 /* HeaderView.swift in Sources */,
 				B026A84A1DAD76FB00DD2CCD /* UserProfileViewController.swift in Sources */,
 				B014410A1DCCFC5C00D95FCB /* ControlButton.swift in Sources */,
@@ -902,6 +913,7 @@
 				B05ABCFD1D41185200364322 /* Reducer.swift in Sources */,
 				B0254F7A1DB07F080082D898 /* helper.swift in Sources */,
 				B02D4C3A1DC85A0F004E2673 /* Event.swift in Sources */,
+				B0E8E3161DD989F30077D1BC /* ProfilePictureMessageView.swift in Sources */,
 				767729841D5116930052CA17 /* CWStatusBarNotificationUtils.swift in Sources */,
 				B0254F781DB01FAE0082D898 /* JSQMessagesService.swift in Sources */,
 				B0305A521DBE6F15009B5F74 /* WebViewController.swift in Sources */,

@@ -73,4 +73,9 @@ class User:NSObject, NSCoding {
         print("imageUrl: \(imageUrl)")
     }
     
+    func setImageURLS(largeImageURL:String, smallImageURL:String) {
+        self.largeImageUrl = largeImageURL
+        self.imageUrl = smallImageURL
+    }
+    
 }

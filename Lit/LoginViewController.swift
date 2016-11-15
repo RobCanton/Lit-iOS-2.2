@@ -83,7 +83,8 @@ class LoginViewController: UIViewController, StoreSubscriber {
                 if _user != nil {
                     FirebaseService.login(_user!)
                 } else {
-                   self.createProfile()
+                    FirebaseService.logout()
+                    self.activateLoginButton()
                 }
             })
         } else {

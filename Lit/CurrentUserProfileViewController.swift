@@ -10,9 +10,10 @@ import ReSwift
 import MXParallaxHeader
 import ARNTransitionAnimator
 import Firebase
+import SwiftMessages
 
 
-class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, HeaderProtocol, ControlBarProtocol, ZoomProtocol {
+class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, ControlBarProtocol, ZoomProtocol, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var statusBarBG:UIView?
     
@@ -25,7 +26,17 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
     var collectionView:UICollectionView?
     var controlBar:UserProfileControlBar?
     var headerView:CreateProfileHeaderView!
+    
+    var largeProfileImageView:UIImageView = UIImageView()
+    var smallProfileImageView:UIImageView = UIImageView()
+    let imagePicker = UIImagePickerController()
+    
     var user:User? = mainStore.state.userState.user
+    
+    var headerTap:UITapGestureRecognizer!
+    var profilePhotoMessageView:ProfilePictureMessageView?
+    var config: SwiftMessages.Config?
+    var profilePhotoMessageWrapper = SwiftMessages()
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -37,9 +48,6 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
         mainStore.unsubscribe(self)
     }
     
-    func backTapped() {
-        
-    }
     
     func followersBlockTapped() {
         
@@ -103,7 +111,6 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
         let navHeight = screenStatusBarHeight + navigationController!.navigationBar.frame.height
         
         headerView = UINib(nibName: "CreateProfileHeaderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! CreateProfileHeaderView
-        headerView.delegate = self
         screenSize = self.view.frame
         screenWidth = screenSize.width
         screenHeight = screenSize.height
@@ -154,6 +161,78 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
             
         }
         
+        headerTap = UITapGestureRecognizer(target: self, action: #selector(showProfilePhotoMessagesView))
+        headerView.imageView.addGestureRecognizer(headerTap)
+        headerView.imageView.userInteractionEnabled = true
+        imagePicker.delegate = self
+        
+    }
+    
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+        if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+            
+            let largeImage = resizeImage(pickedImage, newWidth: 720)
+            let smallImage = resizeImage(pickedImage, newWidth: 150)
+            uploadProfileImages(largeImage, smallImage: smallImage)
+        }
+        
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func setFacebookProfilePicture() {
+        FacebookGraph.getProfilePicture({ imageURL in
+            if imageURL != nil {
+                self.largeProfileImageView.loadImageUsingCacheWithURLString(imageURL!, completion: { result in
+                    let largeImage = self.largeProfileImageView.image!
+                    let smallImage = resizeImage(self.largeProfileImageView.image!, newWidth: 150)
+                    self.uploadProfileImages(largeImage, smallImage: smallImage)
+                })
+
+            }
+        })
+    }
+    
+    func uploadProfileImages(largeImage:UIImage, smallImage:UIImage) {
+        UserService.uploadProfilePicture(largeImage, smallImage: smallImage, completionHandler: { success, largeImageURL, smallImageURL in
+            if success {
+                UserService.updateProfilePictureURL(largeImageURL!, smallURL: smallImageURL!, completionHandler: {
+                    mainStore.dispatch(UpdateProfileImageURL(largeImageURL: largeImageURL!, smallImageURL: smallImageURL!))
+                    self.headerView.imageView.loadImageUsingCacheWithURLString(largeImageURL!, completion: {result in})
+                })
+            }
+        })
+    }
+    
+    func showProfilePhotoMessagesView() {
+        profilePhotoMessageView = try! SwiftMessages.viewFromNib() as? ProfilePictureMessageView
+        profilePhotoMessageView!.configureDropShadow()
+        
+        profilePhotoMessageView!.facebookHandler = {
+            self.profilePhotoMessageWrapper.hide()
+            self.setFacebookProfilePicture()
+        }
+        
+        profilePhotoMessageView!.libraryHandler = {
+            self.profilePhotoMessageWrapper.hide()
+            self.imagePicker.allowsEditing = false
+            self.imagePicker.sourceType = .PhotoLibrary
+            self.presentViewController(self.imagePicker, animated: true, completion: nil)
+        }
+        
+        profilePhotoMessageView!.cancelHandler = {
+            self.profilePhotoMessageWrapper.hide()
+        }
+        
+        config = SwiftMessages.Config()
+        config!.presentationContext = .Window(windowLevel: UIWindowLevelStatusBar)
+        config!.duration = .Forever
+        config!.presentationStyle = .Bottom
+        config!.dimMode = .Gray(interactive: true)
+        profilePhotoMessageWrapper.show(config: config!, view: profilePhotoMessageView!)
     }
     
     func updateFriendStatus() {

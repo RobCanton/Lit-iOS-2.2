@@ -9,10 +9,6 @@
 import UIKit
 import Firebase
 
-protocol HeaderProtocol {
-    func backTapped()
-    func messageTapped()
-}
 
 class CreateProfileHeaderView: UIView {
     @IBOutlet weak var usernameLabel: UILabel!
@@ -22,24 +18,8 @@ class CreateProfileHeaderView: UIView {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var gradientView: UIView!
     @IBOutlet weak var bioTextView: UILabel!
-    
-    @IBOutlet weak var messageBtn: UIView!
 
-    @IBOutlet weak var friendBtn: UIView!
-    @IBOutlet weak var friendBtnImage: UIButton!
-    @IBOutlet weak var friendBtnLabel: UILabel!
-    
-    @IBOutlet weak var backBtn: UIButton!
-    var friendBtnTap:UITapGestureRecognizer!
-    var messageBtnTap:UITapGestureRecognizer!
-    
-    
-    var delegate:HeaderProtocol!
     var user:User!
-
-    @IBAction func backTapped(sender: AnyObject) {
-        delegate.backTapped()
-    }
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -51,11 +31,6 @@ class CreateProfileHeaderView: UIView {
         gradient.frame = gradientView.bounds
         gradientView.layer.insertSublayer(gradient, atIndex: 0)
         
-        messageBtn.layer.cornerRadius = messageBtn.frame.height/2
-        friendBtn.layer.cornerRadius = messageBtn.frame.height/3
-        
-        friendBtnTap = UITapGestureRecognizer(target: self, action: #selector(friendBtnTapped))
-        messageBtnTap = UITapGestureRecognizer(target: self, action: #selector(messageBtnTapped))
     }
     
     func populateUser(user:User) {
@@ -88,33 +63,22 @@ class CreateProfileHeaderView: UIView {
             bioTextView.alpha = 1 + progress * 1.75
             locationIcon.alpha = 1 + progress * 1.75
             locationLabel.alpha = 1 + progress * 1.75
-            messageBtn.alpha = 1 + progress * 1.75
-            friendBtn.alpha = 1 + progress * 1.75
-            friendBtn.alpha = 1 + progress * 1.75
-            backBtn.alpha = 1 + progress * 1.75
+
         }
     }
-    
-    func friendBtnTapped(gesture:UITapGestureRecognizer) {
-        friendBtn.removeGestureRecognizer(friendBtnTap)
-    }
-    
-    func messageBtnTapped(gesture:UITapGestureRecognizer) {
-        delegate.messageTapped()
-    }
-    
+ 
     var status:FriendStatus = .NOT_FRIENDS
     
     
     func animateDown() {
-        UIView.animateWithDuration(0.15, animations: {
-            self.alpha = 0.6
+        UIView.animateWithDuration(0.5, animations: {
+            self.imageView.alpha = 0.6
         })
     }
     
     func animateUp() {
-        UIView.animateWithDuration(0.3, animations: {
-            self.alpha = 1.0
+        UIView.animateWithDuration(0.15, animations: {
+            self.imageView.alpha = 1.0
         })
     }
 }

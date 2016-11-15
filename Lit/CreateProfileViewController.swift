@@ -12,6 +12,7 @@ import UIKit
 import FBSDKCoreKit
 import MXParallaxHeader
 import AudioToolbox
+import SwiftMessages
 
 class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
@@ -31,11 +32,15 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
     var bodyView:UIView!
     var headerView:CreateProfileHeaderView!
     
-    var headerTap:UILongPressGestureRecognizer!
+    var headerTap:UITapGestureRecognizer!
     let imagePicker = UIImagePickerController()
     
     var tap: UITapGestureRecognizer!
     var continueButton:UIView!
+    
+    var profilePhotoMessageView:ProfilePictureMessageView?
+    var config: SwiftMessages.Config?
+    var profilePhotoMessageWrapper = SwiftMessages()
     
     var userInfo:[String : String] = [
         "displayName": ""
@@ -118,9 +123,9 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
         
         tap = UITapGestureRecognizer(target: self, action: #selector(proceed))
         
-        headerTap = UILongPressGestureRecognizer(target: self, action: #selector(headerTapped))
-        headerTap.minimumPressDuration = 0
-        headerView.addGestureRecognizer(headerTap)
+        headerTap = UITapGestureRecognizer(target: self, action: #selector(showProfilePhotoMessagesView))
+        headerView.imageView.addGestureRecognizer(headerTap)
+        headerView.imageView.userInteractionEnabled = true
     
         view.addSubview(continueButton)
         imagePicker.delegate = self
@@ -129,38 +134,41 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
 
     }
     
-    // called by gesture recognizer
-    func headerTapped(gesture: UITapGestureRecognizer) {
+    func showProfilePhotoMessagesView() {
+        profilePhotoMessageView = try! SwiftMessages.viewFromNib() as? ProfilePictureMessageView
+        profilePhotoMessageView!.configureDropShadow()
         
-        // handle touch down and touch up events separately
-        if gesture.state == .Began {
-            headerView.animateDown()
-            
-        } else if gesture.state == .Ended { // optional for touch up event catching
-            headerView.animateUp()
-            imagePicker.allowsEditing = false
-            imagePicker.sourceType = .PhotoLibrary
-            
-            presentViewController(imagePicker, animated: true, completion: nil)
+        profilePhotoMessageView!.facebookHandler = {
+            self.profilePhotoMessageWrapper.hide()
+            self.setFacebookProfilePicture()
         }
+        
+        profilePhotoMessageView!.libraryHandler = {
+            self.profilePhotoMessageWrapper.hide()
+            self.imagePicker.allowsEditing = false
+            self.imagePicker.sourceType = .PhotoLibrary
+            self.presentViewController(self.imagePicker, animated: true, completion: nil)
+        }
+        
+        profilePhotoMessageView!.cancelHandler = {
+            self.profilePhotoMessageWrapper.hide()
+        }
+        
+        config = SwiftMessages.Config()
+        config!.presentationContext = .Window(windowLevel: UIWindowLevelStatusBar)
+        config!.duration = .Forever
+        config!.presentationStyle = .Bottom
+        config!.dimMode = .Gray(interactive: true)
+        profilePhotoMessageWrapper.show(config: config!, view: profilePhotoMessageView!)
     }
     
-    func resizeImage(image: UIImage, newWidth: CGFloat) -> UIImage {
-        
-        let scale = newWidth / image.size.width
-        let newHeight = image.size.height * scale
-        UIGraphicsBeginImageContext(CGSizeMake(newWidth, newHeight))
-        image.drawInRect(CGRectMake(0, 0, newWidth, newHeight))
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return newImage
-    }
     
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
             
+            self.headerView.imageView.image = nil
+            self.smallProfileImageView.image = nil
             headerView.imageView.image = resizeImage(pickedImage, newWidth: 720)
             smallProfileImageView.image = resizeImage(pickedImage, newWidth: 150)
         }
@@ -193,66 +201,25 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
         smallProfileImageView = UIImageView()
         smallProfileImageView.loadImageUsingCacheWithURLString(userInfo["photoURL"]!, completion: {result in})
         
-        let pictureRequest = FBSDKGraphRequest(graphPath: "me/picture??width=720&height=720&redirect=false", parameters: nil)
-        pictureRequest.startWithCompletionHandler({
-            (connection, result, error: NSError!) -> Void in
-            if error == nil {
-                let dictionary = result as? NSDictionary
-                let data = dictionary?.objectForKey("data")
-                let urlPic = (data?.objectForKey("url"))! as! String
-                self.headerView.imageView.loadImageUsingCacheWithURLString(urlPic, completion: {result in
-                    self.smallProfileImageView.image = self.resizeImage( self.headerView.imageView.image!, newWidth: 150)
+        
+        setFacebookProfilePicture()
+        
+    }
+    
+    func setFacebookProfilePicture() {
+        FacebookGraph.getProfilePicture({ imageURL in
+            if imageURL != nil {
+                print("LIKE WE HERE \(imageURL!)")
+                self.headerView.imageView.image = nil
+                self.headerView.imageView.loadImageUsingCacheWithURLString(imageURL!, completion: {result in
+                    self.smallProfileImageView.image = nil
+                    self.smallProfileImageView.image = resizeImage( self.headerView.imageView.image!, newWidth: 150)
                 })
-
-            } else {
-                print("\(error)")
             }
         })
     }
     
-    func uploadLargeProfilePicture() -> FIRStorageUploadTask? {
-        guard let user = FIRAuth.auth()?.currentUser else { return nil}
-        
-        let imageRef = FirebaseService.storageRef.child("user_profiles/\(user.uid)/large")
-        let image = headerView.imageView.image
-        if let picData = UIImageJPEGRepresentation(image!, 0.6) {
-            let contentTypeStr = "image/jpg"
-            let metadata = FIRStorageMetadata()
-            metadata.contentType = contentTypeStr
-            
-            // Upload file and metadata to the object 'images/mountains.jpg'
-            let uploadTask = imageRef.putData(picData, metadata: metadata) { metadata, error in
-                if (error != nil) {
-                    // Uh-oh, an error occurred!
-                } else {}
-            }
-            return uploadTask
-            
-        }
-        return nil
-    }
     
-    func uploadSmallProfilePicture() -> FIRStorageUploadTask? {
-        guard let user = FIRAuth.auth()?.currentUser else { return nil}
-        
-        let imageRef = FirebaseService.storageRef.child("user_profiles/\(user.uid)/small")
-        let image = smallProfileImageView.image
-        if let picData = UIImageJPEGRepresentation(image!, 0.9) {
-            let contentTypeStr = "image/jpg"
-            let metadata = FIRStorageMetadata()
-            metadata.contentType = contentTypeStr
-            
-            // Upload file and metadata to the object 'images/mountains.jpg'
-            let uploadTask = imageRef.putData(picData, metadata: metadata) { metadata, error in
-                if (error != nil) {
-                    // Uh-oh, an error occurred!
-                } else {}
-            }
-            return uploadTask
-            
-        }
-        return nil
-    }
     
     func getNewUser() {
         if let user = FIRAuth.auth()?.currentUser {
@@ -299,42 +266,39 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
         let username = usernameField.text!
         
         if let user = FIRAuth.auth()?.currentUser {
-            if let smallTask = uploadSmallProfilePicture() {
-                smallTask.observeStatus(.Success, handler: { smallTaskSnapshot in
-                    if let largeTask = self.uploadLargeProfilePicture() {
-                        largeTask.observeStatus(.Success, handler: { largeTaskSnapshot in
-                            let ref = FirebaseService.ref.child("users/facebook/\(self.facebook_uid)")
-                            ref.setValue(user.uid)
-                            let privateRef = FIRDatabase.database().reference().child("users/private/\(user.uid)")
-                            privateRef.setValue([
-                                "fullname":fullname
+            let largeImage = headerView.imageView.image!
+            let smallImage = smallProfileImageView.image!
+            UserService.uploadProfilePicture(largeImage, smallImage: smallImage, completionHandler: { success, largeImageURL, smallImageURL in
+                
+                if success {
+                    let ref = FirebaseService.ref.child("users/facebook/\(self.facebook_uid)")
+                    ref.setValue(user.uid)
+                    
+                    let privateRef = FIRDatabase.database().reference().child("users/private/\(user.uid)")
+                    privateRef.setValue([
+                        "fullname":fullname
+                        ], withCompletionBlock: {error, ref in
+                            if error != nil {
+                                return print(error?.localizedDescription)
+                            }
+
+                            let publicRef = FIRDatabase.database().reference().child("users/profile/\(user.uid)")
+                            publicRef.setValue([
+                                "username":username,
+                                "smallProfilePicURL": smallImageURL!,
+                                "largeProfilePicURL": largeImageURL!,
+                                "numFriends":0
                                 ], withCompletionBlock: {error, ref in
-                                if error != nil {
-                                    print(error?.localizedDescription)
-                                }
-                                else {
-                                    let publicRef = FIRDatabase.database().reference().child("users/profile/\(user.uid)")
-                                    publicRef.setValue([
-                                        "username":username,
-                                        "smallProfilePicURL": smallTaskSnapshot.metadata!.downloadURL()!.absoluteString,
-                                        "largeProfilePicURL": largeTaskSnapshot.metadata!.downloadURL()!.absoluteString,
-                                        "numFriends":0
-                                        ], withCompletionBlock: {error, ref in
-                                            if error != nil {
-                                                print(error!.localizedDescription)
-                                            }
-                                            else {
-                                                self.getNewUser()
-                                            }
-                                    })
-                                }
+                                    if error != nil {
+                                        print(error!.localizedDescription)
+                                    }
+                                    else {
+                                        self.getNewUser()
+                                    }
                             })
-                        })
-                    }
-                
-                })
-                
-            }
+                    })
+                }
+            })
         }
 
     }

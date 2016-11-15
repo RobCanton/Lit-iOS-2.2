@@ -47,14 +47,10 @@ class LogoutView: MessageView {
     }
         
     func logout(sender:UIButton) {
-        if logoutHandler != nil {
-            logoutHandler!()
-        }
+        logoutHandler?()
     }
     
     func cancel(sender:UIButton) {
-        if cancelHandler != nil {
-            cancelHandler!()
-        }
+        cancelHandler?()
     }
 }

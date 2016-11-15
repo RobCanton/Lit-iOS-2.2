@@ -29,3 +29,8 @@ struct UpdateFriendRequestsOut: Action {
 struct UpdateFriends: Action {
     let friends:[String:Friend]
 }
+
+struct UpdateProfileImageURL: Action {
+    let largeImageURL: String
+    let smallImageURL: String
+}
