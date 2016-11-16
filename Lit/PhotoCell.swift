@@ -27,7 +27,7 @@ class PhotoCell: UICollectionViewCell {
     }
     
     func setPhoto(item:StoryItem) {
-        //imageView.image = nil
+        imageView.image = nil
         imageView.loadImageUsingCacheWithURLString(item.getDownloadUrl()!.absoluteString, completion: { loaded in
             if loaded {
 
@@ -37,6 +37,7 @@ class PhotoCell: UICollectionViewCell {
             }
 
         })
+        
         
         self.layer.borderColor = UIColor.blackColor().CGColor
         self.layer.borderWidth = 1.0

@@ -694,10 +694,10 @@
             </objects>
             <point key="canvasLocation" x="2124" y="995"/>
         </scene>
-        <!--Image Transition Navigation Controller-->
+        <!--Navigation Controller-->
         <scene sceneID="yYk-2T-3g0">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="e8A-Zh-0l5" customClass="ARNImageTransitionNavigationController" customModule="Lit" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="e8A-Zh-0l5" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="" image="home" id="dhG-6u-jid">
                         <inset key="imageInsets" minX="0.0" minY="6" maxX="0.0" maxY="-6"/>
                     </tabBarItem>
