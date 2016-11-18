@@ -33,6 +33,7 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
         mainStore.subscribe(self)
         //navigationController?.hidesBarsOnSwipe = true
         print("LocationViewController Subscribed")
+        
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -44,6 +45,9 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         self.navigationController?.delegate = self
+        if let tabBar = self.tabBarController as? PopUpTabBarController {
+            tabBar.setTabBarVisible(true, animated: true)
+        }
     }
     
     var events = [Event]()
@@ -305,6 +309,7 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
         let cell = collectionView.cellForItemAtIndexPath(indexPath) as! PhotoCell
         
         let presentedViewController: PresentedViewController = PresentedViewController()
+        presentedViewController.tabBarRef = self.tabBarController! as! PopUpTabBarController
         presentedViewController.photos = photos
         presentedViewController.transitionController = self.transitionController
         self.transitionController.userInfo = ["destinationIndexPath": indexPath, "initialIndexPath": indexPath]
@@ -318,10 +323,6 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
             transitionController.push(viewController: presentedViewController, on: self, attached: presentedViewController)
             
         } else {
-            
-            // Set transitionController as a transition delegate and present.
-            presentedViewController.transitioningDelegate = transitionController
-            transitionController.present(viewController: presentedViewController, on: self, attached: presentedViewController, completion: nil)
         }
         
         collectionView.deselectItemAtIndexPath(indexPath, animated: true)

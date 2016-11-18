@@ -150,6 +150,7 @@
 		B0E8E3291DDB82830077D1BC /* PresentedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E8E3281DDB82830077D1BC /* PresentedViewController.swift */; };
 		B0E8E32F1DDBC44C0077D1BC /* PostAuthorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0E8E32E1DDBC44C0077D1BC /* PostAuthorView.xib */; };
 		B0E8E3311DDBC4640077D1BC /* PostAuthorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E8E3301DDBC4640077D1BC /* PostAuthorView.swift */; };
+		B0E8E3391DDF73390077D1BC /* PostCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E8E3381DDF73390077D1BC /* PostCollectionViewCell.swift */; };
 		B0ED4B671DBD84D20040E5F0 /* LocationDetailsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0ED4B661DBD84D20040E5F0 /* LocationDetailsView.xib */; };
 		B0ED4B691DBD85130040E5F0 /* LocationDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0ED4B681DBD85130040E5F0 /* LocationDetailsView.swift */; };
 		B0FF11451D3EB32100D709CE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FF11441D3EB32100D709CE /* AppDelegate.swift */; };
@@ -306,6 +307,7 @@
 		B0E8E3281DDB82830077D1BC /* PresentedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresentedViewController.swift; sourceTree = "<group>"; };
 		B0E8E32E1DDBC44C0077D1BC /* PostAuthorView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostAuthorView.xib; sourceTree = "<group>"; };
 		B0E8E3301DDBC4640077D1BC /* PostAuthorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostAuthorView.swift; sourceTree = "<group>"; };
+		B0E8E3381DDF73390077D1BC /* PostCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCollectionViewCell.swift; sourceTree = "<group>"; };
 		B0ED4B661DBD84D20040E5F0 /* LocationDetailsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LocationDetailsView.xib; sourceTree = "<group>"; };
 		B0ED4B681DBD85130040E5F0 /* LocationDetailsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationDetailsView.swift; sourceTree = "<group>"; };
 		B0FF11411D3EB32000D709CE /* Lit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lit.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -540,6 +542,7 @@
 			isa = PBXGroup;
 			children = (
 				B0321ECB1DB568BA00AD4C53 /* LocViewController.swift */,
+				B0E8E3381DDF73390077D1BC /* PostCollectionViewCell.swift */,
 				B0E8E3281DDB82830077D1BC /* PresentedViewController.swift */,
 				B0E8E32E1DDBC44C0077D1BC /* PostAuthorView.xib */,
 				B0E8E3301DDBC4640077D1BC /* PostAuthorView.swift */,
@@ -870,6 +873,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B0E8E3391DDF73390077D1BC /* PostCollectionViewCell.swift in Sources */,
 				B01B34A41DC15BDA00B2B9CE /* DialogRow.swift in Sources */,
 				768C67681D586C26003A76D5 /* StoryViewController.swift in Sources */,
 				B0E8E3101DD7AC190077D1BC /* FollowButton.swift in Sources */,
