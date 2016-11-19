@@ -9,10 +9,9 @@
 import UIKit
 import ReSwift
 import MXParallaxHeader
-import ARNTransitionAnimator
 
 
-class UserProfileViewController: UIViewController, StoreSubscriber, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, ControlBarProtocol, ZoomProtocol {
+class UserProfileViewController: UIViewController, StoreSubscriber, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, ControlBarProtocol, UINavigationControllerDelegate {
 
     var statusBarBG:UIView?
 
@@ -59,6 +58,7 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        navigationController?.delegate = self
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -283,173 +283,63 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         }
     }
     
-    var selectedImageView : UIImageView?
-    var selectedIndexPath: NSIndexPath?
+
+    let transitionController: TransitionController = TransitionController()
+    var selectedIndexPath: NSIndexPath = NSIndexPath(forItem: 0, inSection: 0)
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(cellIdentifier, forIndexPath: indexPath) as! PhotoCell
-        selectedImageView = cell.imageView
-        selectedIndexPath = indexPath
+        self.selectedIndexPath = indexPath
+        let cell = collectionView.cellForItemAtIndexPath(indexPath) as! PhotoCell
         
-        if let nav = navigationController as? ARNImageTransitionNavigationController {
-            nav.doZoomTransition = true
-        }
-        showInteractive()
-    }
-    
-    var animator : ARNTransitionAnimator?
-    
-    
-    var isModeModal = false
-    
-    func Deanimate(){
-        self.animator?.interactiveType = .None
-    }
-    
-    func Reanimate(){
-        self.animator?.interactiveType = .Present
-    }
-    
-
-    var controller:ModalViewController!
-    
-    func showInteractive() {
-        let storyboard = UIStoryboard(name: "ModalViewController", bundle: nil)
-        controller = storyboard.instantiateViewControllerWithIdentifier("ModalViewController") as! ModalViewController
-        controller.mode = .User
-        controller.item = self.photos[self.selectedIndexPath!.item]
-        controller.delegate = self
+        let presentedViewController: PresentedViewController = PresentedViewController()
+        presentedViewController.tabBarRef = self.tabBarController! as! PopUpTabBarController
+        presentedViewController.photos = photos
+        presentedViewController.transitionController = self.transitionController
+        self.transitionController.userInfo = ["destinationIndexPath": indexPath, "initialIndexPath": indexPath]
         
-        let operationType: ARNTransitionAnimatorOperation = isModeModal ? .Present : .Push
-        let animator = ARNTransitionAnimator(operationType: operationType, fromVC: self, toVC: controller)
-        
-        animator.presentationBeforeHandler = { [weak self] containerView, transitionContext in
-            containerView.addSubview(self!.controller.view)
+        // This example will push view controller if presenting view controller has navigation controller.
+        // Otherwise, present another view controller
+        if let navigationController = self.navigationController {
             
-            if let tabBar = self!.tabBarController as? PopUpTabBarController {
-                tabBar.setTabBarVisible(false, animated: true)
-            }
+            // Set transitionController as a navigation controller delegate and push.
+            navigationController.delegate = transitionController
+            transitionController.push(viewController: presentedViewController, on: self, attached: presentedViewController)
             
-            self!.controller.view.layoutIfNeeded()
-            
-            let sourceImageView = self!.createTransitionImageView()
-            let destinationImageView = self!.controller.createTransitionImageView()
-            
-            containerView.addSubview(sourceImageView)
-            
-            self!.controller.presentationBeforeAction()
-            
-            self!.controller.view.alpha = 0.0
-            
-            animator.presentationAnimationHandler = { containerView, percentComplete in
-                //print(percentComplete)
-                //self!.tabBarController?.setTabBarOffsetY(percentComplete)
-                
-                sourceImageView.frame = destinationImageView.frame
-                
-                self!.controller.view.alpha = 1.0
-            }
-            
-            animator.presentationCompletionHandler = { containerView, completeTransition in
-                sourceImageView.removeFromSuperview()
-                self!.presentationCompletionAction(completeTransition)
-                self!.controller.presentationCompletionAction(completeTransition)
-            }
-        }
-        
-        animator.dismissalBeforeHandler = { [weak self] containerView, transitionContext in
-            if case .Dismiss = self!.animator!.interactiveType {
-                containerView.addSubview(self!.navigationController!.view)
-            } else {
-                containerView.addSubview(self!.view)
-            }
-            containerView.bringSubviewToFront(self!.controller.view)
-            
-            let sourceImageView = self!.controller.createTransitionImageView()
-            let destinationImageView = self!.createTransitionImageView()
-            containerView.addSubview(sourceImageView)
-            
-            let sourceFrame = sourceImageView.frame;
-            let destFrame = destinationImageView.frame;
-            
-            self!.controller.dismissalBeforeAction()
-            
-            animator.dismissalCancelAnimationHandler = { (containerView: UIView) in
-                sourceImageView.frame = sourceFrame
-                self!.controller.view.alpha = 1.0
-            }
-            
-            animator.dismissalAnimationHandler = { containerView, percentComplete in
-                //print(percentComplete)
-                //self!.tabBarController?.setTabBarOffsetY(-1 *  (1 - percentComplete))
-                if percentComplete < -0.05 { return }
-                let frame = CGRectMake(
-                    destFrame.origin.x - (destFrame.origin.x - sourceFrame.origin.x) * (1 - percentComplete),
-                    destFrame.origin.y - (destFrame.origin.y - sourceFrame.origin.y) * (1 - percentComplete),
-                    destFrame.size.width + (sourceFrame.size.width - destFrame.size.width) * (1 - percentComplete),
-                    destFrame.size.height + (sourceFrame.size.height - destFrame.size.height) * (1 - percentComplete)
-                )
-                sourceImageView.frame = frame
-                self!.controller.view.alpha = 1.0 - (1.0 * percentComplete)
-            }
-            
-            animator.dismissalCompletionHandler = { containerView, completeTransition in
-                self!.dismissalCompletionAction(completeTransition)
-                self!.controller.dismissalCompletionAction(completeTransition)
-                sourceImageView.removeFromSuperview()
-            }
-        }
-        
-        self.animator = animator
-        
-        if isModeModal {
-            self.animator!.interactiveType = .Dismiss
-            controller.transitioningDelegate = self.animator
-            self.presentViewController(controller, animated: true, completion: nil)
         } else {
-            //self.tabBarController?.setTabBarVisible(false, animated: true)
-            self.animator!.interactiveType = .Pop
-            if let _nav = self.navigationController as? ARNImageTransitionNavigationController {
-                _nav.interactiveAnimator = self.animator!
-            }
-            controller.animatorRef = self.animator!
-            self.navigationController?.pushViewController(controller, animated: true)
         }
-    }
-    
-    
-    func createTransitionImageView() -> UIImageView {
         
-        let imageView = UIImageView()
-        imageView.loadImageUsingCacheWithURLString(photos[selectedIndexPath!.item].getDownloadUrl()!.absoluteString, completion: { result in})
-        imageView.contentMode = self.selectedImageView!.contentMode
-        imageView.clipsToBounds = true
-        imageView.userInteractionEnabled = false
-        let attr = collectionView!.layoutAttributesForItemAtIndexPath(selectedIndexPath!)
-        let size = getItemSize(selectedIndexPath!)
+        collectionView.deselectItemAtIndexPath(indexPath, animated: true)
         
-        let offset = collectionView!.contentOffset.y
-        imageView.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
-        let imagePoint = CGPoint(x: attr!.center.x, y: attr!.center.y - offset)
-        imageView.center = imagePoint //self.parentViewController!.view.convertPoint(imagePoint, fromView: self.view)
-        
-        return imageView
     }
-    
-    func presentationCompletionAction(completeTransition: Bool) {
-        self.selectedImageView?.hidden = true
-    }
-    
-    func dismissalCompletionAction(completeTransition: Bool) {
-        
-        self.selectedImageView?.hidden = false
-        if completeTransition {
-            if let tabBar = self.tabBarController as? PopUpTabBarController {
-                tabBar.setTabBarVisible(true, animated: true)
-            }
-        }
-
-    }
-    
-
 }
+
+extension UserProfileViewController: View2ViewTransitionPresenting {
+    
+    func initialFrame(userInfo: [String: AnyObject]?, isPresenting: Bool) -> CGRect {
+        
+        guard let indexPath: NSIndexPath = userInfo?["initialIndexPath"] as? NSIndexPath, attributes: UICollectionViewLayoutAttributes = self.collectionView!.layoutAttributesForItemAtIndexPath(indexPath) else {
+            return CGRect.zero
+        }
+        return self.collectionView!.convertRect(attributes.frame, toView: self.collectionView!.superview)
+    }
+    
+    func initialView(userInfo: [String: AnyObject]?, isPresenting: Bool) -> UIView {
+        
+        let indexPath: NSIndexPath = userInfo!["initialIndexPath"] as! NSIndexPath
+        let cell: UICollectionViewCell = self.collectionView!.cellForItemAtIndexPath(indexPath)!
+        
+        return cell.contentView
+    }
+    
+    func prepareInitialView(userInfo: [String : AnyObject]?, isPresenting: Bool) {
+        
+        let indexPath: NSIndexPath = userInfo!["initialIndexPath"] as! NSIndexPath
+        
+        if !isPresenting && !self.collectionView!.indexPathsForVisibleItems().contains(indexPath) {
+            self.collectionView!.reloadData()
+            self.collectionView!.scrollToItemAtIndexPath(indexPath, atScrollPosition: .CenteredVertically, animated: false)
+            self.collectionView!.layoutIfNeeded()
+        }
+    }
+}
+

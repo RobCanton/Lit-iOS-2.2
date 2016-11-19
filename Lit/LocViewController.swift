@@ -101,7 +101,7 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
         
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: topInset , left: 0, bottom: 200, right: 0)
-        layout.itemSize = CGSize(width: screenWidth/3, height: screenWidth/3)
+        layout.itemSize = CGSize(width: screenWidth / 2, height: screenWidth / 2)
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
         
@@ -112,7 +112,7 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
         collectionView!.dataSource = self
         collectionView!.delegate = self
         collectionView!.bounces = true
-        collectionView!.pagingEnabled = true
+        collectionView!.pagingEnabled = false
         collectionView!.showsVerticalScrollIndicator = false
         collectionView!.parallaxHeader.view = headerView
         collectionView!.parallaxHeader.height = UltravisualLayoutConstants.Cell.featuredHeight
@@ -239,9 +239,7 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
         downloadMedia()
     }
     
-    
-    let transitionController: TransitionController = TransitionController()
-    var selectedIndexPath: NSIndexPath = NSIndexPath(forItem: 0, inSection: 0)
+
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return photos.count
@@ -265,10 +263,10 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
     
     func getItemSize(indexPath:NSIndexPath) -> CGSize {
         
-        if photos.count > 12 {
-            return CGSize(width: screenWidth/4, height: screenWidth/4);
-        }
-        return CGSize(width: screenWidth/3, height: screenWidth/3);
+//        if photos.count > 12 {
+//            return CGSize(width: screenWidth/4, height: screenWidth/4);
+//        }
+        return CGSize(width: screenWidth / 2, height: screenWidth / 2);
     }
 
     
@@ -303,7 +301,8 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
         }
     }
 
-    
+    let transitionController: TransitionController = TransitionController()
+    var selectedIndexPath: NSIndexPath = NSIndexPath(forItem: 0, inSection: 0)
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         self.selectedIndexPath = indexPath
         let cell = collectionView.cellForItemAtIndexPath(indexPath) as! PhotoCell
@@ -347,15 +346,17 @@ extension LocViewController: View2ViewTransitionPresenting {
         guard let indexPath: NSIndexPath = userInfo?["initialIndexPath"] as? NSIndexPath, attributes: UICollectionViewLayoutAttributes = self.collectionView!.layoutAttributesForItemAtIndexPath(indexPath) else {
             return CGRect.zero
         }
-        return self.collectionView!.convertRect(attributes.frame, toView: self.collectionView!.superview)
+        
+        let rect = CGRectMake(attributes.frame.origin.x,attributes.frame.origin.y,attributes.frame.width, attributes.frame.width * 0.86666666667)
+        return self.collectionView!.convertRect(rect, toView: self.collectionView!.superview)
     }
     
     func initialView(userInfo: [String: AnyObject]?, isPresenting: Bool) -> UIView {
         
         let indexPath: NSIndexPath = userInfo!["initialIndexPath"] as! NSIndexPath
-        let cell: UICollectionViewCell = self.collectionView!.cellForItemAtIndexPath(indexPath)!
+        let cell: PhotoCell = self.collectionView!.cellForItemAtIndexPath(indexPath)! as! PhotoCell
         
-        return cell.contentView
+        return cell.imageView
     }
     
     func prepareInitialView(userInfo: [String : AnyObject]?, isPresenting: Bool) {

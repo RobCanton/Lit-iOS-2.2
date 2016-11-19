@@ -10,20 +10,30 @@ import UIKit
 
 class PhotoCell: UICollectionViewCell {
 
-    @IBOutlet weak var authorImage: UIImageView!
+
     @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var authorLabel: UILabel!
+    @IBOutlet weak var authorImage: UIImageView!
     
-    @IBOutlet weak var timeLabel: UILabel!
-    
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var fadeCover: UIView!
-    
-    @IBOutlet weak var likeTag: UIView!
+    @IBOutlet weak var authorUsername: UILabel!
+
+    @IBOutlet weak var gradientView: UIView!
+
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
-        self.likeTag.hidden = true
+        
+//        let gradient: CAGradientLayer = CAGradientLayer()
+//        
+//        gradient.colors = [UIColor.clearColor().CGColor, UIColor(white: 0.0, alpha: 0.5).CGColor]
+//        gradient.locations = [0.0 , 1.0]
+//        
+//        gradient.frame = gradientView.bounds
+//        gradientView.layer.insertSublayer(gradient, atIndex: 0)
+        
+        authorImage.layer.cornerRadius = authorImage.frame.width/2
+        authorImage.clipsToBounds = true
+        authorImage.layer.borderColor = UIColor.whiteColor().CGColor
+        authorImage.layer.borderWidth = 0.5
+        
     }
     
     func setPhoto(item:StoryItem) {
@@ -32,19 +42,24 @@ class PhotoCell: UICollectionViewCell {
             if loaded {
 
                 UIView.animateWithDuration(0.3, animations: {
-                    self.fadeCover.alpha = 0.0
+                    //self.fadeCover.alpha = 0.0
+                    
+                    
                 })
             }
 
         })
         
+        FirebaseService.getUser(item.getAuthorId(), completionHandler: { user in
+            if user != nil {
+                self.authorImage.loadImageUsingCacheWithURLString(user!.getImageUrl(), completion: { result in })
+                self.authorUsername.text = user!.getDisplayName()
+            }
+        })
+        
         
         self.layer.borderColor = UIColor.blackColor().CGColor
         self.layer.borderWidth = 1.0
-        
-        likeTag.layer.cornerRadius = likeTag.frame.width/2
-        likeTag.clipsToBounds = true
-        
         
 //        let userLikedRef = FirebaseService.ref.child("uploads/\(item.getKey())/likes/\(mainStore.state.userState.uid)")
 //        userLikedRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
@@ -62,8 +77,10 @@ class PhotoCell: UICollectionViewCell {
     }
     
     func setTitle(titleStr:String) {
-        titleLabel.text = titleStr
+        
     }
+    
+    
     
     
     

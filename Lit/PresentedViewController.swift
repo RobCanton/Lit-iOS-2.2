@@ -54,7 +54,6 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -66,10 +65,25 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
 
     var collectionView:UICollectionView!
     
-    
     override func viewWillLayoutSubviews() {
         print("viewWillLayoutSubviews")
         setTings()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        print("viewDidAppear")
+        setTings()
+        self.navigationController?.delegate = transitionController
+        
+        
+        if let gestureRecognizers = self.view.gestureRecognizers {
+            for gestureRecognizer in gestureRecognizers {
+                if let panGestureRecognizer = gestureRecognizer as? UIPanGestureRecognizer {
+                    panGestureRecognizer.delegate = self
+                }
+            }
+        }
     }
     
 
@@ -83,7 +97,7 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
         self.automaticallyAdjustsScrollViewInsets = false
         //self.navigationItem.titleView = self.titleLabel
         self.navigationItem.leftBarButtonItem = backItem
-        self.view.backgroundColor = UIColor.greenColor()
+        self.view.backgroundColor = UIColor.blackColor()
         
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.itemSize = UIScreen.mainScreen().bounds.size
@@ -95,7 +109,7 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
         collectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: layout)
         collectionView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
         collectionView.registerClass(PresentedCollectionViewCell.self, forCellWithReuseIdentifier: "presented_cell")
-        collectionView.backgroundColor = UIColor.redColor()
+        collectionView.backgroundColor = UIColor.blackColor()
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.pagingEnabled = true
@@ -118,7 +132,6 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
         label.textColor = UIColor.whiteColor()
         label.center = view.center
         label.textAlignment = .Center
-        self.view.addSubview(label)
         
         let overlayMargin:CGFloat = 4.0
         authorOverlay = UINib(nibName: "PostAuthorView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! PostAuthorView
@@ -128,6 +141,7 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
         authorOverlay!.translatesAutoresizingMaskIntoConstraints = true
         authorOverlay!.autoresizingMask = [UIViewAutoresizing.FlexibleBottomMargin, UIViewAutoresizing.FlexibleLeftMargin, UIViewAutoresizing.FlexibleRightMargin, UIViewAutoresizing.FlexibleTopMargin]
         
+        
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
@@ -135,28 +149,6 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
         return UIScreen.mainScreen().bounds.size
     }
 
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        print("viewDidAppear")
-        setTings()
-        self.navigationController?.delegate = transitionController
-        
-        if let gestureRecognizers = self.view.gestureRecognizers {
-            for gestureRecognizer in gestureRecognizers {
-                if let panGestureRecognizer = gestureRecognizer as? UIPanGestureRecognizer {
-                    panGestureRecognizer.delegate = self
-                }
-            }
-        }
-        if authorOverlay != nil {
-            print(authorOverlay!.frame)
-            print(authorOverlay!.alpha)
-            print(authorOverlay!.center)
-        }
-    }
-    
-    
-    
     // MARK: Elements
     
     weak var transitionController: TransitionController!
@@ -168,7 +160,7 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
     
     
     lazy var backItem: UIBarButtonItem = {
-        let item = UIBarButtonItem(title: "Close", style: .Plain, target: self, action: #selector(onBackItemClicked(_:)))
+        let item = UIBarButtonItem(title: "✕", style: .Plain, target: self, action: #selector(onBackItemClicked(_:)))
         item.tintColor = UIColor.whiteColor()
         return item
     }()
@@ -192,7 +184,7 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
         let cell: PresentedCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier("presented_cell", forIndexPath: indexPath) as! PresentedCollectionViewCell
-        cell.contentView.backgroundColor = UIColor.blueColor()
+        cell.contentView.backgroundColor = UIColor.blackColor()
         let item = photos[indexPath.item]
         cell.content.loadImageUsingCacheWithURLString(item.getDownloadUrl()!.absoluteString, completion: { loaded in
         })
@@ -231,26 +223,24 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
         return Double(abs(translate.y)/abs(translate.x)) > M_PI_4
     }
     
-//    func scrollViewDidScroll(scrollView: UIScrollView) {
-//        let xOffset = scrollView.contentOffset.x
-//        let ratio = xOffset / collectionView.frame.width
-//        let iRatio = ratio - CGFloat(photoIndex)
-//        if iRatio < -0.5 {
-//            if photoIndex > 0 {
-//                photoIndex = photoIndex - 1
-//            }
-//        } else if iRatio > 0.5 {
-//            if photoIndex < photos.count - 1 {
-//                photoIndex = photoIndex + 1
-//            }
-//        }
-//        
-//        let absRatio = abs(iRatio)
-//        let r = max(0, 1 - absRatio * 2)
-//        label.alpha = r
-//        authorOverlay?.alpha = r
-//        print("index: \(photoIndex) | iRatio: \(r)")
-//    }
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        let xOffset = scrollView.contentOffset.x
+        let ratio = xOffset / collectionView.frame.width
+        let iRatio = ratio - CGFloat(photoIndex)
+        if iRatio < -0.5 {
+            if photoIndex > 0 {
+                photoIndex = photoIndex - 1
+            }
+        } else if iRatio > 0.5 {
+            if photoIndex < photos.count - 1 {
+                photoIndex = photoIndex + 1
+            }
+        }
+        
+        let absRatio = abs(iRatio)
+        let r = max(0, 1 - absRatio * 2)
+        authorOverlay?.alpha = r
+    }
     
 }
 
@@ -303,7 +293,7 @@ public class PresentedCollectionViewCell: UICollectionViewCell {
         let height: CGFloat = (UIScreen.mainScreen().bounds.size.height)
         let frame: CGRect = CGRect(x: 0, y: 0, width: width, height: height)
         let view: UIImageView = UIImageView(frame: frame)
-        view.backgroundColor = UIColor.yellowColor()
+        view.backgroundColor = UIColor.blackColor()
         view.clipsToBounds = true
         view.contentMode = .ScaleAspectFill
         return view
