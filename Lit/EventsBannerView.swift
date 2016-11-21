@@ -39,6 +39,9 @@ class EventsBannerView: UIView {
         
         self.layer.borderColor = UIColor.blackColor().CGColor
         self.layer.borderWidth = 1.0
+        
+        self.layer.cornerRadius = 3
+        self.clipsToBounds = true
     }
 
 }

@@ -13,12 +13,14 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
     
     var tabBarRef:PopUpTabBarController!
     var authorOverlay: PostAuthorView?
-    var photos = [StoryItem]()
+    var stories = [Story]()
     var photoIndex:Int!
     {
         didSet {
-            label!.text = photos[photoIndex].getKey()
-            authorOverlay?.setPostMetadata(photos[photoIndex])
+            if let item = stories[photoIndex].getMostRecentItem() {
+                label!.text = item.getKey()
+                authorOverlay?.setPostMetadata(item)
+            }
             authorOverlay?.authorTappedHandler = { user in
                 self.navigationController?.delegate = self
                 let controller = UIStoryboard(name: "Main", bundle: nil)
@@ -174,7 +176,7 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
     // MARK: CollectionView Data Source
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return photos.count
+        return stories.count
     }
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
@@ -185,9 +187,10 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
         
         let cell: PresentedCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier("presented_cell", forIndexPath: indexPath) as! PresentedCollectionViewCell
         cell.contentView.backgroundColor = UIColor.blackColor()
-        let item = photos[indexPath.item]
-        cell.content.loadImageUsingCacheWithURLString(item.getDownloadUrl()!.absoluteString, completion: { loaded in
-        })
+        if let item = stories[indexPath.item].getMostRecentItem() {
+            cell.content.loadImageUsingCacheWithURLString(item.getDownloadUrl()!.absoluteString, completion: { loaded in
+            })
+        }
         
         return cell
     }
@@ -232,7 +235,7 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
                 photoIndex = photoIndex - 1
             }
         } else if iRatio > 0.5 {
-            if photoIndex < photos.count - 1 {
+            if photoIndex < stories.count - 1 {
                 photoIndex = photoIndex + 1
             }
         }
@@ -242,6 +245,21 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
         authorOverlay?.alpha = r
     }
     
+}
+
+extension UIView
+{
+    func copyView() -> AnyObject
+    {
+        return NSKeyedUnarchiver.unarchiveObjectWithData(NSKeyedArchiver.archivedDataWithRootObject(self))!
+    }
+}
+
+func copyView(viewforCopy: UIView) -> UIView {
+    viewforCopy.hidden = false //The copy not works if is hidden, just prevention
+    let viewCopy = viewforCopy.snapshotViewAfterScreenUpdates(true)
+    viewforCopy.hidden = true
+    return viewCopy
 }
 
 extension PresentedViewController: View2ViewTransitionPresented {
@@ -257,7 +275,12 @@ extension PresentedViewController: View2ViewTransitionPresented {
         
         let indexPath: NSIndexPath = userInfo!["destinationIndexPath"] as! NSIndexPath
         let cell: PresentedCollectionViewCell = self.collectionView.cellForItemAtIndexPath(indexPath) as! PresentedCollectionViewCell
-        return cell.content
+        //let overlay = copyView(authorOverlay!)
+
+        //let content = cell.content.copyView() as! UIView
+        //content.addSubview(overlay)
+        return view
+
     }
     
     func prepareDestinationView(userInfo: [String: AnyObject]?, isPresenting: Bool) {
@@ -281,6 +304,13 @@ public class PresentedCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.contentView.addSubview(self.content)
+    
+        let tap = UITapGestureRecognizer(target: self, action: #selector(tapped))
+        self.addGestureRecognizer(tap)
+    }
+    
+    func tapped(gesture:UITapGestureRecognizer) {
+        print("Show next item")
     }
     
     required public init?(coder aDecoder: NSCoder) {

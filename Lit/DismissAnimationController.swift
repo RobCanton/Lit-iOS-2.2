@@ -89,6 +89,8 @@ public final class DismissAnimationController: NSObject, UIViewControllerAnimate
         self.initialTransitionView = UIImageView(image: initialView.snapshotImage())
         self.initialTransitionView.clipsToBounds = true
         self.initialTransitionView.contentMode = .ScaleAspectFill
+        
+        
                 
         // Hide Transisioning Views
         initialView.hidden = true

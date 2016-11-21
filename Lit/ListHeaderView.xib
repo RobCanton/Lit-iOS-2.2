@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="ListHeaderView" customModule="Lit" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BHO-9V-bHy">
+                    <rect key="frame" x="193" y="0.0" width="215" height="50"/>
+                    <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="15"/>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+            <constraints>
+                <constraint firstItem="BHO-9V-bHy" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="18" id="EYz-A8-OSw"/>
+                <constraint firstItem="BHO-9V-bHy" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="LbW-Nt-rVV"/>
+                <constraint firstAttribute="trailing" secondItem="BHO-9V-bHy" secondAttribute="trailing" constant="253" id="NOx-Q9-8aF"/>
+                <constraint firstAttribute="bottom" secondItem="BHO-9V-bHy" secondAttribute="bottom" id="Obh-dJ-PxU"/>
+                <constraint firstItem="BHO-9V-bHy" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="ZO1-Nw-Kp9"/>
+                <constraint firstAttribute="bottom" secondItem="BHO-9V-bHy" secondAttribute="bottom" constant="8" id="p4p-HQ-Q4Q"/>
+                <constraint firstItem="BHO-9V-bHy" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="ySg-bL-hn8"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="EYz-A8-OSw"/>
+                    <exclude reference="LbW-Nt-rVV"/>
+                    <exclude reference="NOx-Q9-8aF"/>
+                    <exclude reference="p4p-HQ-Q4Q"/>
+                    <exclude reference="ySg-bL-hn8"/>
+                </mask>
+            </variation>
+            <connections>
+                <outlet property="label" destination="BHO-9V-bHy" id="Z4t-eR-Yrj"/>
+            </connections>
+        </view>
+    </objects>
+</document>

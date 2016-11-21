@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 import ReSwift
 
-class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, LocationHeaderProtocol, UINavigationControllerDelegate {
+class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, LocationHeaderProtocol, UINavigationControllerDelegate {
     
     var statusBarBG:UIView?
     
@@ -19,8 +19,11 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
     var screenWidth: CGFloat!
     var screenHeight: CGFloat!
     
+    var stories = [Story]()
     var photos = [StoryItem]()
-    var collectionView:UICollectionView?
+    var guests = [String]()
+    
+    var tableView:UITableView?
     var detailsView:LocationDetailsView!
     var controlBar:UserProfileControlBar?
     var headerView:LocationHeaderView!
@@ -54,16 +57,19 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
     
     func newState(state: AppState) {
         print("New State!")
+        
     }
     
     func downloadMedia() {
-        FirebaseService.downloadStory(location!.getPostKeys(), completionHandler: { story in
-            self.photos = story.reverse()
-            self.collectionView!.reloadData()
+        FirebaseService.downloadStory(location!.getPostKeys(), completionHandler: { items in
+            //self.photos = story.reverse()
+            self.stories = sortStoryItems(items)
+            print("STORY \(self.stories)")
+            self.tableView!.reloadData()
         })
     }
     override func viewDidLayoutSubviews() {
-        headerView.setGuests()
+        //headerView.setGuests()
     }
     
     override func viewDidLoad() {
@@ -101,32 +107,35 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
         
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: topInset , left: 0, bottom: 200, right: 0)
-        layout.itemSize = CGSize(width: screenWidth / 2, height: screenWidth / 2)
+        layout.itemSize = CGSize(width: screenWidth, height: 80)
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
         
-        collectionView = UICollectionView(frame: CGRectMake(0, 0, view.frame.width, view.frame.height), collectionViewLayout: layout)
+        tableView = UITableView(frame: CGRectMake(0, 0, view.frame.width, view.frame.height))
         
-        let nib = UINib(nibName: "PhotoCell", bundle: nil)
-        collectionView!.registerNib(nib, forCellWithReuseIdentifier: cellIdentifier)
-        collectionView!.dataSource = self
-        collectionView!.delegate = self
-        collectionView!.bounces = true
-        collectionView!.pagingEnabled = false
-        collectionView!.showsVerticalScrollIndicator = false
-        collectionView!.parallaxHeader.view = headerView
-        collectionView!.parallaxHeader.height = UltravisualLayoutConstants.Cell.featuredHeight
-        collectionView!.parallaxHeader.mode = .Fill
-        collectionView!.parallaxHeader.minimumHeight = 0;
+        let nib = UINib(nibName: "UserStoryTableViewCell", bundle: nil)
+        tableView!.registerNib(nib, forCellReuseIdentifier: "UserStoryCell")
+        let nib2 = UINib(nibName: "UserViewCell", bundle: nil)
+        tableView!.registerNib(nib2, forCellReuseIdentifier: "UserCell")
+        tableView!.dataSource = self
+        tableView!.delegate = self
+        tableView!.bounces = true
+        tableView!.pagingEnabled = false
+        tableView!.showsVerticalScrollIndicator = false
+        tableView!.parallaxHeader.view = headerView
+        tableView!.parallaxHeader.height = UltravisualLayoutConstants.Cell.featuredHeight
+        tableView!.parallaxHeader.mode = .Fill
+        tableView!.parallaxHeader.minimumHeight = 0;
+        tableView!.separatorColor = UIColor(white: 0.25, alpha: 1.0)
         
-        collectionView!.backgroundColor = UIColor.blackColor()
-        view.addSubview(collectionView!)
+        tableView!.backgroundColor = UIColor.blackColor()
+        view.addSubview(tableView!)
         
         
-        collectionView?.addSubview(detailsView)
+        //tableView?.addSubview(detailsView)
         
         footerView = UINib(nibName: "LocationFooterView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! LocationFooterView
-        footerView.frame = CGRectMake(0, 0, collectionView!.frame.width, 120)
+        footerView.frame = CGRectMake(0, 0, tableView!.frame.width, 120)
         //collectionView?.registerClass(footerView, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: "myFooterView")
         
         statusBarBG = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: navHeight))
@@ -153,6 +162,10 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
             }
         })
         
+        tableView!.tableFooterView = UIView(frame: CGRectMake(0,0,tableView!.frame.width, 90))
+        
+        
+        guests = location.getVisitors()
         
         
     }
@@ -207,66 +220,143 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
     }
     
     func buildEventsBanner() {
-        let navHeight = screenStatusBarHeight + navigationController!.navigationBar.frame.height
-        let eventsHeight:CGFloat = 150.0
-        let slack:CGFloat = 1.0
-        let topInset:CGFloat = detailsView.frame.height + eventsHeight + slack
-        
-        eventsBanner = UINib(nibName: "EventsBannerView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as? EventsBannerView
-        eventsBanner!.clipsToBounds = true
-        eventsBanner!.frame = CGRectMake(0,detailsView.frame.height, collectionView!.frame.width, eventsHeight)
-        
-        eventsBannerTap = UITapGestureRecognizer(target: self, action: #selector(showEvents))
-        eventsBanner!.addGestureRecognizer(eventsBannerTap)
-        
-        let collectionViewLayout = collectionView!.collectionViewLayout as? UICollectionViewFlowLayout
-        
-        collectionViewLayout?.sectionInset = UIEdgeInsets(top: topInset, left: 0, bottom: 200, right: 0)
-        collectionViewLayout?.invalidateLayout()
-        
-        collectionView!.addSubview(eventsBanner!)
-        
-        if events.count > 0 {
-            eventsBanner!.event = events[0]
-        }
-        //eventsBanner?.hidden = true
+//        let navHeight = screenStatusBarHeight + navigationController!.navigationBar.frame.height
+//        let eventsHeight:CGFloat = 150.0
+//        let slack:CGFloat = 1.0
+//        let topInset:CGFloat = detailsView.frame.height + eventsHeight + slack
+//        
+//        eventsBanner = UINib(nibName: "EventsBannerView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as? EventsBannerView
+//        eventsBanner!.clipsToBounds = true
+//        eventsBanner!.frame = CGRectMake(0,detailsView.frame.height, tableView!.frame.width, eventsHeight)
+//        
+//        eventsBannerTap = UITapGestureRecognizer(target: self, action: #selector(showEvents))
+//        eventsBanner!.addGestureRecognizer(eventsBannerTap)
+//        
+//        let collectionViewLayout = tableView!.collectionViewLayout as? UICollectionViewFlowLayout
+//        
+//        collectionViewLayout?.sectionInset = UIEdgeInsets(top: topInset, left: 0, bottom: 200, right: 0)
+//        collectionViewLayout?.invalidateLayout()
+//        
+//        tableView!.addSubview(eventsBanner!)
+//        
+//        if events.count > 0 {
+//            eventsBanner!.event = events[0]
+//        }
+//        //eventsBanner?.hidden = true
 
     }
     
     func mediaDeleted() {
         self.photos = [StoryItem]()
-        self.collectionView!.reloadData()
+        self.tableView!.reloadData()
         downloadMedia()
     }
     
-
-    
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return photos.count
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 3
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 0 {
+            if events.count > 0 {
+                
+            } else {
+                return 0
+            }
+        }
+        return 32
+    }
+    
+    
+    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(cellIdentifier, forIndexPath: indexPath) as! PhotoCell
+        let headerView = UINib(nibName: "ListHeaderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! ListHeaderView
+        if section == 0 {
+            if events.count > 0 {
+                headerView.label.text = "Upcoming Events"
+                headerView.label.textColor = UIColor.whiteColor()
+            } else {
+                headerView.label.text = "No Upcoming Events"
+                headerView.label.textColor = UIColor.grayColor()
+            }
+            
+        } else if section == 1 {
+            headerView.label.text = "Recent Updates"
+        } else if section == 2 {
+            headerView.label.text = "Guests"
+        }
+        return headerView
+    }
+    
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if section == 1 {
+            return stories.count
+        } else if section == 2  {
+            return guests.count
+        }
+        return 0
+    }
+    
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if indexPath.section == 1 {
+            return 80
+        }
+        return 64
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+
+        if indexPath.section == 1 {
+            let cell = tableView.dequeueReusableCellWithIdentifier("UserStoryCell", forIndexPath: indexPath) as! UserStoryTableViewCell
+            cell.setStory(stories[indexPath.item])
+            return cell
+        } else if indexPath.section == 2 {
+            let cell = tableView.dequeueReusableCellWithIdentifier("UserCell", forIndexPath: indexPath) as! UserViewCell
+            cell.setupUser(guests[indexPath.item])
+            return cell
+        }
         
-        cell.setPhoto(photos[indexPath.item])
-        
-        
+        let cell = tableView.dequeueReusableCellWithIdentifier("UserCell", forIndexPath: indexPath)
         return cell
     }
     
+    let transitionController: TransitionController = TransitionController()
+    var selectedIndexPath: NSIndexPath = NSIndexPath(forItem: 0, inSection: 0)
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        
-        return getItemSize(indexPath)
-    }
-    
-    func getItemSize(indexPath:NSIndexPath) -> CGSize {
-        
-//        if photos.count > 12 {
-//            return CGSize(width: screenWidth/4, height: screenWidth/4);
-//        }
-        return CGSize(width: screenWidth / 2, height: screenWidth / 2);
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if indexPath.section == 0 {
+            self.selectedIndexPath = indexPath
+            let cell = tableView.cellForRowAtIndexPath(indexPath) as! UserStoryTableViewCell
+            
+            let presentedViewController: PresentedViewController = PresentedViewController()
+            presentedViewController.tabBarRef = self.tabBarController! as! PopUpTabBarController
+            presentedViewController.stories = stories
+            presentedViewController.transitionController = self.transitionController
+            self.transitionController.userInfo = ["destinationIndexPath": indexPath, "initialIndexPath": indexPath]
+            
+            // This example will push view controller if presenting view controller has navigation controller.
+            // Otherwise, present another view controller
+            if let navigationController = self.navigationController {
+                
+                // Set transitionController as a navigation controller delegate and push.
+                navigationController.delegate = transitionController
+                transitionController.push(viewController: presentedViewController, on: self, attached: presentedViewController)
+                
+            }
+        }
+        else if indexPath.section == 1 {
+            let cell = tableView.cellForRowAtIndexPath(indexPath) as! UserViewCell
+            if let user = cell.user {
+                let controller = UIStoryboard(name: "Main", bundle: nil)
+                    .instantiateViewControllerWithIdentifier("UserProfileViewController") as! UserProfileViewController
+                controller.user = user
+                self.navigationController?.pushViewController(controller, animated: true)
+                tableView.deselectRowAtIndexPath(indexPath, animated: true)
+            }
+        }
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
 
     
@@ -301,34 +391,6 @@ class LocViewController: UIViewController, StoreSubscriber, UICollectionViewDele
         }
     }
 
-    let transitionController: TransitionController = TransitionController()
-    var selectedIndexPath: NSIndexPath = NSIndexPath(forItem: 0, inSection: 0)
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        self.selectedIndexPath = indexPath
-        let cell = collectionView.cellForItemAtIndexPath(indexPath) as! PhotoCell
-        
-        let presentedViewController: PresentedViewController = PresentedViewController()
-        presentedViewController.tabBarRef = self.tabBarController! as! PopUpTabBarController
-        presentedViewController.photos = photos
-        presentedViewController.transitionController = self.transitionController
-        self.transitionController.userInfo = ["destinationIndexPath": indexPath, "initialIndexPath": indexPath]
-        
-        // This example will push view controller if presenting view controller has navigation controller.
-        // Otherwise, present another view controller
-        if let navigationController = self.navigationController {
-            
-            // Set transitionController as a navigation controller delegate and push.
-            navigationController.delegate = transitionController
-            transitionController.push(viewController: presentedViewController, on: self, attached: presentedViewController)
-            
-        } else {
-        }
-        
-        collectionView.deselectItemAtIndexPath(indexPath, animated: true)
-        
-    }
-
-
     
     override func prefersStatusBarHidden() -> Bool {
         return false
@@ -343,30 +405,36 @@ extension LocViewController: View2ViewTransitionPresenting {
     
     func initialFrame(userInfo: [String: AnyObject]?, isPresenting: Bool) -> CGRect {
         
-        guard let indexPath: NSIndexPath = userInfo?["initialIndexPath"] as? NSIndexPath, attributes: UICollectionViewLayoutAttributes = self.collectionView!.layoutAttributesForItemAtIndexPath(indexPath) else {
+        guard let indexPath: NSIndexPath = userInfo?["initialIndexPath"] as? NSIndexPath else {
             return CGRect.zero
         }
-        
-        let rect = CGRectMake(attributes.frame.origin.x,attributes.frame.origin.y,attributes.frame.width, attributes.frame.width * 0.86666666667)
-        return self.collectionView!.convertRect(rect, toView: self.collectionView!.superview)
+        let cell: UserStoryTableViewCell = self.tableView!.cellForRowAtIndexPath(indexPath)! as! UserStoryTableViewCell
+        let image_frame = cell.contentImageView.frame
+        let image_height = image_frame.height
+        let margin = (cell.frame.height - image_height) / 2
+        let x = cell.frame.origin.x + margin
+        let y = cell.frame.origin.y + margin
+
+        let rect = CGRectMake(x,y,image_height, image_height)
+        return self.tableView!.convertRect(rect, toView: self.tableView!.superview)
     }
     
     func initialView(userInfo: [String: AnyObject]?, isPresenting: Bool) -> UIView {
         
         let indexPath: NSIndexPath = userInfo!["initialIndexPath"] as! NSIndexPath
-        let cell: PhotoCell = self.collectionView!.cellForItemAtIndexPath(indexPath)! as! PhotoCell
+        let cell: UserStoryTableViewCell = self.tableView!.cellForRowAtIndexPath(indexPath)! as! UserStoryTableViewCell
         
-        return cell.imageView
+        return cell.contentImageView
     }
     
     func prepareInitialView(userInfo: [String : AnyObject]?, isPresenting: Bool) {
         
         let indexPath: NSIndexPath = userInfo!["initialIndexPath"] as! NSIndexPath
         
-        if !isPresenting && !self.collectionView!.indexPathsForVisibleItems().contains(indexPath) {
-            self.collectionView!.reloadData()
-            self.collectionView!.scrollToItemAtIndexPath(indexPath, atScrollPosition: .CenteredVertically, animated: false)
-            self.collectionView!.layoutIfNeeded()
+        if !isPresenting && !self.tableView!.indexPathsForVisibleRows!.contains(indexPath) {
+            self.tableView!.reloadData()
+            self.tableView!.scrollToRowAtIndexPath(indexPath, atScrollPosition: .Middle, animated: false)
+            self.tableView!.layoutIfNeeded()
         }
     }
 }

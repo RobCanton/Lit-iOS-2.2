@@ -80,7 +80,7 @@ class FirebaseService {
         
         //If upload has no destination do not upload it
         if !upload.toLocation() && !upload.toUserProfile() { return nil}
-        
+        let uid = mainStore.state.userState.uid
 
         let dataRef = ref.child("uploads").childByAutoId()
         let postKey = dataRef.key
@@ -100,14 +100,13 @@ class FirebaseService {
                     // Metadata contains file metadata such as size, content-type, and download URL.
                     let downloadURL = metadata!.downloadURL()
                     let obj = [
-                        "author": mainStore.state.userState.uid,
+                        "author": uid,
                         "location": upload.getLocationKey(),
                         "url": downloadURL!.absoluteString,
                         "contentType": contentTypeStr,
                         "dateCreated": [".sv": "timestamp"],
                         "length": 4,
                         "likes": 0
-
                     ]
                     dataRef.child("meta").setValue(obj, withCompletionBlock: { error, _ in
                         if error == nil {
@@ -117,7 +116,7 @@ class FirebaseService {
                                 locationRef.setValue([".sv": "timestamp"]) //rough time estimate, only for server use
                             }
                             if upload.toUserProfile() {
-                                let userRef = ref.child("users/uploads/\(mainStore.state.userState.uid)/\(postKey)")
+                                let userRef = ref.child("users/uploads/\(uid)/\(postKey)")
                                 userRef.setValue([".sv": "timestamp"]) //rough time estimate, only for server use
                             }
                         }

@@ -293,7 +293,7 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         
         let presentedViewController: PresentedViewController = PresentedViewController()
         presentedViewController.tabBarRef = self.tabBarController! as! PopUpTabBarController
-        presentedViewController.photos = photos
+        //presentedViewController.stories = stories
         presentedViewController.transitionController = self.transitionController
         self.transitionController.userInfo = ["destinationIndexPath": indexPath, "initialIndexPath": indexPath]
         
