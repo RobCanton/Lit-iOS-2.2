@@ -31,6 +31,8 @@ class UserStoryTableViewCell: UITableViewCell {
             contentImageView.image = nil
             contentImageView.loadImageUsingCacheWithURLString(recentItem.getDownloadUrl()!.absoluteString, completion: { loaded in
                 if loaded {
+//                    let image = self.contentImageView.image!.grayScaleImage()
+//                    self.contentImageView.image = image
                     UIView.animateWithDuration(0.3, animations: {
                         //self.fadeCover.alpha = 0.0
                     })

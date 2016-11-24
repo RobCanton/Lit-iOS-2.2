@@ -14,7 +14,6 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
     
     var statusBarBG:UIView?
     
-    let cellIdentifier = "photoCell"
     var screenSize: CGRect!
     var screenWidth: CGFloat!
     var screenHeight: CGFloat!
@@ -113,6 +112,9 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         
         tableView = UITableView(frame: CGRectMake(0, 0, view.frame.width, view.frame.height))
         
+        let eventNib = UINib(nibName: "EventTableViewCell", bundle: nil)
+        tableView!.registerNib(eventNib, forCellReuseIdentifier: "EventCell")
+        
         let nib = UINib(nibName: "UserStoryTableViewCell", bundle: nil)
         tableView!.registerNib(nib, forCellReuseIdentifier: "UserStoryCell")
         let nib2 = UINib(nibName: "UserViewCell", bundle: nil)
@@ -152,12 +154,14 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         view.addSubview(statusBarBG!)
         headerView.setLocation(location)
         titleLabel.styleLocationTitle(location.getName(), size: 32.0)
+        titleLabel.applyShadow(4, opacity: 0.8, height: 4, shouldRasterize: false)
         detailsView.setLocation(location)
         downloadMedia()
         
         FirebaseService.getLocationEvents(location.getKey(), completionHandler: { events in
             if events.count > 0 {
                 self.events = events
+                self.tableView!.reloadData()
                 self.buildEventsBanner()
             }
         })
@@ -264,7 +268,7 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
                 return 0
             }
         }
-        return 32
+        return 34
     }
     
     
@@ -290,6 +294,12 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
     
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        if section == 0 {
+            if events.count > 0 {
+                return 1
+            } else { return 0 }
+        }
         if section == 1 {
             return stories.count
         } else if section == 2  {
@@ -300,15 +310,26 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
     
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if indexPath.section == 1 {
+        
+        switch indexPath.section {
+        case 0:
+            return 134
+        case 1:
             return 80
+        case 2:
+            return 64
+        default:
+            return 64
         }
-        return 64
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 
-        if indexPath.section == 1 {
+        if indexPath.section == 0 {
+            let cell = tableView.dequeueReusableCellWithIdentifier("EventCell", forIndexPath: indexPath) as! EventTableViewCell
+            cell.events = events
+            return cell
+        } else if indexPath.section == 1 {
             let cell = tableView.dequeueReusableCellWithIdentifier("UserStoryCell", forIndexPath: indexPath) as! UserStoryTableViewCell
             cell.setStory(stories[indexPath.item])
             return cell
@@ -326,7 +347,7 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
     var selectedIndexPath: NSIndexPath = NSIndexPath(forItem: 0, inSection: 0)
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if indexPath.section == 0 {
+        if indexPath.section == 1 {
             self.selectedIndexPath = indexPath
             let cell = tableView.cellForRowAtIndexPath(indexPath) as! UserStoryTableViewCell
             
@@ -334,7 +355,8 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
             presentedViewController.tabBarRef = self.tabBarController! as! PopUpTabBarController
             presentedViewController.stories = stories
             presentedViewController.transitionController = self.transitionController
-            self.transitionController.userInfo = ["destinationIndexPath": indexPath, "initialIndexPath": indexPath]
+            var i = NSIndexPath(forItem: indexPath.row, inSection: 0)
+            self.transitionController.userInfo = ["destinationIndexPath": i, "initialIndexPath": i]
             
             // This example will push view controller if presenting view controller has navigation controller.
             // Otherwise, present another view controller
@@ -346,7 +368,7 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
                 
             }
         }
-        else if indexPath.section == 1 {
+        else if indexPath.section == 2 {
             let cell = tableView.cellForRowAtIndexPath(indexPath) as! UserViewCell
             if let user = cell.user {
                 let controller = UIStoryboard(name: "Main", bundle: nil)
@@ -369,26 +391,34 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
             if titlePoint.y <= titleLabel.frame.origin.y {
                 headerView.locationTitle.hidden = true
                 titleLabel.hidden = false
+                statusBarBG!.backgroundColor = UIColor(white: 0.0, alpha: 1.0)
             } else {
                 headerView.locationTitle.hidden = false
                 titleLabel.hidden = true
-            }
-        }
-        
-        if progress < 0 {
-            //detailsView.alpha = 1 + progress * 1.75
-            let scale = abs(progress)
-            if let _ = controlBar {
-
-            }
-            if scale > 0.80 {
-                let prop = ((scale - 0.80) / 0.20) * 1.15
-                print("prop \(prop)")
-                statusBarBG!.backgroundColor = UIColor(white: 0.0, alpha: prop)
-            } else {
                 statusBarBG!.backgroundColor = UIColor(white: 0.0, alpha: 0)
             }
         }
+        print(progress)
+        if progress > -1 {
+            //tableView!.pagingEnabled = true
+        } else {
+            //tableView!.pagingEnabled = false
+        }
+        
+//        if progress < 0 {
+//            //detailsView.alpha = 1 + progress * 1.75
+//            let scale = abs(progress)
+//            if let _ = controlBar {
+//
+//            }
+//            if scale > 0.60 {
+//                let prop = ((scale - 0.60) / 0.40) * 1.15
+//                print("prop \(prop)")
+//                statusBarBG!.backgroundColor = UIColor(white: 0.0, alpha: prop)
+//            } else {
+//                statusBarBG!.backgroundColor = UIColor(white: 0.0, alpha: 0)
+//            }
+//        }
     }
 
     
@@ -408,7 +438,8 @@ extension LocViewController: View2ViewTransitionPresenting {
         guard let indexPath: NSIndexPath = userInfo?["initialIndexPath"] as? NSIndexPath else {
             return CGRect.zero
         }
-        let cell: UserStoryTableViewCell = self.tableView!.cellForRowAtIndexPath(indexPath)! as! UserStoryTableViewCell
+        var i = NSIndexPath(forRow: indexPath.item, inSection: 1)
+        let cell: UserStoryTableViewCell = self.tableView!.cellForRowAtIndexPath(i)! as! UserStoryTableViewCell
         let image_frame = cell.contentImageView.frame
         let image_height = image_frame.height
         let margin = (cell.frame.height - image_height) / 2
@@ -422,7 +453,8 @@ extension LocViewController: View2ViewTransitionPresenting {
     func initialView(userInfo: [String: AnyObject]?, isPresenting: Bool) -> UIView {
         
         let indexPath: NSIndexPath = userInfo!["initialIndexPath"] as! NSIndexPath
-        let cell: UserStoryTableViewCell = self.tableView!.cellForRowAtIndexPath(indexPath)! as! UserStoryTableViewCell
+        var i = NSIndexPath(forRow: indexPath.item, inSection: 1)
+        let cell: UserStoryTableViewCell = self.tableView!.cellForRowAtIndexPath(i)! as! UserStoryTableViewCell
         
         return cell.contentImageView
     }
@@ -430,10 +462,10 @@ extension LocViewController: View2ViewTransitionPresenting {
     func prepareInitialView(userInfo: [String : AnyObject]?, isPresenting: Bool) {
         
         let indexPath: NSIndexPath = userInfo!["initialIndexPath"] as! NSIndexPath
-        
-        if !isPresenting && !self.tableView!.indexPathsForVisibleRows!.contains(indexPath) {
+        var i = NSIndexPath(forRow: indexPath.item, inSection: 1)
+        if !isPresenting && !self.tableView!.indexPathsForVisibleRows!.contains(i) {
             self.tableView!.reloadData()
-            self.tableView!.scrollToRowAtIndexPath(indexPath, atScrollPosition: .Middle, animated: false)
+            self.tableView!.scrollToRowAtIndexPath(i, atScrollPosition: .Middle, animated: false)
             self.tableView!.layoutIfNeeded()
         }
     }

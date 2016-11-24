@@ -116,6 +116,8 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
         collectionView.dataSource = self
         collectionView.pagingEnabled = true
         collectionView.opaque = true
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.decelerationRate = UIScrollViewDecelerationRateFast
         self.view.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = true
         collectionView.autoresizingMask = [UIViewAutoresizing.FlexibleTopMargin]

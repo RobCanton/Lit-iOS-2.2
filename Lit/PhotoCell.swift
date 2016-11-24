@@ -18,6 +18,9 @@ class PhotoCell: UICollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        self.layer.borderColor = UIColor.blackColor().CGColor
+        self.layer.borderWidth = 1.0
 
     }
     

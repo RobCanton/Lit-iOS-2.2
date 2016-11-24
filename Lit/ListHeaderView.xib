@@ -22,8 +22,9 @@
             <constraints>
                 <constraint firstItem="BHO-9V-bHy" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="18" id="EYz-A8-OSw"/>
                 <constraint firstItem="BHO-9V-bHy" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="LbW-Nt-rVV"/>
+                <constraint firstItem="BHO-9V-bHy" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="LgZ-LF-A0o"/>
                 <constraint firstAttribute="trailing" secondItem="BHO-9V-bHy" secondAttribute="trailing" constant="253" id="NOx-Q9-8aF"/>
-                <constraint firstAttribute="bottom" secondItem="BHO-9V-bHy" secondAttribute="bottom" id="Obh-dJ-PxU"/>
+                <constraint firstAttribute="bottom" secondItem="BHO-9V-bHy" secondAttribute="bottom" constant="2" id="Obh-dJ-PxU"/>
                 <constraint firstItem="BHO-9V-bHy" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="ZO1-Nw-Kp9"/>
                 <constraint firstAttribute="bottom" secondItem="BHO-9V-bHy" secondAttribute="bottom" constant="8" id="p4p-HQ-Q4Q"/>
                 <constraint firstItem="BHO-9V-bHy" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="ySg-bL-hn8"/>
@@ -34,6 +35,7 @@
                     <exclude reference="EYz-A8-OSw"/>
                     <exclude reference="LbW-Nt-rVV"/>
                     <exclude reference="NOx-Q9-8aF"/>
+                    <exclude reference="Obh-dJ-PxU"/>
                     <exclude reference="p4p-HQ-Q4Q"/>
                     <exclude reference="ySg-bL-hn8"/>
                 </mask>

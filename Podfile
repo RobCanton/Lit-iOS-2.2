@@ -13,7 +13,7 @@ pod 'Firebase/Database'
 pod 'Firebase/Storage'
 pod 'BRYXBanner'
 pod 'RecordButton'
-pod 'JSQMessagesViewController'
+pod 'JSQMessagesViewController', '7.2.0'
 pod 'MXSegmentedPager'
 pod 'IngeoSDK'
 pod 'Whisper'
@@ -27,6 +27,7 @@ pod 'SwiftLocation', '1.0.5'
 pod 'SwiftMessages', '~> 1.1.4'
 pod 'SwiftyJSON', '2.4.0'
 pod 'DataCache', '1.1'
+pod 'KTCenterFlowLayout'
 
 end
 

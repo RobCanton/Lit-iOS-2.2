@@ -25,12 +25,6 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dUM-ja-0xe">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9gM-qU-bdZ">
-                            <rect key="frame" x="8" y="284" width="584" height="44"/>
-                            <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="30"/>
-                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                            <nil key="highlightedColor"/>
-                        </label>
                         <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5J6-FF-hfH">
                             <rect key="frame" x="153" y="336" width="295" height="36"/>
                             <subviews>
@@ -69,13 +63,27 @@
                                 </mask>
                             </variation>
                         </view>
+                        <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Amr-QG-bPq">
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                        </view>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9gM-qU-bdZ">
+                            <rect key="frame" x="8" y="284" width="584" height="44"/>
+                            <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="30"/>
+                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="9gM-qU-bdZ" firstAttribute="centerX" secondItem="dUM-ja-0xe" secondAttribute="centerX" id="05M-0b-4pw"/>
                         <constraint firstItem="5J6-FF-hfH" firstAttribute="top" secondItem="9gM-qU-bdZ" secondAttribute="bottom" constant="8" id="2cQ-xP-P9Q"/>
                         <constraint firstItem="5J6-FF-hfH" firstAttribute="centerX" secondItem="dUM-ja-0xe" secondAttribute="centerX" id="Ad0-h6-9fN"/>
+                        <constraint firstItem="Amr-QG-bPq" firstAttribute="leading" secondItem="dUM-ja-0xe" secondAttribute="leading" id="GxZ-As-Zkv"/>
                         <constraint firstItem="9gM-qU-bdZ" firstAttribute="centerY" secondItem="dUM-ja-0xe" secondAttribute="centerY" id="Hl0-RD-u6l"/>
+                        <constraint firstAttribute="bottom" secondItem="Amr-QG-bPq" secondAttribute="bottom" id="U6v-td-SpN"/>
+                        <constraint firstItem="Amr-QG-bPq" firstAttribute="top" secondItem="dUM-ja-0xe" secondAttribute="top" id="V6K-bz-uaV"/>
+                        <constraint firstAttribute="trailing" secondItem="Amr-QG-bPq" secondAttribute="trailing" id="uaH-8h-OmZ"/>
                     </constraints>
                 </view>
             </subviews>
@@ -94,6 +102,7 @@
                 <constraint firstAttribute="bottom" secondItem="i4E-1a-Ci8" secondAttribute="bottom" id="sgz-O0-JgM"/>
             </constraints>
             <connections>
+                <outlet property="fadeCover" destination="Amr-QG-bPq" id="Pud-D7-ixI"/>
                 <outlet property="gradientView" destination="Fvj-ou-PB6" id="Jva-2R-cCU"/>
                 <outlet property="imageView" destination="i4E-1a-Ci8" id="zef-LJ-uyz"/>
                 <outlet property="locationTitle" destination="9gM-qU-bdZ" id="4gN-6G-3lE"/>

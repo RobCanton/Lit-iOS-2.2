@@ -21,6 +21,7 @@ class LocationHeaderView: UIView {
     @IBOutlet weak var locationTitle: UILabel!
     @IBOutlet weak var addressTitle: UILabel!
     
+    @IBOutlet weak var fadeCover: UIView!
 
     var delegate:LocationHeaderProtocol?
     
@@ -43,8 +44,11 @@ class LocationHeaderView: UIView {
     }
     
     func setProgress(progress:CGFloat) {
-        if progress < 0 {
-
+        if progress < -0.4 {
+            let p = abs(progress)
+            fadeCover.alpha = ((p - 0.4) / 0.6) * 1.75
+        } else {
+            fadeCover.alpha = 0
         }
     }
     var location:Location?

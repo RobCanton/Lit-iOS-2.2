@@ -39,28 +39,14 @@
 //    var location: Location?
 //    {
 //        didSet {
-//            let header = self.segmentedPager.parallaxHeader.view as! HeaderView
+//            let header = self.segmentedPager.parallaxHeader.view as! LocationHeaderView
 //            header.setLocation(location!)
 //            
 //        }
 //    }
 //    
 //    func newState(state: AppState) {
-//        print("New State!")
-//        let key = state.viewLocationKey
-//        let locations = state.locations
-//        var count = 0
-//        for location in locations {
-//            if key == location.getKey() {
-//                index = count
-//                self.location = location
-//            }
-//            count += 1
-//        }
-//        
-//        if state.viewUser != "" {
-//            push(state.viewUser)
-//        }
+//
 //    }
 //    
 //    override func prefersStatusBarHidden() -> Bool {
@@ -80,7 +66,7 @@
 //        self.segmentedPager.backgroundColor = UIColor.blackColor()
 //        
 //        // Parallax Header
-//        let header = UINib(nibName: "HeaderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! HeaderView
+//        let header = UINib(nibName: "HeaderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! LocationHeaderView
 //        
 //        //self.segmentedPager
 //
@@ -118,12 +104,6 @@
 //    
 //    func tappedHeader(gesture:UIGestureRecognizer) {
 //
-////        if mainStore.state.locations[index!].getPostKeys().count > 0 {
-////            self.performSegueWithIdentifier("toStoryView", sender: self)
-////
-////            mainStore.dispatch(ViewStory(index: index!))
-////            mainStore.unsubscribe(self)
-////        }
 //    }
 //    
 //    func push(uid:String) {
@@ -143,7 +123,7 @@
 //    }
 //    
 //    override func segmentedPager(segmentedPager: MXSegmentedPager, didScrollWithParallaxHeader parallaxHeader: MXParallaxHeader) {
-//        let header = self.segmentedPager.parallaxHeader.view as! HeaderView
+//        let header = self.segmentedPager.parallaxHeader.view as! LocationHeaderView
 //        header.setProgress(parallaxHeader.progress)
 //    }
 //    

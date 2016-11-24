@@ -53,8 +53,8 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="oMp-3g-Vyj" secondAttribute="bottom" constant="8" id="9AU-iO-Udw"/>
-                <constraint firstItem="mpB-Da-HEc" firstAttribute="leading" secondItem="oMp-3g-Vyj" secondAttribute="trailing" constant="8" id="9co-8B-bG3"/>
-                <constraint firstItem="BEh-Gd-JVu" firstAttribute="leading" secondItem="oMp-3g-Vyj" secondAttribute="trailing" constant="8" id="BtM-8i-nhx"/>
+                <constraint firstItem="mpB-Da-HEc" firstAttribute="leading" secondItem="oMp-3g-Vyj" secondAttribute="trailing" constant="10" id="9co-8B-bG3"/>
+                <constraint firstItem="BEh-Gd-JVu" firstAttribute="leading" secondItem="oMp-3g-Vyj" secondAttribute="trailing" constant="10" id="BtM-8i-nhx"/>
                 <constraint firstItem="BEh-Gd-JVu" firstAttribute="top" secondItem="oMp-3g-Vyj" secondAttribute="top" id="Mhp-Tz-1Pg"/>
                 <constraint firstItem="oMp-3g-Vyj" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="RuC-HA-onR"/>
                 <constraint firstItem="oMp-3g-Vyj" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="gwv-JK-s3u"/>
