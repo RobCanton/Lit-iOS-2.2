@@ -9,7 +9,7 @@
 import UIKit
 
 
-class PresentedViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIGestureRecognizerDelegate, UINavigationControllerDelegate {
+class PresentedViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIGestureRecognizerDelegate, UINavigationControllerDelegate, StoryViewDelegate {
     
     var tabBarRef:PopUpTabBarController!
     var authorOverlay: PostAuthorView?
@@ -17,6 +17,7 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
     var photoIndex:Int!
     {
         didSet {
+            
             if let item = stories[photoIndex].getMostRecentItem() {
                 label!.text = item.getKey()
                 authorOverlay?.setPostMetadata(item)
@@ -110,7 +111,7 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
         
         collectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: layout)
         collectionView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
-        collectionView.registerClass(PresentedCollectionViewCell.self, forCellWithReuseIdentifier: "presented_cell")
+        collectionView.registerClass(StoryViewController.self, forCellWithReuseIdentifier: "presented_cell")
         collectionView.backgroundColor = UIColor.blackColor()
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -121,17 +122,7 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
         self.view.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = true
         collectionView.autoresizingMask = [UIViewAutoresizing.FlexibleTopMargin]
-//        
-//        collectionView.translatesAutoresizingMaskIntoConstraints = false
-//        //self.view.addSubview(self.closeButton)
-//        
-//        let equal = NSLayoutRelation.Equal
-//        let top = NSLayoutAttribute.Top
-//        let lm = NSLayoutAttribute.LeadingMargin
-//        let none = NSLayoutAttribute.NotAnAttribute
-//        let topConstraint = NSLayoutConstraint(item: collectionView, attribute: top, relatedBy: equal, toItem: view, attribute: lm, multiplier: 1, constant: 0)
-//        
-//        NSLayoutConstraint.activateConstraints([topConstraint])
+
         label = UILabel(frame: CGRectMake(0,0,self.view.frame.width,100))
         label.textColor = UIColor.whiteColor()
         label.center = view.center
@@ -157,20 +148,8 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
     
     weak var transitionController: TransitionController!
     
-//    lazy var collectionView: UICollectionView = {
-//        
-//        
-//    }()
-    
-    
     lazy var backItem: UIBarButtonItem = {
         let item = UIBarButtonItem(title: "✕", style: .Plain, target: self, action: #selector(onBackItemClicked(_:)))
-        item.tintColor = UIColor.whiteColor()
-        return item
-    }()
-    
-    lazy var userItem: UIBarButtonItem = {
-        let item = UIBarButtonItem(title: "User", style: .Plain, target: self, action: #selector(onUserItemClicked(_:)))
         item.tintColor = UIColor.whiteColor()
         return item
     }()
@@ -187,15 +166,31 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
-        let cell: PresentedCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier("presented_cell", forIndexPath: indexPath) as! PresentedCollectionViewCell
+        let cell: StoryViewController = collectionView.dequeueReusableCellWithReuseIdentifier("presented_cell", forIndexPath: indexPath) as! StoryViewController
         cell.contentView.backgroundColor = UIColor.blackColor()
-        if let item = stories[indexPath.item].getMostRecentItem() {
-            cell.content.loadImageUsingCacheWithURLString(item.getDownloadUrl()!.absoluteString, completion: { loaded in
-            })
-        }
-        
+        cell.story = stories[indexPath.item]
+        cell.delegate = self
         return cell
     }
+    
+    func storyComplete() {
+        print("Story complete")
+        
+        if photoIndex < stories.count-1 {
+            print("Go to next story")
+            let contentOffset: CGPoint = CGPoint(x: self.collectionView.frame.size.width*CGFloat(1 + photoIndex), y: 0.0)
+            self.collectionView.setContentOffset(contentOffset, animated: true)
+        } else {
+            print("Close story view")
+            let indexPath: NSIndexPath = self.collectionView.indexPathsForVisibleItems().first!
+            self.transitionController.userInfo = ["destinationIndexPath": indexPath, "initialIndexPath": indexPath]
+            
+            if let navigationController = self.navigationController {
+                navigationController.popViewControllerAnimated(true)
+            }
+        }
+    }
+    
     
     
     func onBackItemClicked(sender: AnyObject) {
@@ -206,14 +201,6 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
         if let navigationController = self.navigationController {
             navigationController.popViewControllerAnimated(true)
         }
-    }
-    func onUserItemClicked(sender: AnyObject) {
-        
-        self.navigationController?.delegate = self
-        let controller = UIStoryboard(name: "Main", bundle: nil)
-            .instantiateViewControllerWithIdentifier("DummyViewController")
-        //controller.user = user
-        self.navigationController?.pushViewController(controller, animated: true)
     }
     
     // MARK: Gesture Delegate
@@ -269,14 +256,14 @@ extension PresentedViewController: View2ViewTransitionPresented {
     func destinationFrame(userInfo: [String: AnyObject]?, isPresenting: Bool) -> CGRect {
         
         let indexPath: NSIndexPath = userInfo!["destinationIndexPath"] as! NSIndexPath
-        let cell: PresentedCollectionViewCell = self.collectionView.cellForItemAtIndexPath(indexPath) as! PresentedCollectionViewCell
+        let cell: StoryViewController = self.collectionView.cellForItemAtIndexPath(indexPath) as! StoryViewController
         return cell.content.frame
     }
     
     func destinationView(userInfo: [String: AnyObject]?, isPresenting: Bool) -> UIView {
         
         let indexPath: NSIndexPath = userInfo!["destinationIndexPath"] as! NSIndexPath
-        let cell: PresentedCollectionViewCell = self.collectionView.cellForItemAtIndexPath(indexPath) as! PresentedCollectionViewCell
+        let cell: StoryViewController = self.collectionView.cellForItemAtIndexPath(indexPath) as! StoryViewController
         //let overlay = copyView(authorOverlay!)
 
         //let content = cell.content.copyView() as! UIView
@@ -292,8 +279,8 @@ extension PresentedViewController: View2ViewTransitionPresented {
             let indexPath: NSIndexPath = userInfo!["destinationIndexPath"] as! NSIndexPath
             photoIndex = indexPath.item
             
-            let contentOfffset: CGPoint = CGPoint(x: self.collectionView.frame.size.width*CGFloat(indexPath.item), y: 0.0)
-            self.collectionView.contentOffset = contentOfffset
+            let contentOffset: CGPoint = CGPoint(x: self.collectionView.frame.size.width*CGFloat(indexPath.item), y: 0.0)
+            self.collectionView.contentOffset = contentOffset
             self.collectionView.reloadData()
             self.collectionView.layoutIfNeeded()
             
@@ -301,33 +288,3 @@ extension PresentedViewController: View2ViewTransitionPresented {
     }
 }
 
-public class PresentedCollectionViewCell: UICollectionViewCell {
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        self.contentView.addSubview(self.content)
-    
-        let tap = UITapGestureRecognizer(target: self, action: #selector(tapped))
-        self.addGestureRecognizer(tap)
-    }
-    
-    func tapped(gesture:UITapGestureRecognizer) {
-        print("Show next item")
-    }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    public lazy var content: UIImageView = {
-        let margin: CGFloat = 2.0
-        let width: CGFloat = (UIScreen.mainScreen().bounds.size.width)
-        let height: CGFloat = (UIScreen.mainScreen().bounds.size.height)
-        let frame: CGRect = CGRect(x: 0, y: 0, width: width, height: height)
-        let view: UIImageView = UIImageView(frame: frame)
-        view.backgroundColor = UIColor.blackColor()
-        view.clipsToBounds = true
-        view.contentMode = .ScaleAspectFill
-        return view
-    }()
-}

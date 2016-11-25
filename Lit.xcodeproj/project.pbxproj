@@ -18,7 +18,7 @@
 		765036281D59170E0062BCF0 /* StoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765036271D59170E0062BCF0 /* StoryItem.swift */; };
 		767729831D5116930052CA17 /* CWStatusBarNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767729811D5116930052CA17 /* CWStatusBarNotification.swift */; };
 		767729841D5116930052CA17 /* CWStatusBarNotificationUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767729821D5116930052CA17 /* CWStatusBarNotificationUtils.swift */; };
-		768C67681D586C26003A76D5 /* StoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 768C67671D586C26003A76D5 /* StoryViewController.swift */; };
+		768C67681D586C26003A76D5 /* DEPRECATED_StoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 768C67671D586C26003A76D5 /* DEPRECATED_StoryViewController.swift */; };
 		768FB9781D5BB55000251035 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 768FB9771D5BB55000251035 /* User.swift */; };
 		76A516671D60C69D005E2815 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A516661D60C69D005E2815 /* ChatViewController.swift */; };
 		76A516691D60C721005E2815 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A516681D60C721005E2815 /* Message.swift */; };
@@ -167,6 +167,7 @@
 		B0E8E3531DE265D50077D1BC /* Story.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E8E3521DE265D40077D1BC /* Story.swift */; };
 		B0ED4B671DBD84D20040E5F0 /* LocationDetailsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0ED4B661DBD84D20040E5F0 /* LocationDetailsView.xib */; };
 		B0ED4B691DBD85130040E5F0 /* LocationDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0ED4B681DBD85130040E5F0 /* LocationDetailsView.swift */; };
+		B0FC99D21DE7983A00683155 /* StoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FC99D11DE7983A00683155 /* StoryViewController.swift */; };
 		B0FF11451D3EB32100D709CE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FF11441D3EB32100D709CE /* AppDelegate.swift */; };
 		B0FF11471D3EB32100D709CE /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FF11461D3EB32100D709CE /* LoginViewController.swift */; };
 		B0FF114C1D3EB32100D709CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B0FF114B1D3EB32100D709CE /* Assets.xcassets */; };
@@ -188,7 +189,7 @@
 		765036271D59170E0062BCF0 /* StoryItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryItem.swift; sourceTree = "<group>"; };
 		767729811D5116930052CA17 /* CWStatusBarNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CWStatusBarNotification.swift; sourceTree = "<group>"; };
 		767729821D5116930052CA17 /* CWStatusBarNotificationUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CWStatusBarNotificationUtils.swift; sourceTree = "<group>"; };
-		768C67671D586C26003A76D5 /* StoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryViewController.swift; sourceTree = "<group>"; };
+		768C67671D586C26003A76D5 /* DEPRECATED_StoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DEPRECATED_StoryViewController.swift; sourceTree = "<group>"; };
 		768FB9771D5BB55000251035 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		76A516661D60C69D005E2815 /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		76A516681D60C721005E2815 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
@@ -340,6 +341,7 @@
 		B0E8E3521DE265D40077D1BC /* Story.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Story.swift; sourceTree = "<group>"; };
 		B0ED4B661DBD84D20040E5F0 /* LocationDetailsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LocationDetailsView.xib; sourceTree = "<group>"; };
 		B0ED4B681DBD85130040E5F0 /* LocationDetailsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationDetailsView.swift; sourceTree = "<group>"; };
+		B0FC99D11DE7983A00683155 /* StoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryViewController.swift; sourceTree = "<group>"; };
 		B0FF11411D3EB32000D709CE /* Lit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0FF11441D3EB32100D709CE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B0FF11461D3EB32100D709CE /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -586,6 +588,7 @@
 				B003D49B1DE6B1A10026B2D8 /* EventTableViewCell.xib */,
 				B0E8E3381DDF73390077D1BC /* PostCollectionViewCell.swift */,
 				B0E8E3281DDB82830077D1BC /* PresentedViewController.swift */,
+				B0FC99D11DE7983A00683155 /* StoryViewController.swift */,
 				B0E8E32E1DDBC44C0077D1BC /* PostAuthorView.xib */,
 				B0E8E3301DDBC4640077D1BC /* PostAuthorView.swift */,
 				B08BBB951DBBE51400AD3FF1 /* EventsBannerView.swift */,
@@ -669,7 +672,7 @@
 				76A5166D1D618CAD005E2815 /* LocationViewController.swift */,
 				B0BA32671DA7158B004352A7 /* HeaderView.swift */,
 				B0BA32681DA7158B004352A7 /* HeaderView.xib */,
-				768C67671D586C26003A76D5 /* StoryViewController.swift */,
+				768C67671D586C26003A76D5 /* DEPRECATED_StoryViewController.swift */,
 				B00BA91B1D9D6DB600F5EA30 /* StoryItemViewController.swift */,
 				B00BA91C1D9D6DB600F5EA30 /* StoryItemViewController.xib */,
 				76B7212A1D5E377D002B4491 /* StoryProgressIndicator.swift */,
@@ -907,8 +910,9 @@
 			files = (
 				B0E8E3391DDF73390077D1BC /* PostCollectionViewCell.swift in Sources */,
 				B01B34A41DC15BDA00B2B9CE /* DialogRow.swift in Sources */,
-				768C67681D586C26003A76D5 /* StoryViewController.swift in Sources */,
+				768C67681D586C26003A76D5 /* DEPRECATED_StoryViewController.swift in Sources */,
 				B0E8E3101DD7AC190077D1BC /* FollowButton.swift in Sources */,
+				B0FC99D21DE7983A00683155 /* StoryViewController.swift in Sources */,
 				B00BA9221D9E4E0700F5EA30 /* FirstScreenViewController.swift in Sources */,
 				B00BA91D1D9D6DB600F5EA30 /* StoryItemViewController.swift in Sources */,
 				B0E591571DD1218D00C032D6 /* SettingsViewController.swift in Sources */,

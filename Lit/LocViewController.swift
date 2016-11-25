@@ -56,14 +56,12 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
     
     func newState(state: AppState) {
         print("New State!")
-        
+        //downloadMedia()
     }
     
     func downloadMedia() {
         FirebaseService.downloadStory(location!.getPostKeys(), completionHandler: { items in
-            //self.photos = story.reverse()
             self.stories = sortStoryItems(items)
-            print("STORY \(self.stories)")
             self.tableView!.reloadData()
         })
     }
@@ -97,7 +95,6 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         let difference  = detailsView.descriptionLabel.frame.height
         detailsView.frame = CGRectMake(0, 0, self.view.frame.width, detailsView.frame.height + difference)
         
-        
         headerView = UINib(nibName: "LocationHeaderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! LocationHeaderView
         headerView.delegate = self
         screenSize = self.view.frame
@@ -129,17 +126,14 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         tableView!.parallaxHeader.mode = .Fill
         tableView!.parallaxHeader.minimumHeight = 0;
         tableView!.separatorColor = UIColor(white: 0.25, alpha: 1.0)
+        tableView!.decelerationRate = UIScrollViewDecelerationRateFast
         
         tableView!.backgroundColor = UIColor.blackColor()
         view.addSubview(tableView!)
         
-        
-        //tableView?.addSubview(detailsView)
-        
         footerView = UINib(nibName: "LocationFooterView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! LocationFooterView
         footerView.frame = CGRectMake(0, 0, tableView!.frame.width, 120)
-        //collectionView?.registerClass(footerView, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: "myFooterView")
-        
+
         statusBarBG = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: navHeight))
         statusBarBG!.backgroundColor = UIColor(white: 0.0, alpha: 0.0)
         
@@ -162,16 +156,12 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
             if events.count > 0 {
                 self.events = events
                 self.tableView!.reloadData()
-                self.buildEventsBanner()
             }
         })
         
         tableView!.tableFooterView = UIView(frame: CGRectMake(0,0,tableView!.frame.width, 90))
-        
-        
         guests = location.getVisitors()
-        
-        
+
     }
     
     var titleLabel:UILabel!
@@ -223,32 +213,6 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         }
     }
     
-    func buildEventsBanner() {
-//        let navHeight = screenStatusBarHeight + navigationController!.navigationBar.frame.height
-//        let eventsHeight:CGFloat = 150.0
-//        let slack:CGFloat = 1.0
-//        let topInset:CGFloat = detailsView.frame.height + eventsHeight + slack
-//        
-//        eventsBanner = UINib(nibName: "EventsBannerView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as? EventsBannerView
-//        eventsBanner!.clipsToBounds = true
-//        eventsBanner!.frame = CGRectMake(0,detailsView.frame.height, tableView!.frame.width, eventsHeight)
-//        
-//        eventsBannerTap = UITapGestureRecognizer(target: self, action: #selector(showEvents))
-//        eventsBanner!.addGestureRecognizer(eventsBannerTap)
-//        
-//        let collectionViewLayout = tableView!.collectionViewLayout as? UICollectionViewFlowLayout
-//        
-//        collectionViewLayout?.sectionInset = UIEdgeInsets(top: topInset, left: 0, bottom: 200, right: 0)
-//        collectionViewLayout?.invalidateLayout()
-//        
-//        tableView!.addSubview(eventsBanner!)
-//        
-//        if events.count > 0 {
-//            eventsBanner!.event = events[0]
-//        }
-//        //eventsBanner?.hidden = true
-
-    }
     
     func mediaDeleted() {
         self.photos = [StoryItem]()
@@ -263,7 +227,7 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 0 {
             if events.count > 0 {
-                
+                return 0
             } else {
                 return 0
             }
@@ -277,7 +241,7 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         let headerView = UINib(nibName: "ListHeaderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! ListHeaderView
         if section == 0 {
             if events.count > 0 {
-                headerView.label.text = "Upcoming Events"
+                headerView.label.text = ""
                 headerView.label.textColor = UIColor.whiteColor()
             } else {
                 headerView.label.text = "No Upcoming Events"
@@ -313,7 +277,7 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         
         switch indexPath.section {
         case 0:
-            return 134
+            return 200
         case 1:
             return 80
         case 2:

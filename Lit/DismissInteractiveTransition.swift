@@ -65,7 +65,7 @@ public class DismissInteractiveTransition: UIPercentDrivenInteractiveTransition 
             self.animationController.initialTransitionView.alpha = 0.0
             
             // Affine Transform
-            let scale: CGFloat = (1000.0 - CGFloat(distance))/1000.0
+            let scale: CGFloat = max(0,(1000.0 - CGFloat(distance) * 1.10)/1000.0)
             var transform = CGAffineTransformIdentity
             transform = CGAffineTransformScale(transform, scale, scale)
             transform = CGAffineTransformTranslate(transform, translation.x/scale, translation.y/scale)

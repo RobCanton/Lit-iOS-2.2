@@ -53,7 +53,7 @@ PODS:
     - GoogleSymbolUtilities (~> 1.0)
   - HMSegmentedControl (1.5.2)
   - IngeoSDK (1.3.5)
-  - JSQMessagesViewController (7.2.0):
+  - JSQMessagesViewController (7.3.4):
     - JSQSystemSoundPlayer (~> 2.0.1)
   - JSQSystemSoundPlayer (2.0.1)
   - KTCenterFlowLayout (1.3.1)
@@ -85,7 +85,7 @@ DEPENDENCIES:
   - Firebase/Database
   - Firebase/Storage
   - IngeoSDK
-  - JSQMessagesViewController (= 7.2.0)
+  - JSQMessagesViewController
   - KTCenterFlowLayout
   - MXSegmentedPager
   - NVActivityIndicatorView (= 2.0)
@@ -118,7 +118,7 @@ SPEC CHECKSUMS:
   GoogleUtilities: 56c5ac05b7aa5dc417a1bb85221a9516e04d7032
   HMSegmentedControl: 83b9686022d2176fb6457d2bdb61e5d6393fed7d
   IngeoSDK: c225d4de8998f733c072d5d82828f7178521c509
-  JSQMessagesViewController: 73cab48aa92fc2d512f3b6724f3425cc47a19eb5
+  JSQMessagesViewController: 39fed975e3c9f8eba7292071e29eeb541d105e66
   JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
   KTCenterFlowLayout: 6e02b50ab2bd865025ae82fe266ed13b6d9eaf97
   MXPagerView: db0c020aeada6a0c704f18f8053468560e346982
@@ -133,6 +133,6 @@ SPEC CHECKSUMS:
   SwiftyJSON: 96918c1bf505efa50c4f72957018dd3452090c9c
   Whisper: 74decae53daf8caff5acf8628e24b92d3f05a453
 
-PODFILE CHECKSUM: aec623cddf4a859823afde00f105148d073bcfa8
+PODFILE CHECKSUM: b13d14864f4a899014eda567772f075458e0f4a2
 
 COCOAPODS: 1.2.0.beta.1

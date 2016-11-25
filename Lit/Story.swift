@@ -6,13 +6,6 @@
 //  Copyright © 2016 Robert Canton. All rights reserved.
 //
 
-//
-//  StoryItem.swift
-//  Lit
-//
-//  Created by Robert Canton on 2016-08-08.
-//  Copyright © 2016 Robert Canton. All rights reserved.
-//
 import Foundation
 import UIKit
 
@@ -57,6 +50,10 @@ class Story: NSObject {
     
     func addItem(item:StoryItem) {
         items.append(item)
+    }
+    
+    func getItems() -> [StoryItem] {
+        return items
     }
     
     func getMostRecentItem() -> StoryItem? {
