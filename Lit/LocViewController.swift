@@ -10,7 +10,11 @@ import UIKit
 import Firebase
 import ReSwift
 
+var dataSaveMode = true
+
 class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, LocationHeaderProtocol, UINavigationControllerDelegate {
+    
+    
     
     var statusBarBG:UIView?
     
@@ -59,12 +63,41 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         //downloadMedia()
     }
     
+    func getStoryIndex(_story:Story) -> Int? {
+        for i in 0..<stories.count {
+            let story = stories[i]
+            if _story.getAuthorID() == story.getAuthorID() {
+                return i
+            }
+        }
+        return nil
+    }
+    
     func downloadMedia() {
         FirebaseService.downloadStory(location!.getPostKeys(), completionHandler: { items in
             self.stories = sortStoryItems(items)
             self.tableView!.reloadData()
+            if dataSaveMode {
+                self.downloadAllStories()
+            }
         })
     }
+    
+    func downloadAllStories() {
+        for story in self.stories {
+            downloadStory(story)
+        }
+    }
+    
+    func downloadStory(story:Story) {
+        story.downloadStory({ complete in
+            if let i = self.getStoryIndex(story) {
+                let indexPath = [NSIndexPath(forRow: i, inSection: 1)]
+                self.tableView?.reloadRowsAtIndexPaths(indexPath, withRowAnimation: .Automatic)
+            }
+        })
+    }
+    
     override func viewDidLayoutSubviews() {
         //headerView.setGuests()
     }
@@ -312,25 +345,13 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.section == 1 {
-            self.selectedIndexPath = indexPath
-            let cell = tableView.cellForRowAtIndexPath(indexPath) as! UserStoryTableViewCell
-            
-            let presentedViewController: PresentedViewController = PresentedViewController()
-            presentedViewController.tabBarRef = self.tabBarController! as! PopUpTabBarController
-            presentedViewController.stories = stories
-            presentedViewController.transitionController = self.transitionController
-            var i = NSIndexPath(forItem: indexPath.row, inSection: 0)
-            self.transitionController.userInfo = ["destinationIndexPath": i, "initialIndexPath": i]
-            
-            // This example will push view controller if presenting view controller has navigation controller.
-            // Otherwise, present another view controller
-            if let navigationController = self.navigationController {
-                
-                // Set transitionController as a navigation controller delegate and push.
-                navigationController.delegate = transitionController
-                transitionController.push(viewController: presentedViewController, on: self, attached: presentedViewController)
-                
+            let story = stories[indexPath.item]
+            if story.isLoaded() {
+                presentStory(indexPath)
+            } else {
+                downloadStory(story)
             }
+            
         }
         else if indexPath.section == 2 {
             let cell = tableView.cellForRowAtIndexPath(indexPath) as! UserViewCell
@@ -343,6 +364,27 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
             }
         }
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
+    
+    func presentStory(indexPath:NSIndexPath) {
+        self.selectedIndexPath = indexPath
+        
+        let presentedViewController: PresentedViewController = PresentedViewController()
+        presentedViewController.tabBarRef = self.tabBarController! as! PopUpTabBarController
+        presentedViewController.stories = stories
+        presentedViewController.transitionController = self.transitionController
+        let i = NSIndexPath(forItem: indexPath.row, inSection: 0)
+        self.transitionController.userInfo = ["destinationIndexPath": i, "initialIndexPath": i]
+        
+        // This example will push view controller if presenting view controller has navigation controller.
+        // Otherwise, present another view controller
+        if let navigationController = self.navigationController {
+            
+            // Set transitionController as a navigation controller delegate and push.
+            navigationController.delegate = transitionController
+            transitionController.push(viewController: presentedViewController, on: self, attached: presentedViewController)
+            
+        }
     }
 
     
@@ -362,27 +404,6 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
                 statusBarBG!.backgroundColor = UIColor(white: 0.0, alpha: 0)
             }
         }
-        print(progress)
-        if progress > -1 {
-            //tableView!.pagingEnabled = true
-        } else {
-            //tableView!.pagingEnabled = false
-        }
-        
-//        if progress < 0 {
-//            //detailsView.alpha = 1 + progress * 1.75
-//            let scale = abs(progress)
-//            if let _ = controlBar {
-//
-//            }
-//            if scale > 0.60 {
-//                let prop = ((scale - 0.60) / 0.40) * 1.15
-//                print("prop \(prop)")
-//                statusBarBG!.backgroundColor = UIColor(white: 0.0, alpha: prop)
-//            } else {
-//                statusBarBG!.backgroundColor = UIColor(white: 0.0, alpha: 0)
-//            }
-//        }
     }
 
     

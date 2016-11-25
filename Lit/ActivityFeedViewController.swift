@@ -319,7 +319,7 @@ class ActivityFeedViewController: UIViewController, UICollectionViewDelegate, UI
     func createTransitionImageView() -> UIImageView {
         
         let imageView = UIImageView()
-        imageView.loadImageUsingCacheWithURLString(photos[selectedIndexPath!.item].getDownloadUrl()!.absoluteString, completion: { result in})
+        imageView.loadImageUsingCacheWithURLString(photos[selectedIndexPath!.item].getDownloadUrl().absoluteString, completion: { result in})
         imageView.contentMode = self.selectedImageView!.contentMode
         imageView.clipsToBounds = true
         imageView.userInteractionEnabled = false

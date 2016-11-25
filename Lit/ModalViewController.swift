@@ -299,8 +299,8 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
         likesRef?.observeEventType(.Value, withBlock: { snapshot in
             if snapshot.exists() {
                 let likes = snapshot.value! as! Int
-                self.item!.likes = likes
-                self.likesLabel.setTitle(getLikesString(self.item!.likes), forState: .Normal)
+                //self.item!.likes = likes
+                //self.likesLabel.setTitle(getLikesString(self.item!.likes), forState: .Normal)
             }
         })
     }
@@ -354,7 +354,7 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
         timeLabel.layer.opacity = 0
         locationLabel.layer.opacity = 0
         
-        self.likesLabel.setTitle(getLikesString(self.item!.likes), forState: .Normal)
+        //self.likesLabel.setTitle(getLikesString(self.item!.likes), forState: .Normal)
         
         FirebaseService.getUser(item!.getAuthorId(), completionHandler: { _user in
             if let _ = _user {
@@ -364,7 +364,7 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
         })
         
         if let _ = item {
-            self.imageView.loadImageUsingCacheWithURLString(item!.getDownloadUrl()!.absoluteString, completion: { result in })
+            self.imageView.loadImageUsingCacheWithURLString(item!.getDownloadUrl().absoluteString, completion: { result in })
         }
     }
     
@@ -372,7 +372,7 @@ class ModalViewController: ARNModalImageTransitionViewController, ARNImageTransi
     
     func createTransitionImageView() -> UIImageView {
         if let _ = item {
-            self.imageView.loadImageUsingCacheWithURLString(item!.getDownloadUrl()!.absoluteString, completion: { result in })
+            self.imageView.loadImageUsingCacheWithURLString(item!.getDownloadUrl().absoluteString, completion: { result in })
         }
         let imageView = UIImageView(image: self.imageView.image)
         imageView.contentMode = self.imageView.contentMode

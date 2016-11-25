@@ -18,6 +18,7 @@ class UserStoryTableViewCell: UITableViewCell {
         super.awakeFromNib()
         contentImageView.layer.cornerRadius = 4
         contentImageView.clipsToBounds = true
+        timeLabel.textColor = UIColor.grayColor()
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
@@ -27,12 +28,20 @@ class UserStoryTableViewCell: UITableViewCell {
     }
     
     func setStory(story:Story) {
+        let isLoaded = story.isLoaded()
+        if isLoaded {
+            usernameLabel.textColor = UIColor.whiteColor()
+        } else {
+            usernameLabel.textColor = UIColor.grayColor()
+        }
         if let recentItem = story.getMostRecentItem() {
             contentImageView.image = nil
-            contentImageView.loadImageUsingCacheWithURLString(recentItem.getDownloadUrl()!.absoluteString, completion: { loaded in
+            contentImageView.loadImageUsingCacheWithURLString(recentItem.getDownloadUrl().absoluteString, completion: { loaded in
                 if loaded {
-//                    let image = self.contentImageView.image!.grayScaleImage()
-//                    self.contentImageView.image = image
+                    if !isLoaded {
+                        let image = self.contentImageView.image!.grayScaleImage()
+                        self.contentImageView.image = image
+                    }
                     UIView.animateWithDuration(0.3, animations: {
                         //self.fadeCover.alpha = 0.0
                     })
@@ -45,9 +54,7 @@ class UserStoryTableViewCell: UITableViewCell {
                 }
             })
             
-            timeLabel.text = recentItem.getDateCreated()!.timeStringSinceNow()
+            timeLabel.text = recentItem.getDateCreated()!.timeStringSinceNowWithAgo()
         }
     }
-
-    
 }

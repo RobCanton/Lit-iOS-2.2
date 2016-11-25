@@ -25,7 +25,7 @@
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="5m ago" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PkL-gL-0SR">
                         <rect key="frame" x="79" y="40" width="52" height="21"/>
-                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="15"/>
+                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="14"/>
                         <color key="textColor" white="0.75317837732919257" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -47,7 +47,7 @@
                     <constraint firstAttribute="topMargin" secondItem="6qs-Y9-Iax" secondAttribute="top" constant="8" id="cdG-mF-ATD"/>
                     <constraint firstItem="6qs-Y9-Iax" firstAttribute="top" secondItem="Ntz-tH-JMV" secondAttribute="top" id="cdf-lN-OvU"/>
                     <constraint firstItem="Ntz-tH-JMV" firstAttribute="width" secondItem="Ntz-tH-JMV" secondAttribute="height" multiplier="1:1" id="m0P-Dk-Ve6"/>
-                    <constraint firstItem="PkL-gL-0SR" firstAttribute="top" secondItem="6qs-Y9-Iax" secondAttribute="bottom" constant="2" id="pXp-8O-hpG"/>
+                    <constraint firstItem="PkL-gL-0SR" firstAttribute="top" secondItem="6qs-Y9-Iax" secondAttribute="bottom" constant="1" id="pXp-8O-hpG"/>
                     <constraint firstItem="Ntz-tH-JMV" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="12" id="px2-ia-nve"/>
                 </constraints>
                 <variation key="default">

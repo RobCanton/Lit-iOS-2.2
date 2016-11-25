@@ -10,7 +10,7 @@
 //import ReSwift
 //import AVFoundation
 //
-//class StoryViewController: UIViewController, StoreSubscriber, ItemDelegate {
+//class DEPRECATED_StoryViewController: UIViewController, StoreSubscriber, ItemDelegate {
 //    
 //    
 //    var locationIndex: Int?

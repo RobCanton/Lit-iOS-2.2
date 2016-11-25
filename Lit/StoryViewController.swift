@@ -26,15 +26,16 @@ public class StoryViewController: UICollectionViewCell {
             self.addGestureRecognizer(tap)
             viewIndex = 0
             setItem()
-            
-            
         }
     }
     
     func setItem() {
         if viewIndex < story.getItems().count {
             let item = story.getItems()[viewIndex]
-            content.loadImageUsingCacheWithURLString(item.getDownloadUrl()!.absoluteString, completion: {result in })
+            if let image = item.image {
+                content.image = image
+            } else { print("Image not loaded") }
+            
         } else {
             self.removeGestureRecognizer(tap)
             delegate?.storyComplete()

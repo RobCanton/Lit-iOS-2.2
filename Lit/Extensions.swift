@@ -192,6 +192,32 @@ extension NSDate
         return "Now"
         //return "\(components.second)s"
     }
+    
+    func timeStringSinceNowWithAgo() -> String
+    {
+        let calendar = NSCalendar.currentCalendar()
+        
+        let components = calendar.components([.Day, .Hour, .Minute, .Second], fromDate: self, toDate: NSDate(), options: [])
+        
+        if components.day >= 365 {
+            return "\(components.day / 365)y ago"
+        }
+        
+        if components.day >= 7 {
+            return "\(components.day / 7)w ago"
+        }
+        
+        if components.day > 0 {
+            return "\(components.day)d ago"
+        }
+        else if components.hour > 0 {
+            return "\(components.hour)h ago"
+        }
+        else if components.minute > 0 {
+            return "\(components.minute)m ago"
+        }
+        return "Now"
+    }
 
 }
 

@@ -128,7 +128,7 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
         label.center = view.center
         label.textAlignment = .Center
         
-        let overlayMargin:CGFloat = 4.0
+        let overlayMargin:CGFloat = 6.0
         authorOverlay = UINib(nibName: "PostAuthorView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! PostAuthorView
         authorOverlay!.frame = CGRect(x: overlayMargin, y: view.frame.height - authorOverlay!.frame.height - overlayMargin, width: view.frame.width, height: authorOverlay!.frame.height)
         view.addSubview(authorOverlay!)
@@ -175,19 +175,11 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
     
     func storyComplete() {
         print("Story complete")
+        let indexPath: NSIndexPath = self.collectionView.indexPathsForVisibleItems().first!
+        self.transitionController.userInfo = ["destinationIndexPath": indexPath, "initialIndexPath": indexPath]
         
-        if photoIndex < stories.count-1 {
-            print("Go to next story")
-            let contentOffset: CGPoint = CGPoint(x: self.collectionView.frame.size.width*CGFloat(1 + photoIndex), y: 0.0)
-            self.collectionView.setContentOffset(contentOffset, animated: true)
-        } else {
-            print("Close story view")
-            let indexPath: NSIndexPath = self.collectionView.indexPathsForVisibleItems().first!
-            self.transitionController.userInfo = ["destinationIndexPath": indexPath, "initialIndexPath": indexPath]
-            
-            if let navigationController = self.navigationController {
-                navigationController.popViewControllerAnimated(true)
-            }
+        if let navigationController = self.navigationController {
+            navigationController.popViewControllerAnimated(true)
         }
     }
     

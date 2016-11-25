@@ -235,6 +235,12 @@ class FirebaseService {
     }
     
     static func getUpload(key:String, completionHandler: (item:StoryItem?)->()) {
+        
+        if let cachedUpload = dataCache.objectForKey("upload-\(key)") as? StoryItem {
+            print("Upload from cache: \(key)")
+            return completionHandler(item: cachedUpload)
+        }
+        
         let postRef = ref.child("uploads/\(key)/meta")
         postRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
             var item:StoryItem?
@@ -243,7 +249,7 @@ class FirebaseService {
                     let key = key
                     let authorId = snapshot.value!["author"] as! String
                     let locationKey = snapshot.value!["location"] as! String
-                    let downloadUrl = snapshot.value!["url"] as! String
+                    let downloadUrl = NSURL(string: snapshot.value!["url"] as! String)!
                     let contentTypeStr = snapshot.value!["contentType"] as! String
                     var contentType = ContentType.Invalid
                     if contentTypeStr == "image/jpg" {
@@ -255,15 +261,14 @@ class FirebaseService {
                     let dateCreated = snapshot.value!["dateCreated"] as! Double
                     let length = snapshot.value!["length"] as! Double
                     
-                    var likes = 0
-                    if snapshot.hasChild("likes") {
-                        likes = snapshot.value!["likes"] as! Int
-                    }
-                    item = StoryItem(key: key, authorId: authorId,locationKey: locationKey, downloadUrl: downloadUrl, contentType: contentType, dateCreated: dateCreated, length: length, likes: likes)
-                    
+
+                    item = StoryItem(key: key, authorId: authorId,locationKey: locationKey, downloadUrl: downloadUrl, contentType: contentType, dateCreated: dateCreated, length: length)
+                    dataCache.setObject(item!, forKey: "upload-\(key)")
+                    print("Upload from download: \(key)")
                 }
             }
-            completionHandler(item: item)
+            
+            return completionHandler(item: item)
         })
     }
     

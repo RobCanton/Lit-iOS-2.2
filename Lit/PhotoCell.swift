@@ -26,7 +26,7 @@ class PhotoCell: UICollectionViewCell {
     
     func setPhoto(item:StoryItem) {
         imageView.image = nil
-        imageView.loadImageUsingCacheWithURLString(item.getDownloadUrl()!.absoluteString, completion: { loaded in
+        imageView.loadImageUsingCacheWithURLString(item.getDownloadUrl().absoluteString, completion: { loaded in
             if loaded {
 
                 UIView.animateWithDuration(0.3, animations: {

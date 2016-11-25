@@ -39,6 +39,8 @@ class Story: NSObject {
     private var author_uid:String
     
     private var items = [StoryItem]()
+    
+    private var loaded:Bool = false
 
     init(author_uid:String)
     {
@@ -48,8 +50,13 @@ class Story: NSObject {
         super.init()
     }
     
+    func getAuthorID() -> String {
+        return author_uid
+    }
+    
     func addItem(item:StoryItem) {
         items.append(item)
+        loaded = false
     }
     
     func getItems() -> [StoryItem] {
@@ -61,5 +68,24 @@ class Story: NSObject {
             return items[items.count-1]
         }
         return nil
+    }
+    
+    func isLoaded() -> Bool {
+        return loaded
+    }
+    
+    func downloadStory(completionHandler:(complete:Bool)->()) {
+        var count = 0
+        for item in items {
+            item.download({ success in
+                count += 1
+                if count >= self.items.count {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.loaded = true
+                        completionHandler(complete: true)
+                    })
+                }
+            })
+        }
     }
 }

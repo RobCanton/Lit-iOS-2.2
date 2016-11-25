@@ -591,8 +591,6 @@
 				B0FC99D11DE7983A00683155 /* StoryViewController.swift */,
 				B0E8E32E1DDBC44C0077D1BC /* PostAuthorView.xib */,
 				B0E8E3301DDBC4640077D1BC /* PostAuthorView.swift */,
-				B08BBB951DBBE51400AD3FF1 /* EventsBannerView.swift */,
-				B08BBB931DBBE4FD00AD3FF1 /* EventsBannerView.xib */,
 				B0321ECD1DB56BF900AD4C53 /* LocationHeaderView.swift */,
 				B0321ECF1DB56C0500AD4C53 /* LocationHeaderView.xib */,
 				B03095E41DB7D65C008A4DFA /* MapViewController.swift */,
@@ -655,6 +653,8 @@
 		B08BBB921DBBE06300AD3FF1 /* Deprecated */ = {
 			isa = PBXGroup;
 			children = (
+				B08BBB951DBBE51400AD3FF1 /* EventsBannerView.swift */,
+				B08BBB931DBBE4FD00AD3FF1 /* EventsBannerView.xib */,
 				B0E8E33A1DDFC8D10077D1BC /* CompactPhotoCell.swift */,
 				B0E8E33B1DDFC8D10077D1BC /* CompactPhotoCell.xib */,
 				B09D5FD11DA57CE9004A188E /* ModalViewController.swift */,
