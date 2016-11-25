@@ -78,6 +78,13 @@ func getDateString(date:NSDate) -> String {
     
 }
 
+func getDateFromString(string:String) -> NSDate {
+    let dateFormatter = NSDateFormatter()
+    dateFormatter.dateFormat = "yyyy-MM-dd"
+    
+    return dateFormatter.dateFromString(string)!
+}
+
 func resizeImage(image: UIImage, newWidth: CGFloat) -> UIImage {
     
     let scale = newWidth / image.size.width

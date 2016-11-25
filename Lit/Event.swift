@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class Event {
+class Event: NSObject, NSCoding {
     
     private var key:String
     private var name:String
@@ -18,17 +18,30 @@ class Event {
     
     
     
-    init(key: String, name:String, date:String, imageUrl:String)
+    init(key: String, name:String, date:NSDate, imageUrl:String)
     {
         self.key       = key
         self.name      = name
         self.imageUrl  = imageUrl
+        self.date = date
+    }
+    
+    required convenience init(coder decoder: NSCoder) {
         
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let key = decoder.decodeObjectForKey("key") as! String
+        let name = decoder.decodeObjectForKey("name") as! String
+        let date = decoder.decodeObjectForKey("date") as! NSDate
+        let imageUrl = decoder.decodeObjectForKey("imageUrl") as! String
+        self.init(key:key, name:name, date:date, imageUrl: imageUrl)
         
-        self.date = dateFormatter.dateFromString(date)!
-        
+    }
+    
+    
+    func encodeWithCoder(coder: NSCoder) {
+        coder.encodeObject(key, forKey: "key")
+        coder.encodeObject(name, forKey: "name")
+        coder.encodeObject(date, forKey: "date")
+        coder.encodeObject(imageUrl, forKey: "imageUrl")
     }
     
     func getKey() -> String {

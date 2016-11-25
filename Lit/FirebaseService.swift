@@ -53,7 +53,6 @@ class FirebaseService {
     static func getUser(uid:String, completionHandler: (user:User?)->()) {
         
         if let cachedUser = dataCache.objectForKey("user-\(uid)") as? User {
-            print("From cache: \(uid)")
             completionHandler(user: cachedUser)
         } else {
             ref.child("users/profile/\(uid)").observeSingleEventOfType(.Value, withBlock: { (snapshot) in
@@ -65,7 +64,6 @@ class FirebaseService {
                     let numFriends       = snapshot.value!["numFriends"] as! Int
                     user = User(uid: uid, displayName: displayName, imageUrl: imageUrl, largeImageUrl: largeImageUrl, numFriends: numFriends)
                     dataCache.setObject(user!, forKey: "user-\(uid)")
-                    print("Downloaded user: \(uid)")
                 }
                 
                 completionHandler(user: user)
@@ -203,17 +201,24 @@ class FirebaseService {
     }
     
     static func getEvent(eventKey:String, completionHandler:(event:Event?)->()) {
+        if let cachedEvent = dataCache.objectForKey("event-\(eventKey)") as? Event {
+            print("Event from cache: \(eventKey)")
+            return completionHandler(event: cachedEvent)
+        }
+        
         let eventRef = ref.child("events/\(eventKey)")
         eventRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
             var event:Event?
             if snapshot.exists() {
                 let name                = snapshot.value!["name"] as! String
-                let date                = snapshot.value!["date"] as! String
+                let dateString          = snapshot.value!["date"] as! String
                 let imageUrl            = snapshot.value!["imageUrl"] as! String
+                let date = getDateFromString(dateString)
                 
                 event = Event(key: eventKey, name: name, date: date, imageUrl: imageUrl)
+                dataCache.setObject(event!, forKey: "event-\(eventKey)")
             }
-            print("event: \(event?.getKey())")
+            
             completionHandler(event: event)
         })
     }
@@ -237,7 +242,6 @@ class FirebaseService {
     static func getUpload(key:String, completionHandler: (item:StoryItem?)->()) {
         
         if let cachedUpload = dataCache.objectForKey("upload-\(key)") as? StoryItem {
-            print("Upload from cache: \(key)")
             return completionHandler(item: cachedUpload)
         }
         
@@ -264,7 +268,6 @@ class FirebaseService {
 
                     item = StoryItem(key: key, authorId: authorId,locationKey: locationKey, downloadUrl: downloadUrl, contentType: contentType, dateCreated: dateCreated, length: length)
                     dataCache.setObject(item!, forKey: "upload-\(key)")
-                    print("Upload from download: \(key)")
                 }
             }
             
