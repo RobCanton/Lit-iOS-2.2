@@ -60,7 +60,6 @@ extension UIImageView {
                 })
                 
         }).resume()
-        
     }
     
     func loadImageUsingFileWithURLString(location:Location, completion: (result: Bool)->()) {

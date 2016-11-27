@@ -34,17 +34,19 @@ func sortStoryItems(items:[StoryItem]) -> [Story] {
 }
 
 
-class Story: NSObject {
+enum StoryState {
+    case NotLoaded, Loading, Loaded
+}
+class Story: NSObject, Comparable {
     
     private var author_uid:String
     
     private var items = [StoryItem]()
     
-    private var loaded:Bool = false
+    var state:StoryState = StoryState.NotLoaded
 
     init(author_uid:String)
     {
-        
         self.author_uid = author_uid
         
         super.init()
@@ -56,7 +58,8 @@ class Story: NSObject {
     
     func addItem(item:StoryItem) {
         items.append(item)
-        loaded = false
+        state = .NotLoaded
+        
     }
     
     func getItems() -> [StoryItem] {
@@ -70,22 +73,43 @@ class Story: NSObject {
         return nil
     }
     
-    func isLoaded() -> Bool {
-        return loaded
+    func needsDownload() -> Bool {
+        for item in items {
+            if item.needsDownload() {
+                return true
+            }
+        }
+        return false
     }
+
     
     func downloadStory(completionHandler:(complete:Bool)->()) {
+        
+        
+        state = .Loading
         var count = 0
-        for item in items {
+        for item in items {            
             item.download({ success in
                 count += 1
                 if count >= self.items.count {
                     dispatch_async(dispatch_get_main_queue(), {
-                        self.loaded = true
+                        self.state = .Loaded
                         completionHandler(complete: true)
                     })
                 }
             })
         }
     }
+}
+
+func < (lhs: Story, rhs: Story) -> Bool {
+    let lhs_item = lhs.getMostRecentItem()!
+    let rhs_item = rhs.getMostRecentItem()!
+    return lhs_item.dateCreated.compare(rhs_item.dateCreated) == .OrderedAscending
+}
+
+func == (lhs: Story, rhs: Story) -> Bool {
+    let lhs_item = lhs.getMostRecentItem()!
+    let rhs_item = rhs.getMostRecentItem()!
+    return lhs_item.dateCreated.compare(rhs_item.dateCreated) == .OrderedSame
 }

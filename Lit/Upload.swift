@@ -16,6 +16,7 @@ class Upload {
     private var locationKey:String = ""
     
     var image:UIImage?
+    var videoURL:NSURL?
     
     
     init(toUserProfile: Bool, locationKey:String)

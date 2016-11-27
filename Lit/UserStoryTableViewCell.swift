@@ -28,33 +28,39 @@ class UserStoryTableViewCell: UITableViewCell {
     }
     
     func setStory(story:Story) {
-        let isLoaded = story.isLoaded()
-        if isLoaded {
+        guard let item = story.getMostRecentItem() else { return }
+        let state = story.state
+        contentImageView.image = nil
+        contentImageView.loadImageUsingCacheWithURLString(item.getDownloadUrl().absoluteString, completion: { loaded in
+            if loaded {
+                if state == .NotLoaded || state == .Loading {
+                    let image = self.contentImageView.image!.grayScaleImage()
+                    self.contentImageView.image = image
+                }
+
+                UIView.animateWithDuration(0.3, animations: {
+                    //self.fadeCover.alpha = 0.0
+                })
+            }
+        })
+            
+        FirebaseService.getUser(item.getAuthorId(), completionHandler: { user in
+            if user != nil {
+                self.usernameLabel.text = user!.getDisplayName()
+            }
+        })
+            
+        
+        
+        if state == .Loaded {
             usernameLabel.textColor = UIColor.whiteColor()
-        } else {
+            timeLabel.text = "\(item.getDateCreated()!.timeStringSinceNowWithAgo()) • 4 views"
+        } else if state == .Loading {
             usernameLabel.textColor = UIColor.grayColor()
-        }
-        if let recentItem = story.getMostRecentItem() {
-            contentImageView.image = nil
-            contentImageView.loadImageUsingCacheWithURLString(recentItem.getDownloadUrl().absoluteString, completion: { loaded in
-                if loaded {
-                    if !isLoaded {
-                        let image = self.contentImageView.image!.grayScaleImage()
-                        self.contentImageView.image = image
-                    }
-                    UIView.animateWithDuration(0.3, animations: {
-                        //self.fadeCover.alpha = 0.0
-                    })
-                }
-            })
-            
-            FirebaseService.getUser(recentItem.getAuthorId(), completionHandler: { user in
-                if user != nil {
-                    self.usernameLabel.text = user!.getDisplayName()
-                }
-            })
-            
-            timeLabel.text = recentItem.getDateCreated()!.timeStringSinceNowWithAgo()
+            timeLabel.text = "Loading..."
+        } else if state == .NotLoaded {
+            usernameLabel.textColor = UIColor.grayColor()
+            timeLabel.text = "\(item.getDateCreated()!.timeStringSinceNowWithAgo()) • 4 views"
         }
     }
 }

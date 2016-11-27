@@ -65,7 +65,7 @@
                         </view>
                         <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Amr-QG-bPq">
                             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                            <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9gM-qU-bdZ">
                             <rect key="frame" x="8" y="284" width="584" height="44"/>

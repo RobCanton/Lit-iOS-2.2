@@ -101,7 +101,6 @@ class EventTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectio
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        print("SIZE MOFO!")
         return CGSize(width: bounds.size.width, height: collectionView.bounds.size.height)
     }
 }

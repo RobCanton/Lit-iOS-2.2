@@ -128,39 +128,94 @@ class FirebaseService {
         return nil
     }
     
-    internal static func uploadVideo(url:NSURL) -> FIRStorageUploadTask? {
+    
+    
+    internal static func uploadVideo(upload:Upload, completionHander:(success:Bool)->()){
         
-//        let activeLocationKey = mainStore.state.userState.activeLocationKey
-//        
-//        let saveRef = ref.child("/uploads/\(city.getKey())/\(activeLocationKey)").childByAutoId()
-//        let metadata = FIRStorageMetadata()
-//        let contentTypeStr = "video/mp4"
-//        let playerItem = AVAsset(URL: url)
-//        let length = CMTimeGetSeconds(playerItem.duration)
-//        metadata.contentType = contentTypeStr
-//        
-//        let data = NSData(contentsOfURL: url)
-//        
-//        // Upload file and metadata to the object 'images/mountains.jpg'
-//        let uploadTask = storageRef.child("user_uploads/\(saveRef.key))").putData(data!, metadata: metadata) { metadata, error in
-//            if (error != nil) {
-//                // Uh-oh, an error occurred!
-//                saveRef.removeValue()
-//            } else {
-//                // Metadata contains file metadata such as size, content-type, and download URL.
-//                let downloadURL = metadata!.downloadURL()
-//                saveRef.setValue([
-//                    "author": mainStore.state.userState.uid,
-//                    "url": downloadURL!.absoluteString,
-//                    "contentType": contentTypeStr,
-//                    "dateCreated": [".sv": "timestamp"],
-//                    "length": length,
-//                    "likes": 0
-//                    ])
-//            }
-//        }
+        //If upload has no destination do not upload it
+        if !upload.toLocation() && !upload.toUserProfile() { return completionHander(success:false) }
         
-        return nil
+        let uid = mainStore.state.userState.uid
+        let url = upload.videoURL!
+        
+        let dataRef = ref.child("uploads").childByAutoId()
+        let postKey = dataRef.key
+        
+        uploadVideoStill(url, postKey: postKey, completionHandler: { thumbURL in
+            
+            let data = NSData(contentsOfURL: url)
+            
+            let metadata = FIRStorageMetadata()
+            let contentTypeStr = "video/mp4"
+            let playerItem = AVAsset(URL: url)
+            let length = CMTimeGetSeconds(playerItem.duration)
+            metadata.contentType = contentTypeStr
+            
+            let uploadTask = storageRef.child("user_uploads/videos/\(postKey)").putData(data!, metadata: metadata) { metadata, error in
+                if (error != nil) {
+                    // HANDLE ERROR
+                } else {
+                    // Metadata contains file metadata such as size, content-type, and download URL.
+                    let downloadURL = metadata!.downloadURL()
+                    let obj = [
+                        "author": uid,
+                        "location": upload.getLocationKey(),
+                        "videoURL": downloadURL!.absoluteString,
+                        "url": thumbURL,
+                        "contentType": contentTypeStr,
+                        "dateCreated": [".sv": "timestamp"],
+                        "length": length,
+                        "likes": 0
+                    ]
+                    dataRef.child("meta").setValue(obj, withCompletionBlock: { error, _ in
+                        if error == nil {
+                            if upload.toLocation() {
+                                let locationRef = ref.child("locations/uploads/\(upload.getLocationKey())/\(postKey)")
+                                locationRef.setValue([".sv": "timestamp"]) //rough time estimate, only for server use
+                            }
+                            if upload.toUserProfile() {
+                                let userRef = ref.child("users/uploads/\(uid)/\(postKey)")
+                                userRef.setValue([".sv": "timestamp"]) //rough time estimate, only for server use
+                            }
+                        }
+                    })
+                }
+            }
+            uploadTask.observeStatus(.Success, handler: { snapshot in
+                return completionHander(success: true)
+            })
+        })
+    }
+    
+    private static func uploadVideoStill(url:NSURL, postKey:String, completionHandler:(thumb_url:String)->()) {
+        if let videoStill = generateVideoStill(url) {
+            if let data = UIImageJPEGRepresentation(videoStill, 0.5) {
+                let stillMetaData = FIRStorageMetadata()
+                stillMetaData.contentType = "image/jpg"
+                let uploadTask = storageRef.child("user_uploads/\(postKey)").putData(data, metadata: stillMetaData) { metadata, error in
+                    if (error != nil) {
+                        
+                    } else {
+                        let thumbURL = metadata!.downloadURL()!
+                        completionHandler(thumb_url: thumbURL.absoluteString)
+                    }
+                }
+            }
+        }
+    }
+    
+    private static func generateVideoStill(url:NSURL) -> UIImage?{
+        do {
+            let asset = AVAsset(URL: url)
+            let imgGenerator = AVAssetImageGenerator(asset: asset)
+            imgGenerator.appliesPreferredTrackTransform = true
+            let cgImage = try imgGenerator.copyCGImageAtTime(CMTimeMake(0, 1), actualTime: nil)
+            let image = UIImage(CGImage: cgImage)
+            return image
+        } catch let error as NSError {
+            print("Error generating thumbnail: \(error)")
+            return nil
+        }
     }
     
     static func getLocationEvents(locationKey:String, completionHandler: (events:[Event])->()) {
@@ -256,17 +311,20 @@ class FirebaseService {
                     let downloadUrl = NSURL(string: snapshot.value!["url"] as! String)!
                     let contentTypeStr = snapshot.value!["contentType"] as! String
                     var contentType = ContentType.Invalid
+                    var videoURL:NSURL?
                     if contentTypeStr == "image/jpg" {
                         contentType = .Image
                     } else if contentTypeStr == "video/mp4" {
                         contentType = .Video
+                        if snapshot.hasChild("videoURL") {
+                            videoURL = NSURL(string: snapshot.value!["videoURL"] as! String)!
+                        }
                     }
                     
                     let dateCreated = snapshot.value!["dateCreated"] as! Double
                     let length = snapshot.value!["length"] as! Double
-                    
 
-                    item = StoryItem(key: key, authorId: authorId,locationKey: locationKey, downloadUrl: downloadUrl, contentType: contentType, dateCreated: dateCreated, length: length)
+                    item = StoryItem(key: key, authorId: authorId,locationKey: locationKey, downloadUrl: downloadUrl,videoURL: videoURL, contentType: contentType, dateCreated: dateCreated, length: length)
                     dataCache.setObject(item!, forKey: "upload-\(key)")
                 }
             }
@@ -274,6 +332,8 @@ class FirebaseService {
             return completionHandler(item: item)
         })
     }
+    
+    
     
     static func downloadStory(postKeys:[String], completionHandler: (story:[StoryItem])->()) {
         var story = [StoryItem]()

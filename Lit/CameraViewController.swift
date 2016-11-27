@@ -200,9 +200,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     
     func send(upload:Upload) {
         if cameraState == .PhotoTaken {
-            
-            if let image = imageCaptureView.image {
-                
+            if let image = imageCaptureView.image{
                 upload.image = printTextOnImage()
                 if let uploadTask = FirebaseService.sendImage(upload)
                 {
@@ -210,11 +208,40 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
                     cameraState = .Sent
                 }
             }
+        } else if cameraState == .VideoTaken {
+            if let url = videoUrl {
+                
+                playerLayer?.player?.seekToTime(CMTimeMake(0, 1))
+                playerLayer?.player?.pause()
+                playerLayer?.removeFromSuperlayer()
+                videoLayer.hidden = true
+           
+                print("Send tapped video taken")
+                
+                let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
+                let outputUrl = documentsURL.URLByAppendingPathComponent("output.mp4")
+                upload.videoURL = outputUrl
+                FirebaseService.compressVideo(url, outputURL: outputUrl, handler: { session in
+                    print("here: \(session.status)")
+                    /*
+                    T0D0 - HANDLE COMPRESSION ERRORS
+                    */
+                    dispatch_async(dispatch_get_main_queue(), {
+                        FirebaseService.uploadVideo(upload, completionHander: { success in
+                            if success {
+                                print("Success: Video Uploaded")
+                                self.uploadWrapper.hide()
+                                self.cameraState = .Sent
+                            }
+                        
+                        })
+                    })
+                })
+            }
         }
     }
     
     @IBAction func sendButtonTapped(sender: UIButton) {
-        print("fam")
         uploadWrapper.show(config: config!, view: uploadSelector!)
         
 //        if cameraState == .PhotoTaken {
@@ -379,28 +406,15 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
         textView.hidden = true
         textView.editable = false
         adjustFrames()
-        //textView.sizeToFit()
-        //textView.center = CGPoint(x: view.frame.width/2, y: view.frame.height/2)
         textLabel.transform = CGAffineTransformIdentity
         textLabel.frame = textView.frame
         textLabel.text = textView.text
-        
-//        if let center = labelCenter {
-//            textLabel.center = center
-//        }
-//        if let transform = transform {
-//            //print("scale \(scale)")
-//            textLabel.transform = transform
-//        }
-
         textLabel.hidden = false
         textLabel.userInteractionEnabled = true
         UIView.animateWithDuration(0.2, animations: {
             self.editingFadeLayer.alpha = 0.0
         })
     }
-    
-    
     
     @IBOutlet weak var editingLayer: UIView!
     func printTextOnImage() -> UIImage{
@@ -432,8 +446,6 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
             textView.resignFirstResponder()
         }
     }
-    
-
     
     func adjustFrames() {
         let fixedWidth = textView.frame.size.width
@@ -756,7 +768,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
         playerLayer!.player?.play()
         playerLayer!.player?.actionAtItemEnd = .None
         loopVideo(playerLayer!.player!)
-        
+        print("VIDEO URL: \(videoUrl)")
         return
     }
     

@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 import ReSwift
 
-var dataSaveMode = true
+var dataSaveMode = false
 
 class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, LocationHeaderProtocol, UINavigationControllerDelegate {
     
@@ -40,12 +40,14 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         //navigationController?.hidesBarsOnSwipe = true
         print("LocationViewController Subscribed")
         
+        
     }
     
     override func viewWillDisappear(animated: Bool) {
         mainStore.unsubscribe(self)
         //navigationController?.hidesBarsOnSwipe = true
         print("LocationViewController Unsubscribed")
+        FirebaseService.ref.child("locations/uploads/\(location.getKey())").removeAllObservers()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -54,13 +56,15 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         if let tabBar = self.tabBarController as? PopUpTabBarController {
             tabBar.setTabBarVisible(true, animated: true)
         }
+        listenToLocationUploads()
     }
     
     var events = [Event]()
+    var postKeys = [String]()
     
     func newState(state: AppState) {
         print("New State!")
-        //downloadMedia()
+        
     }
     
     func getStoryIndex(_story:Story) -> Int? {
@@ -73,11 +77,38 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         return nil
     }
     
-    func downloadMedia() {
-        FirebaseService.downloadStory(location!.getPostKeys(), completionHandler: { items in
+    func listenToLocationUploads() {
+        let locRef = FirebaseService.ref.child("locations/uploads/\(location.getKey())")
+        locRef.observeEventType(.Value, withBlock: { snapshot in
+            if snapshot.exists() {
+                var postKeys = [String]()
+                for post in snapshot.children {
+                    postKeys.append(post.key!!)
+                }
+                self.crossCheckPostKeys(postKeys)
+            }
+        })
+    }
+    
+    func crossCheckPostKeys(newKeys:[String]) {
+        let sortedPosts = postKeys.sort()
+        let sortedNewPosts = newKeys.sort()
+        
+        if sortedPosts == sortedNewPosts {
+            print("Equal, no change")
+        } else {
+            print("Not equal, reload table")
+            self.downloadMedia(newKeys)
+        }
+    }
+    
+    func downloadMedia(_postKeys:[String]) {
+        self.postKeys = _postKeys
+        FirebaseService.downloadStory(postKeys, completionHandler: { items in
             self.stories = sortStoryItems(items)
+            self.stories.sortInPlace({ $0 > $1 })
             self.tableView!.reloadData()
-            if dataSaveMode {
+            if !dataSaveMode {
                 self.downloadAllStories()
             }
         })
@@ -85,17 +116,25 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
     
     func downloadAllStories() {
         for story in self.stories {
-            downloadStory(story)
+            downloadStory(story, force: false)
         }
     }
     
-    func downloadStory(story:Story) {
-        story.downloadStory({ complete in
-            if let i = self.getStoryIndex(story) {
-                let indexPath = [NSIndexPath(forRow: i, inSection: 1)]
-                self.tableView?.reloadRowsAtIndexPaths(indexPath, withRowAnimation: .Automatic)
+    func downloadStory(story:Story, force:Bool) {
+        
+        if let i = self.getStoryIndex(story) {
+            let indexPath = [NSIndexPath(forRow: i, inSection: 1)]
+            if story.needsDownload() {
+                if story.getItems().count <= 3 || force {
+                    story.downloadStory({ complete in
+                        self.tableView?.reloadRowsAtIndexPaths(indexPath, withRowAnimation: .Automatic)
+                    })
+                }
+            } else {
+                story.state = .Loaded
             }
-        })
+            self.tableView?.reloadRowsAtIndexPaths(indexPath, withRowAnimation: .Automatic)
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -183,7 +222,7 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         titleLabel.styleLocationTitle(location.getName(), size: 32.0)
         titleLabel.applyShadow(4, opacity: 0.8, height: 4, shouldRasterize: false)
         detailsView.setLocation(location)
-        downloadMedia()
+        
         
         FirebaseService.getLocationEvents(location.getKey(), completionHandler: { events in
             if events.count > 0 {
@@ -250,7 +289,6 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
     func mediaDeleted() {
         self.photos = [StoryItem]()
         self.tableView!.reloadData()
-        downloadMedia()
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -259,11 +297,13 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 0 {
-            if events.count > 0 {
-                return 0
-            } else {
-                return 0
-            }
+            return 0
+        }
+        if section == 1 && stories.count == 0 {
+            return 0
+        }
+        if section == 2 && guests.count == 0 {
+            return 0
         }
         return 34
     }
@@ -346,10 +386,10 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.section == 1 {
             let story = stories[indexPath.item]
-            if story.isLoaded() {
+            if story.state == .Loaded {
                 presentStory(indexPath)
             } else {
-                downloadStory(story)
+                downloadStory(story, force: true)
             }
             
         }

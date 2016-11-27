@@ -8,46 +8,26 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="ListHeaderView" customModule="Lit" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
+            <rect key="frame" x="0.0" y="0.0" width="600" height="40"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BHO-9V-bHy">
-                    <rect key="frame" x="10" y="8" width="582" height="34"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GMZ-v6-xax">
+                    <rect key="frame" x="12" y="9" width="443" height="21"/>
                     <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="15"/>
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
-            <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstItem="BHO-9V-bHy" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="18" id="EYz-A8-OSw"/>
-                <constraint firstItem="BHO-9V-bHy" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="LbW-Nt-rVV"/>
-                <constraint firstItem="BHO-9V-bHy" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="LgZ-LF-A0o"/>
-                <constraint firstItem="BHO-9V-bHy" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="12" id="Lvw-dO-aus"/>
-                <constraint firstAttribute="trailing" secondItem="BHO-9V-bHy" secondAttribute="trailing" constant="253" id="NOx-Q9-8aF"/>
-                <constraint firstAttribute="bottom" secondItem="BHO-9V-bHy" secondAttribute="bottom" constant="2" id="Obh-dJ-PxU"/>
-                <constraint firstItem="BHO-9V-bHy" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="ZO1-Nw-Kp9"/>
-                <constraint firstAttribute="trailing" secondItem="BHO-9V-bHy" secondAttribute="trailing" constant="8" id="eBl-Hp-8la"/>
-                <constraint firstItem="BHO-9V-bHy" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="iYA-S7-YSi"/>
-                <constraint firstAttribute="bottom" secondItem="BHO-9V-bHy" secondAttribute="bottom" constant="8" id="p4p-HQ-Q4Q"/>
-                <constraint firstAttribute="bottom" secondItem="BHO-9V-bHy" secondAttribute="bottom" constant="8" id="ur5-DO-4L8"/>
-                <constraint firstItem="BHO-9V-bHy" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="ySg-bL-hn8"/>
+                <constraint firstItem="GMZ-v6-xax" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="07Y-hE-pOa"/>
+                <constraint firstItem="GMZ-v6-xax" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="12" id="z1c-dx-WSM"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <variation key="default">
-                <mask key="constraints">
-                    <exclude reference="EYz-A8-OSw"/>
-                    <exclude reference="LbW-Nt-rVV"/>
-                    <exclude reference="NOx-Q9-8aF"/>
-                    <exclude reference="Obh-dJ-PxU"/>
-                    <exclude reference="eBl-Hp-8la"/>
-                    <exclude reference="p4p-HQ-Q4Q"/>
-                    <exclude reference="ySg-bL-hn8"/>
-                </mask>
-            </variation>
             <connections>
-                <outlet property="label" destination="BHO-9V-bHy" id="Z4t-eR-Yrj"/>
+                <outlet property="label" destination="GMZ-v6-xax" id="bbP-OV-Yt1"/>
             </connections>
+            <point key="canvasLocation" x="432" y="59"/>
         </view>
     </objects>
 </document>
