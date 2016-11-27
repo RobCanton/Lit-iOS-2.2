@@ -62,6 +62,7 @@ class LoginViewController: UIViewController, StoreSubscriber {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        createDirectory("location_images")
 
         self.navigationController?.navigationBar.titleTextAttributes =
             [NSFontAttributeName: UIFont(name: "Avenir-Book", size: 20.0)!]

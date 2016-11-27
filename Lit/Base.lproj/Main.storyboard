@@ -202,6 +202,26 @@
                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UsV-G1-Oub">
+                                            <rect key="frame" x="185" y="232" width="89" height="38"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="1.5km" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KbA-lP-w2o">
+                                                    <rect key="frame" x="8" y="8" width="73" height="22"/>
+                                                    <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="14"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstItem="KbA-lP-w2o" firstAttribute="centerY" secondItem="UsV-G1-Oub" secondAttribute="centerY" id="EEL-kg-Aog"/>
+                                                <constraint firstItem="KbA-lP-w2o" firstAttribute="centerX" secondItem="UsV-G1-Oub" secondAttribute="centerX" id="J7x-hD-AA0"/>
+                                                <constraint firstAttribute="bottom" secondItem="KbA-lP-w2o" secondAttribute="bottom" constant="4" id="NKe-Ra-bZ8"/>
+                                                <constraint firstAttribute="trailing" secondItem="KbA-lP-w2o" secondAttribute="trailing" constant="6" id="RQo-D9-IVY"/>
+                                                <constraint firstItem="KbA-lP-w2o" firstAttribute="top" secondItem="UsV-G1-Oub" secondAttribute="top" constant="4" id="TkA-gd-ymV"/>
+                                                <constraint firstItem="KbA-lP-w2o" firstAttribute="leading" secondItem="UsV-G1-Oub" secondAttribute="leading" constant="6" id="riQ-C5-TLY"/>
+                                            </constraints>
+                                        </view>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
@@ -213,6 +233,7 @@
                                     <constraint firstAttribute="centerY" secondItem="d9G-wv-cRC" secondAttribute="centerY" id="E3K-mK-xPL"/>
                                     <constraint firstAttribute="centerY" secondItem="rpN-f7-ial" secondAttribute="centerY" id="EzD-eY-jnv"/>
                                     <constraint firstAttribute="trailing" secondItem="rpN-f7-ial" secondAttribute="trailing" id="FoU-9l-5BO"/>
+                                    <constraint firstAttribute="topMargin" secondItem="UsV-G1-Oub" secondAttribute="top" id="Hz1-gT-OB0"/>
                                     <constraint firstItem="KEl-nf-S2l" firstAttribute="leading" secondItem="dMM-gk-jcA" secondAttribute="leading" id="IIg-bP-XFU"/>
                                     <constraint firstItem="d9G-wv-cRC" firstAttribute="leading" secondItem="dMM-gk-jcA" secondAttribute="leading" id="IQg-Cg-hjP"/>
                                     <constraint firstItem="CHt-sy-jju" firstAttribute="top" secondItem="d9G-wv-cRC" secondAttribute="bottom" id="LMZ-a4-v4o"/>
@@ -229,6 +250,8 @@
                                     <constraint firstItem="xcx-h7-2gu" firstAttribute="leading" secondItem="dMM-gk-jcA" secondAttribute="leading" id="izx-De-YLd"/>
                                     <constraint firstItem="alK-Pu-Lpp" firstAttribute="top" secondItem="d9G-wv-cRC" secondAttribute="bottom" constant="10" id="mJE-6n-XWg"/>
                                     <constraint firstAttribute="trailing" secondItem="d9G-wv-cRC" secondAttribute="trailing" id="mqv-7E-X7c"/>
+                                    <constraint firstAttribute="trailingMargin" secondItem="UsV-G1-Oub" secondAttribute="trailing" id="neu-mX-uGo"/>
+                                    <constraint firstAttribute="bottomMargin" secondItem="UsV-G1-Oub" secondAttribute="bottom" constant="4" id="pyC-PI-h8Q"/>
                                     <constraint firstAttribute="leadingMargin" secondItem="AgZ-vE-uQ1" secondAttribute="leading" id="w2L-X6-BdW"/>
                                     <constraint firstItem="rpN-f7-ial" firstAttribute="leading" secondItem="dMM-gk-jcA" secondAttribute="leading" id="yyx-a8-o9z"/>
                                     <constraint firstAttribute="bottomMargin" secondItem="AgZ-vE-uQ1" secondAttribute="bottom" id="zkC-Rl-csF"/>
@@ -237,10 +260,13 @@
                                 <variation key="default">
                                     <mask key="constraints">
                                         <exclude reference="ZfY-5c-iDa"/>
+                                        <exclude reference="Hz1-gT-OB0"/>
                                     </mask>
                                 </variation>
                                 <connections>
                                     <outlet property="addressLabel" destination="CHt-sy-jju" id="uIS-GG-y0N"/>
+                                    <outlet property="distanceBox" destination="UsV-G1-Oub" id="bTV-T0-tMa"/>
+                                    <outlet property="distanceLabel" destination="KbA-lP-w2o" id="T5j-n4-rMl"/>
                                     <outlet property="guestsLabel" destination="DVM-vi-jNc" id="jJ3-g0-ErT"/>
                                     <outlet property="guestsView" destination="alK-Pu-Lpp" id="Jzn-Gc-Mab"/>
                                     <outlet property="imageCoverView" destination="xcx-h7-2gu" id="Cr7-3n-VhV"/>

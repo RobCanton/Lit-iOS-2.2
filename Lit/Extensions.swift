@@ -65,6 +65,7 @@ extension UIImageView {
     func loadImageUsingFileWithURLString(location:Location, completion: (result: Bool)->()) {
         
         if let file = location.imageOnDiskURL {
+            print("FROM FILE: \(file)")
             self.image = UIImage(contentsOfFile: file.path!)
             completion(result: false)
         } else {
@@ -85,10 +86,11 @@ extension UIImageView {
                     
                     let  documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
                     if let image = UIImage(data: data!) {
-                        let fileURL = documentsURL.URLByAppendingPathComponent("\(location.getKey()).jpg")
+                        let fileURL = documentsURL.URLByAppendingPathComponent("location_images").URLByAppendingPathComponent("\(location.getKey()).jpg")
                         if let jpgData = UIImageJPEGRepresentation(image, 1.0) {
-                            jpgData.writeToURL(fileURL, atomically: false)
+                            jpgData.writeToURL(fileURL, atomically: true)
                             location.imageOnDiskURL = fileURL
+                            print("WRITTEN TO FILE: \(location.imageOnDiskURL!)")
                             
                         }
                     }

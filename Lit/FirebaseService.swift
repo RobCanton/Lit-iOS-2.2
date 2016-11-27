@@ -218,6 +218,8 @@ class FirebaseService {
         }
     }
     
+    
+    
     static func getLocationEvents(locationKey:String, completionHandler: (events:[Event])->()) {
         getLocationEventKeys(locationKey, completionHandler: { eventKeys in
             var events = [Event]()
@@ -380,6 +382,7 @@ class FirebaseService {
             exportSession.outputURL = outputURL
             exportSession.outputFileType = AVFileTypeMPEG4
             exportSession.shouldOptimizeForNetworkUse = true
+        
             exportSession.exportAsynchronouslyWithCompletionHandler { () -> Void in
                 handler(session: exportSession)
             }
@@ -448,8 +451,20 @@ class FirebaseService {
             }
         }
     }
-    
-    
+
     
 
+}
+
+func deleteFileAtPath(url:NSURL) {
+    let fileManager = NSFileManager.defaultManager()
+    
+    // Delete 'hello.swift' file
+    
+    do {
+        try fileManager.removeItemAtPath(url.absoluteString)
+    }
+    catch let error as NSError {
+        print("Ooops! Something went wrong: \(error)")
+    }
 }

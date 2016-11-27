@@ -154,21 +154,28 @@ class StoryItem: NSObject, NSCoding {
         
         if contentType == .Video {
             if videoData != nil { return completionHandler(success: true) }
-            print("Download video")
-            let videoRef = FirebaseService.storageRef.child("user_uploads/videos/\(key)")
             
-            // Download in memory with a maximum allowed size of 1MB (1 * 1024 * 1024 bytes)
-            videoRef.dataWithMaxSize(1 * 1024 * 1024) { (data, error) -> Void in
-                if (error != nil) {
-                    // Uh-oh, an error occurred!
-                    print("Error - \(error!.localizedDescription)")
-                } else {
-                    print("Downloaded video")
-                    self.videoData = data!
-                    print("\(self.videoData!.description)")
-                    return completionHandler(success: true)
+            if image != nil { return completionHandler(success: true) }
+            
+            loadImageUsingCacheWithURL(downloadUrl.absoluteString, completion: { image in
+                self.image = image
+                print("Download video")
+                let videoRef = FirebaseService.storageRef.child("user_uploads/videos/\(self.key)")
+                
+                // Download in memory with a maximum allowed size of 1MB (1 * 1024 * 1024 bytes)
+                videoRef.dataWithMaxSize(1 * 1024 * 1024) { (data, error) -> Void in
+                    if (error != nil) {
+                        // Uh-oh, an error occurred!
+                        print("Error - \(error!.localizedDescription)")
+                    } else {
+                        print("Downloaded video")
+                        self.videoData = data!
+                        return completionHandler(success: true)
+                    }
                 }
-            }
+            })
+            
+            
             
         }
         

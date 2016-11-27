@@ -57,6 +57,8 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
             tabBar.setTabBarVisible(true, animated: true)
         }
         listenToLocationUploads()
+        
+        
     }
     
     var events = [Event]()

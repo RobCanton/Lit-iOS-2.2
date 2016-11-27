@@ -76,6 +76,9 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         print("viewDidAppear")
+        let indexPath = NSIndexPath(forItem: photoIndex, inSection: 0)
+        let cell: StoryViewController = self.collectionView.cellForItemAtIndexPath(indexPath) as! StoryViewController
+        cell.setForPlay()
         setTings()
         self.navigationController?.delegate = transitionController
         
@@ -256,10 +259,9 @@ extension PresentedViewController: View2ViewTransitionPresented {
         
         let indexPath: NSIndexPath = userInfo!["destinationIndexPath"] as! NSIndexPath
         let cell: StoryViewController = self.collectionView.cellForItemAtIndexPath(indexPath) as! StoryViewController
-        //let overlay = copyView(authorOverlay!)
+        
+        cell.prepareForTransition(isPresenting)
 
-        //let content = cell.content.copyView() as! UIView
-        //content.addSubview(overlay)
         return view
 
     }

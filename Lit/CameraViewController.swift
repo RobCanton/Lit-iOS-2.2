@@ -220,6 +220,15 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
                 
                 let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
                 let outputUrl = documentsURL.URLByAppendingPathComponent("output.mp4")
+                
+                do {
+                    try NSFileManager.defaultManager().removeItemAtURL(outputUrl)
+                }
+                catch let error as NSError {
+                    if error.code != 4 && error.code != 2 {
+                        return print("Ooops! Something went wrong: \(error)")
+                    }
+                }
                 upload.videoURL = outputUrl
                 FirebaseService.compressVideo(url, outputURL: outputUrl, handler: { session in
                     print("here: \(session.status)")

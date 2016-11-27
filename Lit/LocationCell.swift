@@ -22,6 +22,10 @@ class LocationCell: UICollectionViewCell {
     
     @IBOutlet weak var postsCountLabel: UILabel!
     
+    @IBOutlet weak var distanceLabel: UILabel!
+    @IBOutlet weak var distanceBox: UIView!
+    
+    
     var leftGuest:UIImageView!
     var centerGuest:UIImageView!
     var rightGuest:UIImageView!
@@ -60,6 +64,9 @@ class LocationCell: UICollectionViewCell {
         guestsView.addSubview(leftGuest)
         guestsView.addSubview(rightGuest)
         guestsView.addSubview(centerGuest)
+        
+        distanceBox.layer.cornerRadius = 5
+        distanceBox.clipsToBounds = true
     }
     
     
@@ -79,6 +86,15 @@ class LocationCell: UICollectionViewCell {
                 self.speakerLabel.styleFriendsCountLabel(friendsCount, size: 20, you: location.getKey() == mainStore.state.userState.activeLocationKey)
                 
                 postsCountLabel.text = "\(location.getPostKeys().count)"
+                
+                if let distance = location.getDistanceFromUserLastLocation() {
+                    distanceBox.hidden = false
+                    distanceLabel.text = "\(distance)km"
+                    
+                } else {
+                    distanceBox.hidden = true
+                }
+                
                 
                 setGuests()
             }
@@ -215,6 +231,7 @@ class LocationCell: UICollectionViewCell {
         addressLabel.alpha = delta
         speakerLabel.alpha = delta
         guestsView.alpha = delta
+        distanceBox.alpha = delta
         
         imageCoverView.alpha = getImageCoverAlpha()
         
@@ -267,9 +284,9 @@ class LocationCell: UICollectionViewCell {
                     
                     let  documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
                     if let image = UIImage(data: data!) {
-                        let fileURL = documentsURL.URLByAppendingPathComponent("\(self.location!.getKey()).jpg")
+                        let fileURL = documentsURL.URLByAppendingPathComponent("location_images").URLByAppendingPathComponent("\(self.location!.getKey()).jpg")
                         if let jpgData = UIImageJPEGRepresentation(image, 1.0) {
-                            jpgData.writeToURL(fileURL, atomically: false)
+                            jpgData.writeToURL(fileURL, atomically: true)
                             self.location!.imageOnDiskURL = fileURL
                         
                         }
@@ -286,4 +303,16 @@ class LocationCell: UICollectionViewCell {
         }
     }
     
+}
+
+func createDirectory(dirName:String) {
+    let paths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
+    let documentsDirectory: AnyObject = paths[0]
+    let dataPath = documentsDirectory.stringByAppendingPathComponent(dirName)
+    
+    do {
+        try NSFileManager.defaultManager().createDirectoryAtPath(dataPath, withIntermediateDirectories: false, attributes: nil)
+    } catch let error as NSError {
+        print(error.localizedDescription);
+    }
 }

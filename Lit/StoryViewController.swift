@@ -19,6 +19,7 @@ public class StoryViewController: UICollectionViewCell {
     
     var delegate:StoryViewDelegate?
     
+    var item:StoryItem?
     var tap:UITapGestureRecognizer!
     var story:Story!
     {
@@ -33,6 +34,7 @@ public class StoryViewController: UICollectionViewCell {
     func setItem() {
         if viewIndex < story.getItems().count {
             let item = story.getItems()[viewIndex]
+            self.item = item
             if item.contentType == .Image {
                 loadImageContent(item)
             } else if item.contentType == .Video {
@@ -47,16 +49,27 @@ public class StoryViewController: UICollectionViewCell {
     
     func loadImageContent(item:StoryItem) {
         if let image = item.image {
-            videoContent.hidden = true
             content.image = image
+        }
+    }
+    
+    func setForPlay() {
+        guard let item = self.item else {return}
+        if item.contentType == .Image {
             content.hidden = false
+            videoContent.hidden = true
+            
+        } else if item.contentType == .Video {
+            content.hidden = true
+            videoContent.hidden = false
+            playVideo()
         }
     }
     
     func loadVideoContent(item:StoryItem) {
         if let videoData = item.videoData {
-            content.hidden = true
             
+            content.image = item.image!
             let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
             let filePath = documentsURL.URLByAppendingPathComponent("user_videos\(item.key).mp4")
             
@@ -66,10 +79,9 @@ public class StoryViewController: UICollectionViewCell {
             playerLayer = AVPlayerLayer(player: videoPlayer)
             
             playerLayer!.player?.play()
-            playerLayer!.player?.actionAtItemEnd = .None
-            loopVideo(playerLayer!.player!)
+            playerLayer!.player?.actionAtItemEnd = .Pause
             
-            videoContent.hidden = false
+
         }
     }
     
@@ -94,6 +106,28 @@ public class StoryViewController: UICollectionViewCell {
         self.videoContent.layer.addSublayer(playerLayer!)
         tap = UITapGestureRecognizer(target: self, action: #selector(tapped))
         
+    }
+    
+    func playVideo() {
+        videoPlayer.play()
+    }
+    
+    func prepareForTransition(isPresenting:Bool) {
+        content.hidden = false
+        videoContent.hidden = true
+        if !isPresenting {
+            print("Disappearing, update screenshot")
+            if item!.contentType == .Video {
+                print("Pause Video")
+                videoPlayer.pause()
+                let time = videoPlayer.currentTime()
+                videoPlayer.pause()
+                let asset = videoPlayer.currentItem!.asset
+                if let image = generateVideoStill(asset, time: time) {
+                    content.image = image
+                }
+            }
+        }
     }
     
     func tapped(gesture:UITapGestureRecognizer) {
