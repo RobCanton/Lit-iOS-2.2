@@ -57,6 +57,7 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
+        clearDirectory("temp")
     }
     
     override func viewDidDisappear(animated: Bool) {

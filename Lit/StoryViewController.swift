@@ -24,10 +24,28 @@ public class StoryViewController: UICollectionViewCell {
     var story:Story!
     {
         didSet {
+
             if story.getItems().count == 0 { return }
             self.addGestureRecognizer(tap)
             viewIndex = 0
             setItem()
+        }
+    }
+    
+    func cleanUpPreviousItem() {
+        let prevIndex = viewIndex - 1
+        if prevIndex >= 0 {
+            let prevItem = story.getItems()[prevIndex]
+            let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
+            let filePath = documentsURL.URLByAppendingPathComponent("temp/\(prevItem.key).mp4")
+            do {
+                try NSFileManager.defaultManager().removeItemAtURL(filePath)
+                print("Video deleted")
+                
+            }
+            catch let error as NSError {
+                return print("Error \(error)")
+            }
         }
     }
     
@@ -45,6 +63,7 @@ public class StoryViewController: UICollectionViewCell {
             self.removeGestureRecognizer(tap)
             delegate?.storyComplete()
         }
+        
     }
     
     func loadImageContent(item:StoryItem) {
@@ -69,8 +88,13 @@ public class StoryViewController: UICollectionViewCell {
     func loadVideoContent(item:StoryItem) {
         if let videoData = item.videoData {
             
+            let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
+            let filePath = documentsURL.URLByAppendingPathComponent("temp/\(self.item!.key).mp4")
+            
+            try! videoData.writeToURL(filePath, options: NSDataWritingOptions.DataWritingAtomic)
+            
             content.image = item.image!
-            let asset = AVAsset(URL: item.videoFilePath!)
+            let asset = AVAsset(URL: filePath)
             asset.loadValuesAsynchronouslyForKeys(["duration"], completionHandler: {
                 dispatch_async(dispatch_get_main_queue(), {
                     let item = AVPlayerItem(asset: asset)
@@ -102,6 +126,8 @@ public class StoryViewController: UICollectionViewCell {
         playerLayer!.frame = videoContent.frame
         self.videoContent.layer.addSublayer(playerLayer!)
         tap = UITapGestureRecognizer(target: self, action: #selector(tapped))
+        
+        
         
     }
     

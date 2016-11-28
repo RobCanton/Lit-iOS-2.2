@@ -66,7 +66,6 @@
 		B0254F741DAFFC130082D898 /* Conversation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0254F731DAFFC130082D898 /* Conversation.swift */; };
 		B0254F761DAFFCDC0082D898 /* ConversationsReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0254F751DAFFCDC0082D898 /* ConversationsReducer.swift */; };
 		B0254F781DB01FAE0082D898 /* JSQMessagesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0254F771DB01FAE0082D898 /* JSQMessagesService.swift */; };
-		B0254F7A1DB07F080082D898 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0254F791DB07F080082D898 /* Helper.swift */; };
 		B026A84A1DAD76FB00DD2CCD /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B026A8481DAD76FB00DD2CCD /* UserProfileViewController.swift */; };
 		B02B37D91DB814C400174DE7 /* LeftTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02B37D81DB814C400174DE7 /* LeftTransition.swift */; };
 		B02D4C381DC7B125004E2673 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02D4C371DC7B125004E2673 /* SearchViewController.swift */; };
@@ -85,6 +84,7 @@
 		B03504C11DD0661F00C9C83F /* LocationFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03504C01DD0661F00C9C83F /* LocationFooterView.swift */; };
 		B03504C31DD0663100C9C83F /* LocationFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B03504C21DD0663100C9C83F /* LocationFooterView.xib */; };
 		B0351F6B1DE8BC27000A4BF5 /* ListHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0351F6A1DE8BC27000A4BF5 /* ListHeaderView.xib */; };
+		B0351F6D1DECA9B1000A4BF5 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0351F6C1DECA9B0000A4BF5 /* Utilities.swift */; };
 		B03DED101DAED40D0062357A /* UserProfileControlBarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B03DED0F1DAED40D0062357A /* UserProfileControlBarView.xib */; };
 		B03DED121DAED45A0062357A /* UserProfileControlBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03DED111DAED45A0062357A /* UserProfileControlBar.swift */; };
 		B05ABCF91D41178D00364322 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05ABCF81D41178D00364322 /* AppState.swift */; };
@@ -236,7 +236,6 @@
 		B0254F731DAFFC130082D898 /* Conversation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Conversation.swift; sourceTree = "<group>"; };
 		B0254F751DAFFCDC0082D898 /* ConversationsReducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationsReducer.swift; sourceTree = "<group>"; };
 		B0254F771DB01FAE0082D898 /* JSQMessagesService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSQMessagesService.swift; sourceTree = "<group>"; };
-		B0254F791DB07F080082D898 /* Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		B026A8481DAD76FB00DD2CCD /* UserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
 		B02B37D81DB814C400174DE7 /* LeftTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeftTransition.swift; sourceTree = "<group>"; };
 		B02D4C371DC7B125004E2673 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
@@ -255,6 +254,7 @@
 		B03504C01DD0661F00C9C83F /* LocationFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationFooterView.swift; sourceTree = "<group>"; };
 		B03504C21DD0663100C9C83F /* LocationFooterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LocationFooterView.xib; sourceTree = "<group>"; };
 		B0351F6A1DE8BC27000A4BF5 /* ListHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListHeaderView.xib; sourceTree = "<group>"; };
+		B0351F6C1DECA9B0000A4BF5 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		B03DED0F1DAED40D0062357A /* UserProfileControlBarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserProfileControlBarView.xib; sourceTree = "<group>"; };
 		B03DED111DAED45A0062357A /* UserProfileControlBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileControlBar.swift; sourceTree = "<group>"; };
 		B05ABCF81D41178D00364322 /* AppState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
@@ -400,7 +400,7 @@
 				B09D5FCA1DA57C80004A188E /* ARNImageTransitionNavigationController.swift */,
 				B09D5FCB1DA57C80004A188E /* ARNImageZoomTransition.swift */,
 				B09D5FCC1DA57C80004A188E /* ARNModalImageTransitionViewController.swift */,
-				B0254F791DB07F080082D898 /* Helper.swift */,
+				B0351F6C1DECA9B0000A4BF5 /* Utilities.swift */,
 				B0321EC31DB5337900AD4C53 /* DismissAnimator.swift */,
 				B02B37D81DB814C400174DE7 /* LeftTransition.swift */,
 			);
@@ -967,6 +967,7 @@
 				B06D54C91D9ECB6D00F6A4A7 /* YoshikoTextField.swift in Sources */,
 				B02D4C381DC7B125004E2673 /* SearchViewController.swift in Sources */,
 				76B361CD1D64E85F0024CDC7 /* PopupViewController.swift in Sources */,
+				B0351F6D1DECA9B1000A4BF5 /* Utilities.swift in Sources */,
 				B003D4951DE57B2C0026B2D8 /* KDCircularProgress.swift in Sources */,
 				B0FF11451D3EB32100D709CE /* AppDelegate.swift in Sources */,
 				B0E8E3531DE265D50077D1BC /* Story.swift in Sources */,
@@ -991,7 +992,6 @@
 				768FB9781D5BB55000251035 /* User.swift in Sources */,
 				B0E591591DD126C900C032D6 /* LogoutView.swift in Sources */,
 				B05ABCFD1D41185200364322 /* Reducer.swift in Sources */,
-				B0254F7A1DB07F080082D898 /* Helper.swift in Sources */,
 				B02D4C3A1DC85A0F004E2673 /* Event.swift in Sources */,
 				B0E8E3161DD989F30077D1BC /* ProfilePictureMessageView.swift in Sources */,
 				767729841D5116930052CA17 /* CWStatusBarNotificationUtils.swift in Sources */,

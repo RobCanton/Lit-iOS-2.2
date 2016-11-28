@@ -63,7 +63,7 @@ class LoginViewController: UIViewController, StoreSubscriber {
         super.viewDidLoad()
         
         createDirectory("location_images")
-
+        createDirectory("temp")
         self.navigationController?.navigationBar.titleTextAttributes =
             [NSFontAttributeName: UIFont(name: "Avenir-Book", size: 20.0)!]
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: .Default)

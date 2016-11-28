@@ -226,7 +226,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
                 }
                 catch let error as NSError {
                     if error.code != 4 && error.code != 2 {
-                        return print("Ooops! Something went wrong: \(error)")
+                        return print("Error \(error)")
                     }
                 }
                 upload.videoURL = outputUrl
@@ -252,48 +252,6 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     
     @IBAction func sendButtonTapped(sender: UIButton) {
         uploadWrapper.show(config: config!, view: uploadSelector!)
-        
-//        if cameraState == .PhotoTaken {
-//            if let image = imageView.image {
-        
-//                self.imageView.hidden = true
-//                print("Sending dat image")
-//                if let uploadTask = FirebaseService.sendImage(image)
-//                {
-//                    self.delegate?.close(uploadTask, outputUrl: nil)
-//                }
-//            }
-//        }
-//        else if cameraState == .VideoTaken {
-//            playerLayer?.player?.seekToTime(CMTimeMake(0, 1))
-//            playerLayer?.player?.pause()
-//            
-//            playerLayer?.removeFromSuperlayer()
-//            videoLayer.hidden = true
-//            
-//            print("Send tapped video taken")
-//            
-//            if let url = videoUrl {
-//                
-//                let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
-//                let outputUrl = documentsURL.URLByAppendingPathComponent("output.mp4")
-//                
-//                FirebaseService.compressVideo(url, outputURL: outputUrl, handler: { session in
-//                    print("here: \(session.status)")
-//                    /*
-//                    T0D0 - HANDLE COMPRESSION ERRORS
-//                    */
-//                    dispatch_async(dispatch_get_main_queue(), {
-//                        if let uploadTask = FirebaseService.uploadVideo(outputUrl) {
-//                            self.videoUrl = nil
-//                            self.delegate?.close(uploadTask, outputUrl: outputUrl)
-//                        }
-//                    })
-//                })
-//            }
-//        }
-        
-        //cameraState = .Running
     }
 
     var recordButton: RecordButton!
