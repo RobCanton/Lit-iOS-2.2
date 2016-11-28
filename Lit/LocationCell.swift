@@ -87,12 +87,20 @@ class LocationCell: UICollectionViewCell {
                 
                 postsCountLabel.text = "\(location.getPostKeys().count)"
                 
-                if let distance = location.getDistanceFromUserLastLocation() {
-                    distanceBox.hidden = false
-                    distanceLabel.text = "\(distance)km"
-                    
+                
+                
+                if location.getKey() == mainStore.state.userState.activeLocationKey {
+                    distanceLabel.text = "You are here"
+                    distanceBox.backgroundColor = accentColor
                 } else {
-                    distanceBox.hidden = true
+                    distanceBox.backgroundColor = UIColor.darkGrayColor()
+                    if let distance = location.getDistanceFromUserLastLocation() {
+                        distanceBox.hidden = false
+                        distanceLabel.text = getDistanceString(distance)
+                        
+                    } else {
+                        distanceBox.hidden = true
+                    }
                 }
                 
                 

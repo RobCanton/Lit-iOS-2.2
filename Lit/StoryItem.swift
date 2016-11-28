@@ -170,6 +170,12 @@ class StoryItem: NSObject, NSCoding {
                     } else {
                         print("Downloaded video")
                         self.videoData = data!
+                        
+                        let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
+                        let filePath = documentsURL.URLByAppendingPathComponent("user_videos\(self.key).mp4")
+                        
+                        try! data!.writeToURL(filePath, options: NSDataWritingOptions.DataWritingAtomic)
+                        self.videoFilePath = filePath
                         return completionHandler(success: true)
                     }
                 }

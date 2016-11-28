@@ -70,18 +70,14 @@ public class StoryViewController: UICollectionViewCell {
         if let videoData = item.videoData {
             
             content.image = item.image!
-            let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
-            let filePath = documentsURL.URLByAppendingPathComponent("user_videos\(item.key).mp4")
-            
-            try! videoData.writeToURL(filePath, options: NSDataWritingOptions.DataWritingAtomic)
-            let item = AVPlayerItem(URL: filePath)
-            videoPlayer.replaceCurrentItemWithPlayerItem(item)
-            playerLayer = AVPlayerLayer(player: videoPlayer)
-            
-            playerLayer!.player?.play()
-            playerLayer!.player?.actionAtItemEnd = .Pause
-            
-
+            let asset = AVAsset(URL: item.videoFilePath!)
+            asset.loadValuesAsynchronouslyForKeys(["duration"], completionHandler: {
+                dispatch_async(dispatch_get_main_queue(), {
+                    let item = AVPlayerItem(asset: asset)
+                    self.videoPlayer.replaceCurrentItemWithPlayerItem(item)
+                })
+            })
+           
         }
     }
     
@@ -101,6 +97,7 @@ public class StoryViewController: UICollectionViewCell {
         self.contentView.addSubview(self.videoContent)
         videoPlayer = AVPlayer()
         playerLayer = AVPlayerLayer(player: videoPlayer)
+        playerLayer!.player?.actionAtItemEnd = .Pause
         
         playerLayer!.frame = videoContent.frame
         self.videoContent.layer.addSublayer(playerLayer!)
@@ -133,6 +130,7 @@ public class StoryViewController: UICollectionViewCell {
     func tapped(gesture:UITapGestureRecognizer) {
         viewIndex += 1
         setItem()
+        setForPlay()
         print("Show next item")
     }
     

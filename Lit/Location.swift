@@ -137,7 +137,7 @@ class Location {
     func getDistanceFromUserLastLocation() -> Double? {
         if let lastLocation = GPSService.sharedInstance.lastLocation {
             let distance = coordinates.distanceFromLocation(lastLocation)
-            return distance / 1000
+            return distance
         }
         return nil
 

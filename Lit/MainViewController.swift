@@ -60,7 +60,11 @@ class MainViewController: UICollectionViewController, StoreSubscriber, CLLocatio
     
     func newState(state: AppState) {
         locations = state.locations
-        locations.sortInPlace({ $0.getVisitorsCount() > $1.getVisitorsCount() })
+        locations.sortInPlace({
+            
+            $0.getVisitorsCount() > $1.getVisitorsCount()
+            
+        })
         
         for i in 0 ..< locations.count {
             let location = locations[i]
@@ -132,8 +136,6 @@ class MainViewController: UICollectionViewController, StoreSubscriber, CLLocatio
         self.navigationController?.navigationBar.translucent = true
         navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Plain, target: nil, action: nil)
         
-        //locationManager.startUpdatingLocation()
-        
         notification.notificationLabelBackgroundColor = UIColor.blackColor()
         notification.notificationAnimationInStyle = .Top
         notification.notificationAnimationOutStyle = .Top
@@ -153,8 +155,6 @@ class MainViewController: UICollectionViewController, StoreSubscriber, CLLocatio
             self.searchBar!.delegate             = self;
             self.searchBar!.placeholder          = "search here";
             self.searchBar!.setTextColor(UIColor.whiteColor())
-            
-            //self.addObservers()
         }
         
         if !self.searchBar!.isDescendantOfView(self.view){
