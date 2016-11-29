@@ -127,58 +127,40 @@ class StoryItem: NSObject, NSCoding {
     }
     
     func needsDownload() -> Bool{
-        if contentType == .Image && image != nil {
-            return false
+        if contentType == .Image {
+            if let cachedImage = imageCache.objectForKey(downloadUrl) as? UIImage {
+                image = cachedImage
+                return false
+            }
         }
-        if let cachedImage = imageCache.objectForKey(downloadUrl) as? UIImage {
-            image = cachedImage
-            return false
-        }
-        if contentType == .Video && videoData != nil {
-            return false
-        }
+        
+        if contentType == .Video {
+            if let _ = loadVideoFromCache(key) {
+                return false
+            }
+        }  
         return true
     }
     
     func download(completionHandler:(success:Bool)->()) {
-        
-        if contentType == .Image {
-            if image != nil { return completionHandler(success: true) }
             
-            loadImageUsingCacheWithURL(downloadUrl.absoluteString, completion: { image in
-                self.image = image
-                return completionHandler(success: true)
-            })
-        }
-        
-        
-        if contentType == .Video {
-            if videoData != nil { return completionHandler(success: true) }
+        loadImageUsingCacheWithURL(downloadUrl.absoluteString, completion: { image in
+            self.image = image
+            if self.contentType == .Image { return completionHandler(success: true) }
             
-            if image != nil { return completionHandler(success: true) }
-            
-            loadImageUsingCacheWithURL(downloadUrl.absoluteString, completion: { image in
-                self.image = image
-                print("Download video")
-                let videoRef = FirebaseService.storageRef.child("user_uploads/videos/\(self.key)")
+            if self.contentType == .Video {
                 
-                // Download in memory with a maximum allowed size of 1MB (1 * 1024 * 1024 bytes)
-                videoRef.dataWithMaxSize(1 * 1024 * 1024) { (data, error) -> Void in
-                    if (error != nil) {
-                        // Uh-oh, an error occurred!
-                        print("Error - \(error!.localizedDescription)")
-                    } else {
-                        print("Downloaded video")
-                        self.videoData = data!
+                if let _ = loadVideoFromCache(self.key) {
+                    print("Retrieved video from cache")
+                    return completionHandler(success: true)
+                } else {
+                    downloadVideoWithKey(self.key, completion: { data in
+                        saveVideoInCache(self.key, data: data)
+                        print("Downloaded video and saved to cache")
                         return completionHandler(success: true)
-                    }
+                    })
                 }
-            })
-            
-            
-            
-        }
-        
-        
+            }
+        })
     }
 }

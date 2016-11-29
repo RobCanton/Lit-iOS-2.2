@@ -12,7 +12,7 @@ import ReSwift
 
 var dataSaveMode = false
 
-class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, LocationHeaderProtocol, UINavigationControllerDelegate {
+class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, LocationHeaderProtocol, UINavigationControllerDelegate, NSCacheDelegate {
     
     
     
@@ -39,8 +39,7 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         mainStore.subscribe(self)
         //navigationController?.hidesBarsOnSwipe = true
         print("LocationViewController Subscribed")
-        
-        
+
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -57,6 +56,8 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
             tabBar.setTabBarVisible(true, animated: true)
         }
         listenToLocationUploads()
+        
+        reloadStoryCells()
         
         
     }
@@ -127,7 +128,7 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         if let i = self.getStoryIndex(story) {
             let indexPath = [NSIndexPath(forRow: i, inSection: 1)]
             if story.needsDownload() {
-                if story.getItems().count <= 3 || force {
+                if force {
                     story.downloadStory({ complete in
                         self.tableView?.reloadRowsAtIndexPaths(indexPath, withRowAnimation: .Automatic)
                     })
@@ -139,13 +140,32 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         }
     }
     
+    func reloadStoryCells() {
+        
+        var indexPaths = [NSIndexPath]()
+        for i in 0..<stories.count {
+            indexPaths.append(NSIndexPath(forRow: i, inSection: 1))
+        }
+        
+         self.tableView?.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
+    }
+    
     override func viewDidLayoutSubviews() {
         //headerView.setGuests()
     }
     
+    func cache(cache: NSCache, willEvictObject obj: AnyObject) {
+        
+        if cache === videoCache {
+            print("Evicted video from cache - reload table")
+            // downloadAllStories()
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        videoCache.countLimit = 25
+        videoCache.delegate = self
         self.navigationItem.title = " "
         self.automaticallyAdjustsScrollViewInsets = false
         navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Plain, target: nil, action: nil)
@@ -158,7 +178,6 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         let slack:CGFloat = 1.0
         let eventsHeight:CGFloat = 0
         let topInset:CGFloat = navHeight + detailsView.frame.height + eventsHeight + slack
-        
         
         print("BEFORE : \(detailsView.descriptionLabel.frame.height)")
         let prevHeight = detailsView.descriptionLabel.frame.height
@@ -225,7 +244,6 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         titleLabel.applyShadow(4, opacity: 0.8, height: 4, shouldRasterize: false)
         detailsView.setLocation(location)
         
-        
         FirebaseService.getLocationEvents(location.getKey(), completionHandler: { events in
             if events.count > 0 {
                 self.events = events
@@ -235,7 +253,6 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         
         tableView!.tableFooterView = UIView(frame: CGRectMake(0,0,tableView!.frame.width, 90))
         guests = location.getVisitors()
-
     }
     
     var titleLabel:UILabel!

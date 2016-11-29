@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import AVFoundation
+import Firebase
 
 // convert an NSDate object to a timestamp string
 
@@ -121,6 +122,34 @@ func loadImageUsingCacheWithURL(_url:String, completion: (image:UIImage)->()) {
         return completion(image: cachedImage)
     } else {
         downloadImageWithURLString(_url, completion: completion)
+    }
+}
+
+let videoCache = NSCache()
+
+
+func loadVideoFromCache(key:String) -> NSData? {
+    if let cachedData = videoCache.objectForKey(key) as? NSData {
+        return cachedData
+    }
+    return nil
+}
+
+func saveVideoInCache(key:String, data:NSData) {
+    videoCache.setObject(data, forKey: key)
+    print("ADDED \(key) to video cache")
+}
+
+func downloadVideoWithKey(key:String, completion: (data:NSData)->()) {
+    let videoRef = FirebaseService.storageRef.child("user_uploads/videos/\(key)")
+    
+    // Download in memory with a maximum allowed size of 2MB (2 * 1024 * 1024 bytes)
+    videoRef.dataWithMaxSize(2 * 1024 * 1024) { (data, error) -> Void in
+        if (error != nil) {
+            print("Error - \(error!.localizedDescription)")
+        } else {
+            return completion(data: data!)
+        }
     }
 }
 

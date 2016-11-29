@@ -80,7 +80,7 @@ class PostAuthorView: UIView {
         progressCircle.fillColor = UIColor.clearColor().CGColor;
         progressCircle.lineWidth = 2.0;
         progressCircle.strokeStart = 0.0;
-        progressCircle.strokeEnd = 0.9;
+        progressCircle.strokeEnd = 0.0;
         
         
         circle.layer.addSublayer(progressCircle);

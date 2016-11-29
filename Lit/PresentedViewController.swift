@@ -11,13 +11,14 @@ import UIKit
 
 class PresentedViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIGestureRecognizerDelegate, UINavigationControllerDelegate, StoryViewDelegate {
     
+    
     var tabBarRef:PopUpTabBarController!
     var authorOverlay: PostAuthorView?
     var stories = [Story]()
     var photoIndex:Int!
     {
         didSet {
-            
+
             if let item = stories[photoIndex].getMostRecentItem() {
                 label!.text = item.getKey()
                 authorOverlay?.setPostMetadata(item)
@@ -36,24 +37,13 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        print("viewDidLayoutSubviews")
-        setTings()
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        print("viewWillAppear")
         tabBarRef.setTabBarVisible(false, animated: true)
-        setTings()
     }
-    func setTings() {
-        
-//        var rect = self.view.frame
-//        print("WE SET TINGS \(rect.origin.y)")
-//        rect.origin.y = 0
-//        self.view.frame = rect
-    
-    }
+
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
@@ -66,21 +56,13 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
         
     }
     
-
     var collectionView:UICollectionView!
-    
-    override func viewWillLayoutSubviews() {
-        print("viewWillLayoutSubviews")
-        setTings()
-    }
-    
+
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        print("viewDidAppear")
         let indexPath = NSIndexPath(forItem: photoIndex, inSection: 0)
         let cell: StoryViewController = self.collectionView.cellForItemAtIndexPath(indexPath) as! StoryViewController
         cell.setForPlay()
-        setTings()
         self.navigationController?.delegate = transitionController
         
         
@@ -96,8 +78,6 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("viewDidLoad")
-        setTings()
         
         self.edgesForExtendedLayout = UIRectEdge.None
         self.extendedLayoutIncludesOpaqueBars = true
@@ -178,7 +158,6 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
     }
     
     func storyComplete() {
-        print("Story complete")
         let indexPath: NSIndexPath = self.collectionView.indexPathsForVisibleItems().first!
         self.transitionController.userInfo = ["destinationIndexPath": indexPath, "initialIndexPath": indexPath]
         
@@ -278,7 +257,6 @@ extension PresentedViewController: View2ViewTransitionPresented {
             self.collectionView.contentOffset = contentOffset
             self.collectionView.reloadData()
             self.collectionView.layoutIfNeeded()
-            
         }
     }
 }
