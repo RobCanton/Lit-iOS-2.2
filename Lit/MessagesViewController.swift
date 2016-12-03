@@ -25,47 +25,16 @@ class MessagesViewController: UITableViewController, StoreSubscriber {
         mainStore.unsubscribe(self)
     }
     
-    func newState(state: AppState) {
-        
+    func getConversations() {
         conversations = getNonEmptyConversations()
-
+        conversations.sortInPlace({ $0 > $1 })
         tableView.reloadData()
-
     }
     
-    func openConversation(recipient_uid:String) {
-        let uid = mainStore.state.userState.uid
-        mainStore.dispatch(ConversationOpened())
+    func newState(state: AppState) {
         
-        // if new conversation
-        
-        if let conversation = checkForExistingConversation(recipient_uid) {
-            presentConversation(conversation)
-        } else {
-            
-        }
-        
-//        if true {
-//            let ref = FirebaseService.ref.child("conversations").childByAutoId()
-//            let conversationKey = ref.key
-//            
-//            let conversationData = [
-//                "user_A": uid,
-//                "user_B": recipient_uid
-//                ]
-//            ref.setValue(conversationData, withCompletionBlock: { error, ref in
-//                let currentUserRef = FirebaseService.ref.child("users_public/\(uid)/conversations")
-//                currentUserRef.child(recipient_uid).setValue(conversationKey)
-//                
-//                let recipientUserRef = FirebaseService.ref.child("users_public/\(recipient_uid)/conversations")
-//                recipientUserRef.child(uid).setValue(conversationKey)
-//            })
-//            
-//        }
-////        conversations.append(recipient_uid)
-////        tableView.reloadData()
-        
-        
+        getConversations()
+
     }
     
     func checkForExistingConversation(partner_uid:String) -> Conversation? {
@@ -89,8 +58,7 @@ class MessagesViewController: UITableViewController, StoreSubscriber {
         
         tableView.tableFooterView = UIView()
         
-        conversations = getNonEmptyConversations()
-        tableView.reloadData()
+        getConversations()
     }
     
     

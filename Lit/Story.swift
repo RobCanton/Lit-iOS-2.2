@@ -100,6 +100,14 @@ class Story: NSObject, Comparable {
             })
         }
     }
+    
+    func getTotalLength() -> Double {
+        var length:Double = 0.0
+        for item in items {
+            length += item.getLength()
+        }
+        return length
+    }
 }
 
 func < (lhs: Story, rhs: Story) -> Bool {

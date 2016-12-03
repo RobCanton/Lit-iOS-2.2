@@ -138,6 +138,16 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
         return item
     }()
     
+    lazy var moreItem: UIBarButtonItem = {
+        let item = UIBarButtonItem(image: UIImage(named:"more"), style: .Plain, target: self, action: #selector(moreItemTapped(_:)))
+        item.tintColor = UIColor.whiteColor()
+        return item
+    }()
+    
+    func moreItemTapped(sender:UIBarButtonItem) {
+        
+    }
+    
     // MARK: CollectionView Data Source
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -194,12 +204,15 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
         let xOffset = scrollView.contentOffset.x
         let ratio = xOffset / collectionView.frame.width
         let iRatio = ratio - CGFloat(photoIndex)
+        
         if iRatio < -0.5 {
             if photoIndex > 0 {
+                stopPreviousItem()
                 photoIndex = photoIndex - 1
             }
         } else if iRatio > 0.5 {
             if photoIndex < stories.count - 1 {
+                stopPreviousItem()
                 photoIndex = photoIndex + 1
             }
         }
@@ -207,6 +220,12 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
         let absRatio = abs(iRatio)
         let r = max(0, 1 - absRatio * 2)
         authorOverlay?.alpha = r
+    }
+    
+    func stopPreviousItem() {
+        let indexPath = NSIndexPath(forItem: photoIndex, inSection: 0)
+        let cell: StoryViewController = self.collectionView.cellForItemAtIndexPath(indexPath) as! StoryViewController
+        cell.pauseVideo()
     }
     
 }

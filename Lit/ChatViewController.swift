@@ -231,7 +231,7 @@ extension ChatViewController {
             
                 self.messages.append(message)
                 self.reloadMessagesView()
-                self.finishSendingMessageAnimated(true)
+                self.finishReceivingMessageAnimated(true)
         })
     }
     

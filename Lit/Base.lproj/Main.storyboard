@@ -1275,6 +1275,7 @@
         <!--Dummy View Controller-->
         <scene sceneID="HKm-Fp-bFd">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6eb-rG-csF" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController storyboardIdentifier="DummyViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="DAc-2n-Ogm" customClass="DummyViewController" customModule="Lit" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="oJD-6c-PVL"/>
@@ -1289,9 +1290,8 @@
                         <inset key="imageInsets" minX="0.0" minY="6" maxX="0.0" maxY="-6"/>
                     </tabBarItem>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="6eb-rG-csF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1460" y="995"/>
+            <point key="canvasLocation" x="1320" y="1159"/>
         </scene>
         <!--Image Transition Navigation Controller-->
         <scene sceneID="s7s-Lb-lDk">

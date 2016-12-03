@@ -14,7 +14,7 @@ protocol GetUserProtocol {
     func userLoaded(user:User)
 }
 
-class Conversation {
+class Conversation: NSObject, Comparable {
     
     private var key:String
     private var partner_uid:String
@@ -33,6 +33,9 @@ class Conversation {
     {
         self.key         = key
         self.partner_uid = partner_uid
+        
+        super.init()
+        
         retrieveUser()
         listenToConversation()
     }
@@ -84,5 +87,16 @@ class Conversation {
     func stopListening() {
         conversationRef?.removeAllObservers()
     }
+}
 
+func < (lhs: Conversation, rhs: Conversation) -> Bool {
+    let lhs_date = lhs.lastMessage!.date
+    let rhs_date = rhs.lastMessage!.date
+    return lhs_date.compare(rhs_date) == .OrderedAscending
+}
+
+func == (lhs: Conversation, rhs: Conversation) -> Bool {
+    let lhs_date = lhs.lastMessage!.date
+    let rhs_date = rhs.lastMessage!.date
+    return lhs_date.compare(rhs_date) == .OrderedSame
 }

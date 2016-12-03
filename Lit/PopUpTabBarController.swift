@@ -13,7 +13,7 @@ import Firebase
 import CoreLocation
 import SwiftMessages
 
-class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarControllerDelegate, GPSServiceDelegate {
+class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarControllerDelegate, GPSServiceDelegate, PopUpProtocolDelegate {
     
     var activeLocation:Location?
     
@@ -77,6 +77,8 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
     
     var messageView:ActiveLocationView?
     var bannerWrapper = SwiftMessages()
+    
+    
     func activateLocation(location:Location) {
         activeLocation = location
         print("ACTIVE LOCATION: \(activeLocation!.getKey())")
@@ -99,8 +101,8 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
         array[2].alpha = 0.0
         
         SwiftMessages.hide()
-        
     }
+    
     
     func messageNotifications() {
         var count = 0
@@ -134,8 +136,6 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        
         delegate = self
         tabBarController?.delegate = self
         tabBar.backgroundImage = UIImage()
@@ -147,19 +147,16 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
         let itemWidth = tabBar.frame.width / CGFloat(tabBar.items!.count)
         for itemIndex in 0...tabBar.items!.count
         {
-            let bgView = UIView(frame: CGRectMake(itemWidth * CGFloat(itemIndex), 0, itemWidth, tabBarHeight))
-            if itemIndex == 2
-            {
-                bgView.backgroundColor = accentColor
-                //bgView.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.15)
-                bgView.alpha = 0
-            }
-            else
-            {
-                bgView.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.1)
-                bgView.alpha = 0
-            }
             
+            let bgView = UIView(frame: CGRectMake(itemWidth * CGFloat(itemIndex), 0, itemWidth, tabBarHeight))
+            
+            if itemIndex == 2 {
+                bgView.backgroundColor = UIColor(red: 0, green: 128/255, blue: 1, alpha: 0.55)
+            } else {
+                bgView.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.1)
+            }
+            bgView.alpha = 0
+
             tabBar.insertSubview(bgView, atIndex: 0)
             array.append(bgView)
         }
@@ -189,34 +186,62 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
         highlightItem(itemTag)
     }
     
+    var prevSelection = 0
     internal func highlightItem(itemTag:Int)
     {
+        let prevItem = array[selectedItem]
+        selectedItem = itemTag
 
-        if itemTag == 2
-        {
-            
-            self.performSegueWithIdentifier("toCamera", sender: self)
-            
-        } else {
-            let prevItem = array[selectedItem]
-            selectedItem = itemTag
-            UIView.animateWithDuration(0.15, animations: {
-                prevItem.alpha = 0
-                self.array[itemTag].alpha = 1.0
-            })
-        }
+        UIView.animateWithDuration(0.15, animations: {
+            prevItem.alpha = 0
+            self.array[itemTag].alpha = 1.0
+            }, completion:  { complete in
+                if itemTag == 2 {
+                    self.performSegueWithIdentifier("toCamera", sender: self)
+                } else {
+                    self.prevSelection = itemTag
+                }
+        })
+    }
+    
+    func close(uploadTask: FIRStorageUploadTask, outputUrl: NSURL?) {
+    }
+   
+    func addProgressView() {
+        var status = try! SwiftMessages.viewFromNib() as? ActiveLocationView
+        status!.configureDropShadow()
+
+        var config = SwiftMessages.Config()
+        config.presentationContext = .Window(windowLevel: UIWindowLevelAlert)
+        config.duration = .Forever
+        config.presentationStyle = .Top
+        config.dimMode = .None
         
+        let wrapper = SwiftMessages()
+        wrapper.show(config: config, view: status!)
+    }
+    
+    func upload(uploadTask: FIRStorageUploadTask) {
+        addProgressView()
+        uploadTask.observeStatus(.Progress, handler: { snapshot in
+            print("PROGRESS: \(snapshot.progress)")
+        })
+    }
+    
+    func returnToPreviousSelection() {
+        self.selectedIndex = prevSelection
+        highlightItem(prevSelection)
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let destinationViewController = segue.destinationViewController as? CameraViewController {
             destinationViewController.transitioningDelegate = self
             destinationViewController.interactor = interactor
+            destinationViewController.tabBarDelegate = self
         }
     }
     
     func tabBarController(tabBarController: UITabBarController, shouldSelectViewController viewController: UIViewController) -> Bool {
-        print(selectedIndex)
         if viewController.isKindOfClass(DummyViewController) {
             return false
         }
@@ -246,6 +271,7 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
     
     
     let interactor = Interactor()
+    
     
     
     

@@ -39,13 +39,16 @@ public class StoryViewController: UICollectionViewCell {
     
     var activityView:NVActivityIndicatorView!
     
+    
+    var currentProgress:Double = 0.0
+    var timer:NSTimer?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.contentView.backgroundColor = UIColor(red: 0, green: 0, blue: 1.0, alpha: 0.3)
         self.contentView.addSubview(self.content)
         self.contentView.addSubview(self.videoContent)
         self.contentView.addSubview(self.fadeCover)
-        fadeCover.hidden = true
         
         self.fadeCover.alpha = 0.0
         
@@ -57,7 +60,7 @@ public class StoryViewController: UICollectionViewCell {
         self.videoContent.layer.addSublayer(playerLayer!)
         tap = UITapGestureRecognizer(target: self, action: #selector(tapped))
         
-        activityView = NVActivityIndicatorView(frame: CGRectMake(0,0,30,30))
+        activityView = NVActivityIndicatorView(frame: CGRectMake(0,0,50,50), type: .BallScaleMultiple)
         let centerX = (UIScreen.mainScreen().bounds.size.width) / 2
         let centerY = (UIScreen.mainScreen().bounds.size.height) / 2
         activityView.center = CGPointMake(centerX, centerY)
@@ -94,6 +97,7 @@ public class StoryViewController: UICollectionViewCell {
     }
     
     func setupItem() {
+        self.pauseVideo()
         if viewIndex < story.getItems().count {
             let item = story.getItems()[viewIndex]
             self.item = item
@@ -130,9 +134,12 @@ public class StoryViewController: UICollectionViewCell {
                 content.hidden = true
                 videoContent.hidden = false
                 playVideo()
-                
             }
         }
+        timer?.invalidate()
+        timer = nil
+        timer = NSTimer.scheduledTimerWithTimeInterval(item.getLength(), target: self, selector: #selector(nextItem), userInfo: nil, repeats: false)
+        
     }
     
     func loadVideoContent(item:StoryItem, completion:()->()) {
@@ -143,7 +150,6 @@ public class StoryViewController: UICollectionViewCell {
             content.loadImageUsingCacheWithURLString(item.downloadUrl.absoluteString, completion: { result in })
         }
         if let videoData = loadVideoFromCache(item.key) {
-            print("VIDEO PULLED FROM CACHE")
             let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
             let filePath = documentsURL.URLByAppendingPathComponent("temp/\(item.key).mp4")
             
@@ -159,7 +165,6 @@ public class StoryViewController: UICollectionViewCell {
                 })
             })
         } else {
-            print("NEEDS DOWNLOAD")
             content.hidden = false
             videoContent.hidden = true
             disableTap()
@@ -186,8 +191,17 @@ public class StoryViewController: UICollectionViewCell {
     }
     
     func playVideo() {
-        videoPlayer.play()
-        print("PLAY DUH VIDEO!")
+        if let _ = videoPlayer.currentItem {
+            videoPlayer.play()
+            print("PLAY DUH VIDEO!")
+        }
+    }
+    
+    func pauseVideo() {
+        if let _ = videoPlayer.currentItem {
+            videoPlayer.pause()
+            print("PLAY DUH VIDEO!")
+        }
     }
     
     func enableTap() {
@@ -206,21 +220,25 @@ public class StoryViewController: UICollectionViewCell {
             if item!.contentType == .Video {
                 print("Pause Video")
                 let time = videoPlayer.currentTime()
-                videoPlayer.pause()
+                self.pauseVideo()
                 if let currentItem = videoPlayer.currentItem {
                     let asset = currentItem.asset
-//                    if let image = generateVideoStill(asset, time: time) {
-//                        content.image = image
-//                    }
+                    if let image = generateVideoStill(asset, time: time) {
+                        content.image = image
+                    }
                 }
             }
         }
     }
     
     func tapped(gesture:UITapGestureRecognizer) {
+        print("Show next item")
+        nextItem()
+    }
+    
+    func nextItem() {
         viewIndex += 1
         setupItem()
-        print("Show next item")
     }
     
     required public init?(coder aDecoder: NSCoder) {

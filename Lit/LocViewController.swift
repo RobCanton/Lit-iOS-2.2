@@ -57,7 +57,7 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         }
         listenToLocationUploads()
         
-        reloadStoryCells()
+        //reloadStoryCells()
         
         
     }
@@ -81,7 +81,9 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
     }
     
     func listenToLocationUploads() {
+        
         let locRef = FirebaseService.ref.child("locations/uploads/\(location.getKey())")
+        locRef.removeAllObservers()
         locRef.observeEventType(.Value, withBlock: { snapshot in
             if snapshot.exists() {
                 var postKeys = [String]()

@@ -26,6 +26,8 @@ enum FlashMode {
 
 protocol PopUpProtocolDelegate {
     func close(uploadTask:FIRStorageUploadTask, outputUrl:NSURL?)
+    func upload(uploadTask:FIRStorageUploadTask)
+    func returnToPreviousSelection()
 }
 
 class CameraViewController: UIViewController, UIImagePickerControllerDelegate, AVCaptureFileOutputRecordingDelegate, UploadSelectorDelegate, UITextViewDelegate, UIGestureRecognizerDelegate {
@@ -71,7 +73,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     var playerLayer: AVPlayerLayer?
     var videoUrl: NSURL?
     var cameraDevice: AVCaptureDevice?
-    var delegate:PopUpProtocolDelegate?
+    var tabBarDelegate:PopUpProtocolDelegate?
     
     var flashMode:FlashMode = .Off
     var cameraMode:CameraMode = .Back
@@ -167,7 +169,6 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
                 view.userInteractionEnabled = false
                 break
             case .Sent:
-                self.dismissViewControllerAnimated(true, completion: {})
                 break
 
             }
@@ -204,8 +205,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
                 upload.image = printTextOnImage()
                 if let uploadTask = FirebaseService.sendImage(upload)
                 {
-                    uploadWrapper.hide()
-                    cameraState = .Sent
+                    self.sent(uploadTask)
                 }
             }
         } else if cameraState == .VideoTaken {
@@ -236,17 +236,26 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
                     T0D0 - HANDLE COMPRESSION ERRORS
                     */
                     dispatch_async(dispatch_get_main_queue(), {
-                        FirebaseService.uploadVideo(upload, completionHander: { success in
-                            if success {
-                                print("Success: Video Uploaded")
-                                self.uploadWrapper.hide()
-                                self.cameraState = .Sent
-                            }
-                        
-                        })
+//                        FirebaseService.uploadVideo(upload, completionHander: { success in
+//                        
+//                        })
+//                        self.sent()
                     })
                 })
             }
+        }
+    }
+    
+    func sent(uploadTask:FIRStorageUploadTask) {
+        self.tabBarDelegate?.upload(uploadTask)
+        self.uploadWrapper.hide()
+        
+        let time = dispatch_time(dispatch_time_t(DISPATCH_TIME_NOW), 1 * Int64(NSEC_PER_SEC))
+        dispatch_after(time, dispatch_get_main_queue()) {
+            self.cameraState = .Sent
+            // Put your code which should be executed with a delay here
+            self.dismissViewControllerAnimated(true, completion: nil)
+            
         }
     }
     
@@ -352,6 +361,11 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
         editingLayer.addSubview(textLabel)
         editingLayer.userInteractionEnabled = true
     
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        tabBarDelegate?.returnToPreviousSelection()
     }
     
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
@@ -502,14 +516,14 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
             
             videoFileOutput = AVCaptureMovieFileOutput()
             self.captureSession!.addOutput(videoFileOutput)
-            //            let audioDevice: AVCaptureDevice = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeAudio)
-            //            do {
-            //                let audioInput: AVCaptureDeviceInput = try AVCaptureDeviceInput(device: audioDevice)
-            //                self.captureSession!.addInput(audioInput)
-            //
-            //            } catch {
-            //                print("Unable to add audio device to the recording.")
-            //            }
+            let audioDevice: AVCaptureDevice = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeAudio)
+            do {
+                let audioInput: AVCaptureDeviceInput = try AVCaptureDeviceInput(device: audioDevice)
+                self.captureSession!.addInput(audioInput)
+
+            } catch {
+                print("Unable to add audio device to the recording.")
+            }
             
             if captureSession?.canAddInput(input) != nil {
                 captureSession?.addInput(input)
