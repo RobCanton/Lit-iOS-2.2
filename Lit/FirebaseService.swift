@@ -130,10 +130,10 @@ class FirebaseService {
     
     
     
-    internal static func uploadVideo(upload:Upload, completionHander:(success:Bool)->()){
+    internal static func uploadVideo(upload:Upload, completionHander:(success:Bool, uploadTask:FIRStorageUploadTask?)->()){
         
         //If upload has no destination do not upload it
-        if !upload.toLocation() && !upload.toUserProfile() { return completionHander(success:false) }
+        if !upload.toLocation() && !upload.toUserProfile() { return completionHander(success:false, uploadTask: nil) }
         
         let uid = mainStore.state.userState.uid
         let url = upload.videoURL!
@@ -181,9 +181,7 @@ class FirebaseService {
                     })
                 }
             }
-            uploadTask.observeStatus(.Success, handler: { snapshot in
-                return completionHander(success: true)
-            })
+            return completionHander(success: true, uploadTask: uploadTask)
         })
     }
     

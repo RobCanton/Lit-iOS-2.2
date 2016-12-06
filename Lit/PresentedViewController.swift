@@ -11,29 +11,10 @@ import UIKit
 
 class PresentedViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIGestureRecognizerDelegate, UINavigationControllerDelegate, StoryViewDelegate {
     
-    
+    var label:UILabel!
     var tabBarRef:PopUpTabBarController!
-    var authorOverlay: PostAuthorView?
     var stories = [Story]()
     var photoIndex:Int!
-    {
-        didSet {
-
-            if let item = stories[photoIndex].getMostRecentItem() {
-                label!.text = item.getKey()
-                authorOverlay?.setPostMetadata(item)
-            }
-            authorOverlay?.authorTappedHandler = { user in
-                self.navigationController?.delegate = self
-                let controller = UIStoryboard(name: "Main", bundle: nil)
-                    .instantiateViewControllerWithIdentifier("UserProfileViewController") as! UserProfileViewController
-                controller.user = user
-                self.navigationController?.pushViewController(controller, animated: true)
-            }
-        }
-    }
-    
-    var label:UILabel!
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -47,12 +28,18 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        clearDirectory("temp")
+        print("viewWillDisappear")
     }
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         tabBarRef.setTabBarVisible(true, animated: true)
+        print("viewDidDisappear")
+        clearDirectory("temp")
+
+        for cell in collectionView.visibleCells() as! [StoryViewController] {
+            cell.destroyVideoPlayer()
+        }
         
     }
     
@@ -97,6 +84,7 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
         collectionView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
         collectionView.registerClass(StoryViewController.self, forCellWithReuseIdentifier: "presented_cell")
         collectionView.backgroundColor = UIColor.blackColor()
+        collectionView.bounces = false
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.pagingEnabled = true
@@ -111,16 +99,6 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
         label.textColor = UIColor.whiteColor()
         label.center = view.center
         label.textAlignment = .Center
-        
-        let overlayMargin:CGFloat = 6.0
-        authorOverlay = UINib(nibName: "PostAuthorView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! PostAuthorView
-        authorOverlay!.frame = CGRect(x: overlayMargin, y: view.frame.height - authorOverlay!.frame.height - overlayMargin, width: view.frame.width, height: authorOverlay!.frame.height)
-        view.addSubview(authorOverlay!)
-        
-        authorOverlay!.translatesAutoresizingMaskIntoConstraints = true
-        authorOverlay!.autoresizingMask = [UIViewAutoresizing.FlexibleBottomMargin, UIViewAutoresizing.FlexibleLeftMargin, UIViewAutoresizing.FlexibleRightMargin, UIViewAutoresizing.FlexibleTopMargin]
-        
-        
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
@@ -129,6 +107,15 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
     }
 
     // MARK: Elements
+    
+    func showAuthor(user:User) {
+        print("YO")
+        self.navigationController?.delegate = self
+        let controller = UIStoryboard(name: "Main", bundle: nil)
+            .instantiateViewControllerWithIdentifier("UserProfileViewController") as! UserProfileViewController
+        controller.user = user
+        self.navigationController?.pushViewController(controller, animated: true)
+    }
     
     weak var transitionController: TransitionController!
     
@@ -163,6 +150,7 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
         let cell: StoryViewController = collectionView.dequeueReusableCellWithReuseIdentifier("presented_cell", forIndexPath: indexPath) as! StoryViewController
         cell.contentView.backgroundColor = UIColor.blackColor()
         cell.story = stories[indexPath.item]
+        cell.authorOverlay.authorTappedHandler = showAuthor
         cell.delegate = self
         return cell
     }
@@ -201,31 +189,47 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
+//        let xOffset = scrollView.contentOffset.x
+//        let ratio = xOffset / collectionView.frame.width
+//        let iRatio = ratio - CGFloat(photoIndex)
+//        
+//        if iRatio < -0.5 {
+//            if photoIndex > 0 {
+//                stopPreviousItem()
+//                photoIndex = photoIndex - 1
+//            }
+//        } else if iRatio > 0.5 {
+//            if photoIndex < stories.count - 1 {
+//                stopPreviousItem()
+//                photoIndex = photoIndex + 1
+//            }
+//        }
+//        
+////        let absRatio = abs(iRatio)
+////        let r = max(0, 1 - absRatio * 2)
+////        print("iRatio: \(iRatio)")
+////        authorOverlay?.alpha = r
+    }
+    
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        print("STOP!")
         let xOffset = scrollView.contentOffset.x
-        let ratio = xOffset / collectionView.frame.width
-        let iRatio = ratio - CGFloat(photoIndex)
-        
-        if iRatio < -0.5 {
-            if photoIndex > 0 {
-                stopPreviousItem()
-                photoIndex = photoIndex - 1
-            }
-        } else if iRatio > 0.5 {
-            if photoIndex < stories.count - 1 {
-                stopPreviousItem()
-                photoIndex = photoIndex + 1
-            }
-        }
-        
-        let absRatio = abs(iRatio)
-        let r = max(0, 1 - absRatio * 2)
-        authorOverlay?.alpha = r
+        let index = Int(xOffset / self.collectionView.frame.width)
+        print("INDEX: \(index)")
+        let indexPath = NSIndexPath(forItem: index, inSection: 0)
+        let cell = collectionView.cellForItemAtIndexPath(indexPath) as! StoryViewController
+        cell.setForPlay()
+    
     }
     
     func stopPreviousItem() {
         let indexPath = NSIndexPath(forItem: photoIndex, inSection: 0)
         let cell: StoryViewController = self.collectionView.cellForItemAtIndexPath(indexPath) as! StoryViewController
         cell.pauseVideo()
+    }
+    
+    override func prefersStatusBarHidden() -> Bool {
+        return true
     }
     
 }

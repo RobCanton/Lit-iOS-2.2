@@ -54,6 +54,7 @@ class PostAuthorView: UIView {
     
     func authorTapped(gesture:UITapGestureRecognizer) {
         if user != nil {
+            print("CALLED INSIDE")
             authorTappedHandler?(user: user!)
         }
     }

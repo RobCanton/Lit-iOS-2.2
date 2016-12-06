@@ -37,15 +37,11 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
     var location: Location!
     override func viewWillAppear(animated: Bool) {
         mainStore.subscribe(self)
-        //navigationController?.hidesBarsOnSwipe = true
-        print("LocationViewController Subscribed")
 
     }
     
     override func viewWillDisappear(animated: Bool) {
         mainStore.unsubscribe(self)
-        //navigationController?.hidesBarsOnSwipe = true
-        print("LocationViewController Unsubscribed")
         FirebaseService.ref.child("locations/uploads/\(location.getKey())").removeAllObservers()
     }
     
@@ -66,7 +62,6 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
     var postKeys = [String]()
     
     func newState(state: AppState) {
-        print("New State!")
         
     }
     
@@ -100,9 +95,7 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         let sortedNewPosts = newKeys.sort()
         
         if sortedPosts == sortedNewPosts {
-            print("Equal, no change")
         } else {
-            print("Not equal, reload table")
             self.downloadMedia(newKeys)
         }
     }
@@ -159,7 +152,6 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
     func cache(cache: NSCache, willEvictObject obj: AnyObject) {
         
         if cache === videoCache {
-            print("Evicted video from cache - reload table")
             // downloadAllStories()
         }
     }
@@ -181,12 +173,11 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         let eventsHeight:CGFloat = 0
         let topInset:CGFloat = navHeight + detailsView.frame.height + eventsHeight + slack
         
-        print("BEFORE : \(detailsView.descriptionLabel.frame.height)")
         let prevHeight = detailsView.descriptionLabel.frame.height
         detailsView.descriptionLabel.text = "Swanky black & gold interior with metallic finishes, plus buzzing music for dancing crowds."
         detailsView.descriptionLabel.sizeToFit()
         detailsView.sizeToFit()
-        print("AFTER : \(detailsView.descriptionLabel.frame.height)")
+
         let difference  = detailsView.descriptionLabel.frame.height
         detailsView.frame = CGRectMake(0, 0, self.view.frame.width, detailsView.frame.height + difference)
         
@@ -246,12 +237,12 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         titleLabel.applyShadow(4, opacity: 0.8, height: 4, shouldRasterize: false)
         detailsView.setLocation(location)
         
-        FirebaseService.getLocationEvents(location.getKey(), completionHandler: { events in
-            if events.count > 0 {
-                self.events = events
-                self.tableView!.reloadData()
-            }
-        })
+//        FirebaseService.getLocationEvents(location.getKey(), completionHandler: { events in
+//            if events.count > 0 {
+//                self.events = events
+//                self.tableView!.reloadData()
+//            }
+//        })
         
         tableView!.tableFooterView = UIView(frame: CGRectMake(0,0,tableView!.frame.width, 90))
         guests = location.getVisitors()
@@ -469,7 +460,7 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
 
     
     override func prefersStatusBarHidden() -> Bool {
-        return false
+        return true
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {

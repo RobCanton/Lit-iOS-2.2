@@ -130,7 +130,8 @@ public class EventCollectionViewCell: UICollectionViewCell {
         let view: UIImageView = UIImageView(frame: frame)
         view.backgroundColor = UIColor.blackColor()
         view.contentMode = .ScaleAspectFill
-        view.layer.cornerRadius = 0
+        view.layer.cornerRadius = 4
+        view.clipsToBounds = true
         
         return view
     }()

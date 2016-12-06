@@ -18,46 +18,41 @@ public class StoryViewController: UICollectionViewCell {
     
     
     var viewIndex = 0
-    
     var delegate:StoryViewDelegate?
     
     var item:StoryItem?
     var tap:UITapGestureRecognizer!
-    var story:Story!
-    {
-        didSet {
-
-            if story.getItems().count == 0 { return }
-            enableTap()
-            viewIndex = 0
-            setupItem()
-        }
-    }
     
-    var videoPlayer:AVPlayer!
-    var playerLayer:AVPlayerLayer!
+    var authorTappedHandler:((user:User)->())?
     
+    
+    var playerLayer:AVPlayerLayer?
     var activityView:NVActivityIndicatorView!
-    
-    
     var currentProgress:Double = 0.0
     var timer:NSTimer?
     
+    var story:Story!
+        {
+        didSet {
+            
+            if story.getItems().count == 0 { return }
+            enableTap()
+            viewIndex = 0
+            setupItem({})
+            
+        }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.contentView.backgroundColor = UIColor(red: 0, green: 0, blue: 1.0, alpha: 0.3)
+        self.contentView.backgroundColor = UIColor(red: 0, green: 0, blue: 1.0, alpha: 0.0)
         self.contentView.addSubview(self.content)
         self.contentView.addSubview(self.videoContent)
         self.contentView.addSubview(self.fadeCover)
+        self.contentView.addSubview(self.authorOverlay)
         
         self.fadeCover.alpha = 0.0
         
-        videoPlayer = AVPlayer()
-        playerLayer = AVPlayerLayer(player: videoPlayer)
-        playerLayer!.player?.actionAtItemEnd = .Pause
-        
-        playerLayer!.frame = videoContent.frame
-        self.videoContent.layer.addSublayer(playerLayer!)
         tap = UITapGestureRecognizer(target: self, action: #selector(tapped))
         
         activityView = NVActivityIndicatorView(frame: CGRectMake(0,0,50,50), type: .BallScaleMultiple)
@@ -65,49 +60,21 @@ public class StoryViewController: UICollectionViewCell {
         let centerY = (UIScreen.mainScreen().bounds.size.height) / 2
         activityView.center = CGPointMake(centerX, centerY)
         self.contentView.addSubview(activityView)
+    
     }
     
-    func fadeCoverIn() {
-        UIView.animateWithDuration(0.25, animations: {
-            self.fadeCover.alpha = 0.5
-        })
-    }
-    
-    func fadeCoverOut() {
-        UIView.animateWithDuration(0.25, animations: {
-            self.fadeCover.alpha = 0.0
-        })
-    }
-    
-    func cleanUpPreviousItem() {
-        let prevIndex = viewIndex - 1
-        if prevIndex >= 0 {
-            let prevItem = story.getItems()[prevIndex]
-            let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
-            let filePath = documentsURL.URLByAppendingPathComponent("temp/\(prevItem.key).mp4")
-            do {
-                try NSFileManager.defaultManager().removeItemAtURL(filePath)
-                print("Video deleted")
-                
-            }
-            catch let error as NSError {
-                return print("Error \(error)")
-            }
-        }
-    }
-    
-    func setupItem() {
-        self.pauseVideo()
+    func setupItem(completion:()->()) {
+        killTimer()
+        pauseVideo()
         if viewIndex < story.getItems().count {
             let item = story.getItems()[viewIndex]
             self.item = item
+            self.authorOverlay.setPostMetadata(item)
             if item.contentType == .Image {
                 loadImageContent(item)
-                self.setForPlay()
+                completion()
             } else if item.contentType == .Video {
-                loadVideoContent(item, completion: {
-                    self.setForPlay()
-                })
+                loadVideoContent(item, completion: completion)
             }
             
         } else {
@@ -123,25 +90,6 @@ public class StoryViewController: UICollectionViewCell {
         }
     }
     
-    func setForPlay() {
-        guard let item = self.item else {return}
-        if item.contentType == .Image {
-            content.hidden = false
-            videoContent.hidden = true
-            
-        } else if item.contentType == .Video {
-            if videoPlayer.currentItem != nil {
-                content.hidden = true
-                videoContent.hidden = false
-                playVideo()
-            }
-        }
-        timer?.invalidate()
-        timer = nil
-        timer = NSTimer.scheduledTimerWithTimeInterval(item.getLength(), target: self, selector: #selector(nextItem), userInfo: nil, repeats: false)
-        
-    }
-    
     func loadVideoContent(item:StoryItem, completion:()->()) {
         /* CURRENTLY ASSUMING THAT IMAGE IS LOAD */
         if let image = item.image {
@@ -149,7 +97,9 @@ public class StoryViewController: UICollectionViewCell {
         } else {
             content.loadImageUsingCacheWithURLString(item.downloadUrl.absoluteString, completion: { result in })
         }
+        createVideoPlayer()
         if let videoData = loadVideoFromCache(item.key) {
+            print("We have the data")
             let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
             let filePath = documentsURL.URLByAppendingPathComponent("temp/\(item.key).mp4")
             
@@ -160,7 +110,7 @@ public class StoryViewController: UICollectionViewCell {
             asset.loadValuesAsynchronouslyForKeys(["duration"], completionHandler: {
                 dispatch_async(dispatch_get_main_queue(), {
                     let item = AVPlayerItem(asset: asset)
-                    self.videoPlayer.replaceCurrentItemWithPlayerItem(item)
+                    self.playerLayer?.player?.replaceCurrentItemWithPlayerItem(item)
                     completion()
                 })
             })
@@ -172,6 +122,8 @@ public class StoryViewController: UICollectionViewCell {
             self.activityView.startAnimating()
             story.downloadStory({ complete in
                 if complete {
+                    
+                    /* RECURSIVE CALL */
                     self.loadVideoContent(item, completion: {
                         self.activityView.stopAnimating()
                         self.enableTap()
@@ -183,25 +135,53 @@ public class StoryViewController: UICollectionViewCell {
         }
     }
     
-    func loopVideo(videoPlayer: AVPlayer) {
-        NSNotificationCenter.defaultCenter().addObserverForName(AVPlayerItemDidPlayToEndTimeNotification, object: nil, queue: nil) { notification in
-            videoPlayer.seekToTime(kCMTimeZero)
-            videoPlayer.play()
+    func setForPlay() {
+        guard let item = self.item else {return}
+        if item.contentType == .Image {
+            //content.hidden = false
+            videoContent.hidden = true
+            
+        } else if item.contentType == .Video {
+            //content.hidden = true
+            videoContent.hidden = false
+            playVideo()
+        }
+        
+        timer = NSTimer.scheduledTimerWithTimeInterval(item.getLength(), target: self, selector: #selector(nextItem), userInfo: nil, repeats: false)
+    }
+    
+    func createVideoPlayer() {
+        print("createVideoPlayer")
+        if playerLayer == nil {
+            playerLayer = AVPlayerLayer(player: AVPlayer())
+            playerLayer!.player?.actionAtItemEnd = .Pause
+            
+            playerLayer!.frame = videoContent.frame
+            self.videoContent.layer.addSublayer(playerLayer!)
         }
     }
     
+    func destroyVideoPlayer() {
+        print("destroyVideoPlayer")
+        self.playerLayer?.removeFromSuperlayer()
+        self.playerLayer?.player = nil
+        self.playerLayer = nil
+    }
+    
+    
     func playVideo() {
-        if let _ = videoPlayer.currentItem {
-            videoPlayer.play()
-            print("PLAY DUH VIDEO!")
-        }
+        print("playVideo")
+        self.playerLayer?.player?.play()
     }
     
     func pauseVideo() {
-        if let _ = videoPlayer.currentItem {
-            videoPlayer.pause()
-            print("PLAY DUH VIDEO!")
-        }
+        print("pauseVideo")
+        self.playerLayer?.player?.pause()
+    }
+    
+    func killTimer() {
+        timer?.invalidate()
+        timer = nil
     }
     
     func enableTap() {
@@ -215,30 +195,45 @@ public class StoryViewController: UICollectionViewCell {
     func prepareForTransition(isPresenting:Bool) {
         content.hidden = false
         videoContent.hidden = true
-        if !isPresenting {
-            print("Disappearing, update screenshot")
+        if isPresenting {
+            
+        } else {
+            killTimer()
             if item!.contentType == .Video {
-                print("Pause Video")
-                let time = videoPlayer.currentTime()
+                guard let time = playerLayer?.player?.currentTime() else { return }
                 self.pauseVideo()
-                if let currentItem = videoPlayer.currentItem {
-                    let asset = currentItem.asset
-                    if let image = generateVideoStill(asset, time: time) {
-                        content.image = image
-                    }
+                
+                guard let currentItem = playerLayer?.player?.currentItem else { return }
+                
+                let asset = currentItem.asset
+                if let image = generateVideoStill(asset, time: time) {
+                    content.image = image
                 }
+
             }
         }
     }
     
     func tapped(gesture:UITapGestureRecognizer) {
-        print("Show next item")
         nextItem()
     }
     
     func nextItem() {
         viewIndex += 1
-        setupItem()
+        setupItem(self.setForPlay)
+    }
+    
+
+    func fadeCoverIn() {
+        UIView.animateWithDuration(0.25, animations: {
+            self.fadeCover.alpha = 0.5
+        })
+    }
+    
+    func fadeCoverOut() {
+        UIView.animateWithDuration(0.25, animations: {
+            self.fadeCover.alpha = 0.0
+        })
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -251,7 +246,7 @@ public class StoryViewController: UICollectionViewCell {
         let height: CGFloat = (UIScreen.mainScreen().bounds.size.height)
         let frame: CGRect = CGRect(x: 0, y: 0, width: width, height: height)
         let view: UIImageView = UIImageView(frame: frame)
-        view.backgroundColor = UIColor(red: 0, green: 1, blue: 0, alpha: 0.3)
+        view.backgroundColor = UIColor(red: 0, green: 1, blue: 0, alpha: 0.0)
         view.clipsToBounds = true
         view.contentMode = .ScaleAspectFill
         return view
@@ -263,7 +258,7 @@ public class StoryViewController: UICollectionViewCell {
         let height: CGFloat = (UIScreen.mainScreen().bounds.size.height)
         let frame: CGRect = CGRect(x: 0, y: 0, width: width, height: height)
         let view: UIView = UIView(frame: frame)
-        view.backgroundColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.3)
+        view.backgroundColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.0)
         view.clipsToBounds = true
         view.contentMode = .ScaleAspectFill
         return view
@@ -277,5 +272,16 @@ public class StoryViewController: UICollectionViewCell {
         let view: UIView = UIView(frame: frame)
         view.backgroundColor = UIColor.blackColor()
         return view
+    }()
+    
+    lazy var authorOverlay: PostAuthorView = {
+        let margin:CGFloat = 6.0
+        var authorView = UINib(nibName: "PostAuthorView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! PostAuthorView
+        let width: CGFloat = (UIScreen.mainScreen().bounds.size.width)
+        let height: CGFloat = (UIScreen.mainScreen().bounds.size.height)
+        
+        authorView.frame = CGRect(x: margin, y: height - authorView.frame.height - margin, width: width, height: authorView.frame.height)
+        authorView.authorTappedHandler = self.authorTappedHandler
+        return authorView
     }()
 }

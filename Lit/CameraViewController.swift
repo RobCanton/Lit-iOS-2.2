@@ -236,10 +236,12 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
                     T0D0 - HANDLE COMPRESSION ERRORS
                     */
                     dispatch_async(dispatch_get_main_queue(), {
-//                        FirebaseService.uploadVideo(upload, completionHander: { success in
-//                        
-//                        })
-//                        self.sent()
+                        FirebaseService.uploadVideo(upload, completionHander: { success, task in
+                            if task != nil {
+                                self.sent(task!)
+                            }
+                        })
+
                     })
                 })
             }
