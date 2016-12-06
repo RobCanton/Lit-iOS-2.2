@@ -43,7 +43,7 @@ public final class TransitionController: NSObject {
     private(set) var presentingViewController: UIViewController!
     
     private(set) var presentedViewController: UIViewController!
-
+    
     /// Type Safe Present for Swift
     public func present<T: View2ViewTransitionPresented, U: View2ViewTransitionPresenting where T: UIViewController, U: UIViewController>(viewController presentedViewController: T, on presentingViewController: U, attached: UIViewController, completion: (() -> Void)?) {
         
@@ -58,17 +58,17 @@ public final class TransitionController: NSObject {
         // Present
         presentingViewController.presentViewController(presentedViewController, animated: true, completion: completion)
     }
-        
+    
     @available(*, unavailable)
     /// Present for Objective-C
     public func present(viewController presentedViewController: UIViewController, on presentingViewController: UIViewController, attached: UIViewController, completion: (() -> Void)?) {
-    
+        
         let pan = UIPanGestureRecognizer(target: dismissInteractiveTransition, action: #selector(dismissInteractiveTransition.handlePanGesture(_:)))
         attached.view.addGestureRecognizer(pan)
         
         self.presentingViewController = presentingViewController
         self.presentedViewController = presentedViewController
-
+        
         self.type = .Presenting
         
         // Present
@@ -137,7 +137,7 @@ extension TransitionController: UIViewControllerTransitioningDelegate {
 }
 
 extension TransitionController: UINavigationControllerDelegate {
-
+    
     public func navigationController(navigationController: UINavigationController, animationControllerForOperation operation: UINavigationControllerOperation, fromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         switch operation {
         case .Push:

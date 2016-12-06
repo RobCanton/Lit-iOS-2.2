@@ -11,10 +11,10 @@ import UIKit
 public final class DismissAnimationController: NSObject, UIViewControllerAnimatedTransitioning {
     
     // MARK: Elements
-
+    
     public weak var transitionController: TransitionController!
     
-    public var transitionDuration: NSTimeInterval = 0.4
+    public var transitionDuration: NSTimeInterval = 0.5
     
     public var usingSpringWithDamping: CGFloat = 0.95
     
@@ -27,7 +27,7 @@ public final class DismissAnimationController: NSObject, UIViewControllerAnimate
     public var initialSpringVelocityCancelling: CGFloat = 0.0
     
     public var animationOptionsCancelling: UIViewAnimationOptions = [.CurveEaseInOut, .AllowUserInteraction]
-
+    
     private(set) var initialView: UIView!
     
     private(set) var destinationView: UIView!
@@ -39,7 +39,7 @@ public final class DismissAnimationController: NSObject, UIViewControllerAnimate
     private(set) var initialTransitionView: UIView!
     
     private(set) var destinationTransitionView: UIView!
-
+    
     // MARK: Transition
     
     public func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
@@ -85,13 +85,13 @@ public final class DismissAnimationController: NSObject, UIViewControllerAnimate
         self.destinationTransitionView = UIImageView(image: destinationView.snapshotImage())
         self.destinationTransitionView.clipsToBounds = true
         self.destinationTransitionView.contentMode = .ScaleAspectFill
+        self.destinationView.layer.cornerRadius = 8.0
         
         self.initialTransitionView = UIImageView(image: initialView.snapshotImage())
         self.initialTransitionView.clipsToBounds = true
         self.initialTransitionView.contentMode = .ScaleAspectFill
+        self.initialTransitionView.layer.cornerRadius = 8.0
         
-        
-                
         // Hide Transisioning Views
         initialView.hidden = true
         destinationView.hidden = true
@@ -124,8 +124,8 @@ public final class DismissAnimationController: NSObject, UIViewControllerAnimate
             UIView.animateWithDuration(duration, delay: 0.0, usingSpringWithDamping: self.usingSpringWithDampingCancelling, initialSpringVelocity: self.initialSpringVelocityCancelling, options: self.animationOptionsCancelling, animations: {
                 
                 fromViewControllerView.alpha = CGFloat.min
-         
-            }, completion: nil)
+                
+                }, completion: nil)
             
         } else {
             
@@ -136,19 +136,19 @@ public final class DismissAnimationController: NSObject, UIViewControllerAnimate
                 self.initialTransitionView.alpha = 1.0
                 fromViewControllerView.alpha = CGFloat.min
                 
-            }, completion: { _ in
+                }, completion: { _ in
                     
-                self.destinationTransitionView.removeFromSuperview()
-                self.initialTransitionView.removeFromSuperview()
-                
-                if isNeedToControlToViewController && self.transitionController.type == .Presenting {
-                    toViewControllerView.removeFromSuperview()
-                }
-                
-                self.initialView.hidden = false
-                self.destinationView.hidden = false
+                    self.destinationTransitionView.removeFromSuperview()
+                    self.initialTransitionView.removeFromSuperview()
                     
-                transitionContext.completeTransition(!transitionContext.transitionWasCancelled())
+                    if isNeedToControlToViewController && self.transitionController.type == .Presenting {
+                        toViewControllerView.removeFromSuperview()
+                    }
+                    
+                    self.initialView.hidden = false
+                    self.destinationView.hidden = false
+                    
+                    transitionContext.completeTransition(!transitionContext.transitionWasCancelled())
             })
         }
     }

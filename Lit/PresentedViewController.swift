@@ -14,7 +14,7 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
     var label:UILabel!
     var tabBarRef:PopUpTabBarController!
     var stories = [Story]()
-    var photoIndex:Int!
+    var currentIndex:NSIndexPath!
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -47,8 +47,7 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        let indexPath = NSIndexPath(forItem: photoIndex, inSection: 0)
-        let cell: StoryViewController = self.collectionView.cellForItemAtIndexPath(indexPath) as! StoryViewController
+        let cell: StoryViewController = self.collectionView.cellForItemAtIndexPath(currentIndex) as! StoryViewController
         cell.setForPlay()
         self.navigationController?.delegate = transitionController
         
@@ -65,7 +64,6 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.edgesForExtendedLayout = UIRectEdge.None
         self.extendedLayoutIncludesOpaqueBars = true
         self.automaticallyAdjustsScrollViewInsets = false
@@ -82,6 +80,7 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
         
         collectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: layout)
         collectionView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
+        
         collectionView.registerClass(StoryViewController.self, forCellWithReuseIdentifier: "presented_cell")
         collectionView.backgroundColor = UIColor.blackColor()
         collectionView.bounces = false
@@ -148,7 +147,7 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
         let cell: StoryViewController = collectionView.dequeueReusableCellWithReuseIdentifier("presented_cell", forIndexPath: indexPath) as! StoryViewController
-        cell.contentView.backgroundColor = UIColor.blackColor()
+        cell.contentView.backgroundColor = UIColor.redColor()
         cell.story = stories[indexPath.item]
         cell.authorOverlay.authorTappedHandler = showAuthor
         cell.delegate = self
@@ -189,47 +188,31 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
-//        let xOffset = scrollView.contentOffset.x
-//        let ratio = xOffset / collectionView.frame.width
-//        let iRatio = ratio - CGFloat(photoIndex)
-//        
-//        if iRatio < -0.5 {
-//            if photoIndex > 0 {
-//                stopPreviousItem()
-//                photoIndex = photoIndex - 1
-//            }
-//        } else if iRatio > 0.5 {
-//            if photoIndex < stories.count - 1 {
-//                stopPreviousItem()
-//                photoIndex = photoIndex + 1
-//            }
-//        }
-//        
-////        let absRatio = abs(iRatio)
-////        let r = max(0, 1 - absRatio * 2)
-////        print("iRatio: \(iRatio)")
-////        authorOverlay?.alpha = r
     }
     
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         print("STOP!")
         let xOffset = scrollView.contentOffset.x
-        let index = Int(xOffset / self.collectionView.frame.width)
-        print("INDEX: \(index)")
-        let indexPath = NSIndexPath(forItem: index, inSection: 0)
-        let cell = collectionView.cellForItemAtIndexPath(indexPath) as! StoryViewController
+        
+        let newItem = Int(xOffset / self.collectionView.frame.width)
+        currentIndex = NSIndexPath(forItem: newItem, inSection: 0)
+        
+        let cell = collectionView.cellForItemAtIndexPath(currentIndex) as! StoryViewController
         cell.setForPlay()
-    
     }
     
     func stopPreviousItem() {
-        let indexPath = NSIndexPath(forItem: photoIndex, inSection: 0)
-        let cell: StoryViewController = self.collectionView.cellForItemAtIndexPath(indexPath) as! StoryViewController
+        let cell: StoryViewController = self.collectionView.cellForItemAtIndexPath(currentIndex) as! StoryViewController
         cell.pauseVideo()
     }
     
     override func prefersStatusBarHidden() -> Bool {
         return true
+    }
+    
+    func collectionView(collectionView: UICollectionView, didEndDisplayingCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+        let cell = cell as! StoryViewController
+        cell.destroyVideoPlayer()
     }
     
 }
@@ -274,8 +257,7 @@ extension PresentedViewController: View2ViewTransitionPresented {
         if isPresenting {
             
             let indexPath: NSIndexPath = userInfo!["destinationIndexPath"] as! NSIndexPath
-            photoIndex = indexPath.item
-            
+            currentIndex = indexPath
             let contentOffset: CGPoint = CGPoint(x: self.collectionView.frame.size.width*CGFloat(indexPath.item), y: 0.0)
             self.collectionView.contentOffset = contentOffset
             self.collectionView.reloadData()

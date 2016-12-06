@@ -14,7 +14,7 @@ public final class PresentAnimationController: NSObject, UIViewControllerAnimate
     
     public weak var transitionController: TransitionController!
     
-    public var transitionDuration: NSTimeInterval = 0.4
+    public var transitionDuration: NSTimeInterval = 0.5
     
     public var usingSpringWithDamping: CGFloat = 0.95
     
@@ -23,7 +23,7 @@ public final class PresentAnimationController: NSObject, UIViewControllerAnimate
     public var animationOptions: UIViewAnimationOptions = [.CurveEaseInOut, .AllowUserInteraction]
     
     // MARK: Transition
-
+    
     public func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         return self.transitionDuration
     }
@@ -54,7 +54,7 @@ public final class PresentAnimationController: NSObject, UIViewControllerAnimate
             debugPrint(" Presenting view controller: \(fromViewController)")
             debugPrint(" Presented view controller: \(toViewController)")
         }
-
+        
         fromViewController.prepareInitialView(self.transitionController.userInfo, isPresenting: true)
         let initialView: UIView = fromViewController.initialView(self.transitionController.userInfo, isPresenting: true)
         let initialFrame: CGRect = fromViewController.initialFrame(self.transitionController.userInfo, isPresenting: true)
@@ -98,15 +98,15 @@ public final class PresentAnimationController: NSObject, UIViewControllerAnimate
             destinationTransitionView.alpha = 1.0
             toViewControllerView.alpha = 1.0
             
-        }, completion: { _ in
+            }, completion: { _ in
                 
-            initialTransitionView.removeFromSuperview()
-            destinationTransitionView.removeFromSuperview()
+                initialTransitionView.removeFromSuperview()
+                destinationTransitionView.removeFromSuperview()
                 
-            initialView.hidden = false
-            destinationView.hidden = false
+                initialView.hidden = false
+                destinationView.hidden = false
                 
-            transitionContext.completeTransition(!transitionContext.transitionWasCancelled())
+                transitionContext.completeTransition(!transitionContext.transitionWasCancelled())
         })
     }
 }

@@ -65,7 +65,7 @@ public class DismissInteractiveTransition: UIPercentDrivenInteractiveTransition 
             self.animationController.initialTransitionView.alpha = 0.0
             
             // Affine Transform
-            let scale: CGFloat = max(0,(1000.0 - CGFloat(distance) * 1.10)/1000.0)
+            let scale: CGFloat = (1000.0 - CGFloat(distance))/1000.0
             var transform = CGAffineTransformIdentity
             transform = CGAffineTransformScale(transform, scale, scale)
             transform = CGAffineTransformTranslate(transform, translation.x/scale, translation.y/scale)
@@ -93,17 +93,17 @@ public class DismissInteractiveTransition: UIPercentDrivenInteractiveTransition 
                     self.animationController.destinationTransitionView.frame = self.animationController.destinationFrame
                     self.animationController.initialTransitionView.frame = self.animationController.destinationFrame
                     
-                }, completion: { _ in
+                    }, completion: { _ in
                         
-                    // Cancel Transition
-                    self.animationController.destinationTransitionView.removeFromSuperview()
-                    self.animationController.initialTransitionView.removeFromSuperview()
+                        // Cancel Transition
+                        self.animationController.destinationTransitionView.removeFromSuperview()
+                        self.animationController.initialTransitionView.removeFromSuperview()
                         
-                    self.animationController.destinationView.hidden = false
-                    self.animationController.initialView.hidden = false
-                    self.transitionController.presentingViewController.view.removeFromSuperview()
+                        self.animationController.destinationView.hidden = false
+                        self.animationController.initialView.hidden = false
+                        self.transitionController.presentingViewController.view.removeFromSuperview()
                         
-                    self.transitionContext.completeTransition(false)
+                        self.transitionContext.completeTransition(false)
                 })
                 
             } else {
@@ -116,24 +116,24 @@ public class DismissInteractiveTransition: UIPercentDrivenInteractiveTransition 
                     
                     self.animationController.destinationTransitionView.alpha = 0.0
                     self.animationController.initialTransitionView.alpha = 1.0
-
+                    
                     self.animationController.destinationTransitionView.frame = self.animationController.initialFrame
                     self.animationController.initialTransitionView.frame = self.animationController.initialFrame
                     
-                }, completion: { _ in
-                    
-                    if self.transitionController.type == .Pushing {
+                    }, completion: { _ in
+                        
+                        if self.transitionController.type == .Pushing {
                             
-                        self.animationController.destinationTransitionView.removeFromSuperview()
-                        self.animationController.initialTransitionView.removeFromSuperview()
+                            self.animationController.destinationTransitionView.removeFromSuperview()
+                            self.animationController.initialTransitionView.removeFromSuperview()
                             
+                            self.animationController.initialView.hidden = false
+                            self.animationController.destinationView.hidden = false
+                        }
+                        
+                        self.transitionController.presentingViewController.view.userInteractionEnabled = true
                         self.animationController.initialView.hidden = false
-                        self.animationController.destinationView.hidden = false
-                    }
-                    
-                    self.transitionController.presentingViewController.view.userInteractionEnabled = true
-                    self.animationController.initialView.hidden = false
-                    self.transitionContext.completeTransition(true)
+                        self.transitionContext.completeTransition(true)
                 })
             }
             

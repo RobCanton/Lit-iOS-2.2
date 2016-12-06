@@ -60,6 +60,11 @@ public class StoryViewController: UICollectionViewCell {
         let centerY = (UIScreen.mainScreen().bounds.size.height) / 2
         activityView.center = CGPointMake(centerX, centerY)
         self.contentView.addSubview(activityView)
+        
+        self.layer.borderColor = UIColor.blackColor().CGColor
+        self.layer.borderWidth = 1.0
+        self.layer.cornerRadius = 8.0
+        self.clipsToBounds = true
     
     }
     
@@ -156,7 +161,7 @@ public class StoryViewController: UICollectionViewCell {
             playerLayer = AVPlayerLayer(player: AVPlayer())
             playerLayer!.player?.actionAtItemEnd = .Pause
             
-            playerLayer!.frame = videoContent.frame
+            playerLayer!.frame = videoContent.bounds
             self.videoContent.layer.addSublayer(playerLayer!)
         }
     }
@@ -166,6 +171,8 @@ public class StoryViewController: UICollectionViewCell {
         self.playerLayer?.removeFromSuperlayer()
         self.playerLayer?.player = nil
         self.playerLayer = nil
+        videoContent.hidden = false
+        
     }
     
     
@@ -242,11 +249,9 @@ public class StoryViewController: UICollectionViewCell {
     
     public lazy var content: UIImageView = {
 
-        let width: CGFloat = (UIScreen.mainScreen().bounds.size.width)
-        let height: CGFloat = (UIScreen.mainScreen().bounds.size.height)
-        let frame: CGRect = CGRect(x: 0, y: 0, width: width, height: height)
-        let view: UIImageView = UIImageView(frame: frame)
-        view.backgroundColor = UIColor(red: 0, green: 1, blue: 0, alpha: 0.0)
+        let view: UIImageView = UIImageView(frame: self.contentView.bounds)
+        view.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+        view.backgroundColor = UIColor.clearColor()
         view.clipsToBounds = true
         view.contentMode = .ScaleAspectFill
         return view
@@ -254,11 +259,9 @@ public class StoryViewController: UICollectionViewCell {
     
     public lazy var videoContent: UIView = {
 
-        let width: CGFloat = (UIScreen.mainScreen().bounds.size.width)
-        let height: CGFloat = (UIScreen.mainScreen().bounds.size.height)
-        let frame: CGRect = CGRect(x: 0, y: 0, width: width, height: height)
-        let view: UIView = UIView(frame: frame)
-        view.backgroundColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.0)
+        let view: UIImageView = UIImageView(frame: self.contentView.bounds)
+        view.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+        view.backgroundColor = UIColor.clearColor()
         view.clipsToBounds = true
         view.contentMode = .ScaleAspectFill
         return view
@@ -266,10 +269,9 @@ public class StoryViewController: UICollectionViewCell {
     
     public lazy var fadeCover: UIView = {
         
-        let width: CGFloat = (UIScreen.mainScreen().bounds.size.width)
-        let height: CGFloat = (UIScreen.mainScreen().bounds.size.height)
-        let frame: CGRect = CGRect(x: 0, y: 0, width: width, height: height)
-        let view: UIView = UIView(frame: frame)
+        let view: UIImageView = UIImageView(frame: self.contentView.bounds)
+        view.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+        view.backgroundColor = UIColor.clearColor()
         view.backgroundColor = UIColor.blackColor()
         return view
     }()
