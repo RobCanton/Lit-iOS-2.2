@@ -14,7 +14,7 @@ public final class DismissAnimationController: NSObject, UIViewControllerAnimate
     
     public weak var transitionController: TransitionController!
     
-    public var transitionDuration: NSTimeInterval = 0.5
+    public var transitionDuration: NSTimeInterval = 0.3
     
     public var usingSpringWithDamping: CGFloat = 0.95
     
@@ -85,12 +85,11 @@ public final class DismissAnimationController: NSObject, UIViewControllerAnimate
         self.destinationTransitionView = UIImageView(image: destinationView.snapshotImage())
         self.destinationTransitionView.clipsToBounds = true
         self.destinationTransitionView.contentMode = .ScaleAspectFill
-        self.destinationView.layer.cornerRadius = 8.0
+
         
         self.initialTransitionView = UIImageView(image: initialView.snapshotImage())
         self.initialTransitionView.clipsToBounds = true
         self.initialTransitionView.contentMode = .ScaleAspectFill
-        self.initialTransitionView.layer.cornerRadius = 8.0
         
         // Hide Transisioning Views
         initialView.hidden = true

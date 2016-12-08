@@ -73,6 +73,13 @@ class Story: NSObject, Comparable {
         return nil
     }
     
+    func firstItem() -> StoryItem? {
+        if items.count > 0 {
+            return items[0]
+        }
+        return nil
+    }
+    
     func needsDownload() -> Bool {
         for item in items {
             if item.needsDownload() {

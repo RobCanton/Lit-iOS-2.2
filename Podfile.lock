@@ -73,7 +73,6 @@ PODS:
   - SwiftLocation (1.0.5)
   - SwiftMessages (1.1.4)
   - SwiftyJSON (2.4.0)
-  - VIMVideoPlayer (6.0.1)
   - Whisper (3.1.1)
 
 DEPENDENCIES:
@@ -99,7 +98,6 @@ DEPENDENCIES:
   - SwiftLocation (= 1.0.5)
   - SwiftMessages (~> 1.1.4)
   - SwiftyJSON (= 2.4.0)
-  - VIMVideoPlayer
   - Whisper
 
 SPEC CHECKSUMS:
@@ -133,9 +131,8 @@ SPEC CHECKSUMS:
   SwiftLocation: 310142ddfcfc1df770b05ee762592f6ee9896cee
   SwiftMessages: c7678758945a9123613cd77da98c2a89fa38eba3
   SwiftyJSON: 96918c1bf505efa50c4f72957018dd3452090c9c
-  VIMVideoPlayer: f4ed0a9986294ec3684a2e6bdc738e30051ef4ef
   Whisper: 74decae53daf8caff5acf8628e24b92d3f05a453
 
-PODFILE CHECKSUM: 27dee81dd3e8a1ca407778636abb41fd1346cedc
+PODFILE CHECKSUM: b13d14864f4a899014eda567772f075458e0f4a2
 
 COCOAPODS: 1.2.0.beta.1

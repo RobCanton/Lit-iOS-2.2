@@ -38,7 +38,9 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
         clearDirectory("temp")
 
         for cell in collectionView.visibleCells() as! [StoryViewController] {
+            print("DESTORY!")
             cell.destroyVideoPlayer()
+            cell.killTimer()
         }
         
     }
@@ -116,10 +118,19 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
         self.navigationController?.pushViewController(controller, animated: true)
     }
     
+    func pushAuthorProfile() {
+        let item = stories[currentIndex.item]
+        FirebaseService.getUser(item.getAuthorID(), completionHandler: { user in
+            if user != nil {
+                self.showAuthor(user!)
+            }
+        })
+    }
+    
     weak var transitionController: TransitionController!
     
     lazy var backItem: UIBarButtonItem = {
-        let item = UIBarButtonItem(title: "✕", style: .Plain, target: self, action: #selector(onBackItemClicked(_:)))
+        let item = UIBarButtonItem(title: " ", style: .Plain, target: self, action: #selector(pushAuthorProfile))
         item.tintColor = UIColor.whiteColor()
         return item
     }()
@@ -213,6 +224,7 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
     func collectionView(collectionView: UICollectionView, didEndDisplayingCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
         let cell = cell as! StoryViewController
         cell.destroyVideoPlayer()
+        cell.killTimer()
     }
     
 }

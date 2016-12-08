@@ -15,8 +15,7 @@ protocol StoryViewDelegate {
 }
 
 public class StoryViewController: UICollectionViewCell {
-    
-    
+
     var viewIndex = 0
     var delegate:StoryViewDelegate?
     
@@ -31,6 +30,8 @@ public class StoryViewController: UICollectionViewCell {
     var currentProgress:Double = 0.0
     var timer:NSTimer?
     
+    var totalTime:Double = 0.0
+    
     var story:Story!
         {
         didSet {
@@ -39,6 +40,11 @@ public class StoryViewController: UICollectionViewCell {
             enableTap()
             viewIndex = 0
             setupItem({})
+            progressBar.createProgressIndicator(story)
+            
+            for item in story.getItems() {
+                totalTime += item.getLength()
+            }
             
         }
     }
@@ -50,6 +56,7 @@ public class StoryViewController: UICollectionViewCell {
         self.contentView.addSubview(self.videoContent)
         self.contentView.addSubview(self.fadeCover)
         self.contentView.addSubview(self.authorOverlay)
+        self.contentView.addSubview(self.progressBar)
         
         self.fadeCover.alpha = 0.0
         
@@ -60,11 +67,6 @@ public class StoryViewController: UICollectionViewCell {
         let centerY = (UIScreen.mainScreen().bounds.size.height) / 2
         activityView.center = CGPointMake(centerX, centerY)
         self.contentView.addSubview(activityView)
-        
-        self.layer.borderColor = UIColor.blackColor().CGColor
-        self.layer.borderWidth = 1.0
-        self.layer.cornerRadius = 8.0
-        self.clipsToBounds = true
     
     }
     
@@ -142,6 +144,7 @@ public class StoryViewController: UICollectionViewCell {
     
     func setForPlay() {
         guard let item = self.item else {return}
+        var itemLength = item.getLength()
         if item.contentType == .Image {
             //content.hidden = false
             videoContent.hidden = true
@@ -150,9 +153,13 @@ public class StoryViewController: UICollectionViewCell {
             //content.hidden = true
             videoContent.hidden = false
             playVideo()
+            if let currentItem = playerLayer?.player?.currentTime() {
+                itemLength -= currentItem.seconds
+            }
         }
-        
-        timer = NSTimer.scheduledTimerWithTimeInterval(item.getLength(), target: self, selector: #selector(nextItem), userInfo: nil, repeats: false)
+        self.progressBar.hidden = false
+        self.progressBar.activateIndicator(viewIndex)
+        timer = NSTimer.scheduledTimerWithTimeInterval(itemLength, target: self, selector: #selector(nextItem), userInfo: nil, repeats: false)
     }
     
     func createVideoPlayer() {
@@ -160,6 +167,7 @@ public class StoryViewController: UICollectionViewCell {
         if playerLayer == nil {
             playerLayer = AVPlayerLayer(player: AVPlayer())
             playerLayer!.player?.actionAtItemEnd = .Pause
+            playerLayer!.videoGravity = AVLayerVideoGravityResizeAspectFill
             
             playerLayer!.frame = videoContent.bounds
             self.videoContent.layer.addSublayer(playerLayer!)
@@ -205,10 +213,13 @@ public class StoryViewController: UICollectionViewCell {
         if isPresenting {
             
         } else {
+            self.progressBar.hidden = true
             killTimer()
             if item!.contentType == .Video {
+                
                 guard let time = playerLayer?.player?.currentTime() else { return }
                 self.pauseVideo()
+                
                 
                 guard let currentItem = playerLayer?.player?.currentItem else { return }
                 
@@ -258,8 +269,10 @@ public class StoryViewController: UICollectionViewCell {
     }()
     
     public lazy var videoContent: UIView = {
-
-        let view: UIImageView = UIImageView(frame: self.contentView.bounds)
+        let width: CGFloat = (UIScreen.mainScreen().bounds.size.width)
+        let height: CGFloat = (UIScreen.mainScreen().bounds.size.height)
+        let frame = CGRectMake(0,-6,width, height + 12)
+        let view: UIImageView = UIImageView(frame: frame)
         view.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
         view.backgroundColor = UIColor.clearColor()
         view.clipsToBounds = true
@@ -277,13 +290,24 @@ public class StoryViewController: UICollectionViewCell {
     }()
     
     lazy var authorOverlay: PostAuthorView = {
-        let margin:CGFloat = 6.0
+        let margin:CGFloat = 3.0
         var authorView = UINib(nibName: "PostAuthorView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! PostAuthorView
         let width: CGFloat = (UIScreen.mainScreen().bounds.size.width)
         let height: CGFloat = (UIScreen.mainScreen().bounds.size.height)
         
-        authorView.frame = CGRect(x: margin, y: height - authorView.frame.height - margin, width: width, height: authorView.frame.height)
+        authorView.frame = CGRect(x: margin, y: margin + 2.0, width: width, height: authorView.frame.height)
         authorView.authorTappedHandler = self.authorTappedHandler
         return authorView
+    }()
+    
+    lazy var progressBar: StoryProgressIndicator = {
+        let screenWidth: CGFloat = (UIScreen.mainScreen().bounds.size.width)
+        let screenHeight: CGFloat = (UIScreen.mainScreen().bounds.size.height)
+        let width: CGFloat = screenWidth
+        let height: CGFloat = 2.0
+        
+        let bar = StoryProgressIndicator(frame: CGRectMake(0,0,width,height))
+        
+        return bar
     }()
 }

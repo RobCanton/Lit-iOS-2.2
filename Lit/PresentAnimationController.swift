@@ -14,7 +14,7 @@ public final class PresentAnimationController: NSObject, UIViewControllerAnimate
     
     public weak var transitionController: TransitionController!
     
-    public var transitionDuration: NSTimeInterval = 0.5
+    public var transitionDuration: NSTimeInterval = 0.45
     
     public var usingSpringWithDamping: CGFloat = 0.95
     
@@ -93,7 +93,7 @@ public final class PresentAnimationController: NSObject, UIViewControllerAnimate
         UIView.animateWithDuration(duration, delay: 0.0, usingSpringWithDamping: self.usingSpringWithDamping, initialSpringVelocity: self.initialSpringVelocity, options: self.animationOptions, animations: {
             
             initialTransitionView.frame = destinationFrame
-            initialTransitionView.alpha = 0.0
+            //initialTransitionView.alpha = 0.0
             destinationTransitionView.frame = destinationFrame
             destinationTransitionView.alpha = 1.0
             toViewControllerView.alpha = 1.0

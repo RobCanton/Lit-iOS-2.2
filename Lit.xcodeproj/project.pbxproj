@@ -170,6 +170,8 @@
 		B0BA326A1DA7158B004352A7 /* HeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0BA32681DA7158B004352A7 /* HeaderView.xib */; };
 		B0BA326C1DA7163D004352A7 /* CreateProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0BA326B1DA7163D004352A7 /* CreateProfileHeaderView.xib */; };
 		B0BA326E1DA7165A004352A7 /* CreateProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0BA326D1DA7165A004352A7 /* CreateProfileHeaderView.swift */; };
+		B0DAFBCE1DF8CB78004EB03D /* StoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FC99D11DE7983A00683155 /* StoryViewController.swift */; };
+		B0DAFBD01DF947E8004EB03D /* ProgressIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DAFBCF1DF947E8004EB03D /* ProgressIndicator.swift */; };
 		B0E591571DD1218D00C032D6 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E591561DD1218D00C032D6 /* SettingsViewController.swift */; };
 		B0E591591DD126C900C032D6 /* LogoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E591581DD126C900C032D6 /* LogoutView.swift */; };
 		B0E5915B1DD126D600C032D6 /* LogoutView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0E5915A1DD126D600C032D6 /* LogoutView.xib */; };
@@ -203,7 +205,6 @@
 		B0E8E3531DE265D50077D1BC /* Story.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E8E3521DE265D40077D1BC /* Story.swift */; };
 		B0ED4B671DBD84D20040E5F0 /* LocationDetailsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0ED4B661DBD84D20040E5F0 /* LocationDetailsView.xib */; };
 		B0ED4B691DBD85130040E5F0 /* LocationDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0ED4B681DBD85130040E5F0 /* LocationDetailsView.swift */; };
-		B0FC99D21DE7983A00683155 /* StoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FC99D11DE7983A00683155 /* StoryViewController.swift */; };
 		B0FF11451D3EB32100D709CE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FF11441D3EB32100D709CE /* AppDelegate.swift */; };
 		B0FF11471D3EB32100D709CE /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FF11461D3EB32100D709CE /* LoginViewController.swift */; };
 		B0FF114C1D3EB32100D709CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B0FF114B1D3EB32100D709CE /* Assets.xcassets */; };
@@ -381,6 +382,7 @@
 		B0BA32681DA7158B004352A7 /* HeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeaderView.xib; sourceTree = "<group>"; };
 		B0BA326B1DA7163D004352A7 /* CreateProfileHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreateProfileHeaderView.xib; sourceTree = "<group>"; };
 		B0BA326D1DA7165A004352A7 /* CreateProfileHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateProfileHeaderView.swift; sourceTree = "<group>"; };
+		B0DAFBCF1DF947E8004EB03D /* ProgressIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressIndicator.swift; sourceTree = "<group>"; };
 		B0E591561DD1218D00C032D6 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		B0E591581DD126C900C032D6 /* LogoutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogoutView.swift; sourceTree = "<group>"; };
 		B0E5915A1DD126D600C032D6 /* LogoutView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LogoutView.xib; sourceTree = "<group>"; };
@@ -715,6 +717,8 @@
 				B0E8E3381DDF73390077D1BC /* PostCollectionViewCell.swift */,
 				B0E8E3281DDB82830077D1BC /* PresentedViewController.swift */,
 				B0FC99D11DE7983A00683155 /* StoryViewController.swift */,
+				76B7212A1D5E377D002B4491 /* StoryProgressIndicator.swift */,
+				B0DAFBCF1DF947E8004EB03D /* ProgressIndicator.swift */,
 				B0E8E32E1DDBC44C0077D1BC /* PostAuthorView.xib */,
 				B0E8E3301DDBC4640077D1BC /* PostAuthorView.swift */,
 				B0321ECD1DB56BF900AD4C53 /* LocationHeaderView.swift */,
@@ -801,7 +805,6 @@
 				768C67671D586C26003A76D5 /* DEPRECATED_StoryViewController.swift */,
 				B00BA91B1D9D6DB600F5EA30 /* StoryItemViewController.swift */,
 				B00BA91C1D9D6DB600F5EA30 /* StoryItemViewController.xib */,
-				76B7212A1D5E377D002B4491 /* StoryProgressIndicator.swift */,
 				B05DB1291DA22D9600567996 /* LocationFriendsViewController.swift */,
 				762F82931D62573300549E1B /* GalleryViewController.swift */,
 			);
@@ -1039,7 +1042,6 @@
 				768C67681D586C26003A76D5 /* DEPRECATED_StoryViewController.swift in Sources */,
 				B0E8E3101DD7AC190077D1BC /* FollowButton.swift in Sources */,
 				B0351FB91DED0503000A4BF5 /* NVActivityIndicatorPresenter.swift in Sources */,
-				B0FC99D21DE7983A00683155 /* StoryViewController.swift in Sources */,
 				B0351FA51DED0503000A4BF5 /* NVActivityIndicatorAnimationBallScaleRipple.swift in Sources */,
 				B00BA9221D9E4E0700F5EA30 /* FirstScreenViewController.swift in Sources */,
 				B00BA91D1D9D6DB600F5EA30 /* StoryItemViewController.swift in Sources */,
@@ -1055,6 +1057,7 @@
 				76D2E46B1D7F50AF00B7C939 /* City.swift in Sources */,
 				B0321EC41DB5337900AD4C53 /* DismissAnimator.swift in Sources */,
 				B0FF11471D3EB32100D709CE /* LoginViewController.swift in Sources */,
+				B0DAFBCE1DF8CB78004EB03D /* StoryViewController.swift in Sources */,
 				76136D3F1D493786003DB433 /* Location.swift in Sources */,
 				B0E8E3441DE203720077D1BC /* UserStoryTableViewCell.swift in Sources */,
 				765036281D59170E0062BCF0 /* StoryItem.swift in Sources */,
@@ -1174,6 +1177,7 @@
 				76136D451D495E8E003DB433 /* FirebaseService.swift in Sources */,
 				B09D5FD31DA57CE9004A188E /* ModalViewController.swift in Sources */,
 				76EE2B941D87653700EDB4CB /* ActivityViewController.swift in Sources */,
+				B0DAFBD01DF947E8004EB03D /* ProgressIndicator.swift in Sources */,
 				B03504BF1DD017BB00C9C83F /* LocationService.swift in Sources */,
 				B0E8E3261DDB817B0077D1BC /* UIView+SnapshotImage.swift in Sources */,
 				B0E8E3291DDB82830077D1BC /* PresentedViewController.swift in Sources */,

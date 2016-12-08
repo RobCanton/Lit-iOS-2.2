@@ -53,7 +53,7 @@ class MainViewController: UICollectionViewController, StoreSubscriber, CLLocatio
     }
     
     override func prefersStatusBarHidden() -> Bool {
-        return true
+        return false
     }
     
     var activeLocation:Location?

@@ -74,7 +74,14 @@ class LocationCell: UICollectionViewCell {
         didSet {
             if let location = location {
                 imageView.image = nil
-                loadLocationImage(location.getImageURL() , completion: { (notFromCache) in})
+                loadLocationImage(location.getImageURL() , completion: { (notFromCache) in
+                    if notFromCache {
+                        self.imageCoverView.alpha = 1.0
+                        UIView.animateWithDuration(0.2, animations: {
+                            self.imageCoverView.alpha = self.getImageCoverAlpha()
+                        })
+                    }
+                })
                 
                 self.titleLabel.styleLocationTitle(location.getName(), size: 32.0)
                 
