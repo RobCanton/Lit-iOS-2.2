@@ -32,6 +32,8 @@ public class StoryViewController: UICollectionViewCell {
     
     var totalTime:Double = 0.0
     
+    var progressBar:StoryProgressIndicator?
+    
     var story:Story!
         {
         didSet {
@@ -40,7 +42,15 @@ public class StoryViewController: UICollectionViewCell {
             enableTap()
             viewIndex = 0
             setupItem({})
-            progressBar.createProgressIndicator(story)
+            let screenWidth: CGFloat = (UIScreen.mainScreen().bounds.size.width)
+            let screenHeight: CGFloat = (UIScreen.mainScreen().bounds.size.height)
+            let width: CGFloat = screenWidth
+            let height: CGFloat = 2.0
+            
+            progressBar?.removeFromSuperview()
+            progressBar = StoryProgressIndicator(frame: CGRectMake(0,0,width,height))
+            progressBar!.createProgressIndicator(story)
+            contentView.addSubview(progressBar!)
             
             for item in story.getItems() {
                 totalTime += item.getLength()
@@ -56,7 +66,6 @@ public class StoryViewController: UICollectionViewCell {
         self.contentView.addSubview(self.videoContent)
         self.contentView.addSubview(self.fadeCover)
         self.contentView.addSubview(self.authorOverlay)
-        self.contentView.addSubview(self.progressBar)
         
         self.fadeCover.alpha = 0.0
         
@@ -130,8 +139,7 @@ public class StoryViewController: UICollectionViewCell {
             story.downloadStory({ complete in
                 if complete {
                     
-                    /* RECURSIVE CALL */
-                    self.loadVideoContent(item, completion: {
+                    self.setupItem({
                         self.activityView.stopAnimating()
                         self.enableTap()
                         self.fadeCoverOut()
@@ -162,12 +170,11 @@ public class StoryViewController: UICollectionViewCell {
                 itemLength -= currentItem.seconds
             }
         }
-        self.progressBar.activateIndicator(viewIndex)
+        self.progressBar?.activateIndicator(viewIndex)
         timer = NSTimer.scheduledTimerWithTimeInterval(itemLength, target: self, selector: #selector(nextItem), userInfo: nil, repeats: false)
     }
     
     func createVideoPlayer() {
-        print("createVideoPlayer")
         if playerLayer == nil {
             playerLayer = AVPlayerLayer(player: AVPlayer())
             playerLayer!.player?.actionAtItemEnd = .Pause
@@ -186,14 +193,18 @@ public class StoryViewController: UICollectionViewCell {
         
     }
     
+    func cleanUp() {
+        destroyVideoPlayer()
+        killTimer()
+        progressBar?.resetAllProgressBars()
+    }
+    
     
     func playVideo() {
-        print("playVideo")
         self.playerLayer?.player?.play()
     }
     
     func pauseVideo() {
-        print("pauseVideo")
         self.playerLayer?.player?.pause()
     }
     
@@ -301,15 +312,15 @@ public class StoryViewController: UICollectionViewCell {
         authorView.authorTappedHandler = self.authorTappedHandler
         return authorView
     }()
-    
-    lazy var progressBar: StoryProgressIndicator = {
-        let screenWidth: CGFloat = (UIScreen.mainScreen().bounds.size.width)
-        let screenHeight: CGFloat = (UIScreen.mainScreen().bounds.size.height)
-        let width: CGFloat = screenWidth
-        let height: CGFloat = 2.0
-        
-        let bar = StoryProgressIndicator(frame: CGRectMake(0,0,width,height))
-        
-        return bar
-    }()
+//    
+//    lazy var progressBar: StoryProgressIndicator = {
+//        let screenWidth: CGFloat = (UIScreen.mainScreen().bounds.size.width)
+//        let screenHeight: CGFloat = (UIScreen.mainScreen().bounds.size.height)
+//        let width: CGFloat = screenWidth
+//        let height: CGFloat = 2.0
+//        
+//        let bar = StoryProgressIndicator(frame: CGRectMake(0,0,width,height))
+//        
+//        return bar
+//    }()
 }

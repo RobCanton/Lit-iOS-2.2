@@ -422,7 +422,8 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         self.selectedIndexPath = indexPath
         
         let presentedViewController: PresentedViewController = PresentedViewController()
-        presentedViewController.tabBarRef = self.tabBarController! as! PopUpTabBarController
+        guard let tabBarController = self.tabBarController as? PopUpTabBarController else { return }
+        presentedViewController.tabBarRef = tabBarController
         presentedViewController.stories = stories
         presentedViewController.transitionController = self.transitionController
         let i = NSIndexPath(forItem: indexPath.row, inSection: 0)

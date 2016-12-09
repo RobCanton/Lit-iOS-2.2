@@ -36,8 +36,7 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
         clearDirectory("temp")
 
         for cell in collectionView.visibleCells() as! [StoryViewController] {
-            cell.destroyVideoPlayer()
-            cell.killTimer()
+            cell.cleanUp()
         }
         
     }
@@ -166,7 +165,7 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
         let cell: StoryViewController = collectionView.dequeueReusableCellWithReuseIdentifier("presented_cell", forIndexPath: indexPath) as! StoryViewController
         cell.contentView.backgroundColor = UIColor.redColor()
         cell.story = stories[indexPath.item]
-        cell.authorOverlay.authorTappedHandler = showAuthor
+       // cell.authorOverlay.authorTappedHandler = showAuthor
         cell.delegate = self
         return cell
     }
@@ -229,8 +228,7 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
     
     func collectionView(collectionView: UICollectionView, didEndDisplayingCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
         let cell = cell as! StoryViewController
-        cell.destroyVideoPlayer()
-        cell.killTimer()
+        cell.cleanUp()
     }
     
 }

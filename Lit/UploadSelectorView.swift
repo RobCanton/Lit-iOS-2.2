@@ -68,6 +68,7 @@ class UploadSelectorView: MessageView {
     }
     
     func send(sender:UIButton) {
+        sender.enabled = false
         
         let toUserProfile = profileRow.isActive
         var locationKey:String = ""

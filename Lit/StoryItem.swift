@@ -126,7 +126,7 @@ class StoryItem: NSObject, NSCoding {
     
     func needsDownload() -> Bool{
         if contentType == .Image {
-            if let cachedImage = imageCache.objectForKey(downloadUrl) as? UIImage {
+            if let cachedImage = imageCache.objectForKey(downloadUrl.absoluteString) as? UIImage {
                 image = cachedImage
                 return false
             }

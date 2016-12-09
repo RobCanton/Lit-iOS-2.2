@@ -29,8 +29,11 @@ class StoryProgressIndicator: UIView {
 
     
     func createProgressIndicator(_story:Story) {
+        //destroyStoryProgressIndicator()
+        progressBars = [ProgressIndicator]()
         storyItems = _story.getItems()
         if storyItems.count > 0 {
+            
 
             let totalWidth = self.frame.width
             let gapWidth = CGFloat(storyItems.count - 1) * gap
@@ -46,13 +49,22 @@ class StoryProgressIndicator: UIView {
             for i in 0 ... storyItems.count - 1 {
                 let item = storyItems[i]
                 let barWidth = itemWidth
-                let frame = CGRect(x: x, y: CGFloat(0), width: barWidth, height: 2.0)
+                let frame = CGRect(x: x, y: CGFloat(0), width: barWidth, height: 2.5)
                 let bar = ProgressIndicator(frame: frame)
                 progressBars.append(bar)
                 self.addSubview(bar)
                 
                 x += barWidth + gap
+           
             }
+        }
+        print("CREATED PROGRESS BAR")
+        print(" * \(storyItems.count) indicators")
+        
+        var count = 0
+        for bar in progressBars {
+            print("* Bar \(count) - \(storyItems[count].getKey())")
+            count += 1
         }
     }
 
@@ -71,6 +83,23 @@ class StoryProgressIndicator: UIView {
             }
             
         }
+    }
+    
+    
+    func resetAllProgressBars() {
+        for bar in progressBars {
+            bar.removeAnimation()
+            bar.resetProgress()
+        }
+    }
+    
+    func destroyStoryProgressIndicator() {
+        for bar in progressBars {
+            bar.removeAnimation()
+            bar.resetProgress()
+            bar.removeFromSuperview()
+        }
+        progressBars = [ProgressIndicator]()
     }
     
 

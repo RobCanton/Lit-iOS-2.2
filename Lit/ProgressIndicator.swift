@@ -19,7 +19,8 @@ class ProgressIndicator: UIView {
         
         backgroundColor = UIColor(white: 1.0, alpha: 0.25)
         
-        progress = UIView(frame: CGRectMake(0,-1,0,bounds.height))
+        progress = UIView()
+        resetProgress()
         progress.backgroundColor = UIColor.whiteColor()
         addSubview(progress)
     }
@@ -33,14 +34,15 @@ class ProgressIndicator: UIView {
     }
     
     func startAnimating(duration:Double) {
+        removeAnimation()
         let animation = CABasicAnimation(keyPath: "bounds.size.width")
         animation.duration = duration
-        animation.fromValue = 0.0
+        animation.fromValue = progress.bounds.width
         animation.toValue = bounds.width
         animation.fillMode = kCAFillModeForwards
         animation.removedOnCompletion = false
         
-        progress.layer.anchorPoint = CGPointZero
+        progress.layer.anchorPoint = CGPointMake(0,0.5)
         progress.layer.addAnimation(animation, forKey: "bounds")
     }
     
@@ -59,7 +61,15 @@ class ProgressIndicator: UIView {
     
     func completeAnimation() {
         removeAnimation()
+        completeProgress()
+    }
+    
+    func completeProgress() {
         progress.frame = CGRectMake(0,0,bounds.width,bounds.height)
+    }
+    
+    func resetProgress() {
+        progress.frame = CGRectMake(0,0,0,bounds.height)
     }
 
 }

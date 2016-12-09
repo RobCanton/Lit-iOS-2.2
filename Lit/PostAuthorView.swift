@@ -11,6 +11,9 @@ import QuartzCore
 
 class PostAuthorView: UIView {
 
+    
+    @IBOutlet weak var locationLabel: UILabel!
+    
     @IBOutlet weak var authorImageView: UIImageView!
     @IBOutlet weak var authorUsernameLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
@@ -50,6 +53,12 @@ class PostAuthorView: UIView {
             }
         })
         timeLabel.text = post.getDateCreated()!.timeStringSinceNow()
+
+        for location in mainStore.state.locations {
+            if location.getKey() == post.getLocationKey() {
+                locationLabel.text = location.getName().lowercaseString
+            }
+        }
     }
     
     func authorTapped(gesture:UITapGestureRecognizer) {
@@ -118,4 +127,6 @@ class PostAuthorView: UIView {
         progressCircle.addAnimation(animation, forKey: aniKey)
         circle.hidden = false
     }
+    
+    
 }

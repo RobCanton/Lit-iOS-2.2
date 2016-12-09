@@ -624,7 +624,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     
     func updateProgress() {
         
-        let maxDuration = CGFloat(10) // Max duration of the recordButton
+        let maxDuration = CGFloat(0) // Max duration of the recordButton
         
         progress = progress + (CGFloat(0.05) / maxDuration)
         recordButton.setProgress(progress)
