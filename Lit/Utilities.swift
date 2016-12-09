@@ -137,7 +137,6 @@ func loadVideoFromCache(key:String) -> NSData? {
 
 func saveVideoInCache(key:String, data:NSData) {
     videoCache.setObject(data, forKey: key)
-    print("ADDED \(key) to video cache")
 }
 
 func downloadVideoWithKey(key:String, completion: (data:NSData)->()) {

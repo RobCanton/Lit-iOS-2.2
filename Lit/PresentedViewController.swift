@@ -28,17 +28,14 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        print("viewWillDisappear")
     }
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         tabBarRef.setTabBarVisible(true, animated: true)
-        print("viewDidDisappear")
         clearDirectory("temp")
 
         for cell in collectionView.visibleCells() as! [StoryViewController] {
-            print("DESTORY!")
             cell.destroyVideoPlayer()
             cell.killTimer()
         }
@@ -66,6 +63,9 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(appMovedToBackground), name:UIApplicationDidEnterBackgroundNotification, object: nil)
+        
         self.edgesForExtendedLayout = UIRectEdge.None
         self.extendedLayoutIncludesOpaqueBars = true
         self.automaticallyAdjustsScrollViewInsets = false
@@ -102,6 +102,13 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
         label.textAlignment = .Center
     }
     
+    func appMovedToBackground() {
+        print("App moved to background!")
+        if let navigationController = self.navigationController {
+            navigationController.popViewControllerAnimated(false)
+        }
+    }
+    
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         
         return UIScreen.mainScreen().bounds.size
@@ -110,7 +117,6 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
     // MARK: Elements
     
     func showAuthor(user:User) {
-        print("YO")
         self.navigationController?.delegate = self
         let controller = UIStoryboard(name: "Main", bundle: nil)
             .instantiateViewControllerWithIdentifier("UserProfileViewController") as! UserProfileViewController
@@ -185,6 +191,7 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
             navigationController.popViewControllerAnimated(true)
         }
     }
+
     
     // MARK: Gesture Delegate
     
@@ -202,7 +209,6 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
     }
     
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        print("STOP!")
         let xOffset = scrollView.contentOffset.x
         
         let newItem = Int(xOffset / self.collectionView.frame.width)

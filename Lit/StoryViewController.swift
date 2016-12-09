@@ -106,7 +106,7 @@ public class StoryViewController: UICollectionViewCell {
         }
         createVideoPlayer()
         if let videoData = loadVideoFromCache(item.key) {
-            print("We have the data")
+            
             let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
             let filePath = documentsURL.URLByAppendingPathComponent("temp/\(item.key).mp4")
             
@@ -135,15 +135,20 @@ public class StoryViewController: UICollectionViewCell {
                         self.activityView.stopAnimating()
                         self.enableTap()
                         self.fadeCoverOut()
-                        completion()
+                        self.setForPlay()
                     })
                 }
             })
         }
     }
     
+
+    
     func setForPlay() {
-        guard let item = self.item else {return}
+        guard let item = self.item else { return }
+        
+        guard !item.needsDownload() else { return }
+        
         var itemLength = item.getLength()
         if item.contentType == .Image {
             //content.hidden = false
@@ -157,7 +162,6 @@ public class StoryViewController: UICollectionViewCell {
                 itemLength -= currentItem.seconds
             }
         }
-        self.progressBar.hidden = false
         self.progressBar.activateIndicator(viewIndex)
         timer = NSTimer.scheduledTimerWithTimeInterval(itemLength, target: self, selector: #selector(nextItem), userInfo: nil, repeats: false)
     }
@@ -175,7 +179,6 @@ public class StoryViewController: UICollectionViewCell {
     }
     
     func destroyVideoPlayer() {
-        print("destroyVideoPlayer")
         self.playerLayer?.removeFromSuperlayer()
         self.playerLayer?.player = nil
         self.playerLayer = nil
@@ -213,7 +216,6 @@ public class StoryViewController: UICollectionViewCell {
         if isPresenting {
             
         } else {
-            self.progressBar.hidden = true
             killTimer()
             if item!.contentType == .Video {
                 

@@ -38,8 +38,6 @@ class StoryItem: NSObject, NSCoding {
     
     var delegate:ItemDelegate?
     
-    var isContentLoaded = false
-    
     init(key: String, authorId: String, locationKey:String, downloadUrl: NSURL, videoURL:NSURL?, contentType: ContentType, dateCreated: Double, length: Double)
     {
         
