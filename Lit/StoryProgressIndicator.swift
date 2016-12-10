@@ -58,14 +58,6 @@ class StoryProgressIndicator: UIView {
            
             }
         }
-        print("CREATED PROGRESS BAR")
-        print(" * \(storyItems.count) indicators")
-        
-        var count = 0
-        for bar in progressBars {
-            print("* Bar \(count) - \(storyItems[count].getKey())")
-            count += 1
-        }
     }
 
     

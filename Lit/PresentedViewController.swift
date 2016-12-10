@@ -15,6 +15,7 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
     var tabBarRef:PopUpTabBarController!
     var stories = [Story]()
     var currentIndex:NSIndexPath!
+    var collectionView:UICollectionView!
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -22,33 +23,16 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        print("viewWillAppear")
         tabBarRef.setTabBarVisible(false, animated: true)
     }
-
     
-    override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
-    }
-    
-    override func viewDidDisappear(animated: Bool) {
-        super.viewDidDisappear(animated)
-        tabBarRef.setTabBarVisible(true, animated: true)
-        clearDirectory("temp")
-
-        for cell in collectionView.visibleCells() as! [StoryViewController] {
-            cell.cleanUp()
-        }
-        
-    }
-    
-    var collectionView:UICollectionView!
-
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        print("viewDidAppear")
         let cell: StoryViewController = self.collectionView.cellForItemAtIndexPath(currentIndex) as! StoryViewController
         cell.setForPlay()
         self.navigationController?.delegate = transitionController
-        
         
         if let gestureRecognizers = self.view.gestureRecognizers {
             for gestureRecognizer in gestureRecognizers {
@@ -58,7 +42,27 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
             }
         }
     }
+
     
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+         print("viewWillDisappear")
+        for cell in collectionView.visibleCells() as! [StoryViewController] {
+            cell.yo()
+        }
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        print("viewDidDisappear")
+        tabBarRef.setTabBarVisible(true, animated: true)
+        clearDirectory("temp")
+
+        for cell in collectionView.visibleCells() as! [StoryViewController] {
+            cell.cleanUp()
+        }
+    }
+
 
     override func viewDidLoad() {
         super.viewDidLoad()

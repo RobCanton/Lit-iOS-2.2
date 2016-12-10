@@ -56,6 +56,8 @@ public class StoryViewController: UICollectionViewCell {
                 totalTime += item.getLength()
             }
             
+            getViews()
+            
         }
     }
     
@@ -66,6 +68,7 @@ public class StoryViewController: UICollectionViewCell {
         self.contentView.addSubview(self.videoContent)
         self.contentView.addSubview(self.fadeCover)
         self.contentView.addSubview(self.authorOverlay)
+        self.contentView.addSubview(self.statsView)
         
         self.fadeCover.alpha = 0.0
         
@@ -154,16 +157,14 @@ public class StoryViewController: UICollectionViewCell {
     
     func setForPlay() {
         guard let item = self.item else { return }
-        
+        print("setForPlay")
         guard !item.needsDownload() else { return }
-        
+        print("Item ready")
         var itemLength = item.getLength()
         if item.contentType == .Image {
-            //content.hidden = false
             videoContent.hidden = true
             
         } else if item.contentType == .Video {
-            //content.hidden = true
             videoContent.hidden = false
             playVideo()
             if let currentItem = playerLayer?.player?.currentTime() {
@@ -172,6 +173,7 @@ public class StoryViewController: UICollectionViewCell {
         }
         self.progressBar?.activateIndicator(viewIndex)
         timer = NSTimer.scheduledTimerWithTimeInterval(itemLength, target: self, selector: #selector(nextItem), userInfo: nil, repeats: false)
+        addView()
     }
     
     func createVideoPlayer() {
@@ -193,10 +195,34 @@ public class StoryViewController: UICollectionViewCell {
         
     }
     
+    func addView() {
+        guard let item = self.item else { return }
+        let postRef = FirebaseService.ref.child("uploads/\(item.getKey())/views/\(mainStore.state.userState.uid)")
+        postRef.setValue(true)
+    }
+    
+    func getViews() {
+        guard let item = self.item else { return }
+        let postRef = FirebaseService.ref.child("uploads/\(item.getKey())/views")
+        postRef.observeEventType(.Value, withBlock: { snapshot in
+            var viewers = [String]()
+            for child in snapshot.children {
+                viewers.append(child.key!!)
+            }
+            if viewers.count == 1 {
+               self.statsView.viewsLabel.text = "\(viewers.count) view"
+            } else {
+                self.statsView.viewsLabel.text = "\(viewers.count) views"
+            }
+        })
+    }
+    
     func cleanUp() {
         destroyVideoPlayer()
         killTimer()
         progressBar?.resetAllProgressBars()
+        guard let item = self.item else { return }
+        let postRef = FirebaseService.ref.child("uploads/\(item.getKey())/views").removeAllObservers()
     }
     
     
@@ -227,21 +253,25 @@ public class StoryViewController: UICollectionViewCell {
         if isPresenting {
             
         } else {
-            killTimer()
-            if item!.contentType == .Video {
-                
-                guard let time = playerLayer?.player?.currentTime() else { return }
-                self.pauseVideo()
-                
-                
-                guard let currentItem = playerLayer?.player?.currentItem else { return }
-                
-                let asset = currentItem.asset
-                if let image = generateVideoStill(asset, time: time) {
-                    content.image = image
-                }
 
+        }
+    }
+    
+    func yo() {
+        killTimer()
+        if item!.contentType == .Video {
+            
+            guard let time = playerLayer?.player?.currentTime() else { return }
+            self.pauseVideo()
+            
+            
+            guard let currentItem = playerLayer?.player?.currentItem else { return }
+            
+            let asset = currentItem.asset
+            if let image = generateVideoStill(asset, time: time) {
+                content.image = image
             }
+            
         }
     }
     
@@ -311,6 +341,16 @@ public class StoryViewController: UICollectionViewCell {
         authorView.frame = CGRect(x: margin, y: margin + 2.0, width: width, height: authorView.frame.height)
         authorView.authorTappedHandler = self.authorTappedHandler
         return authorView
+    }()
+    
+    lazy var statsView: PostStatsView = {
+
+        var view = UINib(nibName: "PostStatsView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! PostStatsView
+        let width: CGFloat = (UIScreen.mainScreen().bounds.size.width)
+        let height: CGFloat = (UIScreen.mainScreen().bounds.size.height)
+        
+        view.frame = CGRect(x: 0, y: height - view.frame.height, width: width, height: view.frame.height)
+        return view
     }()
 //    
 //    lazy var progressBar: StoryProgressIndicator = {
