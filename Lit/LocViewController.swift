@@ -213,6 +213,7 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         tableView!.parallaxHeader.minimumHeight = 0;
         tableView!.separatorColor = UIColor(white: 0.25, alpha: 1.0)
         tableView!.decelerationRate = UIScrollViewDecelerationRateFast
+        //tableView!.separatorInset = UIEdgeInsetsMake(0, 100, 0, 0)
         
         tableView!.backgroundColor = UIColor.blackColor()
         view.addSubview(tableView!)
@@ -380,11 +381,18 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
             return cell
         } else if indexPath.section == 1 {
             let cell = tableView.dequeueReusableCellWithIdentifier("UserStoryCell", forIndexPath: indexPath) as! UserStoryTableViewCell
+            let labelX = cell.usernameLabel.frame.origin.x
+            print("Story Cell LABELX")
+            cell.separatorInset = UIEdgeInsetsMake(0, labelX, 0, 0)
             cell.setStory(stories[indexPath.item])
             return cell
         } else if indexPath.section == 2 {
             let cell = tableView.dequeueReusableCellWithIdentifier("UserCell", forIndexPath: indexPath) as! UserViewCell
+            
             cell.setupUser(guests[indexPath.item])
+            let labelX = cell.usernameLabel.frame.origin.x
+            print("User Cell LABELX")
+            cell.separatorInset = UIEdgeInsetsMake(0, labelX, 0, 0)
             return cell
         }
         

@@ -449,6 +449,40 @@ class FirebaseService {
             }
         }
     }
+    
+    static func addView(postKey:String, uid:String) {
+        
+        let postRef = ref.child("uploads/\(postKey)")
+        postRef.child("views/\(uid)").observeEventType(.Value, withBlock: { snapshot in
+            if !snapshot.exists() {
+                print("ADDING VIEW")
+                postRef.child("views/\(uid)").setValue(true, withCompletionBlock: { error, ref in
+                    if error == nil {
+                        postRef.child("meta/views").runTransactionBlock({ (currentData: FIRMutableData) -> FIRTransactionResult in
+                            if var numViews = currentData.value as? Int {
+                                
+                                numViews += 1
+                                currentData.value = numViews
+                                
+                                return FIRTransactionResult.successWithValue(currentData)
+                            }
+                            else {
+                                currentData.value = 1
+                                return FIRTransactionResult.successWithValue(currentData)
+                            }
+                        }) { (error, committed, snapshot) in
+                            if let error = error {
+                                print(error.localizedDescription)
+                            }
+                        }
+                    }
+                })
+            } else {
+                print("View already exists")
+            }
+        })
+        
+    }
 
     
 

@@ -30,8 +30,9 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         print("viewDidAppear")
-        let cell: StoryViewController = self.collectionView.cellForItemAtIndexPath(currentIndex) as! StoryViewController
-        cell.setForPlay()
+        if let cell: StoryViewController = self.collectionView.cellForItemAtIndexPath(currentIndex) as? StoryViewController {
+            cell.setForPlay()
+        }
         self.navigationController?.delegate = transitionController
         
         if let gestureRecognizers = self.view.gestureRecognizers {

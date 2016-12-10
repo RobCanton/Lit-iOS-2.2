@@ -54,13 +54,13 @@ class UserStoryTableViewCell: UITableViewCell {
         
         if state == .Loaded {
             usernameLabel.textColor = UIColor.whiteColor()
-            timeLabel.text = "\(item.getDateCreated()!.timeStringSinceNowWithAgo()) • 4 views"
+            timeLabel.text = "\(item.getDateCreated()!.timeStringSinceNowWithAgo())"
         } else if state == .Loading {
             usernameLabel.textColor = UIColor.grayColor()
             timeLabel.text = "Loading..."
         } else if state == .NotLoaded {
             usernameLabel.textColor = UIColor.grayColor()
-            timeLabel.text = "\(item.getDateCreated()!.timeStringSinceNowWithAgo()) • 4 views"
+            timeLabel.text = "\(item.getDateCreated()!.timeStringSinceNowWithAgo())"
         }
     }
 }

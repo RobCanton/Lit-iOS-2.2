@@ -173,7 +173,7 @@ public class StoryViewController: UICollectionViewCell {
         }
         self.progressBar?.activateIndicator(viewIndex)
         timer = NSTimer.scheduledTimerWithTimeInterval(itemLength, target: self, selector: #selector(nextItem), userInfo: nil, repeats: false)
-        addView()
+        FirebaseService.addView(item.getKey(), uid: mainStore.state.userState.uid)
     }
     
     func createVideoPlayer() {
@@ -193,12 +193,6 @@ public class StoryViewController: UICollectionViewCell {
         self.playerLayer = nil
         videoContent.hidden = false
         
-    }
-    
-    func addView() {
-        guard let item = self.item else { return }
-        let postRef = FirebaseService.ref.child("uploads/\(item.getKey())/views/\(mainStore.state.userState.uid)")
-        postRef.setValue(true)
     }
     
     func getViews() {
