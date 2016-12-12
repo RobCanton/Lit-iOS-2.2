@@ -162,7 +162,7 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         collectionView!.dataSource = self
         collectionView!.delegate = self
         collectionView!.bounces = true
-        collectionView!.pagingEnabled = true
+        collectionView!.pagingEnabled = false
         collectionView!.showsVerticalScrollIndicator = false
         
         collectionView!.parallaxHeader.view = headerView
@@ -283,18 +283,22 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         }
     }
     
-
     let transitionController: TransitionController = TransitionController()
     var selectedIndexPath: NSIndexPath = NSIndexPath(forItem: 0, inSection: 0)
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        self.selectedIndexPath = indexPath
-        let cell = collectionView.cellForItemAtIndexPath(indexPath) as! PhotoCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(cellIdentifier, forIndexPath: indexPath) as! PhotoCell
         
-        let presentedViewController: PresentedViewController = PresentedViewController()
-        presentedViewController.tabBarRef = self.tabBarController! as! PopUpTabBarController
-        //presentedViewController.stories = stories
-        presentedViewController.transitionController = self.transitionController
+        
+        self.selectedIndexPath = indexPath
+        
+        let galleryViewController: GalleryViewController = GalleryViewController()
+        
+        guard let tabBarController = self.tabBarController as? PopUpTabBarController else { return }
+        
+        galleryViewController.photos = self.photos
+        galleryViewController.tabBarRef = tabBarController
+        galleryViewController.transitionController = self.transitionController
         self.transitionController.userInfo = ["destinationIndexPath": indexPath, "initialIndexPath": indexPath]
         
         // This example will push view controller if presenting view controller has navigation controller.
@@ -303,12 +307,9 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
             
             // Set transitionController as a navigation controller delegate and push.
             navigationController.delegate = transitionController
-            transitionController.push(viewController: presentedViewController, on: self, attached: presentedViewController)
+            transitionController.push(viewController: galleryViewController, on: self, attached: galleryViewController)
             
-        } else {
         }
-        
-        collectionView.deselectItemAtIndexPath(indexPath, animated: true)
         
     }
 }

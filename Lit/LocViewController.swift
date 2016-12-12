@@ -469,7 +469,7 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
 
     
     override func prefersStatusBarHidden() -> Bool {
-        return true
+        return false
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {

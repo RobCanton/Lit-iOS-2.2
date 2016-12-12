@@ -13,7 +13,6 @@
 		76136D451D495E8E003DB433 /* FirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76136D441D495E8E003DB433 /* FirebaseService.swift */; };
 		76136D471D49600B003DB433 /* LocationActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76136D461D49600B003DB433 /* LocationActions.swift */; };
 		76173B7B1D5784AC0093A137 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76173B791D5784AC0093A137 /* Main.storyboard */; };
-		762F82941D62573300549E1B /* GalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762F82931D62573300549E1B /* GalleryViewController.swift */; };
 		763566D01D4A835F000BAA08 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 763566CF1D4A835F000BAA08 /* Extensions.swift */; };
 		765036281D59170E0062BCF0 /* StoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765036271D59170E0062BCF0 /* StoryItem.swift */; };
 		767729831D5116930052CA17 /* CWStatusBarNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767729811D5116930052CA17 /* CWStatusBarNotification.swift */; };
@@ -52,6 +51,7 @@
 		B00BA9271D9E4E1D00F5EA30 /* CreateProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B00BA9251D9E4E1D00F5EA30 /* CreateProfileViewController.xib */; };
 		B011B3441DFBF5A100FA4633 /* PostStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B011B3431DFBF5A100FA4633 /* PostStatsView.swift */; };
 		B011B3461DFBF5B300FA4633 /* PostStatsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B011B3451DFBF5B300FA4633 /* PostStatsView.xib */; };
+		B011B3481DFE7FAD00FA4633 /* GalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B011B3471DFE7FAD00FA4633 /* GalleryViewController.swift */; };
 		B014410A1DCCFC5C00D95FCB /* ControlButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01441091DCCFC5C00D95FCB /* ControlButton.swift */; };
 		B01783901D98EF040088AD33 /* FriendRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B017838F1D98EF040088AD33 /* FriendRequest.swift */; };
 		B01783921D9A20F10088AD33 /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01783911D9A20F10088AD33 /* Friend.swift */; };
@@ -223,7 +223,6 @@
 		76136D441D495E8E003DB433 /* FirebaseService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
 		76136D461D49600B003DB433 /* LocationActions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationActions.swift; sourceTree = "<group>"; };
 		76173B7A1D5784AC0093A137 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		762F82931D62573300549E1B /* GalleryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryViewController.swift; sourceTree = "<group>"; };
 		763566CF1D4A835F000BAA08 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		765036271D59170E0062BCF0 /* StoryItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryItem.swift; sourceTree = "<group>"; };
 		767729811D5116930052CA17 /* CWStatusBarNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CWStatusBarNotification.swift; sourceTree = "<group>"; };
@@ -263,6 +262,7 @@
 		B00BA9251D9E4E1D00F5EA30 /* CreateProfileViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreateProfileViewController.xib; sourceTree = "<group>"; };
 		B011B3431DFBF5A100FA4633 /* PostStatsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostStatsView.swift; sourceTree = "<group>"; };
 		B011B3451DFBF5B300FA4633 /* PostStatsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostStatsView.xib; sourceTree = "<group>"; };
+		B011B3471DFE7FAD00FA4633 /* GalleryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryViewController.swift; sourceTree = "<group>"; };
 		B01441091DCCFC5C00D95FCB /* ControlButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControlButton.swift; sourceTree = "<group>"; };
 		B017838F1D98EF040088AD33 /* FriendRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendRequest.swift; sourceTree = "<group>"; };
 		B01783911D9A20F10088AD33 /* Friend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
@@ -546,6 +546,7 @@
 			children = (
 				B026A8481DAD76FB00DD2CCD /* UserProfileViewController.swift */,
 				B0236E121DC00E0A0083C720 /* CurrentUserProfileViewController.swift */,
+				B011B3471DFE7FAD00FA4633 /* GalleryViewController.swift */,
 				B0E8E30F1DD7AC190077D1BC /* FollowButton.swift */,
 				B03DED111DAED45A0062357A /* UserProfileControlBar.swift */,
 				B03DED0F1DAED40D0062357A /* UserProfileControlBarView.xib */,
@@ -706,6 +707,7 @@
 			children = (
 				B05ABD031D41211100364322 /* MainViewController.swift */,
 				B03504BC1DCFB2E000C9C83F /* ListViewController.swift */,
+				B0E8E33A1DDFC8D10077D1BC /* CompactPhotoCell.swift */,
 				76136D3B1D493713003DB433 /* LocationCell.swift */,
 				76136D381D4933F6003DB433 /* UltravisualLayout.swift */,
 			);
@@ -791,7 +793,6 @@
 			children = (
 				B08BBB951DBBE51400AD3FF1 /* EventsBannerView.swift */,
 				B08BBB931DBBE4FD00AD3FF1 /* EventsBannerView.xib */,
-				B0E8E33A1DDFC8D10077D1BC /* CompactPhotoCell.swift */,
 				B0E8E33B1DDFC8D10077D1BC /* CompactPhotoCell.xib */,
 				B09D5FD11DA57CE9004A188E /* ModalViewController.swift */,
 				B09D5FD01DA57CE9004A188E /* ModalViewController.storyboard */,
@@ -812,7 +813,6 @@
 				B00BA91B1D9D6DB600F5EA30 /* StoryItemViewController.swift */,
 				B00BA91C1D9D6DB600F5EA30 /* StoryItemViewController.xib */,
 				B05DB1291DA22D9600567996 /* LocationFriendsViewController.swift */,
-				762F82931D62573300549E1B /* GalleryViewController.swift */,
 			);
 			name = Deprecated;
 			sourceTree = "<group>";
@@ -1080,7 +1080,6 @@
 				B08BBB961DBBE51400AD3FF1 /* EventsBannerView.swift in Sources */,
 				B0ED4B691DBD85130040E5F0 /* LocationDetailsView.swift in Sources */,
 				B01CD8131DCC136800AA3499 /* EventCell.swift in Sources */,
-				762F82941D62573300549E1B /* GalleryViewController.swift in Sources */,
 				B0351F9D1DED0503000A4BF5 /* NVActivityIndicatorAnimationBallGridPulse.swift in Sources */,
 				B06D54C51D9ECB6D00F6A4A7 /* MadokaTextField.swift in Sources */,
 				B087E9C61D9B531A0079E2BF /* FriendsReducer.swift in Sources */,
@@ -1168,6 +1167,7 @@
 				B0254F781DB01FAE0082D898 /* JSQMessagesService.swift in Sources */,
 				B0E8E3471DE2167A0077D1BC /* ListHeaderView.swift in Sources */,
 				B0305A521DBE6F15009B5F74 /* WebViewController.swift in Sources */,
+				B011B3481DFE7FAD00FA4633 /* GalleryViewController.swift in Sources */,
 				B0E8E3271DDB817B0077D1BC /* View2ViewTransition.swift in Sources */,
 				B0351FBA1DED0503000A4BF5 /* NVActivityIndicatorShape.swift in Sources */,
 				B0351FA91DED0503000A4BF5 /* NVActivityIndicatorAnimationBallZigZag.swift in Sources */,

@@ -168,7 +168,7 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
         let cell: StoryViewController = collectionView.dequeueReusableCellWithReuseIdentifier("presented_cell", forIndexPath: indexPath) as! StoryViewController
-        cell.contentView.backgroundColor = UIColor.redColor()
+        cell.contentView.backgroundColor = UIColor.blackColor()
         cell.story = stories[indexPath.item]
        // cell.authorOverlay.authorTappedHandler = showAuthor
         cell.delegate = self
@@ -246,12 +246,6 @@ extension UIView
     }
 }
 
-func copyView(viewforCopy: UIView) -> UIView {
-    viewforCopy.hidden = false //The copy not works if is hidden, just prevention
-    let viewCopy = viewforCopy.snapshotViewAfterScreenUpdates(true)
-    viewforCopy.hidden = true
-    return viewCopy
-}
 
 extension PresentedViewController: View2ViewTransitionPresented {
     

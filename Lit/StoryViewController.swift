@@ -321,7 +321,6 @@ public class StoryViewController: UICollectionViewCell {
         
         let view: UIImageView = UIImageView(frame: self.contentView.bounds)
         view.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
-        view.backgroundColor = UIColor.clearColor()
         view.backgroundColor = UIColor.blackColor()
         return view
     }()

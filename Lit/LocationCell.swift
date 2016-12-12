@@ -74,8 +74,9 @@ class LocationCell: UICollectionViewCell {
         didSet {
             if let location = location {
                 imageView.image = nil
-                loadLocationImage(location.getImageURL() , completion: { (notFromCache) in
-                    if notFromCache {
+                loadLocationImage(location.getImageURL() , completion: { image, fromCache in
+                    self.imageView.image = image
+                    if !fromCache {
                         self.imageCoverView.alpha = 1.0
                         UIView.animateWithDuration(0.2, animations: {
                             self.imageCoverView.alpha = self.getImageCoverAlpha()
@@ -270,7 +271,7 @@ class LocationCell: UICollectionViewCell {
     }
     
     var task:NSURLSessionDataTask?
-    func loadLocationImage(_url:String, completion: (result: Bool)->()) {
+    func loadLocationImage(_url:String, completion: (image: UIImage, fromCache:Bool)->()) {
         if task != nil{
             
             task!.cancel()
@@ -279,8 +280,7 @@ class LocationCell: UICollectionViewCell {
         }
         
         if let file = location!.imageOnDiskURL {
-            self.imageView.image = UIImage(contentsOfFile: file.path!)
-            completion(result: false)
+            completion(image: UIImage(contentsOfFile: file.path!)!, fromCache:true)
         } else {
             // Otherwise, download image
             let url = NSURL(string: _url)
@@ -308,8 +308,7 @@ class LocationCell: UICollectionViewCell {
                     }
                     
                     dispatch_async(dispatch_get_main_queue(), {
-                        self.imageView.image = UIImage(data: data!)
-                        completion(result: true)
+                        completion(image: UIImage(data: data!)!, fromCache: false)
                     })
                     
             })
