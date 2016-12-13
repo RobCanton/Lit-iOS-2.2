@@ -52,6 +52,8 @@
 		B011B3441DFBF5A100FA4633 /* PostStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B011B3431DFBF5A100FA4633 /* PostStatsView.swift */; };
 		B011B3461DFBF5B300FA4633 /* PostStatsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B011B3451DFBF5B300FA4633 /* PostStatsView.xib */; };
 		B011B3481DFE7FAD00FA4633 /* GalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B011B3471DFE7FAD00FA4633 /* GalleryViewController.swift */; };
+		B011B34B1DFFB2BD00FA4633 /* InfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B011B3491DFFB2BD00FA4633 /* InfoTableViewCell.swift */; };
+		B011B34C1DFFB2BD00FA4633 /* InfoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B011B34A1DFFB2BD00FA4633 /* InfoTableViewCell.xib */; };
 		B014410A1DCCFC5C00D95FCB /* ControlButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01441091DCCFC5C00D95FCB /* ControlButton.swift */; };
 		B01783901D98EF040088AD33 /* FriendRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B017838F1D98EF040088AD33 /* FriendRequest.swift */; };
 		B01783921D9A20F10088AD33 /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01783911D9A20F10088AD33 /* Friend.swift */; };
@@ -263,6 +265,8 @@
 		B011B3431DFBF5A100FA4633 /* PostStatsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostStatsView.swift; sourceTree = "<group>"; };
 		B011B3451DFBF5B300FA4633 /* PostStatsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostStatsView.xib; sourceTree = "<group>"; };
 		B011B3471DFE7FAD00FA4633 /* GalleryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryViewController.swift; sourceTree = "<group>"; };
+		B011B3491DFFB2BD00FA4633 /* InfoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoTableViewCell.swift; sourceTree = "<group>"; };
+		B011B34A1DFFB2BD00FA4633 /* InfoTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InfoTableViewCell.xib; sourceTree = "<group>"; };
 		B01441091DCCFC5C00D95FCB /* ControlButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControlButton.swift; sourceTree = "<group>"; };
 		B017838F1D98EF040088AD33 /* FriendRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendRequest.swift; sourceTree = "<group>"; };
 		B01783911D9A20F10088AD33 /* Friend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
@@ -717,6 +721,8 @@
 			isa = PBXGroup;
 			children = (
 				B0321ECB1DB568BA00AD4C53 /* LocViewController.swift */,
+				B011B3491DFFB2BD00FA4633 /* InfoTableViewCell.swift */,
+				B011B34A1DFFB2BD00FA4633 /* InfoTableViewCell.xib */,
 				B003D49A1DE6B1A10026B2D8 /* EventTableViewCell.swift */,
 				B003D49B1DE6B1A10026B2D8 /* EventTableViewCell.xib */,
 				B0E8E3381DDF73390077D1BC /* PostCollectionViewCell.swift */,
@@ -944,6 +950,7 @@
 				B0E8E33D1DDFC8D30077D1BC /* CompactPhotoCell.xib in Resources */,
 				B09D5FD21DA57CE9004A188E /* ModalViewController.storyboard in Resources */,
 				B0E5915D1DD2988D00C032D6 /* ActiveLocationView.xib in Resources */,
+				B011B34C1DFFB2BD00FA4633 /* InfoTableViewCell.xib in Resources */,
 				B0ED4B671DBD84D20040E5F0 /* LocationDetailsView.xib in Resources */,
 				B00BA9271D9E4E1D00F5EA30 /* CreateProfileViewController.xib in Resources */,
 				B0E8E3451DE203720077D1BC /* UserStoryTableViewCell.xib in Resources */,
@@ -1139,6 +1146,7 @@
 				B02B37D91DB814C400174DE7 /* LeftTransition.swift in Sources */,
 				B0254F761DAFFCDC0082D898 /* ConversationsReducer.swift in Sources */,
 				B0E8E3221DDB817B0077D1BC /* DismissAnimationController.swift in Sources */,
+				B011B34B1DFFB2BD00FA4633 /* InfoTableViewCell.swift in Sources */,
 				B0351FB21DED0503000A4BF5 /* NVActivityIndicatorAnimationOrbit.swift in Sources */,
 				B03504BD1DCFB2E000C9C83F /* ListViewController.swift in Sources */,
 				B087E9C21D9B4D760079E2BF /* Listeners.swift in Sources */,

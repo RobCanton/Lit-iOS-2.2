@@ -1,3 +1,4 @@
+
 //
 //  LocViewController.swift
 //  Lit
@@ -5,7 +6,6 @@
 //  Created by Robert Canton on 2016-10-17.
 //  Copyright © 2016 Robert Canton. All rights reserved.
 //
-
 import UIKit
 import Firebase
 import ReSwift
@@ -37,7 +37,7 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
     var location: Location!
     override func viewWillAppear(animated: Bool) {
         mainStore.subscribe(self)
-
+        
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -142,7 +142,7 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
             indexPaths.append(NSIndexPath(forRow: i, inSection: 1))
         }
         
-         self.tableView?.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
+        self.tableView?.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
     }
     
     override func viewDidLayoutSubviews() {
@@ -167,7 +167,7 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         detailsView = UINib(nibName: "LocationDetailsView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as? LocationDetailsView
         
         detailsView.frame = CGRectMake(0, 0, self.view.frame.width, detailsView.frame.height)
-
+        
         let navHeight = screenStatusBarHeight + navigationController!.navigationBar.frame.height
         let slack:CGFloat = 1.0
         let eventsHeight:CGFloat = 0
@@ -177,7 +177,7 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         detailsView.descriptionLabel.text = "Swanky black & gold interior with metallic finishes, plus buzzing music for dancing crowds."
         detailsView.descriptionLabel.sizeToFit()
         detailsView.sizeToFit()
-
+        
         let difference  = detailsView.descriptionLabel.frame.height
         detailsView.frame = CGRectMake(0, 0, self.view.frame.width, detailsView.frame.height + difference)
         
@@ -195,8 +195,8 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         
         tableView = UITableView(frame: CGRectMake(0, 0, view.frame.width, view.frame.height))
         
-        let eventNib = UINib(nibName: "EventTableViewCell", bundle: nil)
-        tableView!.registerNib(eventNib, forCellReuseIdentifier: "EventCell")
+        let eventNib = UINib(nibName: "InfoTableViewCell", bundle: nil)
+        tableView!.registerNib(eventNib, forCellReuseIdentifier: "InfoCell")
         
         let nib = UINib(nibName: "UserStoryTableViewCell", bundle: nil)
         tableView!.registerNib(nib, forCellReuseIdentifier: "UserStoryCell")
@@ -209,18 +209,17 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         tableView!.showsVerticalScrollIndicator = false
         tableView!.parallaxHeader.view = headerView
         tableView!.parallaxHeader.height = UltravisualLayoutConstants.Cell.featuredHeight
-        tableView!.parallaxHeader.mode = .Fill
+        tableView!.parallaxHeader.mode = .Bottom
         tableView!.parallaxHeader.minimumHeight = 0;
-        tableView!.separatorColor = UIColor(white: 0.25, alpha: 1.0)
+        tableView!.separatorColor = UIColor(white: 0.08, alpha: 1.0)
         tableView!.decelerationRate = UIScrollViewDecelerationRateFast
-        //tableView!.separatorInset = UIEdgeInsetsMake(0, 100, 0, 0)
         
         tableView!.backgroundColor = UIColor.blackColor()
         view.addSubview(tableView!)
         
         footerView = UINib(nibName: "LocationFooterView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! LocationFooterView
         footerView.frame = CGRectMake(0, 0, tableView!.frame.width, 120)
-
+        
         statusBarBG = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: navHeight))
         statusBarBG!.backgroundColor = UIColor(white: 0.0, alpha: 0.0)
         
@@ -236,13 +235,14 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         headerView.setHeaderLocation(location)
         titleLabel.styleLocationTitle(location.getName(), size: 32.0)
         titleLabel.applyShadow(4, opacity: 0.8, height: 4, shouldRasterize: false)
+        //detailsView.setLocation(location)
         
-//        FirebaseService.getLocationEvents(location.getKey(), completionHandler: { events in
-//            if events.count > 0 {
-//                self.events = events
-//                self.tableView!.reloadData()
-//            }
-//        })
+        //        FirebaseService.getLocationEvents(location.getKey(), completionHandler: { events in
+        //            if events.count > 0 {
+        //                self.events = events
+        //                self.tableView!.reloadData()
+        //            }
+        //        })
         
         tableView!.tableFooterView = UIView(frame: CGRectMake(0,0,tableView!.frame.width, 90))
         guests = location.getVisitors()
@@ -281,7 +281,7 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
     func showEvents(gesture:UITapGestureRecognizer) {
         if let _ = location {
             let controller = UIStoryboard(name: "EventsViewController", bundle: nil)
-            .instantiateViewControllerWithIdentifier("EventsViewController") as! EventsViewController
+                .instantiateViewControllerWithIdentifier("EventsViewController") as! EventsViewController
             controller._events = events
             self.navigationController?.pushViewController(controller, animated: true)
         }
@@ -325,17 +325,20 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         
         let headerView = UINib(nibName: "ListHeaderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! ListHeaderView
         if section == 0 {
-            if events.count > 0 {
-                headerView.label.text = ""
-                headerView.label.textColor = UIColor.whiteColor()
-            } else {
-                headerView.label.text = "No Upcoming Events"
-                headerView.label.textColor = UIColor.grayColor()
-            }
+            headerView.hidden = true
+//            if events.count > 0 {
+//                headerView.label.text = ""
+//                headerView.label.textColor = UIColor.whiteColor()
+//            } else {
+//                headerView.label.text = "No Upcoming Events"
+//                headerView.label.textColor = UIColor.grayColor()
+//            }
             
         } else if section == 1 {
+            headerView.hidden = false
             headerView.label.text = "Recent Updates"
         } else if section == 2 {
+            headerView.hidden = false
             headerView.label.text = "Guests"
         }
         return headerView
@@ -345,9 +348,7 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if section == 0 {
-            if events.count > 0 {
-                return 1
-            } else { return 0 }
+            return 2
         }
         if section == 1 {
             return stories.count
@@ -362,7 +363,7 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         
         switch indexPath.section {
         case 0:
-            return 200
+            return 46
         case 1:
             return 80
         case 2:
@@ -373,23 +374,22 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-
+        
         if indexPath.section == 0 {
-            let cell = tableView.dequeueReusableCellWithIdentifier("EventCell", forIndexPath: indexPath) as! EventTableViewCell
-            cell.events = events
+            let cell = tableView.dequeueReusableCellWithIdentifier("InfoCell", forIndexPath: indexPath) as! InfoTableViewCell
+            if indexPath.row == 0 {
+               cell.label.text = location.getAddress()
+            } else if indexPath.row == 1 {
+                cell.label.text = "Tonight - 12 Bars"
+            }
             return cell
         } else if indexPath.section == 1 {
             let cell = tableView.dequeueReusableCellWithIdentifier("UserStoryCell", forIndexPath: indexPath) as! UserStoryTableViewCell
-            let labelX = cell.usernameLabel.frame.origin.x
-            cell.separatorInset = UIEdgeInsetsMake(0, labelX, 0, 0)
             cell.setStory(stories[indexPath.item])
             return cell
         } else if indexPath.section == 2 {
             let cell = tableView.dequeueReusableCellWithIdentifier("UserCell", forIndexPath: indexPath) as! UserViewCell
-            
             cell.setupUser(guests[indexPath.item])
-            let labelX = cell.usernameLabel.frame.origin.x
-            cell.separatorInset = UIEdgeInsetsMake(0, labelX, 0, 0)
             return cell
         }
         
@@ -427,8 +427,7 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         self.selectedIndexPath = indexPath
         
         let presentedViewController: PresentedViewController = PresentedViewController()
-        guard let tabBarController = self.tabBarController as? PopUpTabBarController else { return }
-        presentedViewController.tabBarRef = tabBarController
+        presentedViewController.tabBarRef = self.tabBarController! as! PopUpTabBarController
         presentedViewController.stories = stories
         presentedViewController.transitionController = self.transitionController
         let i = NSIndexPath(forItem: indexPath.row, inSection: 0)
@@ -444,26 +443,31 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
             
         }
     }
-
+    
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         let progress = scrollView.parallaxHeader.progress
         headerView.setProgress(progress)
-        let titlePoint = headerView.locationTitle.frame.origin
+        let titlePoint = headerView.locationTitle.center
+        let half =  tableView!.parallaxHeader.height / 2
+        let convertPoint = headerView.locationTitle.convertPoint(titlePoint, toView: self.view).y - half
         
         if let _ = titleLabel {
-            if titlePoint.y <= titleLabel.frame.origin.y {
+            if convertPoint <= titleLabel.frame.origin.y {
                 headerView.locationTitle.hidden = true
                 titleLabel.hidden = false
-                statusBarBG!.backgroundColor = UIColor(white: 0.0, alpha: 1.0)
             } else {
                 headerView.locationTitle.hidden = false
                 titleLabel.hidden = true
-                statusBarBG!.backgroundColor = UIColor(white: 0.0, alpha: 0)
             }
         }
+        if progress < -0.75 {
+            statusBarBG!.backgroundColor = UIColor(white: 0.0, alpha: 1.0)
+        } else {
+            statusBarBG!.backgroundColor = UIColor(white: 0.0, alpha: 0)
+        }
     }
-
+    
     
     override func prefersStatusBarHidden() -> Bool {
         return false
@@ -488,7 +492,7 @@ extension LocViewController: View2ViewTransitionPresenting {
         let margin = (cell.frame.height - image_height) / 2
         let x = cell.frame.origin.x + margin
         let y = cell.frame.origin.y + margin
-
+        
         let rect = CGRectMake(x,y,image_height, image_height)
         return self.tableView!.convertRect(rect, toView: self.tableView!.superview)
     }
