@@ -40,6 +40,23 @@ func LocationsReducer(action: Action, state:[Location]?) -> [Location] {
     return state
 }
 
+func NearbyLocationsReducer(action: Action, state:[String]?) -> [String] {
+    var state = state ?? [String]()
+    
+    switch action {
+    case _ as SetLocations:
+        let a = action as! SetLocations
+        state = a.locations
+        break
+    case _ as ClearLocations:
+        state = [String]()
+        break
+    default:
+        break
+    }
+    return state
+}
+
 func CitiesReducer(action: Action, state:[City]?) -> [City] {
     var state = state ?? [City]()
     

@@ -24,8 +24,6 @@ class UserTableViewCell: UITableViewCell {
             usernameLabel.text = user!.getDisplayName()
             
             usernameLabel.textColor = UIColor.whiteColor()
-            profileImageView.layer.borderWidth = 1.0
-            profileImageView.layer.borderColor = UIColor.whiteColor().CGColor
             
             status = checkFollowingStatus(user!.uid)
             

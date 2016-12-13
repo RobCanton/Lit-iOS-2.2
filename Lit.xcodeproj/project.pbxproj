@@ -522,11 +522,10 @@
 			isa = PBXGroup;
 			children = (
 				B0FF11461D3EB32100D709CE /* LoginViewController.swift */,
-				B00BA9201D9E4E0700F5EA30 /* FirstScreenViewController.swift */,
-				B00BA9211D9E4E0700F5EA30 /* FirstScreenViewController.xib */,
-				B0BA32731DA71A71004352A7 /* CreateProfile */,
-				B032C9901DA807C000811779 /* SetupViewController.swift */,
-				B032C9911DA807C000811779 /* SetupViewController.xib */,
+				B00BA9241D9E4E1D00F5EA30 /* CreateProfileViewController.swift */,
+				B00BA9251D9E4E1D00F5EA30 /* CreateProfileViewController.xib */,
+				B0BA326D1DA7165A004352A7 /* CreateProfileHeaderView.swift */,
+				B0BA326B1DA7163D004352A7 /* CreateProfileHeaderView.xib */,
 			);
 			name = Login;
 			sourceTree = "<group>";
@@ -791,6 +790,10 @@
 		B08BBB921DBBE06300AD3FF1 /* Deprecated */ = {
 			isa = PBXGroup;
 			children = (
+				B00BA9201D9E4E0700F5EA30 /* FirstScreenViewController.swift */,
+				B00BA9211D9E4E0700F5EA30 /* FirstScreenViewController.xib */,
+				B032C9901DA807C000811779 /* SetupViewController.swift */,
+				B032C9911DA807C000811779 /* SetupViewController.xib */,
 				B08BBB951DBBE51400AD3FF1 /* EventsBannerView.swift */,
 				B08BBB931DBBE4FD00AD3FF1 /* EventsBannerView.xib */,
 				B0E8E33B1DDFC8D10077D1BC /* CompactPhotoCell.xib */,
@@ -815,17 +818,6 @@
 				B05DB1291DA22D9600567996 /* LocationFriendsViewController.swift */,
 			);
 			name = Deprecated;
-			sourceTree = "<group>";
-		};
-		B0BA32731DA71A71004352A7 /* CreateProfile */ = {
-			isa = PBXGroup;
-			children = (
-				B00BA9241D9E4E1D00F5EA30 /* CreateProfileViewController.swift */,
-				B00BA9251D9E4E1D00F5EA30 /* CreateProfileViewController.xib */,
-				B0BA326D1DA7165A004352A7 /* CreateProfileHeaderView.swift */,
-				B0BA326B1DA7163D004352A7 /* CreateProfileHeaderView.xib */,
-			);
-			name = CreateProfile;
 			sourceTree = "<group>";
 		};
 		B0E8E31B1DDB81120077D1BC /* ImageTransition */ = {

@@ -17,7 +17,7 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol, StoreSubsc
     
 
 
-    
+    var containerDelegate:ContainerViewController?
     let incomingBubble = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor.grayColor())
     let outgoingBubble = JSQMessagesBubbleImageFactory().outgoingMessagesBubbleImageWithColor(accentColor)
     var messages = [JSQMessage]()
@@ -26,7 +26,11 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol, StoreSubsc
     var partner:User!
     {
         didSet {
+            
             self.title = partner.getDisplayName()
+            if containerDelegate != nil {
+                containerDelegate?.title = partner.getDisplayName()
+            }
             partnerImageView = UIImageView()
             partnerImageView!.loadImageUsingCacheWithURLString(partner.getImageUrl(), completion: { result in
             })
@@ -68,15 +72,15 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol, StoreSubsc
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        mainStore.subscribe(self)
+        //mainStore.subscribe(self)
         //profileBtn.enabled = true
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        mainStore.unsubscribe(self)
-        downloadRef?.removeAllObservers()
-        conversation.listenToConversation()
+        //mainStore.unsubscribe(self)
+        //downloadRef?.removeAllObservers()
+        //conversation.listenToConversation()
     }
     
     func newState(state: AppState) {

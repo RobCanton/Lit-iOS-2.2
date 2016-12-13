@@ -52,12 +52,12 @@ class LocationHeaderView: UIView {
         }
     }
     var location:Location?
-    func setLocation(location:Location) {
+    func setHeaderLocation(location:Location) {
         self.location = location
         
         imageView.loadImageUsingCacheWithURLString(location.getImageURL(), completion: { result in })
         locationTitle.styleLocationTitle(location.getName(), size: 32.0)
-        locationTitle.applyShadow(4, opacity: 0.8, height: 4, shouldRasterize: false)
+        locationTitle.applyShadow(2, opacity: 0.8, height: 2, shouldRasterize: false)
 
     }
     

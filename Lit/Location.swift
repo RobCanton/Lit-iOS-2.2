@@ -9,17 +9,14 @@
 //
 import CoreLocation
 
-class Location {
+class Location:NSObject, NSCoding {
     
     private var key:String                    // Key in database
     private var name:String
     private var coordinates:CLLocation
     private var imageURL:String
     private var address:String
-
-    var isActive: Bool = false
     
-    private var story: [StoryItem]?
     
     private var visitors = [String]()
     
@@ -37,6 +34,27 @@ class Location {
         self.coordinates  = CLLocation(latitude: latitude, longitude: longitude)
         self.imageURL     = imageURL
         self.address      = address
+    }
+    
+    required convenience init(coder decoder: NSCoder) {
+        
+        let key = decoder.decodeObjectForKey("key") as! String
+        let name = decoder.decodeObjectForKey("name") as! String
+        let latitude = decoder.decodeObjectForKey("latitude") as! Double
+        let longitude = decoder.decodeObjectForKey("longitude") as! Double
+        let imageURL = decoder.decodeObjectForKey("imageURL") as! String
+        let address = decoder.decodeObjectForKey("address") as! String
+        self.init(key:key, name:name, latitude:latitude, longitude: longitude, imageURL:imageURL, address:address)
+    }
+    
+    
+    func encodeWithCoder(coder: NSCoder) {
+        coder.encodeObject(key, forKey: "key")
+        coder.encodeObject(name, forKey: "name")
+        coder.encodeObject(coordinates.coordinate.latitude, forKey: "latitude")
+        coder.encodeObject(coordinates.coordinate.longitude, forKey: "longitude")
+        coder.encodeObject(imageURL, forKey: "imageURL")
+        coder.encodeObject(address, forKey: "address")
     }
     
     /* Getters */
@@ -64,15 +82,6 @@ class Location {
     func getAddress() -> String
     {
         return address
-    }
-    
-    
-    func setStory(story:[StoryItem]) {
-        self.story = story
-    }
-    
-    func getStory() -> [StoryItem]? {
-        return self.story
     }
     
     func addVisitor(visitor:String) {

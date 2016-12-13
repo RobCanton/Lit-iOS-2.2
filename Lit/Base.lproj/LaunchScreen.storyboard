@@ -24,7 +24,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="ADd-96-j1c" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="JUJ-uC-qNj"/>
                             <constraint firstItem="ADd-96-j1c" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="vss-aA-ejp"/>

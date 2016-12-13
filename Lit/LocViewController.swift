@@ -233,10 +233,9 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         titleLabel.hidden = true
         
         view.addSubview(statusBarBG!)
-        headerView.setLocation(location)
+        headerView.setHeaderLocation(location)
         titleLabel.styleLocationTitle(location.getName(), size: 32.0)
         titleLabel.applyShadow(4, opacity: 0.8, height: 4, shouldRasterize: false)
-        detailsView.setLocation(location)
         
 //        FirebaseService.getLocationEvents(location.getKey(), completionHandler: { events in
 //            if events.count > 0 {
@@ -263,7 +262,7 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         if let _ = location {
             let mapController = UIStoryboard(name: "Main", bundle: nil)
                 .instantiateViewControllerWithIdentifier("MapViewController") as! MapViewController
-            mapController.setLocation(location!)
+            mapController.setMapLocation(location!)
             navigationController?.pushViewController(mapController, animated: true)
         }
     }
@@ -382,7 +381,6 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         } else if indexPath.section == 1 {
             let cell = tableView.dequeueReusableCellWithIdentifier("UserStoryCell", forIndexPath: indexPath) as! UserStoryTableViewCell
             let labelX = cell.usernameLabel.frame.origin.x
-            print("Story Cell LABELX")
             cell.separatorInset = UIEdgeInsetsMake(0, labelX, 0, 0)
             cell.setStory(stories[indexPath.item])
             return cell
@@ -391,7 +389,6 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
             
             cell.setupUser(guests[indexPath.item])
             let labelX = cell.usernameLabel.frame.origin.x
-            print("User Cell LABELX")
             cell.separatorInset = UIEdgeInsetsMake(0, labelX, 0, 0)
             return cell
         }

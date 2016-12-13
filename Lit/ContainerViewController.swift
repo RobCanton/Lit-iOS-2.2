@@ -10,6 +10,7 @@ import UIKit
 
 class ContainerViewController:UIViewController {
     
+    @IBOutlet weak var containerView: UIView!
     
     var statusBarBG:UIView!
     override func viewDidLoad() {
@@ -23,5 +24,17 @@ class ContainerViewController:UIViewController {
         statusBarBG.addSubview(blurView)
         
         view.addSubview(statusBarBG)
+    }
+    
+    var conversation:Conversation?
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        if segue.identifier == "toMessage" {
+            guard let c = conversation else { return }
+            let controller = segue.destinationViewController as! ChatViewController
+            controller.conversation = c
+            controller.containerDelegate = self
+        }
     }
 }

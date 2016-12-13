@@ -112,14 +112,27 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         
     }
     
+    var presentConversation:Conversation?
     func presentConversation(conversation:Conversation) {
-        let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("ChatViewController") as! ChatViewController
-        
-        controller.conversation = conversation
-        navigationController?.navigationBar.tintColor = UIColor.whiteColor()
-        navigationController?.pushViewController(controller, animated: true)
+        presentConversation = conversation
+//        let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("ChatViewController") as! ChatViewController
+//        
+//        controller.conversation = conversation
+//        navigationController?.navigationBar.tintColor = UIColor.whiteColor()
+//        navigationController?.pushViewController(controller, animated: true)
+        self.performSegueWithIdentifier("toMessage", sender: self)
     }
     
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        if segue.identifier == "toMessage" {
+            guard let conversation = presentConversation else { return }
+            let controller = segue.destinationViewController as! ContainerViewController
+            controller.hidesBottomBarWhenPushed = true
+            controller.conversation = conversation
+        }
+    }
     func newState(state: AppState) {
         updateFriendStatus()
         

@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -147,6 +148,7 @@
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rpN-f7-ial">
                                             <rect key="frame" x="0.0" y="-70" width="200" height="340"/>
+                                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="340" id="Hhv-T6-rw1"/>
                                             </constraints>
@@ -477,7 +479,7 @@
                         <viewControllerLayoutGuide type="bottom" id="UrB-XP-Hz7"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="iRU-8K-bWG">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.096637228260869512" green="0.096637228260869512" blue="0.096637228260869512" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
@@ -1227,7 +1229,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vjR-EI-nAo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3018" y="3222"/>
+            <point key="canvasLocation" x="3444" y="3392"/>
         </scene>
         <!--User Profile View Controller-->
         <scene sceneID="8Qc-t9-TUE">
@@ -1242,10 +1244,51 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <navigationItem key="navigationItem" id="dnc-l6-QKm"/>
+                    <connections>
+                        <segue destination="T41-zC-eFc" kind="show" identifier="toMessage" id="Al1-i1-k9b"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VEa-5h-9Hm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3434" y="2356"/>
+            <point key="canvasLocation" x="4302" y="1352"/>
+        </scene>
+        <!--Container View Controller-->
+        <scene sceneID="acR-ej-Hpj">
+            <objects>
+                <viewController id="T41-zC-eFc" customClass="ContainerViewController" customModule="Lit" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ydZ-Ey-bAz"/>
+                        <viewControllerLayoutGuide type="bottom" id="MeU-gX-eGN"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="JAD-4T-1oI">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZGh-C0-h9c">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <connections>
+                                    <segue destination="Mbj-H0-cen" kind="embed" identifier="toMessage" id="jQg-kd-WWK"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="bottomMargin" secondItem="ZGh-C0-h9c" secondAttribute="bottom" id="14r-pb-htb"/>
+                            <constraint firstAttribute="topMargin" secondItem="ZGh-C0-h9c" secondAttribute="top" id="9A5-9z-w4h"/>
+                            <constraint firstItem="ZGh-C0-h9c" firstAttribute="leading" secondItem="JAD-4T-1oI" secondAttribute="leading" id="VWz-tr-pUW"/>
+                            <constraint firstAttribute="trailing" secondItem="ZGh-C0-h9c" secondAttribute="trailing" id="Xuo-oG-XsT"/>
+                            <constraint firstItem="ZGh-C0-h9c" firstAttribute="centerY" secondItem="JAD-4T-1oI" secondAttribute="centerYWithinMargins" id="cCI-gY-Qss"/>
+                            <constraint firstItem="ZGh-C0-h9c" firstAttribute="centerX" secondItem="JAD-4T-1oI" secondAttribute="centerXWithinMargins" id="erL-lg-5ap"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="containerView" destination="ZGh-C0-h9c" id="rQn-b2-Cux"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zgt-f6-xtk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5073" y="1367"/>
         </scene>
         <!--Image Transition Navigation Controller-->
         <scene sceneID="eBP-xu-kcN">
@@ -1361,5 +1404,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="HMC-fr-N5t"/>
         <segue reference="oDu-O4-IVp"/>
+        <segue reference="jQg-kd-WWK"/>
     </inferredMetricsTieBreakers>
 </document>

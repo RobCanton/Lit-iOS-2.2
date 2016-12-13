@@ -20,6 +20,7 @@ class Listeners {
     private static var listeningToConversations = false
     private static var listeningToFollowers = false
     private static var listeningToFollowing = false
+    private static var listeningToResponses = false
     
     
     static func stopListeningToAll() {
@@ -29,6 +30,7 @@ class Listeners {
         stopListeningToFriendRequests()
         stopListeningToFollowers()
         stopListeningToFollowing()
+        stopListeningToResponses()
     }
     
     static func startListeningToFriends() {
@@ -303,5 +305,40 @@ class Listeners {
         ref.child("users/social/followers/\(current_uid)").removeAllObservers()
         listeningToFollowing = false
     }
+    
+    static func startListeningToResponses() {
+        if !listeningToResponses {
+            listeningToResponses = true
+            let current_uid = mainStore.state.userState.uid
+            let responsesRef = ref.child("api/responses")
+            
+            /**
+             Listen for a Following Added
+             */
+            let locationUpdatesRef = responsesRef.child("location_updates/\(current_uid)")
+            locationUpdatesRef.observeEventType(.Value, withBlock: { snapshot in
+                if snapshot.exists() {
+                    let active = snapshot.value!["active"] as! String
+                    let locationsDictionary = snapshot.value!["locations"] as! [String:Bool]
+                    var locationKeys = [String]()
+                    for (locKey, _) in locationsDictionary {
+                        locationKeys.append(locKey)
+                    }
+                    LocationService.handleLocationsResponse(locationKeys)
+                    
+                    
+                    
+                }
+            })
+        }
+    }
+    
+    static func stopListeningToResponses() {
+        let current_uid = mainStore.state.userState.uid
+        ref.child("api/responses/location_updates/\(current_uid)").removeAllObservers()
+        listeningToResponses = false
+    }
+    
+    
     
 }

@@ -79,14 +79,16 @@ class UsersListViewController: UIViewController, UITableViewDelegate, UITableVie
         
         tableView = UITableView(frame:  CGRectMake(0, 0, view.frame.width, view.frame.height))
         
+        
         tableView.dataSource = self
         tableView.delegate = self
         
+        tableView.separatorColor = UIColor(white: 0.25, alpha: 1.0)
         tableView.backgroundColor = UIColor.clearColor()
 
         view.addSubview(tableView)
         
-        let nib = UINib(nibName: "UserTableViewCell", bundle: nil)
+        let nib = UINib(nibName: "UserViewCell", bundle: nil)
         tableView.registerNib(nib, forCellReuseIdentifier: cellIdentifier)
         tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: self.tableView.frame.width, height: 120))
         
@@ -180,17 +182,19 @@ class UsersListViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 74
+        return 64
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! UserTableViewCell
-        cell.user = users[indexPath.item]
+        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! UserViewCell
+        cell.setupUser(users[indexPath.item].getUserId())
+        let labelX = cell.usernameLabel.frame.origin.x
+        cell.separatorInset = UIEdgeInsetsMake(0, labelX, 0, 0)
         return cell
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let cell = tableView.cellForRowAtIndexPath(indexPath) as! UserTableViewCell
+        let cell = tableView.cellForRowAtIndexPath(indexPath) as! UserViewCell
 
         let controller = UIStoryboard(name: "Main", bundle: nil)
                 .instantiateViewControllerWithIdentifier("UserProfileViewController") as! UserProfileViewController

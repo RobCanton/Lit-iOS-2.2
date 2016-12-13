@@ -15,6 +15,7 @@ import IngeoSDK
 struct AppState: StateType {
     var userState: UserState
     var locations: [Location]
+    var nearby_locations = [String]()
     var cities: [City]
     var friends = Tree<String>()
     var friendRequestsIn = [String:Bool]()

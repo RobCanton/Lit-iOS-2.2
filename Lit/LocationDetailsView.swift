@@ -23,9 +23,5 @@ class LocationDetailsView: UIView {
                 
     }
     
-    func setLocation(location:Location) {
-        self.location = location
-            }
-    
 
 }

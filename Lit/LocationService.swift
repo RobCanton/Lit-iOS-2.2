@@ -8,65 +8,44 @@
 
 import Firebase
 import ReSwift
-import SwiftyJSON
 import CoreLocation
+import Foundation
 
 
 class LocationService {
 
+    static private let locationsCache = NSCache()
+    
     static private let ref = FIRDatabase.database().reference().child("locations")
     
     static var shouldCalculateNearbyArea:Bool = true
     
     static func requestNearbyLocations(latitude:Double, longitude:Double) {
         
-        let url = NSURL(string: "\(apiURL)/nearby/50/\(latitude)/\(longitude)")
-        print("Requesting Nearby Locations: \(url!.absoluteString)")
-        let task = NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
-            if error != nil {
-                print(error!.localizedDescription)
-            } else {
-                print(NSString(data: data!, encoding: NSUTF8StringEncoding))
-                self.extractFeedFromJSON(data!)
-            }
-        }
+        let uid = mainStore.state.userState.uid
+        let ref = FirebaseService.ref.child("api/requests/location_updates/\(uid)")
+        ref.setValue([
+                "lat": latitude,
+                "lon": longitude,
+                "rad": 50
+            ])
         
-        task.resume()
-        
-        if shouldCalculateNearbyArea {
-            getCities({ _ in
-                calculateNearbyArea(latitude, longitude: longitude)
-            })
-        }
     }
     
-    static func extractFeedFromJSON(data:NSData) {
-        var locationKeys = [String]()
-        let json = JSON(data: data)
-        print("EXTRACTING DATA")
-        for (_,key):(String, JSON) in json["locations"] {
-            
-            locationKeys.append(key.stringValue)
-        }
-        
-        let activeLocationKey = json["active_location"].stringValue
-        
-        print("ACTIVE LOCATION KEY: \(activeLocationKey)")
-        
-        getLocations(locationKeys, completionHandler:  { locations in
-            
-            if compareLocationsList(locations, listB: mainStore.state.locations) {
-                print("Locations are equal. No action required")
-            } else {
-                print("Locations changed. Dispatch required")
+    static func handleLocationsResponse(locationKeys:[String]) {
+        if compareLocationsList(locationKeys) {
+            print("Locations are equal. No action required")
+        } else {
+            print("Locations changed. Dispatch required")
+            getLocations(locationKeys, completionHandler:  { locations in
                 Listeners.stopListeningToLocations()
                 mainStore.dispatch(LocationsRetrieved(locations: locations))
                 Listeners.startListeningToLocations()
-            }
+            })
             
-            checkActiveLocation(activeLocationKey)
-        })
+        }
     }
+    
     
     static func checkActiveLocation(activeLocationKey:String) {
 
@@ -83,24 +62,23 @@ class LocationService {
         
     }
     
-    static func compareLocationsList(listA: [Location] , listB: [Location]) -> Bool {
-        
-        if listA.count != listB.count {
+    static func compareLocationsList(listA: [String]) -> Bool {
+        let currentList = mainStore.state.locations
+        if listA.count != currentList.count {
             return false
         }
         
-        let sortedListA = listA.sort({ $0.getKey() > $1.getKey()})
-        let sortedListB = listB.sort({ $0.getKey() > $1.getKey()})
+        let sortedListA = listA.sort({ $0 > $1 })
+        let sortedListB = currentList.sort({ $0.getKey() > $1.getKey()})
         
         for i in 0 ..< sortedListA.count {
-            if sortedListA[i].getKey() != sortedListB[i].getKey() {
+            if sortedListA[i] != sortedListB[i].getKey() {
                 return false
             }
         }
         
         return true
     }
-    
     
     static func getLocations(locationKeys:[String], completionHandler:(locations: [Location]) -> ()) {
         var locations = [Location]()
@@ -123,6 +101,10 @@ class LocationService {
     }
     
     static func getLocation(locationKey:String, completionHandler:(location:Location?)->()) {
+        if let cachedData = locationsCache.objectForKey(locationKey) as? Location {
+            return completionHandler(location: cachedData)
+        }
+        
         let locRef = FirebaseService.ref.child("locations/info/\(locationKey)")
         locRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
             var location:Location?
@@ -135,6 +117,7 @@ class LocationService {
                 let address     = snapshot.value!["address"] as! String
                 
                 location = Location(key: key, name: name, latitude: lat, longitude: lon, imageURL: imageURL, address: address)
+                locationsCache.setObject(location!, forKey: key)
             }
             completionHandler(location: location)
         })

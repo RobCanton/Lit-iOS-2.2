@@ -24,7 +24,7 @@ let errorColor:UIColor = UIColor(red: 1, green: 80/255, blue: 50/255, alpha: 1)
 
 let selectedColor:UIColor = UIColor(white: 0.15, alpha: 1.0)
 
-let apiURL = "http://159.203.61.192:4100/api"
+let apiURL = "https://getlit.site/api"
 
 var screenStatusBarHeight: CGFloat {
     return UIApplication.sharedApplication().statusBarFrame.height

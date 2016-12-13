@@ -44,7 +44,7 @@ class MapViewController: UIViewController {
     }
     
     
-    func setLocation(_location:Location) {
+    func setMapLocation(_location:Location) {
         self.location = _location
         title = location.getName()
         

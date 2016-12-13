@@ -45,6 +45,10 @@ struct RemovePostFromLocation: Action {
 }
 
 
+struct SetLocations: Action {
+    let locations: [String]
+}
+
 /* Destructive Actions */
 
 struct ClearLocations: Action {}
