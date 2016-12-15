@@ -96,8 +96,8 @@ class LocationCell: UICollectionViewCell {
                 
                 postsCountLabel.text = "\(location.getPostKeys().count)"
                 
-                distanceBox.hidden = true
-                
+//                distanceBox.hidden = true
+//                
 //                if location.getKey() == mainStore.state.userState.activeLocationKey {
 //                    distanceLabel.text = "You are here"
 //                    distanceBox.backgroundColor = accentColor
@@ -111,7 +111,7 @@ class LocationCell: UICollectionViewCell {
 //                        distanceBox.hidden = true
 //                    }
 //                }
-//                
+//
 //                
 //                setGuests()
             }

@@ -18,7 +18,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.navigationController?.navigationBar.topItem!.title = "lit."
         self.navigationController?.navigationBar.titleTextAttributes =
             [NSFontAttributeName: UIFont(name: "Avenir-HeavyOblique", size: 20.0)!,
              NSForegroundColorAttributeName: UIColor.whiteColor()]

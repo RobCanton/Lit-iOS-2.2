@@ -189,6 +189,8 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         videoCache.delegate = self
         self.navigationItem.title = " "
         self.automaticallyAdjustsScrollViewInsets = false
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: .Default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
         navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Plain, target: nil, action: nil)
         
         detailsView = UINib(nibName: "LocationDetailsView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as? LocationDetailsView
@@ -235,7 +237,7 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         tableView!.pagingEnabled = false
         tableView!.showsVerticalScrollIndicator = false
         tableView!.parallaxHeader.view = headerView
-        tableView!.parallaxHeader.height = UltravisualLayoutConstants.Cell.featuredHeight
+        tableView!.parallaxHeader.height = 180
         tableView!.parallaxHeader.mode = .Bottom
         tableView!.parallaxHeader.minimumHeight = 0;
         tableView!.separatorColor = UIColor(white: 0.08, alpha: 1.0)
