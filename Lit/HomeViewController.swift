@@ -17,6 +17,12 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        self.navigationController?.navigationBar.topItem!.title = "lit."
+        self.navigationController?.navigationBar.titleTextAttributes =
+            [NSFontAttributeName: UIFont(name: "Avenir-HeavyOblique", size: 20.0)!,
+             NSForegroundColorAttributeName: UIColor.whiteColor()]
+        
         tableView.delegate = self
         tableView.dataSource = self
         
@@ -28,6 +34,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.tableHeaderView = nil
         self.tableView.tableFooterView = UIView()
         tableView.reloadData()
+        setCellAlphas()
+        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -94,11 +102,27 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         
-        if let _ = self.tableView.indexPathsForVisibleRows where self.tableView.indexPathsForVisibleRows?.count > 0
-            && self.tableView == scrollView {
+        setCellAlphas()
+    }
+    
+    func setCellAlphas() {
+        if let _ = self.tableView.indexPathsForVisibleRows where self.tableView.indexPathsForVisibleRows?.count > 0 {
+            var count = 0
             for indexPath in self.tableView.indexPathsForVisibleRows! {
                 let cell = self.tableView.cellForRowAtIndexPath(indexPath) as! LocationTableCell
                 cell.setImageViewOffSet(tableView, indexPath: indexPath)
+                
+                if count == tableView.indexPathsForVisibleRows!.count - 1 {
+                    let rectOfCellInTableView = tableView.rectForRowAtIndexPath(indexPath)
+                    
+                    let rectOfCellInSuperview = tableView.convertRect(rectOfCellInTableView, toView: tableView.superview)
+                    let cellY = rectOfCellInSuperview.origin.y
+                    let bottomPoint = self.tableView.frame.height - rectOfCellInSuperview.height
+                    
+                    let alpha = 1 - (cellY - bottomPoint) / rectOfCellInSuperview.height
+                    cell.alpha = max(0,alpha)
+                }
+                count += 1
             }
         }
     }

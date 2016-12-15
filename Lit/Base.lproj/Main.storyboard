@@ -817,7 +817,7 @@
             </objects>
             <point key="canvasLocation" x="3127" y="-1218"/>
         </scene>
-        <!--Home View Controller-->
+        <!--lit.-->
         <scene sceneID="LSx-5d-JdW">
             <objects>
                 <viewController storyboardIdentifier="HomeViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Nju-iS-ypA" customClass="HomeViewController" customModule="Lit" customModuleProvider="target" sceneMemberID="viewController">
@@ -862,7 +862,7 @@
                             </mask>
                         </variation>
                     </view>
-                    <navigationItem key="navigationItem" id="vf8-0n-EPP"/>
+                    <navigationItem key="navigationItem" title="lit." id="vf8-0n-EPP"/>
                     <connections>
                         <outlet property="tableView" destination="Dto-u2-iP4" id="rSL-qL-qHX"/>
                     </connections>
