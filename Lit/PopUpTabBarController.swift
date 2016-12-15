@@ -138,9 +138,11 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
         
         delegate = self
         tabBarController?.delegate = self
-        tabBar.backgroundImage = UIImage()
-        tabBar.backgroundColor = UIColor.clearColor()
-        tabBar.shadowImage = UIImage()
+//        tabBar.backgroundImage = UIImage()
+//        tabBar.backgroundColor = UIColor.clearColor()
+//        tabBar.shadowImage = UIImage()
+        tabBar.translucent = false
+        tabBar.backgroundColor = UIColor.blackColor()
         
         
         self.tabBar.setValue(true, forKey: "_hidesShadow")
@@ -161,23 +163,19 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
             array.append(bgView)
         }
         
-        array[0].alpha = 1
+        array[0].alpha = 0
         
-        let bgView = UIVisualEffectView(effect: UIBlurEffect(style: .Dark))
-        bgView.frame = CGRectMake(0,0,self.view.frame.width,tabBarHeight)
-        
-        tabBar.addSubview(bgView)
-        tabBar.sendSubviewToBack(bgView)
+//        let bgView = UIVisualEffectView(effect: UIBlurEffect(style: .Dark))
+//        bgView.frame = CGRectMake(0,0,self.view.frame.width,tabBarHeight)
+//        
+//        tabBar.addSubview(bgView)
+//        tabBar.sendSubviewToBack(bgView)
         
         GPSService.sharedInstance.delegate = self
         GPSService.sharedInstance.startUpdatingLocation()
     }
     
     override func viewWillLayoutSubviews() {
-        var tabFrame:CGRect = self.tabBar.frame
-        tabFrame.size.height = tabBarHeight
-        tabFrame.origin.y = self.view.frame.size.height - tabBarHeight;
-        self.tabBar.frame = tabFrame
     }
     
     override func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem) {
@@ -194,7 +192,7 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
 
         UIView.animateWithDuration(0.15, animations: {
             prevItem.alpha = 0
-            self.array[itemTag].alpha = 1.0
+            self.array[itemTag].alpha = 0.0
             }, completion:  { complete in
                 if itemTag == 2 {
                     self.performSegueWithIdentifier("toCamera", sender: self)

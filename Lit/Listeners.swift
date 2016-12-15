@@ -324,7 +324,7 @@ class Listeners {
                     for (locKey, _) in locationsDictionary {
                         locationKeys.append(locKey)
                     }
-                    LocationService.handleLocationsResponse(locationKeys)
+                    LocationService.handleLocationsResponse(locationKeys, active: active)
                     
                     
                     

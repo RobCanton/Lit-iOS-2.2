@@ -33,13 +33,13 @@ class LocationHeaderView: UIView {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        let gradient: CAGradientLayer = CAGradientLayer()
-        
-        gradient.colors = [UIColor.clearColor().CGColor, UIColor(white: 0.0, alpha: 0.5).CGColor]
-        gradient.locations = [0.0 , 1.0]
-        
-        gradient.frame = gradientView.bounds
-        gradientView.layer.insertSublayer(gradient, atIndex: 0)
+//        let gradient: CAGradientLayer = CAGradientLayer()
+//        
+//        gradient.colors = [UIColor.clearColor().CGColor, UIColor(white: 0.0, alpha: 0.5).CGColor]
+//        gradient.locations = [0.0 , 1.0]
+//        
+//        gradient.frame = gradientView.bounds
+//        gradientView.layer.insertSublayer(gradient, atIndex: 0)
         
     }
     
@@ -54,8 +54,10 @@ class LocationHeaderView: UIView {
     var location:Location?
     func setHeaderLocation(location:Location) {
         self.location = location
-        
-        imageView.loadImageUsingCacheWithURLString(location.getImageURL(), completion: { result in })
+
+        loadLocationImage(location.getImageURL() , completion: { image, fromCache in
+            self.imageView.image = image
+        })
         locationTitle.styleLocationTitle(location.getName(), size: 32.0)
         locationTitle.applyShadow(2, opacity: 0.8, height: 2, shouldRasterize: false)
 
@@ -67,6 +69,53 @@ class LocationHeaderView: UIView {
     
     func showGuests(gesture:UITapGestureRecognizer) {
         delegate?.showGuests()
+    }
+    
+    var task:NSURLSessionDataTask?
+    func loadLocationImage(_url:String, completion: (image: UIImage, fromCache:Bool)->()) {
+        if task != nil{
+            
+            task!.cancel()
+            task = nil
+            
+        }
+        
+        if let file = location!.imageOnDiskURL {
+            completion(image: UIImage(contentsOfFile: file.path!)!, fromCache:true)
+        } else {
+            // Otherwise, download image
+            let url = NSURL(string: _url)
+            
+            task = NSURLSession.sharedSession().dataTaskWithURL(url!, completionHandler:
+                { (data, response, error) in
+                    
+                    //error
+                    if error != nil {
+                        if error?.code == -999 {
+                            return
+                        }
+                        print(error?.code)
+                        return
+                    }
+                    
+                    let  documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
+                    if let image = UIImage(data: data!) {
+                        let fileURL = documentsURL.URLByAppendingPathComponent("location_images").URLByAppendingPathComponent("\(self.location!.getKey()).jpg")
+                        if let jpgData = UIImageJPEGRepresentation(image, 1.0) {
+                            jpgData.writeToURL(fileURL, atomically: true)
+                            self.location!.imageOnDiskURL = fileURL
+                            
+                        }
+                    }
+                    
+                    dispatch_async(dispatch_get_main_queue(), {
+                        completion(image: UIImage(data: data!)!, fromCache: false)
+                    })
+                    
+            })
+            
+            task?.resume()
+        }
     }
     
 }

@@ -15,7 +15,10 @@ import FBSDKCoreKit
 import FBSDKLoginKit
 import Whisper
 
-class MainViewController: UICollectionViewController, StoreSubscriber, CLLocationManagerDelegate, UIGestureRecognizerDelegate, UISearchBarDelegate {
+class MainViewController: UICollectionViewController, UINavigationControllerDelegate, StoreSubscriber, CLLocationManagerDelegate, UIGestureRecognizerDelegate, UISearchBarDelegate {
+    
+    let transtition = SwiftyExpandingTransition()
+    var selectedCellFrame = CGRectZero
     
     var locations = [Location]()
     
@@ -28,19 +31,6 @@ class MainViewController: UICollectionViewController, StoreSubscriber, CLLocatio
     var searchBarActive:Bool = false
     var searchBarBoundsY:CGFloat?
     var searchBar:UISearchBar?
-
-    
-//    @IBAction func searchTapped(sender: AnyObject) {
-//        self.navigationController?.setNavigationBarHidden(true, animated: false)
-//        searchBar?.hidden = false
-//        self.searchBar?.setShowsCancelButton(true, animated: false)
-//        searchBar?.becomeFirstResponder()
-//    }
-//    @IBAction func nearMeTapped(sender: UIBarButtonItem) {
-//        
-//        //mainStore.dispatch(ViewUser(uid: mainStore.state.userState.uid))
-//    }
-//    @IBOutlet weak var nearMeButton: UIBarButtonItem!
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -249,6 +239,7 @@ extension MainViewController {
     }
     
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        
         let layout = collectionViewLayout as! UltravisualLayout
         let offset = layout.dragOffset * CGFloat(indexPath.item)
         
@@ -262,8 +253,8 @@ extension MainViewController {
             } else {
                 location = locations[indexPath.item]
             }
-
-
+            self.selectedCellFrame = collectionView.convertRect(collectionView.cellForItemAtIndexPath(indexPath)!.frame, toView: collectionView.superview)
+            
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let controller = storyboard.instantiateViewControllerWithIdentifier("LocViewController") as! LocViewController
             controller.location = locations[indexPath.item]

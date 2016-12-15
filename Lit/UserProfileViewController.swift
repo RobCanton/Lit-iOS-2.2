@@ -58,7 +58,6 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        navigationController?.delegate = self
     }
     
     override func viewWillDisappear(animated: Bool) {

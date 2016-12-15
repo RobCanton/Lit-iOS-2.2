@@ -64,6 +64,7 @@ class LocationCell: UICollectionViewCell {
         guestsView.addSubview(leftGuest)
         guestsView.addSubview(rightGuest)
         guestsView.addSubview(centerGuest)
+        guestsView.hidden = true
         
         distanceBox.layer.cornerRadius = 5
         distanceBox.clipsToBounds = true
@@ -95,24 +96,24 @@ class LocationCell: UICollectionViewCell {
                 
                 postsCountLabel.text = "\(location.getPostKeys().count)"
                 
+                distanceBox.hidden = true
                 
-                
-                if location.getKey() == mainStore.state.userState.activeLocationKey {
-                    distanceLabel.text = "You are here"
-                    distanceBox.backgroundColor = accentColor
-                } else {
-                    distanceBox.backgroundColor = UIColor.darkGrayColor()
-                    if let distance = location.getDistanceFromUserLastLocation() {
-                        distanceBox.hidden = false
-                        distanceLabel.text = getDistanceString(distance)
-                        
-                    } else {
-                        distanceBox.hidden = true
-                    }
-                }
-                
-                
-                setGuests()
+//                if location.getKey() == mainStore.state.userState.activeLocationKey {
+//                    distanceLabel.text = "You are here"
+//                    distanceBox.backgroundColor = accentColor
+//                } else {
+//                    distanceBox.backgroundColor = UIColor.darkGrayColor()
+//                    if let distance = location.getDistanceFromUserLastLocation() {
+//                        distanceBox.hidden = false
+//                        distanceLabel.text = getDistanceString(distance)
+//                        
+//                    } else {
+//                        distanceBox.hidden = true
+//                    }
+//                }
+//                
+//                
+//                setGuests()
             }
         }
     }

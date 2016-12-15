@@ -32,7 +32,7 @@ class LocationService {
         
     }
     
-    static func handleLocationsResponse(locationKeys:[String]) {
+    static func handleLocationsResponse(locationKeys:[String], active:String) {
         if compareLocationsList(locationKeys) {
             print("Locations are equal. No action required")
         } else {
@@ -41,8 +41,9 @@ class LocationService {
                 Listeners.stopListeningToLocations()
                 mainStore.dispatch(LocationsRetrieved(locations: locations))
                 Listeners.startListeningToLocations()
+                
+                checkActiveLocation(active)
             })
-            
         }
     }
     

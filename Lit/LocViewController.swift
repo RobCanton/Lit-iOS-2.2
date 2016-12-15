@@ -18,6 +18,8 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
     
     var statusBarBG:UIView?
     
+    var scrollEndHandler:(()->())?
+    
     var screenSize: CGRect!
     var screenWidth: CGFloat!
     var screenHeight: CGFloat!
@@ -47,13 +49,28 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        self.navigationController?.delegate = self
+        
         if let tabBar = self.tabBarController as? PopUpTabBarController {
             tabBar.setTabBarVisible(true, animated: true)
         }
         listenToLocationUploads()
         
+        if let nav = navigationController as? MasterNavigationController {
+           nav.delegate = nav
+        }
+        
         //reloadStoryCells()
+        if let sup = self.view.superview {
+            for sub in sup.subviews {
+                if sub !== self.view && !sub.isKindOfClass(UIImageView) {
+                    sub.removeFromSuperview()
+
+                } else {
+                    
+                }
+            }
+        }
+        
         
         
     }
@@ -146,7 +163,17 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
     }
     
     override func viewDidLayoutSubviews() {
-        //headerView.setGuests()
+        if let sup = self.view.superview {
+            for sub in sup.subviews {
+                
+                if sub !== self.view && !sub.isKindOfClass(UIImageView) {
+                    sup.sendSubviewToBack(sub)
+                    //sub.removeFromSuperview()
+                } else {
+                
+                }
+            }
+        }
     }
     
     func cache(cache: NSCache, willEvictObject obj: AnyObject) {
@@ -348,7 +375,7 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if section == 0 {
-            return 2
+            return 1
         }
         if section == 1 {
             return stories.count
@@ -401,7 +428,9 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
     var selectedIndexPath: NSIndexPath = NSIndexPath(forItem: 0, inSection: 0)
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if indexPath.section == 1 {
+        if indexPath.section == 0 && indexPath.row == 0 {
+            showMap()
+        } else if indexPath.section == 1 {
             let story = stories[indexPath.item]
             if story.state == .Loaded {
                 presentStory(indexPath)
@@ -466,6 +495,11 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         } else {
             statusBarBG!.backgroundColor = UIColor(white: 0.0, alpha: 0)
         }
+    }
+    
+    func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
+        print("DID END SHOULD CALL")
+        scrollEndHandler?()
     }
     
     

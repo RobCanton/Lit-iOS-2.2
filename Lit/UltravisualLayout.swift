@@ -14,7 +14,7 @@ struct UltravisualLayoutConstants {
         /* The height of the non-featured cell */
         static let standardHeight: CGFloat = 90
         /* The height of the first visible cell */
-        static let featuredHeight: CGFloat = 320
+        static let featuredHeight: CGFloat = 300
     }
 }
 

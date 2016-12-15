@@ -78,7 +78,9 @@ public final class PresentAnimationController: NSObject, UIViewControllerAnimate
         // Add ToViewController's View
         let toViewControllerView: UIView = (toViewController as! UIViewController).view
         toViewControllerView.alpha = CGFloat.min
+        toViewControllerView.accessibilityIdentifier = "toViewControllerView"
         containerView.addSubview(toViewControllerView)
+        
         
         // Add Snapshot
         initialTransitionView.frame = initialFrame
@@ -87,13 +89,13 @@ public final class PresentAnimationController: NSObject, UIViewControllerAnimate
         destinationTransitionView.frame = initialFrame
         containerView.addSubview(destinationTransitionView)
         destinationTransitionView.alpha = 0.0
-        
+        initialTransitionView.alpha = 1.0
         // Animation
         let duration: NSTimeInterval = transitionDuration(transitionContext)
         UIView.animateWithDuration(duration, delay: 0.0, usingSpringWithDamping: self.usingSpringWithDamping, initialSpringVelocity: self.initialSpringVelocity, options: self.animationOptions, animations: {
             
             initialTransitionView.frame = destinationFrame
-            //initialTransitionView.alpha = 0.0
+            initialTransitionView.alpha = 0.0
             destinationTransitionView.frame = destinationFrame
             destinationTransitionView.alpha = 1.0
             toViewControllerView.alpha = 1.0
