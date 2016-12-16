@@ -259,7 +259,7 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
         let height = frame.size.height
         let offsetY = (visible ? -height : height)
         
-        UIView.animateWithDuration(0.15, delay: 0.0, options: .CurveEaseOut, animations: {
+        UIView.animateWithDuration(0.10, delay: 0.0, options: .CurveEaseOut, animations: {
             self.tabBar.frame = CGRectOffset(frame, 0, offsetY)
             self.view.frame = CGRectMake(0, 0, self.view.frame.width, self.view.frame.height + offsetY)
             self.view.setNeedsDisplay()

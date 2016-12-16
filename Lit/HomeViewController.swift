@@ -21,7 +21,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.navigationController?.navigationBar.titleTextAttributes =
             [NSFontAttributeName: UIFont(name: "Avenir-HeavyOblique", size: 20.0)!,
              NSForegroundColorAttributeName: UIColor.whiteColor()]
-        
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Plain, target: nil, action: nil)
         tableView.delegate = self
         tableView.dataSource = self
         
@@ -67,7 +67,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 180
+        return 190
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -124,6 +124,10 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                 count += 1
             }
         }
+    }
+    
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return UIStatusBarStyle.LightContent
     }
     
 }

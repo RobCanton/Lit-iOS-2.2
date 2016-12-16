@@ -12,7 +12,7 @@ import ReSwift
 
 var dataSaveMode = false
 
-class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, LocationHeaderProtocol, UINavigationControllerDelegate, NSCacheDelegate {
+class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, UINavigationControllerDelegate, NSCacheDelegate {
     
     
     
@@ -31,7 +31,7 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
     var tableView:UITableView?
     var detailsView:LocationDetailsView!
     var controlBar:UserProfileControlBar?
-    var headerView:LocationHeaderView!
+    var headerView:LocationTableCell!
     var eventsBanner:EventsBannerView?
     var eventsBannerTap:UITapGestureRecognizer!
     var footerView:LocationFooterView!
@@ -187,10 +187,11 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         super.viewDidLoad()
         videoCache.countLimit = 25
         videoCache.delegate = self
-        self.navigationItem.title = " "
+        self.navigationItem.title = location.getName()
+        self.navigationController?.navigationBar.titleTextAttributes =
+            [NSFontAttributeName: UIFont(name: "Avenir-Heavy", size: 16.0)!,
+             NSForegroundColorAttributeName: UIColor.whiteColor()]
         self.automaticallyAdjustsScrollViewInsets = false
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: .Default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
         navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Plain, target: nil, action: nil)
         
         detailsView = UINib(nibName: "LocationDetailsView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as? LocationDetailsView
@@ -210,8 +211,8 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         let difference  = detailsView.descriptionLabel.frame.height
         detailsView.frame = CGRectMake(0, 0, self.view.frame.width, detailsView.frame.height + difference)
         
-        headerView = UINib(nibName: "LocationHeaderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! LocationHeaderView
-        headerView.delegate = self
+        headerView = UINib(nibName: "LocationTableCell", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! LocationTableCell
+        
         screenSize = self.view.frame
         screenWidth = screenSize.width
         screenHeight = screenSize.height
@@ -237,7 +238,7 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         tableView!.pagingEnabled = false
         tableView!.showsVerticalScrollIndicator = false
         tableView!.parallaxHeader.view = headerView
-        tableView!.parallaxHeader.height = 180
+        tableView!.parallaxHeader.height = 190
         tableView!.parallaxHeader.mode = .Bottom
         tableView!.parallaxHeader.minimumHeight = 0;
         tableView!.separatorColor = UIColor(white: 0.08, alpha: 1.0)
@@ -246,38 +247,53 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         tableView!.backgroundColor = UIColor.blackColor()
         view.addSubview(tableView!)
         
-        footerView = UINib(nibName: "LocationFooterView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! LocationFooterView
-        footerView.frame = CGRectMake(0, 0, tableView!.frame.width, 120)
+        tableView!.tableFooterView = UIView(frame: CGRectMake(0,0,tableView!.frame.width, 160))
         
         statusBarBG = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: navHeight))
         statusBarBG!.backgroundColor = UIColor(white: 0.0, alpha: 0.0)
         
-        titleLabel = UILabel()
-        titleLabel.frame = statusBarBG!.bounds
-        titleLabel.frame = CGRectMake(0, screenStatusBarHeight/2, statusBarBG!.bounds.width, headerView.locationTitle.frame.height)
-        titleLabel.center = CGPoint(x: statusBarBG!.bounds.width/2, y: statusBarBG!.bounds.height/2 + screenStatusBarHeight/2)
-        titleLabel.textAlignment = .Center
-        statusBarBG!.addSubview(titleLabel)
-        titleLabel.hidden = true
+        headerView.setCellLocation(location)
+        headerView.addressLabel.superview!.hidden = true
+        headerView.titleLabel.superview!.hidden = true
+        headerView.distanceLabel.superview!.hidden = true
+        headerView.guestsCountBubble.hidden = true
+        headerView.guestIcon1.hidden = true
+        headerView.guestIcon2.hidden = true
+        headerView.guestIcon3.hidden = true
+        
+        let btnName = UIButton()
+        btnName.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        
+        btnName.addTarget(self, action: #selector(showMap), forControlEvents: .TouchUpInside)
+        
+        if location.getKey() == mainStore.state.userState.activeLocationKey {
+            btnName.titleLabel!.font = UIFont(name: "Avenir-Heavy", size: 11.0)
+            btnName.setTitle("Nearby", forState: .Normal)
+            btnName.backgroundColor = accentColor
+            btnName.contentEdgeInsets = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)
+
+        } else {
+            if let distance = location.getDistanceFromUserLastLocation() {
+                btnName.titleLabel!.font = UIFont(name: "Avenir-Medium", size: 11.0)
+                btnName.setTitle(getDistanceString(distance), forState: .Normal)
+                
+            } else {
+               btnName.hidden = true
+            }
+        }
+        btnName.sizeToFit()
+        
+
+        let distanceItem = UIBarButtonItem(customView: btnName)
+        
+        self.navigationItem.rightBarButtonItem = distanceItem
+
         
         view.addSubview(statusBarBG!)
-        headerView.setHeaderLocation(location)
-        titleLabel.styleLocationTitle(location.getName(), size: 32.0)
-        titleLabel.applyShadow(4, opacity: 0.8, height: 4, shouldRasterize: false)
-        //detailsView.setLocation(location)
-        
-        //        FirebaseService.getLocationEvents(location.getKey(), completionHandler: { events in
-        //            if events.count > 0 {
-        //                self.events = events
-        //                self.tableView!.reloadData()
-        //            }
-        //        })
-        
-        tableView!.tableFooterView = UIView(frame: CGRectMake(0,0,tableView!.frame.width, 90))
+
         guests = location.getVisitors()
     }
     
-    var titleLabel:UILabel!
     
     func pushUserProfile(uid:String) {
         let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("UserProfileViewController")
@@ -407,9 +423,7 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCellWithIdentifier("InfoCell", forIndexPath: indexPath) as! InfoTableViewCell
             if indexPath.row == 0 {
-               cell.label.text = location.getAddress()
-            } else if indexPath.row == 1 {
-                cell.label.text = "Tonight - 12 Bars"
+               cell.label.text = ""
             }
             return cell
         } else if indexPath.section == 1 {
@@ -478,25 +492,11 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         let progress = scrollView.parallaxHeader.progress
-        headerView.setProgress(progress)
-        let titlePoint = headerView.locationTitle.center
-        let half =  tableView!.parallaxHeader.height / 2
-        let convertPoint = headerView.locationTitle.convertPoint(titlePoint, toView: self.view).y - half
-        
-        if let _ = titleLabel {
-            if convertPoint <= titleLabel.frame.origin.y {
-                headerView.locationTitle.hidden = true
-                titleLabel.hidden = false
-            } else {
-                headerView.locationTitle.hidden = false
-                titleLabel.hidden = true
-            }
-        }
-        if progress < -0.75 {
+        /*if progress < -0.75 {
             statusBarBG!.backgroundColor = UIColor(white: 0.0, alpha: 1.0)
         } else {
             statusBarBG!.backgroundColor = UIColor(white: 0.0, alpha: 0)
-        }
+        }*/
     }
     
     func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
@@ -527,7 +527,10 @@ extension LocViewController: View2ViewTransitionPresenting {
         let image_height = image_frame.height
         let margin = (cell.frame.height - image_height) / 2
         let x = cell.frame.origin.x + margin
-        let y = cell.frame.origin.y + margin
+        
+        let navHeight = screenStatusBarHeight + navigationController!.navigationBar.frame.height
+        
+        let y = cell.frame.origin.y + margin + navHeight
         
         let rect = CGRectMake(x,y,image_height, image_height)
         return self.tableView!.convertRect(rect, toView: self.tableView!.superview)

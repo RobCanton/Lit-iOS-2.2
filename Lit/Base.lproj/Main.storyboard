@@ -817,7 +817,7 @@
             </objects>
             <point key="canvasLocation" x="3127" y="-1218"/>
         </scene>
-        <!--Home View Controller-->
+        <!-- -->
         <scene sceneID="LSx-5d-JdW">
             <objects>
                 <viewController storyboardIdentifier="HomeViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Nju-iS-ypA" customClass="HomeViewController" customModule="Lit" customModuleProvider="target" sceneMemberID="viewController">
@@ -862,7 +862,7 @@
                             </mask>
                         </variation>
                     </view>
-                    <navigationItem key="navigationItem" id="vf8-0n-EPP"/>
+                    <navigationItem key="navigationItem" title=" " id="vf8-0n-EPP"/>
                     <connections>
                         <outlet property="tableView" destination="Dto-u2-iP4" id="rSL-qL-qHX"/>
                     </connections>
@@ -879,7 +879,7 @@
                         <inset key="imageInsets" minX="0.0" minY="6" maxX="0.0" maxY="-6"/>
                     </tabBarItem>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="9kY-AG-psA">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="9kY-AG-psA">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>

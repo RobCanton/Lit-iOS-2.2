@@ -60,7 +60,8 @@ public class DismissInteractiveTransition: UIPercentDrivenInteractiveTransition 
         case .Changed:
             
             updateInteractiveTransition(progress)
-            
+            if self.animationController.destinationTransitionView == nil { return }
+            if self.animationController.initialTransitionView == nil { return }
             self.animationController.destinationTransitionView.alpha = 1.0
             self.animationController.initialTransitionView.alpha = 0.0
             

@@ -21,8 +21,13 @@ class MapViewController: UIViewController {
         let regionRadius: CLLocationDistance = 500
         let coordinate = location.getCoordinates().coordinate
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(coordinate,
-                                                                  regionRadius * 2.0, regionRadius * 2.0)
+                                                                regionRadius * 2.0, regionRadius * 2.0)
 
+        
+        self.navigationController?.navigationBar.titleTextAttributes =
+            [NSFontAttributeName: UIFont(name: "Avenir-Heavy", size: 16.0)!,
+             NSForegroundColorAttributeName: UIColor.whiteColor()]
+        
         mapView.showsUserLocation = true
         mapView.showsCompass = true
         mapView.showsBuildings = true
@@ -32,24 +37,22 @@ class MapViewController: UIViewController {
         let a = MapPin(coordinate: coordinate, title: location.getName(), subtitle: location.getAddress())
         mapView.addAnnotation(a)
         
-        let navHeight = screenStatusBarHeight + navigationController!.navigationBar.frame.height
-        
-        statusBarBG = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: navHeight))
-        statusBarBG.backgroundColor = UIColor.clearColor()
-        let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .Dark))
-        blurView.frame = statusBarBG.bounds
-        statusBarBG.addSubview(blurView)
-        view.addSubview(statusBarBG)
+//        let navHeight = screenStatusBarHeight + navigationController!.navigationBar.frame.height
+//        
+//        statusBarBG = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: navHeight))
+//        statusBarBG.backgroundColor = UIColor.clearColor()
+//        let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .Dark))
+//        blurView.frame = statusBarBG.bounds
+//        statusBarBG.addSubview(blurView)
+//        view.addSubview(statusBarBG)
         
     }
-    
     
     func setMapLocation(_location:Location) {
         self.location = _location
         title = location.getName()
         
     }
-    
     
 }
 

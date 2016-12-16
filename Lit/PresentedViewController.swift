@@ -25,6 +25,11 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
         super.viewWillAppear(animated)
         print("viewWillAppear")
         tabBarRef.setTabBarVisible(false, animated: true)
+        navigationController?.setNavigationBarHidden(true, animated: true)
+        UIView.animateWithDuration(0.15, animations: {
+            self.statusBarShouldHide = true
+            self.setNeedsStatusBarAppearanceUpdate()
+        })
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -42,6 +47,7 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
                 }
             }
         }
+        
     }
 
     
@@ -51,6 +57,7 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
         for cell in collectionView.visibleCells() as! [StoryViewController] {
             cell.yo()
         }
+        navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -76,6 +83,7 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
         //self.navigationItem.titleView = self.titleLabel
         self.navigationItem.leftBarButtonItem = backItem
         self.view.backgroundColor = UIColor.blackColor()
+        
         
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.itemSize = UIScreen.mainScreen().bounds.size
@@ -188,12 +196,7 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
     
     func onBackItemClicked(sender: AnyObject) {
         
-        let indexPath: NSIndexPath = self.collectionView.indexPathsForVisibleItems().first!
-        self.transitionController.userInfo = ["destinationIndexPath": indexPath, "initialIndexPath": indexPath]
-        
-        if let navigationController = self.navigationController {
-            navigationController.popViewControllerAnimated(true)
-        }
+
     }
 
     
@@ -227,13 +230,24 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
         cell.pauseVideo()
     }
     
-    override func prefersStatusBarHidden() -> Bool {
-        return true
-    }
+    
     
     func collectionView(collectionView: UICollectionView, didEndDisplayingCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
         let cell = cell as! StoryViewController
         cell.cleanUp()
+    }
+    
+    var statusBarShouldHide = false
+    override func prefersStatusBarHidden() -> Bool {
+        return statusBarShouldHide
+    }
+    
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return UIStatusBarStyle.LightContent
+    }
+    
+    override func preferredStatusBarUpdateAnimation() -> UIStatusBarAnimation {
+        return UIStatusBarAnimation.Fade
     }
     
 }

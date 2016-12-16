@@ -3,7 +3,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -11,105 +10,7 @@
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="LocationHeaderView" customModule="Lit" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-            <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="i4E-1a-Ci8">
-                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                </imageView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fvj-ou-PB6">
-                    <rect key="frame" x="0.0" y="525" width="600" height="75"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="75" id="nOw-r1-uBN"/>
-                    </constraints>
-                </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dUM-ja-0xe">
-                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                    <subviews>
-                        <view hidden="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5J6-FF-hfH">
-                            <rect key="frame" x="153" y="336" width="295" height="36"/>
-                            <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PCs-LX-23a">
-                                    <rect key="frame" x="8" y="6" width="127" height="24"/>
-                                    <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="17"/>
-                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vUK-9U-E5y">
-                                    <rect key="frame" x="150" y="2" width="32" height="32"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" secondItem="vUK-9U-E5y" secondAttribute="height" multiplier="1:1" id="2Ni-P4-BcA"/>
-                                        <constraint firstAttribute="width" constant="13" id="kgJ-KI-cTf"/>
-                                        <constraint firstAttribute="height" constant="13" id="zs8-X6-pzL"/>
-                                    </constraints>
-                                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <state key="normal" image="Send">
-                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                </button>
-                            </subviews>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstItem="vUK-9U-E5y" firstAttribute="leading" secondItem="PCs-LX-23a" secondAttribute="trailing" constant="2" id="C00-yb-kti"/>
-                                <constraint firstAttribute="trailing" secondItem="vUK-9U-E5y" secondAttribute="trailing" id="ELm-9P-L4U"/>
-                                <constraint firstItem="vUK-9U-E5y" firstAttribute="centerY" secondItem="5J6-FF-hfH" secondAttribute="centerY" id="UXf-gD-01x"/>
-                                <constraint firstAttribute="bottom" secondItem="PCs-LX-23a" secondAttribute="bottom" id="XQz-Fu-jnt"/>
-                                <constraint firstItem="PCs-LX-23a" firstAttribute="leading" secondItem="5J6-FF-hfH" secondAttribute="leading" id="a5j-1u-RGu"/>
-                                <constraint firstItem="vUK-9U-E5y" firstAttribute="height" secondItem="PCs-LX-23a" secondAttribute="height" id="a9A-kL-cCd"/>
-                                <constraint firstItem="PCs-LX-23a" firstAttribute="top" secondItem="5J6-FF-hfH" secondAttribute="top" id="lcn-to-7EH"/>
-                            </constraints>
-                            <variation key="default">
-                                <mask key="constraints">
-                                    <exclude reference="a9A-kL-cCd"/>
-                                </mask>
-                            </variation>
-                        </view>
-                        <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Amr-QG-bPq">
-                            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        </view>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9gM-qU-bdZ">
-                            <rect key="frame" x="8" y="284" width="584" height="44"/>
-                            <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="30"/>
-                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                    </subviews>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstItem="9gM-qU-bdZ" firstAttribute="centerX" secondItem="dUM-ja-0xe" secondAttribute="centerX" id="05M-0b-4pw"/>
-                        <constraint firstItem="5J6-FF-hfH" firstAttribute="top" secondItem="9gM-qU-bdZ" secondAttribute="bottom" constant="8" id="2cQ-xP-P9Q"/>
-                        <constraint firstItem="5J6-FF-hfH" firstAttribute="centerX" secondItem="dUM-ja-0xe" secondAttribute="centerX" id="Ad0-h6-9fN"/>
-                        <constraint firstItem="Amr-QG-bPq" firstAttribute="leading" secondItem="dUM-ja-0xe" secondAttribute="leading" id="GxZ-As-Zkv"/>
-                        <constraint firstItem="9gM-qU-bdZ" firstAttribute="centerY" secondItem="dUM-ja-0xe" secondAttribute="centerY" id="Hl0-RD-u6l"/>
-                        <constraint firstAttribute="bottom" secondItem="Amr-QG-bPq" secondAttribute="bottom" id="U6v-td-SpN"/>
-                        <constraint firstItem="Amr-QG-bPq" firstAttribute="top" secondItem="dUM-ja-0xe" secondAttribute="top" id="V6K-bz-uaV"/>
-                        <constraint firstAttribute="trailing" secondItem="Amr-QG-bPq" secondAttribute="trailing" id="uaH-8h-OmZ"/>
-                    </constraints>
-                </view>
-            </subviews>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-            <constraints>
-                <constraint firstAttribute="bottom" secondItem="Fvj-ou-PB6" secondAttribute="bottom" id="0Ei-N5-Gmv"/>
-                <constraint firstItem="i4E-1a-Ci8" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="E8z-wt-zwZ"/>
-                <constraint firstAttribute="bottom" secondItem="dUM-ja-0xe" secondAttribute="bottom" id="aPu-FN-1qL"/>
-                <constraint firstAttribute="trailing" secondItem="Fvj-ou-PB6" secondAttribute="trailing" id="g56-um-XRS"/>
-                <constraint firstItem="dUM-ja-0xe" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="iGg-fO-yae"/>
-                <constraint firstItem="i4E-1a-Ci8" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="llV-zq-kKk"/>
-                <constraint firstItem="Fvj-ou-PB6" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="p28-nE-R8j"/>
-                <constraint firstItem="dUM-ja-0xe" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="pNt-G4-Fdl"/>
-                <constraint firstAttribute="trailing" secondItem="i4E-1a-Ci8" secondAttribute="trailing" id="qOx-CU-4Nq"/>
-                <constraint firstAttribute="trailing" secondItem="dUM-ja-0xe" secondAttribute="trailing" id="sFG-ac-ECF"/>
-                <constraint firstAttribute="bottom" secondItem="i4E-1a-Ci8" secondAttribute="bottom" id="sgz-O0-JgM"/>
-            </constraints>
-            <connections>
-                <outlet property="fadeCover" destination="Amr-QG-bPq" id="Pud-D7-ixI"/>
-                <outlet property="gradientView" destination="Fvj-ou-PB6" id="Jva-2R-cCU"/>
-                <outlet property="imageView" destination="i4E-1a-Ci8" id="zef-LJ-uyz"/>
-                <outlet property="locationTitle" destination="9gM-qU-bdZ" id="4gN-6G-3lE"/>
-            </connections>
         </view>
     </objects>
-    <resources>
-        <image name="Send" width="32" height="32"/>
-    </resources>
 </document>
