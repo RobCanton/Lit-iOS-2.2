@@ -746,6 +746,7 @@
 		B087E9BC1D9B43DC0079E2BF /* Location */ = {
 			isa = PBXGroup;
 			children = (
+				B08007881DCAAFE200695D5F /* Events */,
 				B0321ECB1DB568BA00AD4C53 /* LocViewController.swift */,
 				B011B3491DFFB2BD00FA4633 /* InfoTableViewCell.swift */,
 				B011B34A1DFFB2BD00FA4633 /* InfoTableViewCell.xib */,
@@ -787,15 +788,14 @@
 				76B361D41D6517A50024CDC7 /* PopUpTabBarController.swift */,
 				B0E5915E1DD298A700C032D6 /* ActiveLocationView.swift */,
 				B0E5915C1DD2988D00C032D6 /* ActiveLocationView.xib */,
-				B087E9B91D9B42880079E2BF /* Activity */,
-				B08007881DCAAFE200695D5F /* Events */,
-				B087E9BC1D9B43DC0079E2BF /* Location */,
 				B00BA91F1D9E3B5700F5EA30 /* Login */,
 				B087E9BB1D9B43A30079E2BF /* Main */,
-				B0254F6E1DAFDFC10082D898 /* Messages */,
+				B087E9BC1D9B43DC0079E2BF /* Location */,
+				B087E9B91D9B42880079E2BF /* Activity */,
 				B087E9BA1D9B435C0079E2BF /* Camera */,
-				B08BBB8D1DBAF49A00AD3FF1 /* UsersList */,
+				B0254F6E1DAFDFC10082D898 /* Messages */,
 				B026A8501DAD9D3800DD2CCD /* UserProfile */,
+				B08BBB8D1DBAF49A00AD3FF1 /* UsersList */,
 				B0321EC11DB52BEB00AD4C53 /* DummyViewController.swift */,
 			);
 			name = ViewControllers;

@@ -81,19 +81,20 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
     
     func activateLocation(location:Location) {
         activeLocation = location
-        print("ACTIVE LOCATION: \(activeLocation!.getKey())")
-        
-        messageView = try! SwiftMessages.viewFromNib() as? ActiveLocationView
-        messageView!.configureDropShadow()
-        
-        
-        var config = SwiftMessages.Config()
-        config.presentationContext = .Window(windowLevel: UIWindowLevelAlert)
-        config.duration = .Forever
-        config.presentationStyle = .Top
-        config.dimMode = .None
+        array[2].alpha = 1.0
+//        print("ACTIVE LOCATION: \(activeLocation!.getKey())")
+//        
+//        messageView = try! SwiftMessages.viewFromNib() as? ActiveLocationView
+//        messageView!.configureDropShadow()
+//        
+//        
+//        var config = SwiftMessages.Config()
+//        config.presentationContext = .Window(windowLevel: UIWindowLevelAlert)
+//        config.duration = .Forever
+//        config.presentationStyle = .Top
+//        config.dimMode = .None
         //SwiftMessages.show(config: config, view: messageView!)
-      
+        
     }
     
     func deactivateLocation() {
@@ -153,7 +154,7 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
             let bgView = UIView(frame: CGRectMake(itemWidth * CGFloat(itemIndex), 0, itemWidth, tabBarHeight))
             
             if itemIndex == 2 {
-                bgView.backgroundColor = UIColor(red: 0, green: 128/255, blue: 1, alpha: 0.55)
+                bgView.backgroundColor = UIColor(red: 0, green: 128/255, blue: 1, alpha: 0.7)
             } else {
                 bgView.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.1)
             }
@@ -191,8 +192,8 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
         selectedItem = itemTag
 
         UIView.animateWithDuration(0.15, animations: {
-            prevItem.alpha = 0
-            self.array[itemTag].alpha = 0.0
+            //prevItem.alpha = 0
+            //self.array[itemTag].alpha = 0.0
             }, completion:  { complete in
                 if itemTag == 2 {
                     self.performSegueWithIdentifier("toCamera", sender: self)

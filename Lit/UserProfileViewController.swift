@@ -54,10 +54,14 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         SocialService.listenToFollowing(user!.getUserId(), completionHandler: { following in
             self.following = following
         })
+        
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        if let nav = navigationController as? MasterNavigationController {
+            nav.delegate = nav
+        }
     }
     
     override func viewWillDisappear(animated: Bool) {

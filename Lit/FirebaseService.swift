@@ -116,7 +116,7 @@ class FirebaseService {
                             }
                             if upload.toUserProfile() {
                                 let userRef = ref.child("users/uploads/\(uid)/\(postKey)")
-                                userRef.setValue([".sv": "timestamp"]) //rough time estimate, only for server use
+                                userRef.setValue(true) //rough time estimate, only for server use
                             }
                         }
                     })
@@ -176,7 +176,7 @@ class FirebaseService {
                             }
                             if upload.toUserProfile() {
                                 let userRef = ref.child("users/uploads/\(uid)/\(postKey)")
-                                userRef.setValue([".sv": "timestamp"]) //rough time estimate, only for server use
+                                userRef.setValue(true) //rough time estimate, only for server use
                             }
                         }
                     })

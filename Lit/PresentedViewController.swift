@@ -178,15 +178,14 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
         let cell: StoryViewController = collectionView.dequeueReusableCellWithReuseIdentifier("presented_cell", forIndexPath: indexPath) as! StoryViewController
         cell.contentView.backgroundColor = UIColor.blackColor()
         cell.story = stories[indexPath.item]
-       // cell.authorOverlay.authorTappedHandler = showAuthor
+        cell.authorOverlay.authorTappedHandler = showAuthor
         cell.delegate = self
         return cell
     }
     
     func storyComplete() {
         let indexPath: NSIndexPath = self.collectionView.indexPathsForVisibleItems().first!
-        self.transitionController.userInfo = ["destinationIndexPath": indexPath, "initialIndexPath": indexPath]
-        
+        self.transitionController.userInfo!["destinationIndexPath"] = indexPath
         if let navigationController = self.navigationController {
             navigationController.popViewControllerAnimated(true)
         }
@@ -205,7 +204,7 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
     func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
         
         let indexPath: NSIndexPath = self.collectionView.indexPathsForVisibleItems().first!
-        self.transitionController.userInfo = ["destinationIndexPath": indexPath, "initialIndexPath": indexPath]
+        self.transitionController.userInfo!["destinationIndexPath"] = indexPath
         
         let panGestureRecognizer: UIPanGestureRecognizer = gestureRecognizer as! UIPanGestureRecognizer
         let translate: CGPoint = panGestureRecognizer.translationInView(self.view)

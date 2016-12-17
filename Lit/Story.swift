@@ -62,6 +62,11 @@ class Story: NSObject, Comparable {
         
     }
     
+    func setItems(items:[StoryItem]) {
+        self.items = items
+        state = .NotLoaded
+    }
+    
     func getItems() -> [StoryItem] {
         return items
     }

@@ -574,7 +574,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Tup-lm-kRg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4508" y="301"/>
+            <point key="canvasLocation" x="3956" y="339"/>
         </scene>
         <!--Story View Controller-->
         <scene sceneID="RAI-08-kKH">
@@ -961,7 +961,7 @@
                         <inset key="imageInsets" minX="0.0" minY="6" maxX="0.0" maxY="-6"/>
                     </tabBarItem>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="sWa-Z9-O7x">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="sWa-Z9-O7x">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -980,22 +980,34 @@
             </objects>
             <point key="canvasLocation" x="2366" y="301"/>
         </scene>
-        <!--Activity Feed View Controller-->
+        <!--Activity View Controller-->
         <scene sceneID="mkh-V2-7Yq">
             <objects>
-                <viewController storyboardIdentifier="ActivityFeedViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="VQL-1a-jsd" customClass="ActivityFeedViewController" customModule="Lit" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ActivityViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="VQL-1a-jsd" customClass="ActivityViewController" customModule="Lit" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ub8-hZ-zjC"/>
                         <viewControllerLayoutGuide type="bottom" id="YuS-bp-3Bc"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="N48-9w-b61">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="QSJ-90-Nj6">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="487"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="QSJ-90-Nj6" firstAttribute="top" secondItem="N48-9w-b61" secondAttribute="topMargin" id="587-tm-gRs"/>
+                            <constraint firstAttribute="trailing" secondItem="QSJ-90-Nj6" secondAttribute="trailing" id="OfO-DZ-5oK"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="QSJ-90-Nj6" secondAttribute="bottom" constant="49" id="fLb-RL-hLf"/>
+                            <constraint firstItem="QSJ-90-Nj6" firstAttribute="leading" secondItem="N48-9w-b61" secondAttribute="leading" id="ivs-JX-m1s"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="iDX-9y-Rqa"/>
                     <connections>
-                        <segue destination="aGO-XA-4EI" kind="presentation" identifier="toSearchView" animates="NO" modalPresentationStyle="overCurrentContext" id="fdd-Os-VhL"/>
+                        <outlet property="tableView" destination="QSJ-90-Nj6" id="tlw-Xj-JGz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bgS-Sl-mJ9" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1423,25 +1435,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6eb-rG-csF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1320" y="1159"/>
-        </scene>
-        <!--Image Transition Navigation Controller-->
-        <scene sceneID="s7s-Lb-lDk">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="aGO-XA-4EI" customClass="ARNImageTransitionNavigationController" customModule="Lit" customModuleProvider="target" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="PyX-a6-rME">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="c2V-jB-XPW" kind="relationship" relationship="rootViewController" id="9eu-4e-8du"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="VnK-dt-f1Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3696" y="301"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ifN-Bl-dQQ">

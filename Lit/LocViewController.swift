@@ -12,7 +12,7 @@ import ReSwift
 
 var dataSaveMode = false
 
-class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, UINavigationControllerDelegate, NSCacheDelegate {
+class LocViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, UINavigationControllerDelegate, NSCacheDelegate {
     
     
     
@@ -25,11 +25,9 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
     var screenHeight: CGFloat!
     
     var stories = [Story]()
-    var photos = [StoryItem]()
     var guests = [String]()
     
     var tableView:UITableView?
-    var detailsView:LocationDetailsView!
     var controlBar:UserProfileControlBar?
     var headerView:LocationTableCell!
     var eventsBanner:EventsBannerView?
@@ -38,12 +36,11 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
     
     var location: Location!
     override func viewWillAppear(animated: Bool) {
-        mainStore.subscribe(self)
+        listenToLocationUploads()
         
     }
     
     override func viewWillDisappear(animated: Bool) {
-        mainStore.unsubscribe(self)
         FirebaseService.ref.child("locations/uploads/\(location.getKey())").removeAllObservers()
     }
     
@@ -53,7 +50,7 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         if let tabBar = self.tabBarController as? PopUpTabBarController {
             tabBar.setTabBarVisible(true, animated: true)
         }
-        listenToLocationUploads()
+        
         
         if let nav = navigationController as? MasterNavigationController {
            nav.delegate = nav
@@ -77,10 +74,6 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
     
     var events = [Event]()
     var postKeys = [String]()
-    
-    func newState(state: AppState) {
-        
-    }
     
     func getStoryIndex(_story:Story) -> Int? {
         for i in 0..<stories.count {
@@ -194,22 +187,12 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
         self.automaticallyAdjustsScrollViewInsets = false
         navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Plain, target: nil, action: nil)
         
-        detailsView = UINib(nibName: "LocationDetailsView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as? LocationDetailsView
-        
-        detailsView.frame = CGRectMake(0, 0, self.view.frame.width, detailsView.frame.height)
         
         let navHeight = screenStatusBarHeight + navigationController!.navigationBar.frame.height
         let slack:CGFloat = 1.0
         let eventsHeight:CGFloat = 0
-        let topInset:CGFloat = navHeight + detailsView.frame.height + eventsHeight + slack
+        let topInset:CGFloat = navHeight + eventsHeight + slack
         
-        let prevHeight = detailsView.descriptionLabel.frame.height
-        detailsView.descriptionLabel.text = "Swanky black & gold interior with metallic finishes, plus buzzing music for dancing crowds."
-        detailsView.descriptionLabel.sizeToFit()
-        detailsView.sizeToFit()
-        
-        let difference  = detailsView.descriptionLabel.frame.height
-        detailsView.frame = CGRectMake(0, 0, self.view.frame.width, detailsView.frame.height + difference)
         
         headerView = UINib(nibName: "LocationTableCell", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! LocationTableCell
         
@@ -341,12 +324,7 @@ class LocViewController: UIViewController, StoreSubscriber, UITableViewDataSourc
             return UICollectionReusableView()
         }
     }
-    
-    
-    func mediaDeleted() {
-        self.photos = [StoryItem]()
-        self.tableView!.reloadData()
-    }
+
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 3
@@ -521,7 +499,7 @@ extension LocViewController: View2ViewTransitionPresenting {
         guard let indexPath: NSIndexPath = userInfo?["initialIndexPath"] as? NSIndexPath else {
             return CGRect.zero
         }
-        var i = NSIndexPath(forRow: indexPath.item, inSection: 1)
+        let i = NSIndexPath(forRow: indexPath.item, inSection: 1)
         let cell: UserStoryTableViewCell = self.tableView!.cellForRowAtIndexPath(i)! as! UserStoryTableViewCell
         let image_frame = cell.contentImageView.frame
         let image_height = image_frame.height
@@ -539,7 +517,7 @@ extension LocViewController: View2ViewTransitionPresenting {
     func initialView(userInfo: [String: AnyObject]?, isPresenting: Bool) -> UIView {
         
         let indexPath: NSIndexPath = userInfo!["initialIndexPath"] as! NSIndexPath
-        var i = NSIndexPath(forRow: indexPath.item, inSection: 1)
+        let i = NSIndexPath(forRow: indexPath.item, inSection: 1)
         let cell: UserStoryTableViewCell = self.tableView!.cellForRowAtIndexPath(i)! as! UserStoryTableViewCell
         
         return cell.contentImageView
@@ -548,7 +526,7 @@ extension LocViewController: View2ViewTransitionPresenting {
     func prepareInitialView(userInfo: [String : AnyObject]?, isPresenting: Bool) {
         
         let indexPath: NSIndexPath = userInfo!["initialIndexPath"] as! NSIndexPath
-        var i = NSIndexPath(forRow: indexPath.item, inSection: 1)
+        let i = NSIndexPath(forRow: indexPath.item, inSection: 1)
         if !isPresenting && !self.tableView!.indexPathsForVisibleRows!.contains(i) {
             self.tableView!.reloadData()
             self.tableView!.scrollToRowAtIndexPath(i, atScrollPosition: .Middle, animated: false)
