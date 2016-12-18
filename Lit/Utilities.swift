@@ -179,13 +179,13 @@ func generateVideoStill(asset:AVAsset, time:CMTime) -> UIImage?{
 }
 
 func getDistanceString(distance:Double) -> String {
-    if distance < 1000 {
+    if distance < 1 {
         // meters
-        let meters = Double(round(1*distance)/1)
+
+        let meters = Double(round(distance * 1000)/1)
         return "\(meters) m"
     } else {
-        let km = distance / 1000
-        let rounded = Double(round(10*km)/10)
+        let rounded = Double(round(10*distance)/10)
         return "\(rounded) km"
     }
     

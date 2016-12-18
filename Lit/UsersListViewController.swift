@@ -16,9 +16,6 @@ enum UsersListType {
 
 class UsersListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, StoreSubscriber {
     
-    var statusBarBG:UIView!
-    var showStatusBar = false
-    
     var type = UsersListType.None
     
     var location:Location?
@@ -94,15 +91,6 @@ class UsersListViewController: UIViewController, UITableViewDelegate, UITableVie
         
         tableView.reloadData()
         view.backgroundColor = UIColor.clearColor()
-        
-        statusBarBG = UIView(frame: CGRectMake(0,0,view.frame.width, navHeight))
-        statusBarBG.backgroundColor = UIColor(white: 0.0, alpha: 0.7)
-        
-        let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .Dark))
-        blurView.frame = statusBarBG.bounds
-        statusBarBG.addSubview(blurView)
-        
-        view.addSubview(statusBarBG)
         
         tableView.backgroundColor = UIColor.blackColor()
         view.backgroundColor = UIColor.blackColor()

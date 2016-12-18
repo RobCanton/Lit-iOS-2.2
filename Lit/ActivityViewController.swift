@@ -92,7 +92,7 @@ class ActivityViewController: UIViewController, UITableViewDelegate, UITableView
         responseRef = FirebaseService.ref.child("api/responses/activity/\(uid)")
         responseRef?.removeAllObservers()
         responseRef?.observeEventType(.Value, withBlock: { snapshot in
-            
+            print("ACTIVITY RECIEVED: \(snapshot.value!)")
             var tempDictionary = [String:[String]]()
             for story in snapshot.children {
                 let s = story as! FIRDataSnapshot
@@ -103,12 +103,14 @@ class ActivityViewController: UIViewController, UITableViewDelegate, UITableView
                 tempDictionary[s.key] = storyItemKeys
             }
             self.crossCheckStories(tempDictionary)
+
         })
     }
     
     func crossCheckStories(tempDictionary:[String:[String]]) {
         if NSDictionary(dictionary: storiesDictionary).isEqualToDictionary(tempDictionary) {
             print("Stories unchanged. No download required")
+            print("Current: \(storiesDictionary) | Temp: \(tempDictionary)")
         } else {
             print("Stories updated. Download initiated")
             storiesDictionary = tempDictionary
@@ -120,6 +122,10 @@ class ActivityViewController: UIViewController, UITableViewDelegate, UITableView
     func downloadStoryItems() {
         var _stories = [Story]()
         var count = 0
+        if storiesDictionary.count == 0 {
+            self.stories = [Story]()
+            self.tableView!.reloadData()
+        }
         for (uid, itemKeys) in storiesDictionary {
             
             FirebaseService.downloadStory(itemKeys, completionHandler: { items in
@@ -186,6 +192,8 @@ class ActivityViewController: UIViewController, UITableViewDelegate, UITableView
         
         let nib = UINib(nibName: "UserStoryTableViewCell", bundle: nil)
         tableView.registerNib(nib, forCellReuseIdentifier: "UserStoryCell")
+        let nib2 = UINib(nibName: "MyStoryTableViewCell", bundle: nil)
+        tableView.registerNib(nib2, forCellReuseIdentifier: "MyStoryCell")
         tableView.delegate = self
         tableView.dataSource = self
         tableView.bounces = true
@@ -245,9 +253,8 @@ class ActivityViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            let cell = tableView.dequeueReusableCellWithIdentifier("UserStoryCell", forIndexPath: indexPath) as! UserStoryTableViewCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("MyStoryCell", forIndexPath: indexPath) as! MyStoryTableViewCell
             cell.setStory(myStory!)
-            cell.usernameLabel.text = "My Story"
             return cell
         } else {
             let cell = tableView.dequeueReusableCellWithIdentifier("UserStoryCell", forIndexPath: indexPath) as! UserStoryTableViewCell
@@ -319,26 +326,47 @@ extension ActivityViewController: View2ViewTransitionPresenting {
         guard let indexPath: NSIndexPath = userInfo?["initialIndexPath"] as? NSIndexPath else {
             return CGRect.zero
         }
-        let cell: UserStoryTableViewCell = self.tableView!.cellForRowAtIndexPath(indexPath)! as! UserStoryTableViewCell
-        let image_frame = cell.contentImageView.frame
-        let image_height = image_frame.height
-        let margin = (cell.frame.height - image_height) / 2
-        let x = cell.frame.origin.x + margin
+        if indexPath.section == 0 {
+            let cell: MyStoryTableViewCell = self.tableView!.cellForRowAtIndexPath(indexPath)! as! MyStoryTableViewCell
+            let image_frame = cell.contentImageView.frame
+            let image_height = image_frame.height
+            let margin = (cell.frame.height - image_height) / 2
+            let x = cell.frame.origin.x + margin
+            
+            let navHeight = screenStatusBarHeight + navigationController!.navigationBar.frame.height
+            
+            let y = cell.frame.origin.y + margin + navHeight
+            
+            let rect = CGRectMake(x,y,image_height, image_height)
+            return self.tableView!.convertRect(rect, toView: self.tableView!.superview)
+
+        } else {
+            let cell: UserStoryTableViewCell = self.tableView!.cellForRowAtIndexPath(indexPath)! as! UserStoryTableViewCell
+            let image_frame = cell.contentImageView.frame
+            let image_height = image_frame.height
+            let margin = (cell.frame.height - image_height) / 2
+            let x = cell.frame.origin.x + margin
+            
+            let navHeight = screenStatusBarHeight + navigationController!.navigationBar.frame.height
+            
+            let y = cell.frame.origin.y + margin + navHeight
+            
+            let rect = CGRectMake(x,y,image_height, image_height)
+            return self.tableView!.convertRect(rect, toView: self.tableView!.superview)
+        }
         
-        let navHeight = screenStatusBarHeight + navigationController!.navigationBar.frame.height
-        
-        let y = cell.frame.origin.y + margin + navHeight
-        
-        let rect = CGRectMake(x,y,image_height, image_height)
-        return self.tableView!.convertRect(rect, toView: self.tableView!.superview)
     }
     
     func initialView(userInfo: [String: AnyObject]?, isPresenting: Bool) -> UIView {
         
         let indexPath: NSIndexPath = userInfo!["initialIndexPath"] as! NSIndexPath
-        let cell: UserStoryTableViewCell = self.tableView!.cellForRowAtIndexPath(indexPath)! as! UserStoryTableViewCell
-        
-        return cell.contentImageView
+        if indexPath.section == 0 {
+            let cell: MyStoryTableViewCell = self.tableView!.cellForRowAtIndexPath(indexPath)! as! MyStoryTableViewCell
+            return cell.contentImageView
+        } else {
+            let cell: UserStoryTableViewCell = self.tableView!.cellForRowAtIndexPath(indexPath)! as! UserStoryTableViewCell
+            return cell.contentImageView
+        }
     }
     
     func prepareInitialView(userInfo: [String : AnyObject]?, isPresenting: Bool) {

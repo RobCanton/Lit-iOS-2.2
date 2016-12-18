@@ -16,6 +16,7 @@ class Location:NSObject, NSCoding {
     private var coordinates:CLLocation
     private var imageURL:String
     private var address:String
+    private var distance:Double?
     
     
     private var visitors = [String]()
@@ -141,6 +142,14 @@ class Location:NSObject, NSCoding {
             }
         }
 
+    }
+    
+    func setDistance(distance:Double) {
+        self.distance = distance
+    }
+    
+    func getDistance() -> Double? {
+        return distance
     }
     
     func getDistanceFromUserLastLocation() -> Double? {

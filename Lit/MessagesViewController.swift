@@ -50,11 +50,10 @@ class MessagesViewController: UITableViewController, StoreSubscriber {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationController?.navigationBar.barStyle = .Black
-        self.navigationController?.navigationBar.translucent = true
         
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.separatorColor = UIColor(white: 0.08, alpha: 1.0)
         
         tableView.tableFooterView = UIView()
         

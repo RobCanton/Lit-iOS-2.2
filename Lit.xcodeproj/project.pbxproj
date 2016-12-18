@@ -182,6 +182,9 @@
 		B0BA326E1DA7165A004352A7 /* CreateProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0BA326D1DA7165A004352A7 /* CreateProfileHeaderView.swift */; };
 		B0DAFBCE1DF8CB78004EB03D /* StoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FC99D11DE7983A00683155 /* StoryViewController.swift */; };
 		B0DAFBD01DF947E8004EB03D /* ProgressIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DAFBCF1DF947E8004EB03D /* ProgressIndicator.swift */; };
+		B0E2BDB91E0531E600D195A5 /* MyStoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E2BDB71E0531E600D195A5 /* MyStoryTableViewCell.swift */; };
+		B0E2BDBA1E0531E600D195A5 /* MyStoryTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0E2BDB81E0531E600D195A5 /* MyStoryTableViewCell.xib */; };
+		B0E2BDBC1E06805100D195A5 /* blur.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = B0E2BDBB1E067FAC00D195A5 /* blur.mp4 */; };
 		B0E591571DD1218D00C032D6 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E591561DD1218D00C032D6 /* SettingsViewController.swift */; };
 		B0E591591DD126C900C032D6 /* LogoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E591581DD126C900C032D6 /* LogoutView.swift */; };
 		B0E5915B1DD126D600C032D6 /* LogoutView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0E5915A1DD126D600C032D6 /* LogoutView.xib */; };
@@ -403,6 +406,9 @@
 		B0BA326B1DA7163D004352A7 /* CreateProfileHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreateProfileHeaderView.xib; sourceTree = "<group>"; };
 		B0BA326D1DA7165A004352A7 /* CreateProfileHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateProfileHeaderView.swift; sourceTree = "<group>"; };
 		B0DAFBCF1DF947E8004EB03D /* ProgressIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressIndicator.swift; sourceTree = "<group>"; };
+		B0E2BDB71E0531E600D195A5 /* MyStoryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyStoryTableViewCell.swift; sourceTree = "<group>"; };
+		B0E2BDB81E0531E600D195A5 /* MyStoryTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyStoryTableViewCell.xib; sourceTree = "<group>"; };
+		B0E2BDBB1E067FAC00D195A5 /* blur.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = blur.mp4; sourceTree = "<group>"; };
 		B0E591561DD1218D00C032D6 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		B0E591581DD126C900C032D6 /* LogoutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogoutView.swift; sourceTree = "<group>"; };
 		B0E5915A1DD126D600C032D6 /* LogoutView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LogoutView.xib; sourceTree = "<group>"; };
@@ -771,6 +777,8 @@
 				B0351F6A1DE8BC27000A4BF5 /* ListHeaderView.xib */,
 				B0E8E3421DE203720077D1BC /* UserStoryTableViewCell.swift */,
 				B0E8E3431DE203720077D1BC /* UserStoryTableViewCell.xib */,
+				B0E2BDB71E0531E600D195A5 /* MyStoryTableViewCell.swift */,
+				B0E2BDB81E0531E600D195A5 /* MyStoryTableViewCell.xib */,
 				B0E8E34E1DE23A630077D1BC /* UserViewCell.swift */,
 				B0E8E34F1DE23A630077D1BC /* UserViewCell.xib */,
 				B079BE841DA557B00042B586 /* PhotoCell.swift */,
@@ -886,6 +894,7 @@
 		B0FF11431D3EB32100D709CE /* Lit */ = {
 			isa = PBXGroup;
 			children = (
+				B0E2BDBB1E067FAC00D195A5 /* blur.mp4 */,
 				B06D54CE1D9EE4D300F6A4A7 /* intro.mp4 */,
 				B06D54D71D9EEFD400F6A4A7 /* intro4.mp4 */,
 				B0FF114B1D3EB32100D709CE /* Assets.xcassets */,
@@ -971,6 +980,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B0E2BDBC1E06805100D195A5 /* blur.mp4 in Resources */,
 				B03DED101DAED40D0062357A /* UserProfileControlBarView.xib in Resources */,
 				B06D54D81D9EEFD700F6A4A7 /* intro4.mp4 in Resources */,
 				B011B35F1E02261600FA4633 /* LocationTableCell.xib in Resources */,
@@ -996,6 +1006,7 @@
 				B032C9931DA807C000811779 /* SetupViewController.xib in Resources */,
 				B01B34A21DC15BC600B2B9CE /* DialogRow.xib in Resources */,
 				B08BBB911DBAF4C200AD3FF1 /* UserTableViewCell.xib in Resources */,
+				B0E2BDBA1E0531E600D195A5 /* MyStoryTableViewCell.xib in Resources */,
 				B080078C1DCAEAD300695D5F /* EventsViewController.storyboard in Resources */,
 				B0351F6B1DE8BC27000A4BF5 /* ListHeaderView.xib in Resources */,
 				B0E8E3511DE23A630077D1BC /* UserViewCell.xib in Resources */,
@@ -1122,6 +1133,7 @@
 				B0351FB41DED0503000A4BF5 /* NVActivityIndicatorAnimationSemiCircleSpin.swift in Sources */,
 				B026A84A1DAD76FB00DD2CCD /* UserProfileViewController.swift in Sources */,
 				B0351FAC1DED0503000A4BF5 /* NVActivityIndicatorAnimationCubeTransition.swift in Sources */,
+				B0E2BDB91E0531E600D195A5 /* MyStoryTableViewCell.swift in Sources */,
 				B014410A1DCCFC5C00D95FCB /* ControlButton.swift in Sources */,
 				B003D49C1DE6B1A10026B2D8 /* EventTableViewCell.swift in Sources */,
 				76A5166E1D618CAD005E2815 /* LocationViewController.swift in Sources */,

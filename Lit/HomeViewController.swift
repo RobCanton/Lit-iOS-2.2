@@ -52,8 +52,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         locations = state.locations
         locations.sortInPlace({
             
-            $0.getVisitorsCount() > $1.getVisitorsCount()
+            if $0.getVisitorsCount() == $1.getVisitorsCount() {
+                return $0.getDistance() < $1.getDistance()
+            }
             
+            return $0.getVisitorsCount() > $1.getVisitorsCount()
         })
         
         for i in 0 ..< locations.count {

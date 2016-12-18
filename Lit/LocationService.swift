@@ -32,11 +32,11 @@ class LocationService {
         
     }
     
-    static func handleLocationsResponse(locationKeys:[String], active:String) {
-        if compareLocationsList(locationKeys) {
-            print("Locations are equal. No action required")
-        } else {
-            print("Locations changed. Dispatch required")
+    static func handleLocationsResponse(locationKeys:[String:Double], active:String) {
+//        if compareLocationsList(locationKeys) {
+//            print("Locations are equal. No action required")
+//        } else {
+//            print("Locations changed. Dispatch required")
             getLocations(locationKeys, completionHandler:  { locations in
                 Listeners.stopListeningToLocations()
                 mainStore.dispatch(LocationsRetrieved(locations: locations))
@@ -44,7 +44,7 @@ class LocationService {
                 
                 checkActiveLocation(active)
             })
-        }
+//        }
     }
     
     
@@ -81,18 +81,19 @@ class LocationService {
         return true
     }
     
-    static func getLocations(locationKeys:[String], completionHandler:(locations: [Location]) -> ()) {
+    static func getLocations(locationDict:[String:Double], completionHandler:(locations: [Location]) -> ()) {
         var locations = [Location]()
         var count = 0
         
-        for key in locationKeys {
+        for (key, dist) in locationDict {
             getLocation(key, completionHandler: { location in
                 if location != nil {
+                    location?.setDistance(dist)
                     locations.append(location!)
                 }
                 count += 1
                 
-                if count >= locationKeys.count {
+                if count >= locationDict.count {
                     dispatch_async(dispatch_get_main_queue(), {
                         completionHandler(locations: locations)
                     })

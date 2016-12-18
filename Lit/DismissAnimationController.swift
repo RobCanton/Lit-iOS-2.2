@@ -14,7 +14,7 @@ public final class DismissAnimationController: NSObject, UIViewControllerAnimate
     
     public weak var transitionController: TransitionController!
     
-    public var transitionDuration: NSTimeInterval = 0.3
+    public var transitionDuration: NSTimeInterval = 0.45
     
     public var usingSpringWithDamping: CGFloat = 0.95
     

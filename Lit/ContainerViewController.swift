@@ -12,18 +12,8 @@ class ContainerViewController:UIViewController {
     
     @IBOutlet weak var containerView: UIView!
     
-    var statusBarBG:UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        let navHeight = screenStatusBarHeight + navigationController!.navigationBar.frame.height
-        statusBarBG = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: navHeight))
-        statusBarBG.backgroundColor = UIColor(white: 0.0, alpha: 0.7)
-        
-        let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .Dark))
-        blurView.frame = statusBarBG.bounds
-        statusBarBG.addSubview(blurView)
-        
-        view.addSubview(statusBarBG)
     }
     
     var conversation:Conversation?

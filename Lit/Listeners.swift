@@ -319,15 +319,9 @@ class Listeners {
             locationUpdatesRef.observeEventType(.Value, withBlock: { snapshot in
                 if snapshot.exists() {
                     let active = snapshot.value!["active"] as! String
-                    let locationsDictionary = snapshot.value!["locations"] as! [String:Bool]
-                    var locationKeys = [String]()
-                    for (locKey, _) in locationsDictionary {
-                        locationKeys.append(locKey)
-                    }
-                    LocationService.handleLocationsResponse(locationKeys, active: active)
-                    
-                    
-                    
+                    let locationsDictionary = snapshot.value!["locations"] as! [String:Double]
+                    LocationService.handleLocationsResponse(locationsDictionary, active: active)
+                    locationUpdatesRef.removeValue()                    
                 }
             })
         }

@@ -11,6 +11,7 @@ import ReSwift
 import Firebase
 import FBSDKCoreKit
 import FBSDKLoginKit
+import AVFoundation
 
 
 enum FlowState {
@@ -91,6 +92,8 @@ class LoginViewController: UIViewController, StoreSubscriber {
         } else {
             activateLoginButton()
         }
+        
+        setupVideoBackground()
         
     }
     
@@ -184,6 +187,32 @@ class LoginViewController: UIViewController, StoreSubscriber {
                     }
                 }
             })
+        }
+    }
+
+    var videoPlayer: AVPlayer = AVPlayer()
+    var playerLayer: AVPlayerLayer?
+    func setupVideoBackground() {
+        let videoLayer = UIView(frame: self.view.bounds)
+        self.view.insertSubview(videoLayer, atIndex: 0)
+        let filePath = NSURL.fileURLWithPath(NSBundle.mainBundle().pathForResource("intro4", ofType: "mp4")!)
+        videoPlayer = AVPlayer()
+        playerLayer = AVPlayerLayer(player: videoPlayer)
+        playerLayer!.videoGravity = AVLayerVideoGravityResizeAspectFill;
+        
+        playerLayer!.frame = self.view.bounds
+        videoLayer.layer.addSublayer(playerLayer!)
+        let item = AVPlayerItem(URL: filePath)
+        videoPlayer.replaceCurrentItemWithPlayerItem(item)
+        videoPlayer.play()
+        loopVideo(videoPlayer)
+        
+    }
+    
+    func loopVideo(videoPlayer: AVPlayer) {
+        NSNotificationCenter.defaultCenter().addObserverForName(AVPlayerItemDidPlayToEndTimeNotification, object: nil, queue: nil) { notification in
+            videoPlayer.seekToTime(kCMTimeZero)
+            videoPlayer.play()
         }
     }
 }
