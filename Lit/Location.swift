@@ -18,9 +18,7 @@ class Location:NSObject, NSCoding {
     private var address:String
     private var distance:Double?
     
-    
     private var visitors = [String]()
-    
     private var postKeys = [String]()
 
     private var friendsCount = 0
@@ -85,21 +83,27 @@ class Location:NSObject, NSCoding {
         return address
     }
     
+    func findVisitor(uid:String) -> Int? {
+        for i in 0 ..< visitors.count {
+            let visitor = visitors[i]
+            if visitor == uid {
+                return i
+            }
+        }
+        
+        return nil
+    }
+    
     func addVisitor(visitor:String) {
-        if isFriend(visitor) {
+        if findVisitor(visitor) == nil{
             visitors.insert(visitor, atIndex: 0)
-        } else {
-            visitors.append(visitor)
         }
     }
     
     func removeVisitor(_visitor:String) {
-        for i in 0 ..< visitors.count {
-            let visitor = visitors[i]
-            if visitor == _visitor {
-                visitors.removeAtIndex(i)
-                break
-            }
+        
+        if let i = findVisitor(_visitor) {
+            visitors.removeAtIndex(i)
         }
     }
     
@@ -150,14 +154,5 @@ class Location:NSObject, NSCoding {
     
     func getDistance() -> Double? {
         return distance
-    }
-    
-    func getDistanceFromUserLastLocation() -> Double? {
-        if let lastLocation = GPSService.sharedInstance.lastLocation {
-            let distance = coordinates.distanceFromLocation(lastLocation)
-            return distance
-        }
-        return nil
-
     }
 }

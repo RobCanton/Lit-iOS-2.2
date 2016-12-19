@@ -79,9 +79,15 @@ class Listeners {
                 
                 locationRef.child("visitors/\(location.getKey())").observeEventType(.ChildAdded, withBlock: { snapshot in
                     if snapshot.exists() {
-                        mainStore.dispatch(AddVisitorToLocation(locationIndex: i, uid: snapshot.key))
+                        mainStore.dispatch(AddVisitorToLocation(locationIndex: i, uid: snapshot.key, timestamp: snapshot.value as! Double))
                     }
                 })
+                
+//                locationRef.child("visitors/\(location.getKey())").observeEventType(.ChildChanged, withBlock: { snapshot in
+//                    if snapshot.exists() {
+//                        mainStore.dispatch(AddVisitorToLocation(locationIndex: i, uid: snapshot.key, timestamp: snapshot.value as! Double))
+//                    }
+//                })
                 
                 locationRef.child("visitors/\(location.getKey())").observeEventType(.ChildRemoved, withBlock: { snapshot in
                     if snapshot.exists() {
@@ -113,6 +119,7 @@ class Listeners {
             let locationRef = ref.child("locations")
             locationRef.child("visitors/\(location.getKey())").removeAllObservers()
             locationRef.child("uploads/\(location.getKey())").removeAllObservers()
+            
         }
         listeningToLocations = false
     }

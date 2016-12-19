@@ -27,6 +27,7 @@ struct SetActiveLocation: Action {
 struct AddVisitorToLocation: Action {
     let locationIndex:Int
     let uid:String
+    let timestamp:Double
 }
 
 struct RemoveVisitorFromLocation: Action {

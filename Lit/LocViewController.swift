@@ -256,7 +256,7 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
             btnName.contentEdgeInsets = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)
 
         } else {
-            if let distance = location.getDistanceFromUserLastLocation() {
+            if let distance = location.getDistance() {
                 btnName.titleLabel!.font = UIFont(name: "Avenir-Medium", size: 11.0)
                 btnName.setTitle(getDistanceString(distance), forState: .Normal)
                 

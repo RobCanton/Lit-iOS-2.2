@@ -92,7 +92,7 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
         layout.minimumInteritemSpacing = 0
         layout.scrollDirection = .Horizontal
         
-        collectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: layout)
+        collectionView = UICollectionView(frame: UIScreen.mainScreen().bounds, collectionViewLayout: layout)
         collectionView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
         
         collectionView.registerClass(StoryViewController.self, forCellWithReuseIdentifier: "presented_cell")
@@ -105,8 +105,8 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.decelerationRate = UIScrollViewDecelerationRateFast
         self.view.addSubview(collectionView)
-        collectionView.translatesAutoresizingMaskIntoConstraints = true
-        collectionView.autoresizingMask = [UIViewAutoresizing.FlexibleTopMargin]
+//        collectionView.translatesAutoresizingMaskIntoConstraints = true
+//        collectionView.autoresizingMask = [UIViewAutoresizing.FlexibleTopMargin]
 
         label = UILabel(frame: CGRectMake(0,0,self.view.frame.width,100))
         label.textColor = UIColor.whiteColor()
@@ -185,7 +185,9 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
     
     func storyComplete() {
         let indexPath: NSIndexPath = self.collectionView.indexPathsForVisibleItems().first!
+        let initialPath = self.transitionController.userInfo!["initialIndexPath"] as! NSIndexPath
         self.transitionController.userInfo!["destinationIndexPath"] = indexPath
+        self.transitionController.userInfo!["initialIndexPath"] = NSIndexPath(forItem: indexPath.item, inSection: initialPath.section)
         if let navigationController = self.navigationController {
             navigationController.popViewControllerAnimated(true)
         }
@@ -204,7 +206,9 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
     func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
         
         let indexPath: NSIndexPath = self.collectionView.indexPathsForVisibleItems().first!
+        let initialPath = self.transitionController.userInfo!["initialIndexPath"] as! NSIndexPath
         self.transitionController.userInfo!["destinationIndexPath"] = indexPath
+        self.transitionController.userInfo!["initialIndexPath"] = NSIndexPath(forItem: indexPath.item, inSection: initialPath.section)
         
         let panGestureRecognizer: UIPanGestureRecognizer = gestureRecognizer as! UIPanGestureRecognizer
         let translate: CGPoint = panGestureRecognizer.translationInView(self.view)

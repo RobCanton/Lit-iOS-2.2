@@ -20,8 +20,6 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
     var visible = true
     
     let tabBarHeight:CGFloat = 54
-    
-    var array = [UIView]()
     var selectedItem = 0
     
     let locationManager = CLLocationManager()
@@ -81,7 +79,8 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
     
     func activateLocation(location:Location) {
         activeLocation = location
-        array[2].alpha = 1.0
+        //cameraButton.layer.borderColor = accentColor.CGColor
+        //array[2].alpha = 1.0
 //        print("ACTIVE LOCATION: \(activeLocation!.getKey())")
 //        
 //        messageView = try! SwiftMessages.viewFromNib() as? ActiveLocationView
@@ -99,7 +98,7 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
     
     func deactivateLocation() {
         activeLocation = nil
-        array[2].alpha = 0.0
+        cameraButton.layer.borderColor = UIColor.whiteColor().CGColor
         
         SwiftMessages.hide()
     }
@@ -147,56 +146,57 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
         
         
         self.tabBar.setValue(true, forKey: "_hidesShadow")
-        let itemWidth = tabBar.frame.width / CGFloat(tabBar.items!.count)
-        for itemIndex in 0...tabBar.items!.count
-        {
-            
-            let bgView = UIView(frame: CGRectMake(itemWidth * CGFloat(itemIndex), 0, itemWidth, tabBarHeight))
-            
-            if itemIndex == 2 {
-                bgView.backgroundColor = UIColor(red: 0, green: 128/255, blue: 1, alpha: 0.7)
-            } else {
-                bgView.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.1)
-            }
-            bgView.alpha = 0
-
-            tabBar.insertSubview(bgView, atIndex: 0)
-            array.append(bgView)
-        }
-        
-        array[0].alpha = 0
-        
-//        let bgView = UIVisualEffectView(effect: UIBlurEffect(style: .Dark))
-//        bgView.frame = CGRectMake(0,0,self.view.frame.width,tabBarHeight)
-//        
-//        tabBar.addSubview(bgView)
-//        tabBar.sendSubviewToBack(bgView)
         
         GPSService.sharedInstance.delegate = self
         GPSService.sharedInstance.startUpdatingLocation()
+        
+        self.setupMiddleButton()
+    }
+    
+    var cameraButton:UIButton!
+    
+    func setupMiddleButton() {
+        if cameraButton == nil {
+            cameraButton = UIButton(frame: CGRect(x: 0, y: 0, width: 56, height: 56))
+            var menuButtonFrame = cameraButton.frame
+            menuButtonFrame.origin.y = self.view.bounds.height - menuButtonFrame.height - 8
+            menuButtonFrame.origin.x = self.view.bounds.width/2 - menuButtonFrame.size.width/2
+            cameraButton.frame = menuButtonFrame
+            
+            cameraButton.backgroundColor = UIColor.blackColor()
+            cameraButton.layer.cornerRadius = menuButtonFrame.height/2
+            cameraButton.layer.borderColor = UIColor.whiteColor().CGColor
+            cameraButton.layer.borderWidth = 3
+            //menuButton.setImage(UIImage(named: "camera"), forState: UIControlState.Normal)
+            cameraButton.tintColor = UIColor.whiteColor()
+            cameraButton.addTarget(self, action: #selector(presentCamera), forControlEvents: .TouchUpInside)
+            
+            self.view.addSubview(cameraButton)
+            
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    func presentCamera() {
+        self.performSegueWithIdentifier("toCamera", sender: self)
     }
     
     override func viewWillLayoutSubviews() {
     }
     
     override func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem) {
-        
-        let itemTag = item.tag
-        highlightItem(itemTag)
+
     }
     
     var prevSelection = 0
     internal func highlightItem(itemTag:Int)
     {
-        let prevItem = array[selectedItem]
         selectedItem = itemTag
 
         UIView.animateWithDuration(0.15, animations: {
-            //prevItem.alpha = 0
-            //self.array[itemTag].alpha = 0.0
+
             }, completion:  { complete in
                 if itemTag == 2 {
-                    self.performSegueWithIdentifier("toCamera", sender: self)
                 } else {
                     self.prevSelection = itemTag
                 }
@@ -257,15 +257,31 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
 
         // get a frame calculation ready
         let frame = self.tabBar.frame
-        let height = frame.size.height
-        let offsetY = (visible ? -height : height)
         
-        UIView.animateWithDuration(0.10, delay: 0.0, options: .CurveEaseOut, animations: {
-            self.tabBar.frame = CGRectOffset(frame, 0, offsetY)
-            self.view.frame = CGRectMake(0, 0, self.view.frame.width, self.view.frame.height + offsetY)
-            self.view.setNeedsDisplay()
-            self.view.layoutIfNeeded()
-            }, completion: { result in })
+        let height = frame.size.height
+        let cameraFrame = self.cameraButton.frame
+        if visible {
+            let offsetY =  -height
+
+            
+            UIView.animateWithDuration(0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [], animations: {
+                self.tabBar.alpha = 1.0
+                self.cameraButton.alpha = 1.0
+
+                
+                }, completion: { result in })
+        } else {
+            let offsetY = height
+            UIView.animateWithDuration(0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [], animations: {
+                self.tabBar.alpha = 0.0
+                self.cameraButton.alpha = 0.0
+
+                }, completion: { result in
+
+            })
+        }
+        
+        
     }
     
     

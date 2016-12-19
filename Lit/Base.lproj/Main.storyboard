@@ -952,7 +952,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2W4-Qc-wxt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1460" y="1677"/>
+            <point key="canvasLocation" x="1474" y="1743"/>
         </scene>
         <!--Image Transition Navigation Controller-->
         <scene sceneID="0l9-U7-pGl">
@@ -1416,7 +1416,7 @@
             </objects>
             <point key="canvasLocation" x="1460" y="2364"/>
         </scene>
-        <!--Dummy View Controller-->
+        <!-- -->
         <scene sceneID="HKm-Fp-bFd">
             <objects>
                 <viewController storyboardIdentifier="DummyViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="DAc-2n-Ogm" customClass="DummyViewController" customModule="Lit" customModuleProvider="target" sceneMemberID="viewController">
@@ -1429,7 +1429,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" tag="2" title="" image="camera" id="ThY-UX-vHI">
+                    <tabBarItem key="tabBarItem" tag="2" title=" " id="ThY-UX-vHI">
                         <inset key="imageInsets" minX="0.0" minY="6" maxX="0.0" maxY="-6"/>
                     </tabBarItem>
                 </viewController>
@@ -1475,7 +1475,6 @@
     </scenes>
     <resources>
         <image name="Send" width="32" height="32"/>
-        <image name="camera" width="32" height="32"/>
         <image name="delete_filled" width="32" height="32"/>
         <image name="fb" width="512" height="512"/>
         <image name="home" width="32" height="32"/>

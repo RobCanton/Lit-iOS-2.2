@@ -55,9 +55,9 @@ class LocationService {
         if activeLocationKey != currentLocationKey {
             let uid = mainStore.state.userState.uid
             let locationRef = ref.child("visitors/\(activeLocationKey)/\(uid)")
-            locationRef.setValue(true)
+            locationRef.setValue([".sv": "timestamp"])
             let userRef = FirebaseService.ref.child("users/visits/\(uid)/\(activeLocationKey)")
-            userRef.setValue(true)
+            userRef.setValue([".sv": "timestamp"])
             mainStore.dispatch(SetActiveLocation(locationKey: activeLocationKey))
         }
         

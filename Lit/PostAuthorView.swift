@@ -42,6 +42,7 @@ class PostAuthorView: UIView {
     }
     
     func setPostMetadata(post:StoryItem) {
+        
         FirebaseService.getUser(post.getAuthorId(), completionHandler: { user in
             if user != nil {
                 self.authorImageView.loadImageUsingCacheWithURLString(user!.getImageUrl(), completion: { result in })
@@ -50,15 +51,15 @@ class PostAuthorView: UIView {
                 self.authorImageView.removeGestureRecognizer(self.authorTap)
                 self.authorImageView.addGestureRecognizer(self.authorTap)
                 self.user = user
+                self.timeLabel.text = post.getDateCreated()!.timeStringSinceNow()
+                for location in mainStore.state.locations {
+                    if location.getKey() == post.getLocationKey() {
+                        self.locationLabel.text = location.getName().lowercaseString
+                    }
+                }
             }
         })
-        timeLabel.text = post.getDateCreated()!.timeStringSinceNow()
 
-        for location in mainStore.state.locations {
-            if location.getKey() == post.getLocationKey() {
-                locationLabel.text = location.getName().lowercaseString
-            }
-        }
     }
     
     func authorTapped(gesture:UITapGestureRecognizer) {
