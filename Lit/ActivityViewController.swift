@@ -190,6 +190,10 @@ class ActivityViewController: UIViewController, UITableViewDelegate, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.navigationController?.navigationBar.titleTextAttributes =
+            [NSFontAttributeName: UIFont(name: "Avenir-Medium", size: 20.0)!,
+             NSForegroundColorAttributeName: UIColor.whiteColor()]
+        
         let nib = UINib(nibName: "UserStoryTableViewCell", bundle: nil)
         tableView.registerNib(nib, forCellReuseIdentifier: "UserStoryCell")
         let nib2 = UINib(nibName: "MyStoryTableViewCell", bundle: nil)

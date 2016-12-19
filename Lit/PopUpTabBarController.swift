@@ -79,7 +79,24 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
     
     func activateLocation(location:Location) {
         activeLocation = location
-        //cameraButton.layer.borderColor = accentColor.CGColor
+//        let color:CABasicAnimation = CABasicAnimation(keyPath: "borderColor")
+//        color.fromValue = cameraButton.layer.borderColor
+//        color.toValue = accentColor.CGColor
+//        cameraButton.layer.borderColor = accentColor.CGColor
+//        
+//        let Width:CABasicAnimation = CABasicAnimation(keyPath: "borderWidth")
+//        Width.fromValue = cameraButton.layer.borderWidth
+//        Width.toValue = cameraActiveWidth
+//
+//        cameraButton.layer.borderWidth = cameraActiveWidth
+//        
+//        let both:CAAnimationGroup = CAAnimationGroup()
+//        both.duration = 1.0
+//        both.animations = [color,Width]
+//        both.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+//        
+//        cameraButton.layer.addAnimation(both, forKey: "color and Width")
+
         //array[2].alpha = 1.0
 //        print("ACTIVE LOCATION: \(activeLocation!.getKey())")
 //        
@@ -154,26 +171,26 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
     }
     
     var cameraButton:UIButton!
-    
+    let cameraDefaultWidth:CGFloat = 2.2
+    let cameraActiveWidth:CGFloat = 3.5
     func setupMiddleButton() {
         if cameraButton == nil {
             cameraButton = UIButton(frame: CGRect(x: 0, y: 0, width: 56, height: 56))
             var menuButtonFrame = cameraButton.frame
-            menuButtonFrame.origin.y = self.view.bounds.height - menuButtonFrame.height - 8
-            menuButtonFrame.origin.x = self.view.bounds.width/2 - menuButtonFrame.size.width/2
+            menuButtonFrame.origin.y = self.tabBar.bounds.height - menuButtonFrame.height - 8
+            menuButtonFrame.origin.x = self.tabBar.bounds.width/2 - menuButtonFrame.size.width/2
             cameraButton.frame = menuButtonFrame
             
             cameraButton.backgroundColor = UIColor.blackColor()
             cameraButton.layer.cornerRadius = menuButtonFrame.height/2
             cameraButton.layer.borderColor = UIColor.whiteColor().CGColor
-            cameraButton.layer.borderWidth = 3
+            cameraButton.layer.borderWidth = cameraDefaultWidth
             //menuButton.setImage(UIImage(named: "camera"), forState: UIControlState.Normal)
             cameraButton.tintColor = UIColor.whiteColor()
             cameraButton.addTarget(self, action: #selector(presentCamera), forControlEvents: .TouchUpInside)
             
-            self.view.addSubview(cameraButton)
+            self.tabBar.addSubview(cameraButton)
             
-            self.view.layoutIfNeeded()
         }
     }
     
@@ -255,34 +272,28 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
         }
         visible = _visible
 
-        // get a frame calculation ready
-        let frame = self.tabBar.frame
-        
-        let height = frame.size.height
-        let cameraFrame = self.cameraButton.frame
-        if visible {
-            let offsetY =  -height
+        dispatch_async(dispatch_get_main_queue(), {
+            if self.visible {
 
-            
+    
             UIView.animateWithDuration(0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [], animations: {
                 self.tabBar.alpha = 1.0
-                self.cameraButton.alpha = 1.0
 
                 
                 }, completion: { result in })
         } else {
-            let offsetY = height
             UIView.animateWithDuration(0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [], animations: {
                 self.tabBar.alpha = 0.0
-                self.cameraButton.alpha = 0.0
 
                 }, completion: { result in
 
             })
         }
-        
+        })
         
     }
+    
+    
     
     
     let interactor = Interactor()

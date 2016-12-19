@@ -11,7 +11,9 @@ import MapKit
 
 class MapViewController: UIViewController {
     
+    @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var mapView: MKMapView!
+    
     var location:Location!
     
     var statusBarBG:UIView!
@@ -22,16 +24,18 @@ class MapViewController: UIViewController {
         let coordinate = location.getCoordinates().coordinate
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(coordinate,
                                                                 regionRadius * 2.0, regionRadius * 2.0)
-
         
         self.navigationController?.navigationBar.titleTextAttributes =
             [NSFontAttributeName: UIFont(name: "Avenir-Heavy", size: 16.0)!,
              NSForegroundColorAttributeName: UIColor.whiteColor()]
         
+        addressLabel.text = location.getAddress()
+        
         mapView.showsUserLocation = true
         mapView.showsCompass = true
         mapView.showsBuildings = true
         mapView.pitchEnabled = true
+        
         
         mapView.setRegion(coordinateRegion, animated: true)
         let a = MapPin(coordinate: coordinate, title: location.getName(), subtitle: location.getAddress())
@@ -51,6 +55,7 @@ class MapViewController: UIViewController {
     func setMapLocation(_location:Location) {
         self.location = _location
         title = location.getName()
+        
         
     }
     

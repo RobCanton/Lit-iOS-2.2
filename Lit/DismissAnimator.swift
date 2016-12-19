@@ -46,7 +46,7 @@ extension DismissAnimator : UIViewControllerAnimatedTransitioning {
 //            }
 //        )
         
-        UIView.animateWithDuration(transitionDuration(transitionContext), delay: 0, options: .CurveEaseOut, animations: {
+        UIView.animateWithDuration(transitionDuration(transitionContext), delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [], animations: {
             fromVC.view.frame = finalFrame
             },
                                    completion: { _ in

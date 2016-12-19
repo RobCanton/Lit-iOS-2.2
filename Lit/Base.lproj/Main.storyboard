@@ -503,18 +503,47 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="sJ9-y1-7fk">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <rect key="frame" x="0.0" y="20" width="600" height="580"/>
                             </mapView>
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="q30-Ei-d8a">
+                                <rect key="frame" x="20" y="45" width="240" height="37"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Hk-zj-uag">
+                                        <rect key="frame" x="8" y="8" width="224" height="21"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="13"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="6Hk-zj-uag" firstAttribute="leading" secondItem="q30-Ei-d8a" secondAttribute="leading" constant="8" id="1fO-kC-aOU"/>
+                                    <constraint firstAttribute="trailing" secondItem="6Hk-zj-uag" secondAttribute="trailing" constant="8" id="IcB-mZ-h9i"/>
+                                    <constraint firstAttribute="bottom" secondItem="6Hk-zj-uag" secondAttribute="bottom" constant="8" id="VDY-Wc-4ev"/>
+                                    <constraint firstItem="6Hk-zj-uag" firstAttribute="top" secondItem="q30-Ei-d8a" secondAttribute="top" constant="8" id="qg5-D4-Hrm"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="sJ9-y1-7fk" firstAttribute="top" secondItem="9vz-ci-EyX" secondAttribute="bottom" id="02t-ur-g4e"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="q30-Ei-d8a" secondAttribute="leading" constant="-8" id="Vkf-YA-PTy"/>
+                            <constraint firstItem="q30-Ei-d8a" firstAttribute="top" secondItem="9vz-ci-EyX" secondAttribute="bottom" constant="6" id="WzE-GG-Ypa"/>
                             <constraint firstItem="sJ9-y1-7fk" firstAttribute="leading" secondItem="C13-lN-qj6" secondAttribute="leading" id="avR-f9-0sw"/>
+                            <constraint firstItem="q30-Ei-d8a" firstAttribute="leading" secondItem="C13-lN-qj6" secondAttribute="leading" constant="6" id="b4o-jD-ZS7"/>
                             <constraint firstAttribute="bottomMargin" secondItem="sJ9-y1-7fk" secondAttribute="bottom" id="e2e-E2-rnE"/>
                             <constraint firstAttribute="topMargin" secondItem="sJ9-y1-7fk" secondAttribute="top" id="fqA-R9-GSD"/>
                             <constraint firstAttribute="trailing" secondItem="sJ9-y1-7fk" secondAttribute="trailing" id="yeU-Z0-oUp"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="fqA-R9-GSD"/>
+                                <exclude reference="Vkf-YA-PTy"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
+                        <outlet property="addressLabel" destination="6Hk-zj-uag" id="PYM-hj-leb"/>
                         <outlet property="mapView" destination="sJ9-y1-7fk" id="ism-6r-dxO"/>
                     </connections>
                 </viewController>
@@ -981,7 +1010,7 @@
             </objects>
             <point key="canvasLocation" x="2366" y="301"/>
         </scene>
-        <!--Activity View Controller-->
+        <!--Activity-->
         <scene sceneID="mkh-V2-7Yq">
             <objects>
                 <viewController storyboardIdentifier="ActivityViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="VQL-1a-jsd" customClass="ActivityViewController" customModule="Lit" customModuleProvider="target" sceneMemberID="viewController">
@@ -1006,7 +1035,7 @@
                             <constraint firstItem="QSJ-90-Nj6" firstAttribute="leading" secondItem="N48-9w-b61" secondAttribute="leading" id="ivs-JX-m1s"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="iDX-9y-Rqa"/>
+                    <navigationItem key="navigationItem" title="Activity" id="iDX-9y-Rqa"/>
                     <connections>
                         <outlet property="tableView" destination="QSJ-90-Nj6" id="tlw-Xj-JGz"/>
                     </connections>

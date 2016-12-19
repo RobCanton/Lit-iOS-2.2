@@ -104,20 +104,10 @@ class FirebaseService {
                         "url": downloadURL!.absoluteString,
                         "contentType": contentTypeStr,
                         "dateCreated": [".sv": "timestamp"],
-                        "length": 5,
-                        "likes": 0
+                         "length": 5
                     ]
                     dataRef.child("meta").setValue(obj, withCompletionBlock: { error, _ in
                         if error == nil {
-                            
-                            if upload.toLocation() {
-                                let locationRef = ref.child("locations/uploads/\(upload.getLocationKey())/\(postKey)")
-                                locationRef.setValue([".sv": "timestamp"]) //rough time estimate, only for server use
-                            }
-                            if upload.toUserProfile() {
-                                let userRef = ref.child("users/uploads/\(uid)/\(postKey)")
-                                userRef.setValue(true) //rough time estimate, only for server use
-                            }
                         }
                     })
 
@@ -165,19 +155,10 @@ class FirebaseService {
                         "url": thumbURL,
                         "contentType": contentTypeStr,
                         "dateCreated": [".sv": "timestamp"],
-                        "length": length,
-                        "likes": 0
+                        "length": length
                     ]
                     dataRef.child("meta").setValue(obj, withCompletionBlock: { error, _ in
                         if error == nil {
-                            if upload.toLocation() {
-                                let locationRef = ref.child("locations/uploads/\(upload.getLocationKey())/\(postKey)")
-                                locationRef.setValue([".sv": "timestamp"]) //rough time estimate, only for server use
-                            }
-                            if upload.toUserProfile() {
-                                let userRef = ref.child("users/uploads/\(uid)/\(postKey)")
-                                userRef.setValue(true) //rough time estimate, only for server use
-                            }
                         }
                     })
                 }

@@ -96,7 +96,7 @@ class Location:NSObject, NSCoding {
     
     func addVisitor(visitor:String) {
         if findVisitor(visitor) == nil{
-            visitors.insert(visitor, atIndex: 0)
+            visitors.append(visitor)
         }
     }
     
