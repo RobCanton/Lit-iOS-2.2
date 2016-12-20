@@ -93,7 +93,7 @@ class LoginViewController: UIViewController, StoreSubscriber {
             activateLoginButton()
         }
         
-        setupVideoBackground()
+        //setupVideoBackground()
         
     }
     

@@ -81,15 +81,10 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
             case .Running:
                 imageCaptureView.image = nil
                 imageCaptureView.hidden = true
-                recordButton.buttonState = .Idle
                 cancelButton.enabled = false
                 cancelButton.hidden = true
                 sendButton.enabled = false
                 sendButton.hidden = true
-                flashButton.enabled = true
-                flashButton.hidden = false
-                flipButton.enabled = true
-                flipButton.hidden = false
                 textView.hidden = true
                 textView.text = ""
                 textLabel.hidden = true
@@ -101,38 +96,26 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
 
                 imageCaptureView.hidden = false
                 videoLayer.hidden = true
-                recordButton.buttonState = .Idle
-                recordButton.buttonState = .Hidden
                 cancelButton.enabled = true
                 cancelButton.hidden = false
                 sendButton.enabled = true
                 sendButton.hidden = false
-                flashButton.enabled = false
-                flashButton.hidden = true
-                flipButton.enabled = false
-                flipButton.hidden = true
+
                 view.addGestureRecognizer(textTapGesture)
                 break
             case .VideoTaken:
                 resetProgress()
                 videoLayer.hidden = false
-                recordButton.buttonState = .Idle
-                recordButton.buttonState = .Hidden
+
                 cancelButton.enabled = true
                 cancelButton.hidden = false
                 sendButton.enabled = true
                 sendButton.hidden = false
-                flashButton.enabled = false
-                flashButton.hidden = true
-                flipButton.enabled = false
-                flipButton.hidden = true
+
                 view.addGestureRecognizer(textTapGesture)
                 break
             case .Recording:
-                flashButton.enabled = false
-                flashButton.hidden = true
-                flipButton.enabled = false
-                flipButton.hidden = true
+
                 break
             case .Sending:
                 sendButton.hidden = true
@@ -238,9 +221,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
         uploadWrapper.show(config: config!, view: uploadSelector!)
     }
 
-    var recordButton: RecordButton!
-    var flashButton: UIButton!
-    var flipButton: UIButton!
+
     var uploadWrapper = SwiftMessages()
     
     override func viewDidAppear(animated: Bool) {
@@ -288,36 +269,13 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
         
         cameraView.frame = self.view.frame
         
-        recordButton = RecordButton(frame: CGRectMake(0,0,70,70))
         
-        recordButton.center = self.snapButton.center
-        recordButton.buttonColor = UIColor(white: 1.0, alpha: 0.6)
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapped))
+        recordBtn.addGestureRecognizer(tapGestureRecognizer)
         
-        recordButton.progressColor = .redColor()
-        recordButton.closeWhenFinished = false
-        recordButton.center.x = self.view.center.x
-        recordButton.hidden = true
+        let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressed))
+        recordBtn.addGestureRecognizer(longPressRecognizer)
         
-        
-        view.addSubview(recordButton)
-        
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: "tapped:")
-        recordButton.addGestureRecognizer(tapGestureRecognizer)
-        
-        let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: "longPressed:")
-        recordButton.addGestureRecognizer(longPressRecognizer)
-        
-        flashButton = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
-        flashButton.setImage(UIImage(named: "flashoff"), forState: .Normal)
-        flashButton.center = CGPoint(x: (recordButton.center.x / 2) - flashButton.frame.width / 8, y: recordButton.center.y)
-        flashButton.addTarget(self, action: #selector(switchFlashMode), forControlEvents: .TouchUpInside)
-        self.view.addSubview(flashButton)
-        
-        flipButton = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
-        flipButton.setImage(UIImage(named: "switchcamera"), forState: .Normal)
-        flipButton.center = CGPoint(x: (recordButton.center.x + recordButton.center.x / 2) + flipButton.frame.width / 8, y: recordButton.center.y)
-        flipButton.addTarget(self, action: #selector(switchCamera), forControlEvents: .TouchUpInside)
-        self.view.addSubview(flipButton)
         
         reloadCamera()
         
@@ -502,7 +460,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
             cameraDevice = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo)
         }
         
-        let captureTapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "AutoFocusGesture:")
+        let captureTapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(AutoFocusGesture))
         captureTapGesture.numberOfTapsRequired = 1
         captureTapGesture.numberOfTouchesRequired = 1
         view.addGestureRecognizer(captureTapGesture)
@@ -578,24 +536,20 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
                 do {
                     _ = try avDevice.lockForConfiguration()
                 } catch {
-                    print("aaaa")
                 }
                 switch flashMode {
                 case .On:
                     
                     avDevice.flashMode = .Auto
                     flashMode = .Auto
-                    flashButton.setImage(UIImage(named: "flashauto"), forState: .Normal)
                     break
                 case .Auto:
                     avDevice.flashMode = .Off
                     flashMode = .Off
-                    flashButton.setImage(UIImage(named: "flashoff"), forState: .Normal)
                     break
                 case .Off:
                     avDevice.flashMode = .On
                     flashMode = .On
-                    flashButton.setImage(UIImage(named: "flashon"), forState: .Normal)
                     break
                 }
                 // unlock your device
@@ -622,7 +576,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
         let maxDuration = CGFloat(10) // Max duration of the recordButton
         
         progress = progress + (CGFloat(0.05) / maxDuration)
-        recordButton.setProgress(progress)
+        //recordButton.setProgress(progress)
         
         if progress >= 1 {
             progressTimer.invalidate()
@@ -632,7 +586,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     
     func resetProgress() {
         progress = 0
-        recordButton.setProgress(progress)
+        //recordButton.setProgress(progress)
     }
     
     
@@ -718,7 +672,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     var videoFileOutput: AVCaptureMovieFileOutput?
     func recordVideo() {
         cameraState = .Recording
-        progressTimer = NSTimer.scheduledTimerWithTimeInterval(0.05, target: self, selector: "updateProgress", userInfo: nil, repeats: true)
+        progressTimer = NSTimer.scheduledTimerWithTimeInterval(0.05, target: self, selector: #selector(updateProgress), userInfo: nil, repeats: true)
         
         let recordingDelegate:AVCaptureFileOutputRecordingDelegate? = self
     
@@ -746,7 +700,6 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
         playerLayer!.player?.play()
         playerLayer!.player?.actionAtItemEnd = .None
         loopVideo(playerLayer!.player!)
-        print("VIDEO URL: \(videoUrl)")
         return
     }
     
