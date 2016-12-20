@@ -248,13 +248,15 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
         self.selectedIndex = prevSelection
         highlightItem(prevSelection)
     }
+
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let destinationViewController = segue.destinationViewController as? CameraViewController {
-            destinationViewController.transitioningDelegate = self
-            destinationViewController.interactor = interactor
-            destinationViewController.tabBarDelegate = self
-        }
+    @IBAction func unwindFromViewController(sender: UIStoryboardSegue) {
+    }
+    
+    override func segueForUnwindingToViewController(toViewController: UIViewController, fromViewController: UIViewController, identifier: String?) -> UIStoryboardSegue {
+        let segue = CameraUnwindTransition(identifier: identifier, source: fromViewController, destination: toViewController)
+
+        return segue
     }
     
     func tabBarController(tabBarController: UITabBarController, shouldSelectViewController viewController: UIViewController) -> Bool {
@@ -293,22 +295,4 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
         
     }
     
-    
-    
-    
-    let interactor = Interactor()
-    
-    
-    
-    
-}
-
-extension PopUpTabBarController: UIViewControllerTransitioningDelegate {
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return DismissAnimator()
-    }
-    
-    func interactionControllerForDismissal(animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-        return interactor.hasStarted ? interactor : nil
-    }
 }

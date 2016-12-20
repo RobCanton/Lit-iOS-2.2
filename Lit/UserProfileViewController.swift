@@ -118,11 +118,7 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     var presentConversation:Conversation?
     func presentConversation(conversation:Conversation) {
         presentConversation = conversation
-//        let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("ChatViewController") as! ChatViewController
-//        
-//        controller.conversation = conversation
-//        navigationController?.navigationBar.tintColor = UIColor.whiteColor()
-//        navigationController?.pushViewController(controller, animated: true)
+
         self.performSegueWithIdentifier("toMessage", sender: self)
     }
     
@@ -155,7 +151,7 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.title = " "
+        self.navigationItem.title = user.getDisplayName()
         self.automaticallyAdjustsScrollViewInsets = false
         navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Plain, target: nil, action: nil)
 
@@ -182,7 +178,7 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         collectionView!.showsVerticalScrollIndicator = false
         
         collectionView!.parallaxHeader.view = headerView
-        collectionView!.parallaxHeader.height = UltravisualLayoutConstants.Cell.featuredHeight
+        collectionView!.parallaxHeader.height = 250
         collectionView!.parallaxHeader.mode = .Fill
         collectionView!.parallaxHeader.minimumHeight = 0;
         
@@ -200,13 +196,14 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
             controlBar?.messageBlock.alpha = 0.5
         }
         
-        statusBarBG = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: navHeight))
-        statusBarBG!.backgroundColor = UIColor.blackColor()
-        view.addSubview(statusBarBG!)
-        statusBarBG!.hidden = true
+
         
         headerView.imageView.loadImageUsingCacheWithURLString(user!.getLargeImageUrl(), completion: {result in})
         headerView.populateUser(user!)
+        headerView.usernameLabel.hidden = true
+        headerView.bioTextView.hidden = true
+        headerView.locationIcon.hidden = true
+        headerView.locationLabel.hidden = true
         //controlBar?.populateUser(user!)
         getKeys()
         
@@ -215,7 +212,6 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         self.navigationItem.rightBarButtonItem = barButton
         
         controlBar?.setFollowing(followers.count)
-        controlBar?.setFollowing(following.count)
         
     }
     
@@ -223,7 +219,8 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     func updateFriendStatus() {
         status =  checkFriendStatus(user.getUserId())
         //controlBar?.setFriendStatus(status)
-        followButton.setUser(user)
+        //followButton.setUser(user)
+        followButton.hidden = true
     }
     
     func getKeys() {
@@ -289,12 +286,6 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
                 controlBar?.alpha = 1 - prop
             } else {
                 controlBar?.alpha = 1
-            }
-            
-            if progress <= -1.0 {
-                statusBarBG?.hidden = false
-            } else {
-                statusBarBG?.hidden = true
             }
         }
     }

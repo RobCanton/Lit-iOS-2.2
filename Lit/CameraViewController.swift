@@ -31,40 +31,13 @@ protocol PopUpProtocolDelegate {
 }
 
 class CameraViewController: UIViewController, UIImagePickerControllerDelegate, AVCaptureFileOutputRecordingDelegate, UploadSelectorDelegate, UITextViewDelegate, UIGestureRecognizerDelegate {
+
+    @IBOutlet weak var doneButton: UIButton!
     
-    var interactor:Interactor? = nil
-    
-    func handlePanGesture(sender: UIPanGestureRecognizer) {
-        let percentThreshold:CGFloat = 0.1
+    @IBAction func handleDoneButton(sender: AnyObject) {
         
-        // convert y-position to downward pull progress (percentage)
-        let translation = sender.translationInView(view)
-        let verticalMovement = translation.y / view.bounds.height
-        let downwardMovement = fmaxf(Float(verticalMovement), 0.0)
-        let downwardMovementPercent = fminf(downwardMovement, 1.0)
-        let progress = CGFloat(downwardMovementPercent)
-
-        guard let interactor = interactor else { return }
-
-        switch sender.state {
-        case .Began:
-            interactor.hasStarted = true
-            dismissViewControllerAnimated(true, completion: nil)
-        case .Changed:
-            interactor.shouldFinish = progress > percentThreshold
-            interactor.updateInteractiveTransition(progress)
-        case .Cancelled:
-            interactor.hasStarted = false
-            interactor.cancelInteractiveTransition()
-        case .Ended:
-            interactor.hasStarted = false
-            interactor.shouldFinish
-                ? interactor.finishInteractiveTransition()
-                : interactor.cancelInteractiveTransition()
-        default:
-            break
-        }
     }
+    
     
     var captureSession: AVCaptureSession?
     var stillImageOutput: AVCaptureStillImageOutput?
@@ -80,6 +53,9 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     
     var progressTimer : NSTimer!
     var progress : CGFloat! = 0
+    
+    var recordBtn:UIButton!
+    
 
     /* 
      GESTURES 
@@ -119,7 +95,6 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
                 textLabel.hidden = true
                 textLabel.text = ""
                 view.removeGestureRecognizer(textTapGesture)
-                view.addGestureRecognizer(panGesture)
                 break
             case .PhotoTaken:
                 resetProgress()
@@ -136,7 +111,6 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
                 flashButton.hidden = true
                 flipButton.enabled = false
                 flipButton.hidden = true
-                view.removeGestureRecognizer(panGesture)
                 view.addGestureRecognizer(textTapGesture)
                 break
             case .VideoTaken:
@@ -152,7 +126,6 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
                 flashButton.hidden = true
                 flipButton.enabled = false
                 flipButton.hidden = true
-                view.removeGestureRecognizer(panGesture)
                 view.addGestureRecognizer(textTapGesture)
                 break
             case .Recording:
@@ -270,11 +243,15 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     var flipButton: UIButton!
     var uploadWrapper = SwiftMessages()
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(pinch))
-        panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture))
         textTapGesture = UITapGestureRecognizer(target: self, action: #selector(enableTextField))
         labelDragGesture = UIPanGestureRecognizer(target: self, action: #selector(labelDragged))
         labelPinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(labelPinched))
@@ -282,9 +259,25 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
         labelDragGesture.delegate = self
         labelPinchGesture.delegate = self
         labelRotateGesture.delegate = self
-        
-        view.addGestureRecognizer(panGesture)
+
         view.addGestureRecognizer(pinchGesture)
+        
+        let definiteBounds = UIScreen.mainScreen().bounds
+        recordBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 56, height: 56))
+        var cameraBtnFrame = recordBtn.frame
+        cameraBtnFrame.origin.y = definiteBounds.height - 140
+        cameraBtnFrame.origin.x = self.view.bounds.width/2 - cameraBtnFrame.size.width/2
+        recordBtn.frame = cameraBtnFrame
+        
+        
+        recordBtn.backgroundColor = UIColor.clearColor()
+        recordBtn.layer.cornerRadius = cameraBtnFrame.height/2
+        recordBtn.layer.borderColor = UIColor.whiteColor().CGColor
+        recordBtn.layer.borderWidth = 4
+
+        recordBtn.transform = CGAffineTransformMakeScale(1.3, 1.3)
+        self.view.addSubview(recordBtn)
+        recordBtn.hidden = true
         
         sendButton.backgroundColor = accentColor
         sendButton.layer.cornerRadius = sendButton.frame.width/2
@@ -303,6 +296,8 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
         recordButton.progressColor = .redColor()
         recordButton.closeWhenFinished = false
         recordButton.center.x = self.view.center.x
+        recordButton.hidden = true
+        
         
         view.addSubview(recordButton)
         
@@ -767,6 +762,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
         cameraState = .Recording
         return
     }
+    
     
     override func prefersStatusBarHidden() -> Bool {
         return false

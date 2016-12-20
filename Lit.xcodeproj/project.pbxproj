@@ -185,6 +185,9 @@
 		B0E2BDB91E0531E600D195A5 /* MyStoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E2BDB71E0531E600D195A5 /* MyStoryTableViewCell.swift */; };
 		B0E2BDBA1E0531E600D195A5 /* MyStoryTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0E2BDB81E0531E600D195A5 /* MyStoryTableViewCell.xib */; };
 		B0E2BDBC1E06805100D195A5 /* blur.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = B0E2BDBB1E067FAC00D195A5 /* blur.mp4 */; };
+		B0E2BDBE1E08647800D195A5 /* UserProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E2BDBD1E08647700D195A5 /* UserProfileHeaderView.swift */; };
+		B0E2BDC01E08666700D195A5 /* UserProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0E2BDBF1E08666700D195A5 /* UserProfileHeaderView.xib */; };
+		B0E2BDC21E086B1800D195A5 /* CameraTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E2BDC11E086B1800D195A5 /* CameraTransition.swift */; };
 		B0E591571DD1218D00C032D6 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E591561DD1218D00C032D6 /* SettingsViewController.swift */; };
 		B0E591591DD126C900C032D6 /* LogoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E591581DD126C900C032D6 /* LogoutView.swift */; };
 		B0E5915B1DD126D600C032D6 /* LogoutView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0E5915A1DD126D600C032D6 /* LogoutView.xib */; };
@@ -409,6 +412,9 @@
 		B0E2BDB71E0531E600D195A5 /* MyStoryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyStoryTableViewCell.swift; sourceTree = "<group>"; };
 		B0E2BDB81E0531E600D195A5 /* MyStoryTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyStoryTableViewCell.xib; sourceTree = "<group>"; };
 		B0E2BDBB1E067FAC00D195A5 /* blur.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = blur.mp4; sourceTree = "<group>"; };
+		B0E2BDBD1E08647700D195A5 /* UserProfileHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileHeaderView.swift; sourceTree = "<group>"; };
+		B0E2BDBF1E08666700D195A5 /* UserProfileHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserProfileHeaderView.xib; sourceTree = "<group>"; };
+		B0E2BDC11E086B1800D195A5 /* CameraTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraTransition.swift; sourceTree = "<group>"; };
 		B0E591561DD1218D00C032D6 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		B0E591581DD126C900C032D6 /* LogoutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogoutView.swift; sourceTree = "<group>"; };
 		B0E5915A1DD126D600C032D6 /* LogoutView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LogoutView.xib; sourceTree = "<group>"; };
@@ -589,6 +595,8 @@
 				B0E5915A1DD126D600C032D6 /* LogoutView.xib */,
 				B0E8E3151DD989F30077D1BC /* ProfilePictureMessageView.swift */,
 				B0E8E3171DD98A060077D1BC /* ProfilePictureMessageView.xib */,
+				B0E2BDBD1E08647700D195A5 /* UserProfileHeaderView.swift */,
+				B0E2BDBF1E08666700D195A5 /* UserProfileHeaderView.xib */,
 			);
 			name = UserProfile;
 			sourceTree = "<group>";
@@ -794,6 +802,7 @@
 			children = (
 				76173B791D5784AC0093A137 /* Main.storyboard */,
 				76B361D41D6517A50024CDC7 /* PopUpTabBarController.swift */,
+				B0E2BDC11E086B1800D195A5 /* CameraTransition.swift */,
 				B0E5915E1DD298A700C032D6 /* ActiveLocationView.swift */,
 				B0E5915C1DD2988D00C032D6 /* ActiveLocationView.xib */,
 				B00BA91F1D9E3B5700F5EA30 /* Login */,
@@ -1002,6 +1011,7 @@
 				B08BBB941DBBE4FD00AD3FF1 /* EventsBannerView.xib in Resources */,
 				B0FF114F1D3EB32100D709CE /* LaunchScreen.storyboard in Resources */,
 				B00BA91E1D9D6DB600F5EA30 /* StoryItemViewController.xib in Resources */,
+				B0E2BDC01E08666700D195A5 /* UserProfileHeaderView.xib in Resources */,
 				B0FF11571D3EB33100D709CE /* GoogleService-Info.plist in Resources */,
 				B032C9931DA807C000811779 /* SetupViewController.xib in Resources */,
 				B01B34A21DC15BC600B2B9CE /* DialogRow.xib in Resources */,
@@ -1107,6 +1117,7 @@
 				B0E8E3441DE203720077D1BC /* UserStoryTableViewCell.swift in Sources */,
 				765036281D59170E0062BCF0 /* StoryItem.swift in Sources */,
 				B06D54C81D9ECB6D00F6A4A7 /* YokoTextField.swift in Sources */,
+				B0E2BDBE1E08647800D195A5 /* UserProfileHeaderView.swift in Sources */,
 				767729831D5116930052CA17 /* CWStatusBarNotification.swift in Sources */,
 				B0351FB61DED0503000A4BF5 /* NVActivityIndicatorAnimationTriangleSkewSpin.swift in Sources */,
 				B09D5FCE1DA57C80004A188E /* ARNImageZoomTransition.swift in Sources */,
@@ -1156,6 +1167,7 @@
 				76136D391D4933F6003DB433 /* UltravisualLayout.swift in Sources */,
 				B0351FAD1DED0503000A4BF5 /* NVActivityIndicatorAnimationLineScale.swift in Sources */,
 				B0351F9B1DED0503000A4BF5 /* NVActivityIndicatorAnimationBallClipRotatePulse.swift in Sources */,
+				B0E2BDC21E086B1800D195A5 /* CameraTransition.swift in Sources */,
 				B0321ECC1DB568BA00AD4C53 /* LocViewController.swift in Sources */,
 				76A516691D60C721005E2815 /* Message.swift in Sources */,
 				B0351FBC1DED0503000A4BF5 /* NVActivityIndicatorViewable.swift in Sources */,

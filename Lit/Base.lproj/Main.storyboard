@@ -732,10 +732,32 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" keyboardAppearance="alert" enablesReturnKeyAutomatically="YES"/>
                             </textView>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eDt-pF-x5t">
+                                <rect key="frame" x="284" y="561" width="32" height="31"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="36" id="QRi-1B-3bl"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="36" id="ZtI-PN-hts"/>
+                                    <constraint firstAttribute="width" secondItem="eDt-pF-x5t" secondAttribute="height" multiplier="1:1" id="ueM-9R-SgJ"/>
+                                </constraints>
+                                <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                <state key="normal" image="collapse">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                </state>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="QRi-1B-3bl"/>
+                                    </mask>
+                                </variation>
+                                <connections>
+                                    <segue destination="HbU-cF-kXB" kind="unwind" unwindAction="unwindFromViewController:" id="2F4-GW-xpK"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstItem="eDt-pF-x5t" firstAttribute="centerX" secondItem="LJP-ME-48w" secondAttribute="centerX" id="20k-1z-Q1E"/>
                             <constraint firstAttribute="bottomMargin" secondItem="10W-xw-TSZ" secondAttribute="bottom" constant="12" id="2oT-Gs-sLj"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="eDt-pF-x5t" secondAttribute="leading" id="7HA-7M-rXc"/>
                             <constraint firstItem="EK9-fq-caR" firstAttribute="centerY" secondItem="LJP-ME-48w" secondAttribute="centerY" id="Aha-bf-j5J"/>
                             <constraint firstItem="ORk-Dn-btY" firstAttribute="top" secondItem="EK9-fq-caR" secondAttribute="bottom" constant="274" id="Hy0-pv-f7b"/>
                             <constraint firstItem="s5z-rE-T5E" firstAttribute="centerX" secondItem="LJP-ME-48w" secondAttribute="centerX" id="IiT-pD-nMr"/>
@@ -748,9 +770,11 @@
                             <constraint firstItem="ORk-Dn-btY" firstAttribute="top" secondItem="s5z-rE-T5E" secondAttribute="bottom" id="WXk-a1-fIh"/>
                             <constraint firstItem="s5z-rE-T5E" firstAttribute="centerY" secondItem="LJP-ME-48w" secondAttribute="centerY" id="Wp2-Xe-gcJ"/>
                             <constraint firstItem="s5z-rE-T5E" firstAttribute="top" secondItem="aZc-UQ-w0e" secondAttribute="bottom" constant="-20" id="XIs-CT-JX0"/>
+                            <constraint firstItem="eDt-pF-x5t" firstAttribute="top" secondItem="aZc-UQ-w0e" secondAttribute="bottom" constant="8" id="b02-G2-2XX"/>
                             <constraint firstItem="ORk-Dn-btY" firstAttribute="top" secondItem="80H-Sb-wGz" secondAttribute="bottom" constant="8" symbolic="YES" id="bUF-Ev-9sI"/>
                             <constraint firstAttribute="trailingMargin" secondItem="EK9-fq-caR" secondAttribute="trailing" constant="-12" id="cvl-B7-NG3"/>
                             <constraint firstAttribute="trailingMargin" secondItem="s5z-rE-T5E" secondAttribute="trailing" constant="-20" id="dfD-aC-5Qf"/>
+                            <constraint firstItem="ORk-Dn-btY" firstAttribute="top" secondItem="eDt-pF-x5t" secondAttribute="bottom" constant="8" id="eOh-MC-FnE"/>
                             <constraint firstItem="oio-DY-U1L" firstAttribute="top" secondItem="aZc-UQ-w0e" secondAttribute="bottom" constant="530" id="ffR-Yc-wNw"/>
                             <constraint firstItem="Ri8-OT-mqm" firstAttribute="centerX" secondItem="oio-DY-U1L" secondAttribute="centerX" id="hkA-oe-ggd"/>
                             <constraint firstAttribute="bottom" secondItem="oio-DY-U1L" secondAttribute="bottom" constant="20" symbolic="YES" id="nSG-vl-dfX"/>
@@ -763,6 +787,8 @@
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="bUF-Ev-9sI"/>
+                                <exclude reference="7HA-7M-rXc"/>
+                                <exclude reference="b02-G2-2XX"/>
                                 <exclude reference="QWz-Hn-dC4"/>
                             </mask>
                         </variation>
@@ -780,8 +806,9 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6Es-Nl-38Q" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="HbU-cF-kXB" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2124" y="995"/>
+            <point key="canvasLocation" x="1558" y="985"/>
         </scene>
         <!--Presented View Controller-->
         <scene sceneID="LEE-1s-KYp">
@@ -949,7 +976,7 @@
                         <segue destination="DAc-2n-Ogm" kind="relationship" relationship="viewControllers" id="Gcr-Bq-fhn"/>
                         <segue destination="ewM-YJ-C2n" kind="relationship" relationship="viewControllers" id="jul-Qa-Os3"/>
                         <segue destination="geg-Nk-tJH" kind="relationship" relationship="viewControllers" id="Erj-qK-U7r"/>
-                        <segue destination="Kb5-7f-64C" kind="presentation" identifier="toCamera" id="Prn-vU-9ef"/>
+                        <segue destination="Kb5-7f-64C" kind="custom" identifier="toCamera" customClass="CameraTransition" customModule="Lit" customModuleProvider="target" id="Prn-vU-9ef"/>
                         <segue destination="O7E-Tc-2SX" kind="show" identifier="logout" animates="NO" id="02T-pM-5XC"/>
                     </connections>
                 </tabBarController>
@@ -1464,7 +1491,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6eb-rG-csF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1320" y="1159"/>
+            <point key="canvasLocation" x="336" y="1937"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ifN-Bl-dQQ">
@@ -1504,6 +1531,7 @@
     </scenes>
     <resources>
         <image name="Send" width="32" height="32"/>
+        <image name="collapse" width="32" height="32"/>
         <image name="delete_filled" width="32" height="32"/>
         <image name="fb" width="512" height="512"/>
         <image name="home" width="32" height="32"/>
@@ -1514,7 +1542,7 @@
         <image name="user" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="HMC-fr-N5t"/>
+        <segue reference="yDv-f8-GYO"/>
         <segue reference="oDu-O4-IVp"/>
         <segue reference="fVX-vr-hjW"/>
     </inferredMetricsTieBreakers>
