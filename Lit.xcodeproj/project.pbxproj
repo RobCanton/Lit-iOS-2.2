@@ -734,6 +734,7 @@
 			isa = PBXGroup;
 			children = (
 				76FF2E6A1D566D6A00E04EE3 /* CameraViewController.swift */,
+				B0E2BDC11E086B1800D195A5 /* CameraTransition.swift */,
 				B01B349B1DC117A900B2B9CE /* UploadSelectorView.swift */,
 				B01B349F1DC11A0600B2B9CE /* UploadSelectorView.xib */,
 				B01B34A31DC15BDA00B2B9CE /* DialogRow.swift */,
@@ -802,7 +803,6 @@
 			children = (
 				76173B791D5784AC0093A137 /* Main.storyboard */,
 				76B361D41D6517A50024CDC7 /* PopUpTabBarController.swift */,
-				B0E2BDC11E086B1800D195A5 /* CameraTransition.swift */,
 				B0E5915E1DD298A700C032D6 /* ActiveLocationView.swift */,
 				B0E5915C1DD2988D00C032D6 /* ActiveLocationView.xib */,
 				B00BA91F1D9E3B5700F5EA30 /* Login */,

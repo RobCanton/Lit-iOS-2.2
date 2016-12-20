@@ -60,7 +60,7 @@ class CameraTransition: UIStoryboardSegue {
         cameraButton.layer.borderWidth = 4.0
         
         let both:CAAnimationGroup = CAAnimationGroup()
-        both.duration = 0.5
+        both.duration = 0.35
         both.animations = [color,Width]
         both.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         
@@ -73,7 +73,10 @@ class CameraTransition: UIStoryboardSegue {
         containerView?.insertSubview(toViewController.view, atIndex: 0)
         containerView?.addSubview(cameraButton)
         
+        
+        
         fromViewController.cameraButton.hidden = true
+        
         
         UIView.animateWithDuration(0.35, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [], animations: {
             //toViewController.view.frame = finalToFrame
@@ -150,7 +153,7 @@ class CameraUnwindTransition: UIStoryboardSegue {
         cameraButton.layer.borderWidth = toViewController.cameraButton.layer.borderWidth
         
         let both:CAAnimationGroup = CAAnimationGroup()
-        both.duration = 0.5
+        both.duration = 0.35
         both.animations = [color,Width]
         both.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         
@@ -165,6 +168,10 @@ class CameraUnwindTransition: UIStoryboardSegue {
         containerView?.addSubview(toViewController.view)
 
         let finalCameraFrame = CGRect(x: screenBounds.width/2 - cameraBtnFrame.size.width/2, y: screenBounds.height - cameraBtnFrame.height - 8, width: cameraBtnFrame.width, height: cameraBtnFrame.height)
+        
+        if fromViewController.recordBtn.hidden {
+            cameraButton.hidden = true
+        }
         
         fromViewController.recordBtn.hidden = true
         containerView?.addSubview(cameraButton)

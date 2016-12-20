@@ -19,7 +19,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         super.viewDidLoad()
 
         self.navigationController?.navigationBar.titleTextAttributes =
-            [NSFontAttributeName: UIFont(name: "Avenir-HeavyOblique", size: 20.0)!,
+            [NSFontAttributeName: UIFont(name: "Avenir-Medium", size: 18.0)!,
              NSForegroundColorAttributeName: UIColor.whiteColor()]
         self.navigationController?.navigationBar.shadowImage = UIImage()
         navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Plain, target: nil, action: nil)

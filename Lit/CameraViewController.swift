@@ -60,69 +60,61 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     /* 
      GESTURES 
      */
-    var panGesture:UIPanGestureRecognizer!
+
     var pinchGesture:UIPinchGestureRecognizer!
-    var textTapGesture:UITapGestureRecognizer!
-    var labelDragGesture:UIPanGestureRecognizer!
-    var labelPinchGesture:UIPinchGestureRecognizer!
-    var labelRotateGesture:UIRotationGestureRecognizer!
+
     
     var cameraState:CameraState = .Initiating
         {
         didSet {
             switch cameraState {
             case .Initiating:
-                cancelButton.enabled = false
-                cancelButton.hidden = true
-                sendButton.enabled = false
-                sendButton.hidden = true
-                textView.hidden = true
+                cancelButton.enabled    = false
+                cancelButton.hidden     = true
+                sendButton.enabled      = false
+                sendButton.hidden       = true
+                
                 break
             case .Running:
-                imageCaptureView.image = nil
+                imageCaptureView.image  = nil
                 imageCaptureView.hidden = true
-                cancelButton.enabled = false
-                cancelButton.hidden = true
-                sendButton.enabled = false
-                sendButton.hidden = true
-                textView.hidden = true
-                textView.text = ""
-                textLabel.hidden = true
-                textLabel.text = ""
-                view.removeGestureRecognizer(textTapGesture)
+                cancelButton.enabled    = false
+                cancelButton.hidden     = true
+                sendButton.enabled      = false
+                sendButton.hidden       = true
+                dismissBtn.hidden       = false
                 break
             case .PhotoTaken:
                 resetProgress()
-
                 imageCaptureView.hidden = false
-                videoLayer.hidden = true
-                cancelButton.enabled = true
-                cancelButton.hidden = false
-                sendButton.enabled = true
-                sendButton.hidden = false
+                videoLayer.hidden       = true
+                cancelButton.enabled    = true
+                cancelButton.hidden     = false
+                sendButton.enabled      = true
+                sendButton.hidden       = false
+                recordBtn.hidden        = true
+                dismissBtn.hidden       = true
 
-                view.addGestureRecognizer(textTapGesture)
                 break
             case .VideoTaken:
                 resetProgress()
-                videoLayer.hidden = false
-
-                cancelButton.enabled = true
-                cancelButton.hidden = false
-                sendButton.enabled = true
-                sendButton.hidden = false
-
-                view.addGestureRecognizer(textTapGesture)
+                videoLayer.hidden       = false
+                cancelButton.enabled    = true
+                cancelButton.hidden     = false
+                sendButton.enabled      = true
+                sendButton.hidden       = false
+                recordBtn.hidden        = true
+                dismissBtn.hidden       = true
                 break
             case .Recording:
 
                 break
             case .Sending:
-                sendButton.hidden = true
-                sendButton.enabled = false
-                cancelButton.hidden = true
-                cancelButton.enabled = false
-                view.userInteractionEnabled = false
+                sendButton.hidden       = true
+                sendButton.enabled      = false
+                cancelButton.hidden     = true
+                cancelButton.enabled    = false
+
                 break
             case .Sent:
                 break
@@ -133,11 +125,9 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     
     @IBOutlet weak var videoLayer: UIView!
     @IBOutlet weak var cameraView: UIView!
-    @IBOutlet weak var snapButton: UIButton!
     
-    
-    @IBOutlet weak var textView: UITextView!
-    var textLabel = UITextView()
+
+    @IBOutlet weak var dismissBtn: UIButton!
 
     @IBOutlet weak var cancelButton: UIButton!
     @IBAction func cancelButtonTapped(sender: UIButton) {
@@ -148,6 +138,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
         playerLayer?.removeFromSuperlayer()
         videoUrl = nil
         
+        recordBtn.hidden = false
         cameraState = .Running
     }
     @IBOutlet weak var sendButton: UIButton!
@@ -158,7 +149,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     func send(upload:Upload) {
         if cameraState == .PhotoTaken {
             if let image = imageCaptureView.image{
-                upload.image = printTextOnImage()
+                upload.image = image
                 if let uploadTask = FirebaseService.sendImage(upload)
                 {
                     self.sent(uploadTask)
@@ -218,6 +209,14 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     }
     
     @IBAction func sendButtonTapped(sender: UIButton) {
+        uploadSelector = try! SwiftMessages.viewFromNib() as? UploadSelectorView
+        uploadSelector!.configureDropShadow()
+        uploadSelector!.delegate = self
+        config = SwiftMessages.Config()
+        config!.presentationContext = .Window(windowLevel: UIWindowLevelStatusBar)
+        config!.duration = .Forever
+        config!.presentationStyle = .Bottom
+        config!.dimMode = .Gray(interactive: true)
         uploadWrapper.show(config: config!, view: uploadSelector!)
     }
 
@@ -233,13 +232,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
         super.viewDidLoad()
         
         pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(pinch))
-        textTapGesture = UITapGestureRecognizer(target: self, action: #selector(enableTextField))
-        labelDragGesture = UIPanGestureRecognizer(target: self, action: #selector(labelDragged))
-        labelPinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(labelPinched))
-        labelRotateGesture = UIRotationGestureRecognizer(target: self, action: #selector(labelRotated))
-        labelDragGesture.delegate = self
-        labelPinchGesture.delegate = self
-        labelRotateGesture.delegate = self
+
 
         view.addGestureRecognizer(pinchGesture)
         
@@ -279,42 +272,6 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
         
         reloadCamera()
         
-        uploadSelector = try! SwiftMessages.viewFromNib() as? UploadSelectorView
-        uploadSelector!.configureDropShadow()
-        uploadSelector!.delegate = self
-        config = SwiftMessages.Config()
-        config!.presentationContext = .Window(windowLevel: UIWindowLevelStatusBar)
-        config!.duration = .Forever
-        config!.presentationStyle = .Bottom
-        config!.dimMode = .Gray(interactive: true)
-        
-        textView.backgroundColor = UIColor.clearColor()
-        textView.textColor = UIColor.whiteColor()
-        textView.font = UIFont(name: "Avenir-BlackOblique", size: 40.0)
-        textView.textAlignment = .Center
-        textView.scrollEnabled = false
-        
-        textView.keyboardAppearance = .Dark
-        textView.delegate = self
-        textView.editable = false
-        textView.applyShadow(1, opacity: 0.5, height: 1, shouldRasterize: false)
-
-        textLabel.backgroundColor = UIColor.clearColor()
-        textLabel.textColor = UIColor.whiteColor()
-        textLabel.font = UIFont(name: "Avenir-BlackOblique", size: 40.0)
-        textLabel.textAlignment = .Center
-        textLabel.editable = false
-        textLabel.scrollEnabled = false
-        textLabel.selectable = false
-        textLabel.applyShadow(1, opacity: 0.5, height: 1, shouldRasterize: false)
-        textLabel.addGestureRecognizer(labelDragGesture)
-        textLabel.addGestureRecognizer(labelPinchGesture)
-        textLabel.addGestureRecognizer(labelRotateGesture)
-        textLabel.center = textView.center
-        textLabel.frame = textLabel.frame
-
-        editingLayer.addSubview(textLabel)
-        editingLayer.userInteractionEnabled = true
     
     }
     
@@ -326,109 +283,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
-    
-    func textViewDidBeginEditing(textView: UITextView) {
-        textView.hidden = false
-        textLabel.hidden = true
-        textLabel.userInteractionEnabled = false
-        
-        UIView.animateWithDuration(0.2, animations: {
-            self.editingFadeLayer.alpha = 0.24
-        })
-    }
-    
-    @IBOutlet weak var editingFadeLayer: UIView!
-    func textViewDidEndEditing(textView: UITextView) {
-        textView.hidden = true
-        textView.editable = false
-        adjustFrames()
-        textLabel.transform = CGAffineTransformIdentity
-        textLabel.frame = textView.frame
-        textLabel.text = textView.text
-        textLabel.hidden = false
-        textLabel.userInteractionEnabled = true
-        UIView.animateWithDuration(0.2, animations: {
-            self.editingFadeLayer.alpha = 0.0
-        })
-    }
-    
-    @IBOutlet weak var editingLayer: UIView!
-    func printTextOnImage() -> UIImage{
-        UIGraphicsBeginImageContextWithOptions(UIScreen.mainScreen().bounds.size, false, 0);
-        self.editingLayer.drawViewHierarchyInRect(view.bounds, afterScreenUpdates: true)
-        let image:UIImage = UIGraphicsGetImageFromCurrentImageContext();
-        
-        UIGraphicsEndImageContext();
-        
-        return image;
-    }
-    
-    
-    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
-        if text == "\n" {
-            textView.resignFirstResponder()
-            return false
-        }
-        let newText = (textView.text as NSString).stringByReplacingCharactersInRange(range, withString: text)
-        let numberOfChars = newText.characters.count // for Swift use count(newText)
-        return numberOfChars < 80;
-    }
-    
-    func enableTextField(gesture:UITapGestureRecognizer) {
-        if !textView.isFirstResponder() {
-            textView.editable = true
-            textView.becomeFirstResponder()
-        } else {
-            textView.resignFirstResponder()
-        }
-    }
-    
-    func adjustFrames() {
-        let fixedWidth = textView.frame.size.width
-        textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.max))
-        let newSize = textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.max))
-        var newFrame = textView.frame
-        newFrame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
-        textView.frame = newFrame;
-        textView.center = view.center
-    }
-    
-    var labelCenter:CGPoint?
-    var labelFrame:CGRect?
-    func labelDragged(gesture: UIPanGestureRecognizer) {
-        let translation = gesture.translationInView(self.view) // get the translation
-        let label = gesture.view! // the view inside the gesture
 
-        // move the label with the translation
-        label.center = CGPoint(x: label.center.x + translation.x, y: label.center.y + translation.y)
-        
-        // reset the translation that now, is already applied to the label
-        gesture.setTranslation(CGPointZero, inView: self.view)
-        
-        if gesture.state == UIGestureRecognizerState.Ended {
-            labelCenter = label.center
-        }
-    }
-    
-    var _scale:CGFloat?
-    {
-        didSet{
-            print(_scale!)
-        }
-    }
-    var transform:CGAffineTransform?
-    func labelPinched(gesture: UIPinchGestureRecognizer) {
-        _scale = gesture.scale
-        transform = CGAffineTransformScale(gesture.view!.transform, _scale!, _scale!)
-        gesture.view!.transform = transform!
-        gesture.scale = 1.0
-    }
-    
-    func labelRotated(sender:UIRotationGestureRecognizer){
-        textLabel.transform = CGAffineTransformRotate(textLabel.transform, sender.rotation)
-        // Reset recognizer rotation
-        sender.rotation = 0
-    }
     
     @IBOutlet weak var imageCaptureView: UIImageView!
     

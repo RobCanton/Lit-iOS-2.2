@@ -191,7 +191,7 @@ class ActivityViewController: UIViewController, UITableViewDelegate, UITableView
         super.viewDidLoad()
         
         self.navigationController?.navigationBar.titleTextAttributes =
-            [NSFontAttributeName: UIFont(name: "Avenir-Medium", size: 20.0)!,
+            [NSFontAttributeName: UIFont(name: "Avenir-Medium", size: 18.0)!,
              NSForegroundColorAttributeName: UIColor.whiteColor()]
         
         let nib = UINib(nibName: "UserStoryTableViewCell", bundle: nil)
