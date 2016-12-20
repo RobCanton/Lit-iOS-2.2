@@ -32,12 +32,27 @@ protocol PopUpProtocolDelegate {
 
 class CameraViewController: UIViewController, UIImagePickerControllerDelegate, AVCaptureFileOutputRecordingDelegate, UploadSelectorDelegate, UITextViewDelegate, UIGestureRecognizerDelegate {
 
-    @IBOutlet weak var doneButton: UIButton!
+    @IBOutlet weak var imageCaptureView: UIImageView!
+    @IBOutlet weak var videoLayer: UIView!
+    @IBOutlet weak var cameraView: UIView!
+    @IBOutlet weak var dismissBtn: UIButton!
+    @IBOutlet weak var cancelButton: UIButton!
+    @IBOutlet weak var sendButton: UIButton!
+    @IBOutlet weak var flashView: UIView!
     
-    @IBAction func handleDoneButton(sender: AnyObject) {
+    
+    @IBAction func cancelButtonTapped(sender: UIButton) {
         
+        playerLayer?.player?.seekToTime(CMTimeMake(0, 1))
+        playerLayer?.player?.pause()
+        
+        playerLayer?.removeFromSuperlayer()
+        videoUrl = nil
+        
+        recordBtn.hidden = false
+        cameraState = .Running
     }
-    
+
     
     var captureSession: AVCaptureSession?
     var stillImageOutput: AVCaptureStillImageOutput?
@@ -54,12 +69,8 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     var progressTimer : NSTimer!
     var progress : CGFloat! = 0
     
-    var recordBtn:UIButton!
+    var recordBtn:CameraButton!
     
-
-    /* 
-     GESTURES 
-     */
 
     var pinchGesture:UIPinchGestureRecognizer!
 
@@ -107,7 +118,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
                 dismissBtn.hidden       = true
                 break
             case .Recording:
-
+                dismissBtn.hidden       = true
                 break
             case .Sending:
                 sendButton.hidden       = true
@@ -122,26 +133,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
             }
         }
     }
-    
-    @IBOutlet weak var videoLayer: UIView!
-    @IBOutlet weak var cameraView: UIView!
-    
 
-    @IBOutlet weak var dismissBtn: UIButton!
-
-    @IBOutlet weak var cancelButton: UIButton!
-    @IBAction func cancelButtonTapped(sender: UIButton) {
-        
-        playerLayer?.player?.seekToTime(CMTimeMake(0, 1))
-        playerLayer?.player?.pause()
-        
-        playerLayer?.removeFromSuperlayer()
-        videoUrl = nil
-        
-        recordBtn.hidden = false
-        cameraState = .Running
-    }
-    @IBOutlet weak var sendButton: UIButton!
     
     var uploadSelector:UploadSelectorView?
     var config: SwiftMessages.Config?
@@ -237,21 +229,17 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
         view.addGestureRecognizer(pinchGesture)
         
         let definiteBounds = UIScreen.mainScreen().bounds
-        recordBtn = UIButton(frame: CGRect(x: 0, y: 0, width: 56, height: 56))
+        recordBtn = CameraButton(frame: CGRect(x: 0, y: 0, width: 56, height: 56))
         var cameraBtnFrame = recordBtn.frame
         cameraBtnFrame.origin.y = definiteBounds.height - 140
         cameraBtnFrame.origin.x = self.view.bounds.width/2 - cameraBtnFrame.size.width/2
         recordBtn.frame = cameraBtnFrame
-        
-        
-        recordBtn.backgroundColor = UIColor.clearColor()
-        recordBtn.layer.cornerRadius = cameraBtnFrame.height/2
-        recordBtn.layer.borderColor = UIColor.whiteColor().CGColor
-        recordBtn.layer.borderWidth = 4
-
         recordBtn.transform = CGAffineTransformMakeScale(1.3, 1.3)
         self.view.addSubview(recordBtn)
         recordBtn.hidden = true
+        recordBtn.tappedHandler = didPressTakePhoto
+        recordBtn.pressedHandler = pressed
+        
         
         sendButton.backgroundColor = accentColor
         sendButton.layer.cornerRadius = sendButton.frame.width/2
@@ -262,30 +250,29 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
         
         cameraView.frame = self.view.frame
         
-        
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapped))
-        recordBtn.addGestureRecognizer(tapGestureRecognizer)
-        
-        let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressed))
-        recordBtn.addGestureRecognizer(longPressRecognizer)
-        
-        
         reloadCamera()
         
     
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        UIView.animateWithDuration(0.6, animations: {
+            self.dismissBtn.alpha = 0.5
+        })
+    }
+    
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         tabBarDelegate?.returnToPreviousSelection()
+        UIView.animateWithDuration(0.3, animations: {
+            self.dismissBtn.alpha = 0.0
+        })
     }
     
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
-
-    
-    @IBOutlet weak var imageCaptureView: UIImageView!
     
     
     func reloadCamera() {
@@ -445,14 +432,9 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     }
     
     
-    func tapped(sender: UITapGestureRecognizer)
+    func pressed(state: UIGestureRecognizerState)
     {
-        didPressTakePhoto()
-    }
-    
-    func longPressed(sender: UILongPressGestureRecognizer)
-    {
-        switch sender.state {
+        switch state {
         case .Began:
             if cameraState == .Running {
                 recordVideo()
@@ -472,7 +454,15 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     
     func didPressTakePhoto()
     {
-        
+        flashView.alpha = 0.0
+        UIView.animateWithDuration(0.025, animations: {
+            self.flashView.alpha = 0.75
+            }, completion: { result in
+                UIView.animateWithDuration(0.25, animations: {
+                    self.flashView.alpha = 0.0
+                    }, completion: { result in })
+        })
+
         AudioServicesPlayAlertSound(1108)
         if let videoConnection = stillImageOutput?.connectionWithMediaType(AVMediaTypeVideo)
         {
