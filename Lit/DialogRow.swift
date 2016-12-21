@@ -17,7 +17,6 @@ class DialogRow: UIButton {
     @IBOutlet weak var locationTitle: UILabel!
 
     @IBOutlet weak var selectionIndicator: UIImageView!
-    @IBOutlet weak var divider: UIView!
     
     override func awakeFromNib() {
          super.awakeFromNib()
@@ -31,9 +30,7 @@ class DialogRow: UIButton {
             locationImageView.loadImageUsingCacheWithURLString(user.getImageUrl(), completion: { result in })
             locationImageView.layer.cornerRadius = locationImageView.frame.width/2
             locationImageView.clipsToBounds = true
-            
-            locationTitle.styleLocationTitle("my profile", size: 18.0)
-            divider.hidden = false
+            locationTitle.text = "My Profile"
         }
         
     }
@@ -43,8 +40,7 @@ class DialogRow: UIButton {
         locationImageView.loadImageUsingFileWithURLString(location, completion: { result in })
         locationImageView.layer.cornerRadius = 5
         locationImageView.clipsToBounds = true
-    
-        locationTitle.styleLocationTitle(location.getName().lowercaseString, size: 20.0)
+        locationTitle.text = location.getName()
     }
     
     func active(_isActive:Bool) {

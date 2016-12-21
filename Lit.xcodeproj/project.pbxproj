@@ -185,7 +185,6 @@
 		B0DAFBD01DF947E8004EB03D /* ProgressIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DAFBCF1DF947E8004EB03D /* ProgressIndicator.swift */; };
 		B0E2BDB91E0531E600D195A5 /* MyStoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E2BDB71E0531E600D195A5 /* MyStoryTableViewCell.swift */; };
 		B0E2BDBA1E0531E600D195A5 /* MyStoryTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0E2BDB81E0531E600D195A5 /* MyStoryTableViewCell.xib */; };
-		B0E2BDBC1E06805100D195A5 /* blur.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = B0E2BDBB1E067FAC00D195A5 /* blur.mp4 */; };
 		B0E2BDBE1E08647800D195A5 /* UserProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E2BDBD1E08647700D195A5 /* UserProfileHeaderView.swift */; };
 		B0E2BDC01E08666700D195A5 /* UserProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0E2BDBF1E08666700D195A5 /* UserProfileHeaderView.xib */; };
 		B0E2BDC21E086B1800D195A5 /* CameraTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E2BDC11E086B1800D195A5 /* CameraTransition.swift */; };
@@ -994,7 +993,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B0E2BDBC1E06805100D195A5 /* blur.mp4 in Resources */,
 				B03DED101DAED40D0062357A /* UserProfileControlBarView.xib in Resources */,
 				B06D54D81D9EEFD700F6A4A7 /* intro4.mp4 in Resources */,
 				B011B35F1E02261600FA4633 /* LocationTableCell.xib in Resources */,

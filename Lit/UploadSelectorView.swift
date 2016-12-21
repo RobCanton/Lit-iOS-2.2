@@ -43,9 +43,9 @@ class UploadSelectorView: MessageView {
         sendButton.backgroundColor = accentColor
         sendButton.layer.cornerRadius = 5
         sendButton.clipsToBounds = true
-        sendButton.setTitle("upload", forState: .Normal)
+        sendButton.setTitle("Upload", forState: .Normal)
         sendButton.tintColor = UIColor.whiteColor()
-        sendButton.titleLabel?.font = UIFont(name: "Avenir-Black", size: 20.0)
+        sendButton.titleLabel?.font = UIFont(name: "Avenir-Heavy", size: 18.0)
         sendButton.addTarget(self, action: #selector(send), forControlEvents: .TouchUpInside)
         
         contentView.addArrangedSubview(sendButton)

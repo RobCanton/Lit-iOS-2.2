@@ -201,6 +201,14 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     }
     
     @IBAction func sendButtonTapped(sender: UIButton) {
+        
+        UIView.animateWithDuration(0.3, delay: 0, usingSpringWithDamping: 0.75, initialSpringVelocity: 0, options: [.CurveEaseInOut], animations: {
+
+            self.sendButton.transform = CGAffineTransformMakeScale(0.8, 0.8)
+            }, completion: { result in
+                self.sendButton.transform = CGAffineTransformMakeScale(1.0, 1.0)
+        })
+        
         uploadSelector = try! SwiftMessages.viewFromNib() as? UploadSelectorView
         uploadSelector!.configureDropShadow()
         uploadSelector!.delegate = self
@@ -229,12 +237,12 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
         view.addGestureRecognizer(pinchGesture)
         
         let definiteBounds = UIScreen.mainScreen().bounds
-        recordBtn = CameraButton(frame: CGRect(x: 0, y: 0, width: 56, height: 56))
+        recordBtn = CameraButton(frame: CGRect(x: 0, y: 0, width: 80, height: 80))
         var cameraBtnFrame = recordBtn.frame
-        cameraBtnFrame.origin.y = definiteBounds.height - 140
+        cameraBtnFrame.origin.y = definiteBounds.height - 152
         cameraBtnFrame.origin.x = self.view.bounds.width/2 - cameraBtnFrame.size.width/2
         recordBtn.frame = cameraBtnFrame
-        recordBtn.transform = CGAffineTransformMakeScale(1.3, 1.3)
+        
         self.view.addSubview(recordBtn)
         recordBtn.hidden = true
         recordBtn.tappedHandler = didPressTakePhoto
@@ -244,9 +252,8 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
         sendButton.backgroundColor = accentColor
         sendButton.layer.cornerRadius = sendButton.frame.width/2
         sendButton.clipsToBounds = true
-        sendButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 2, bottom: 0, right: -2)
         
-        sendButton.applyShadow(4, opacity: 0.7, height: 3, shouldRasterize: false)
+        sendButton.applyShadow(10, opacity: 0.6, height: 2, shouldRasterize: false)
         
         cameraView.frame = self.view.frame
         
@@ -418,7 +425,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
         let maxDuration = CGFloat(10) // Max duration of the recordButton
         
         progress = progress + (CGFloat(0.05) / maxDuration)
-        //recordButton.setProgress(progress)
+        recordBtn.updateProgress(progress)
         
         if progress >= 1 {
             progressTimer.invalidate()
@@ -428,7 +435,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     
     func resetProgress() {
         progress = 0
-        //recordButton.setProgress(progress)
+        recordBtn.resetProgress()
     }
     
     
@@ -439,11 +446,13 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
             if cameraState == .Running {
                 recordVideo()
             }
+
             break
         case .Ended:
             if cameraState == .Recording {
                 videoFileOutput?.stopRecording()
             }
+            
             break
         default:
             break

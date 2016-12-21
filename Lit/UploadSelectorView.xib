@@ -12,33 +12,17 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="309"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zsq-vp-gxh">
-                    <rect key="frame" x="0.0" y="0.0" width="600" height="309"/>
-                    <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="x66-ly-0g8">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="309"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                    </view>
-                    <blurEffect style="dark"/>
-                </visualEffectView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dp3-Ae-zep" userLabel="Background view">
                     <rect key="frame" x="18" y="18" width="572" height="281"/>
                     <subviews>
-                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="RJH-Fp-YDa" userLabel="Content view">
-                            <rect key="frame" x="12" y="8" width="548" height="249"/>
-                            <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="upload to..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n6B-Ox-bGD">
-                                    <rect key="frame" x="0.0" y="0.0" width="548" height="249"/>
-                                    <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="17"/>
-                                    <color key="textColor" white="0.74881114130434778" alpha="1" colorSpace="calibratedWhite"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                            </subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="RJH-Fp-YDa" userLabel="Content view">
+                            <rect key="frame" x="12" y="12" width="548" height="257"/>
                         </stackView>
                     </subviews>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.75" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="bottom" secondItem="RJH-Fp-YDa" secondAttribute="bottom" constant="24" id="3t4-62-KuN"/>
-                        <constraint firstItem="RJH-Fp-YDa" firstAttribute="top" secondItem="dp3-Ae-zep" secondAttribute="top" constant="8" id="6rK-Yv-gKZ"/>
+                        <constraint firstAttribute="bottom" secondItem="RJH-Fp-YDa" secondAttribute="bottom" constant="12" id="3t4-62-KuN"/>
+                        <constraint firstItem="RJH-Fp-YDa" firstAttribute="top" secondItem="dp3-Ae-zep" secondAttribute="top" constant="12" id="6rK-Yv-gKZ"/>
                         <constraint firstAttribute="trailing" secondItem="RJH-Fp-YDa" secondAttribute="trailing" constant="12" id="dJi-po-g6O"/>
                         <constraint firstItem="RJH-Fp-YDa" firstAttribute="leading" secondItem="dp3-Ae-zep" secondAttribute="leading" constant="12" id="zmH-aG-8Ij"/>
                     </constraints>
@@ -51,14 +35,10 @@
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="zsq-vp-gxh" secondAttribute="bottom" id="9dZ-dX-UF1"/>
-                <constraint firstAttribute="trailing" secondItem="zsq-vp-gxh" secondAttribute="trailing" id="Ur3-3M-cc8"/>
                 <constraint firstAttribute="trailing" secondItem="dp3-Ae-zep" secondAttribute="trailing" constant="10" id="gGP-zK-6VU"/>
                 <constraint firstItem="dp3-Ae-zep" firstAttribute="leading" secondItem="JI3-gM-XBO" secondAttribute="leadingMargin" constant="10" id="gyP-aD-uO3"/>
                 <constraint firstAttribute="bottom" secondItem="dp3-Ae-zep" secondAttribute="bottom" constant="10" id="le8-gK-lcY"/>
-                <constraint firstItem="zsq-vp-gxh" firstAttribute="top" secondItem="JI3-gM-XBO" secondAttribute="top" id="pfH-eB-LPa"/>
                 <constraint firstItem="dp3-Ae-zep" firstAttribute="top" secondItem="JI3-gM-XBO" secondAttribute="topMargin" constant="10" id="s15-z9-aHc"/>
-                <constraint firstItem="zsq-vp-gxh" firstAttribute="leading" secondItem="JI3-gM-XBO" secondAttribute="leading" id="wAz-0h-lt0"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <userDefinedRuntimeAttributes>
