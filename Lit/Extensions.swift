@@ -511,3 +511,16 @@ extension UIImage {
         return newImage
     }
 }
+
+public extension UILabel {
+    public class func size(withText text: String, forWidth width: CGFloat) -> CGSize {
+        let measurementLabel = UILabel()
+        measurementLabel.text = text
+        measurementLabel.numberOfLines = 0
+        measurementLabel.lineBreakMode = .ByWordWrapping
+        measurementLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        measurementLabel.widthAnchor.constraintEqualToConstant(width).active = true
+        return measurementLabel.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
+    }
+}

@@ -109,6 +109,9 @@
                                             <state key="normal" title="Follow">
                                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
+                                            <connections>
+                                                <action selector="handleFollowTap:" destination="U6b-Vx-4bR" eventType="touchUpInside" id="pND-Cw-GTj"/>
+                                            </connections>
                                         </button>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -137,6 +140,9 @@
                                             <state key="normal" title="Message">
                                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
+                                            <connections>
+                                                <action selector="handleMessageTap:" destination="U6b-Vx-4bR" eventType="touchUpInside" id="3Cs-5o-NRW"/>
+                                            </connections>
                                         </button>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>

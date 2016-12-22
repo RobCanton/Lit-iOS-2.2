@@ -10,37 +10,79 @@ import UIKit
 import ReSwift
 
 
-class UserProfileViewController: UIViewController, StoreSubscriber, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, ControlBarProtocol, UINavigationControllerDelegate, UICollectionViewDelegateFlowLayout {
-
-    var statusBarBG:UIView?
+class UserProfileViewController: UIViewController, StoreSubscriber, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, UINavigationControllerDelegate, UICollectionViewDelegateFlowLayout {
 
     let cellIdentifier = "photoCell"
     var screenSize: CGRect!
     var screenWidth: CGFloat!
     var screenHeight: CGFloat!
     
-    var photos = [StoryItem]()
+    var posts = [StoryItem]()
     var collectionView:UICollectionView?
     var user:User!
-    
-    
-    var followButton = FollowButton()
-    
-    var status:FriendStatus = .NOT_FRIENDS
     
     var followers = [String]()
     {
         didSet {
-            //self.controlBar?.setFollowers(followers.count)
+            if let header = collectionView?.supplementaryViewForElementKind(UICollectionElementKindSectionHeader, atIndexPath: NSIndexPath(forItem: 0, inSection: 0)) as? ProfileHeaderView {
+                header.setFollowersCount(followers.count)
+            }
         }
     }
     var following = [String]()
         {
         didSet {
-            //self.controlBar?.setFollowing(following.count)
-            
+            if let header = collectionView?.supplementaryViewForElementKind(UICollectionElementKindSectionHeader, atIndexPath: NSIndexPath(forItem: 0, inSection: 0)) as? ProfileHeaderView {
+                header.setFollowingCount(following.count)
+            }
         }
     }
+    
+    var postKeys = [String]()
+        {
+        didSet {
+            if let header = collectionView?.supplementaryViewForElementKind(UICollectionElementKindSectionHeader, atIndexPath: NSIndexPath(forItem: 0, inSection: 0)) as? ProfileHeaderView {
+                header.setPostsCount(postKeys.count)
+            }
+        }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.navigationItem.title = user.getDisplayName()
+        self.automaticallyAdjustsScrollViewInsets = false
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Plain, target: nil, action: nil)
+        
+        screenSize = self.view.frame
+        screenWidth = screenSize.width
+        screenHeight = screenSize.height
+        
+        let layout = UICollectionViewFlowLayout()
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 200, right: 0)
+        layout.itemSize = getItemSize()
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
+        
+        collectionView = UICollectionView(frame: CGRectMake(0, 0, view.frame.width, view.frame.height), collectionViewLayout: layout)
+        
+        let nib = UINib(nibName: "PhotoCell", bundle: nil)
+        collectionView!.registerNib(nib, forCellWithReuseIdentifier: cellIdentifier)
+        
+        let headerNib = UINib(nibName: "ProfileHeaderView", bundle: nil)
+        
+        self.collectionView?.registerNib(headerNib, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "headerView")
+        
+        collectionView!.dataSource = self
+        collectionView!.delegate = self
+        collectionView!.bounces = true
+        collectionView!.pagingEnabled = false
+        collectionView!.showsVerticalScrollIndicator = false
+        collectionView!.backgroundColor = UIColor.blackColor()
+        self.view.addSubview(collectionView!)
+        
+        getKeys()
+    }
+    
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -52,7 +94,6 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         SocialService.listenToFollowing(user!.getUserId(), completionHandler: { following in
             self.following = following
         })
-        
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -69,9 +110,15 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         SocialService.stopListeningToFollowing(user!.getUserId())
     }
     
-    func backTapped() {
-
+    func newState(state: AppState) {
+        
+        if let header = collectionView?.supplementaryViewForElementKind(UICollectionElementKindSectionHeader, atIndexPath: NSIndexPath(forItem: 0, inSection: 0)) as? ProfileHeaderView {
+            let status = checkFollowingStatus(user.uid)
+            header.setUserStatus(status)
+        }
     }
+
+    
     
     func followersBlockTapped() {
         let controller = UIStoryboard(name: "Main", bundle: nil)
@@ -109,20 +156,16 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
                 })
             })
         }
-
-        
     }
     
     var presentConversation:Conversation?
     func presentConversation(conversation:Conversation) {
         presentConversation = conversation
-
         self.performSegueWithIdentifier("toMessage", sender: self)
     }
     
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        
         if segue.identifier == "toMessage" {
             guard let conversation = presentConversation else { return }
             let controller = segue.destinationViewController as! ContainerViewController
@@ -130,76 +173,10 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
             controller.conversation = conversation
         }
     }
-    func newState(state: AppState) {
-        updateFriendStatus()
-        
-    }
-    
-    func mediaDeleted() {
-        getKeys()
-    }
-
-    override func prefersStatusBarHidden() -> Bool {
-        return false
-    }
-    
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return .LightContent
-    }
-    
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.navigationItem.title = user.getDisplayName()
-        self.automaticallyAdjustsScrollViewInsets = false
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Plain, target: nil, action: nil)
-        
-        let navHeight = screenStatusBarHeight + navigationController!.navigationBar.frame.height
-
-        screenSize = self.view.frame
-        screenWidth = screenSize.width
-        screenHeight = screenSize.height
-        
-        let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 200, right: 0)
-        layout.itemSize = CGSize(width: screenWidth/3, height: screenWidth/3)
-        layout.minimumInteritemSpacing = 0
-        layout.minimumLineSpacing = 0
-        
-        
-        collectionView = UICollectionView(frame: CGRectMake(0, 0, view.frame.width, view.frame.height), collectionViewLayout: layout)
-        
-        let nib = UINib(nibName: "PhotoCell", bundle: nil)
-        collectionView!.registerNib(nib, forCellWithReuseIdentifier: cellIdentifier)
-        
-        let headerNib = UINib(nibName: "ProfileHeaderView", bundle: nil)
-        
-        self.collectionView?.registerNib(headerNib, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "headerView")
-        
-        collectionView!.dataSource = self
-        collectionView!.delegate = self
-        collectionView!.bounces = true
-        collectionView!.pagingEnabled = false
-        collectionView!.showsVerticalScrollIndicator = false
-        collectionView!.backgroundColor = UIColor.blackColor()
-        self.view.addSubview(collectionView!)
-        
-        
-        getKeys()
-
-//        let barButton = UIBarButtonItem(customView: followButton)
-////        self.navigationItem.rightBarButtonItem = barButton
-        
-
-        
-    }
-    
-
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         let text = "MORE LIFE. MORE CHUNES.\nTop of 2017.\n\nOVOXO."
         var size =  UILabel.size(withText: text, forWidth: collectionView.frame.size.width)
-        var height1 = size.height + 16 + 250 + 50 + 80 + 8
         var height2 = size.height + 275 + 8 + 40 + 8 + 4 + 12 + 52
         size.height = height2
         return size
@@ -212,6 +189,12 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
 
             let view = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier: "headerView", forIndexPath: indexPath) as! ProfileHeaderView
             view.populateHeader(user)
+            view.followersHandler = followersBlockTapped
+            view.followingHandler = followingBlockTapped
+            view.messageHandler = messageBlockTapped
+            view.setPostsCount(postKeys.count)
+            view.setFollowersCount(followers.count)
+            view.setFollowingCount(following.count)
             return view
             break
         default:
@@ -219,15 +202,7 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
             break
         }
     }
-    
-    
-    
-    func updateFriendStatus() {
-        status =  checkFriendStatus(user.getUserId())
 
-        followButton.hidden = true
-    }
-    
     func getKeys() {
         let uid = user!.getUserId()
         var postKeys = [String]()
@@ -237,40 +212,39 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
                 for child in snapshot.children {
                     postKeys.append(child.key!!)
                 }
+                self.postKeys = postKeys
                 self.downloadStory(postKeys)
             }
         })
     }
     
     func downloadStory(postKeys:[String]) {
-        //controlBar?.setPosts(postKeys.count)
-        self.photos = [StoryItem]()
+        self.posts = [StoryItem]()
         collectionView?.reloadData()
         FirebaseService.downloadStory(postKeys, completionHandler: { story in
-            self.photos = story.reverse()
+            self.posts = story.reverse()
             self.collectionView!.reloadData()
         })
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return photos.count
+        return posts.count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(cellIdentifier, forIndexPath: indexPath) as! PhotoCell
-        
-        cell.setPhoto(photos[indexPath.item])
+        cell.setPhoto(posts[indexPath.item])
         return cell
     }
     
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         
-        return getItemSize(indexPath)
+        return getItemSize()
     }
     
-    func getItemSize(indexPath:NSIndexPath) -> CGSize {
+    func getItemSize() -> CGSize {
         
         return CGSize(width: screenWidth/3, height: screenWidth/3);
     }
@@ -285,15 +259,14 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(cellIdentifier, forIndexPath: indexPath) as! PhotoCell
-        
-        
+
         self.selectedIndexPath = indexPath
         
         let galleryViewController: GalleryViewController = GalleryViewController()
         
         guard let tabBarController = self.tabBarController as? PopUpTabBarController else { return }
         
-        galleryViewController.photos = self.photos
+        galleryViewController.photos = self.posts
         galleryViewController.tabBarRef = tabBarController
         galleryViewController.transitionController = self.transitionController
         self.transitionController.userInfo = ["destinationIndexPath": indexPath, "initialIndexPath": indexPath]
@@ -307,7 +280,14 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
             transitionController.push(viewController: galleryViewController, on: self, attached: galleryViewController)
             
         }
-        
+    }
+    
+    override func prefersStatusBarHidden() -> Bool {
+        return false
+    }
+    
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return .LightContent
     }
 }
 
@@ -343,16 +323,4 @@ extension UserProfileViewController: View2ViewTransitionPresenting {
     }
 }
 
-public extension UILabel {
-    public class func size(withText text: String, forWidth width: CGFloat) -> CGSize {
-        let measurementLabel = UILabel()
-        measurementLabel.text = text
-        measurementLabel.numberOfLines = 0
-        measurementLabel.lineBreakMode = .ByWordWrapping
-        measurementLabel.translatesAutoresizingMaskIntoConstraints = false
-
-        measurementLabel.widthAnchor.constraintEqualToConstant(width).active = true
-        return measurementLabel.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
-    }
-}
 
