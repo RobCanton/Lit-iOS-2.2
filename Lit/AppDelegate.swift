@@ -11,6 +11,7 @@ import Firebase
 import FBSDKCoreKit
 import FBSDKLoginKit
 import ReSwift
+import AVFoundation
 
 let mainStore = Store<AppState>(
     reducer: AppReducer(),
@@ -45,6 +46,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
         
         UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.LightContent
+        
+        let audioSession = AVAudioSession.sharedInstance()
+        try! audioSession.setCategory(AVAudioSessionCategoryAmbient,
+                                      withOptions: AVAudioSessionCategoryOptions.MixWithOthers)
         
         let colorView = UIView()
         colorView.backgroundColor = selectedColor

@@ -8,10 +8,9 @@
 
 import UIKit
 import ReSwift
-import MXParallaxHeader
 
 
-class UserProfileViewController: UIViewController, StoreSubscriber, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, ControlBarProtocol, UINavigationControllerDelegate {
+class UserProfileViewController: UIViewController, StoreSubscriber, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, ControlBarProtocol, UINavigationControllerDelegate, UICollectionViewDelegateFlowLayout {
 
     var statusBarBG:UIView?
 
@@ -22,9 +21,8 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     
     var photos = [StoryItem]()
     var collectionView:UICollectionView?
-    var controlBar:UserProfileControlBar?
-    var headerView:CreateProfileHeaderView!
     var user:User!
+    
     
     var followButton = FollowButton()
     
@@ -33,13 +31,13 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     var followers = [String]()
     {
         didSet {
-            self.controlBar?.setFollowers(followers.count)
+            //self.controlBar?.setFollowers(followers.count)
         }
     }
     var following = [String]()
         {
         didSet {
-            self.controlBar?.setFollowing(following.count)
+            //self.controlBar?.setFollowing(following.count)
             
         }
     }
@@ -149,77 +147,84 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         return .LightContent
     }
     
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.title = user.getDisplayName()
         self.automaticallyAdjustsScrollViewInsets = false
         navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Plain, target: nil, action: nil)
-
+        
         let navHeight = screenStatusBarHeight + navigationController!.navigationBar.frame.height
-        headerView = UINib(nibName: "CreateProfileHeaderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! CreateProfileHeaderView
+
         screenSize = self.view.frame
         screenWidth = screenSize.width
         screenHeight = screenSize.height
         
         let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: navHeight, left: 0, bottom: 200, right: 0)
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 200, right: 0)
         layout.itemSize = CGSize(width: screenWidth/3, height: screenWidth/3)
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
+        
         
         collectionView = UICollectionView(frame: CGRectMake(0, 0, view.frame.width, view.frame.height), collectionViewLayout: layout)
         
         let nib = UINib(nibName: "PhotoCell", bundle: nil)
         collectionView!.registerNib(nib, forCellWithReuseIdentifier: cellIdentifier)
+        
+        let headerNib = UINib(nibName: "ProfileHeaderView", bundle: nil)
+        
+        self.collectionView?.registerNib(headerNib, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "headerView")
+        
         collectionView!.dataSource = self
         collectionView!.delegate = self
         collectionView!.bounces = true
         collectionView!.pagingEnabled = false
         collectionView!.showsVerticalScrollIndicator = false
-        
-        collectionView!.parallaxHeader.view = headerView
-        collectionView!.parallaxHeader.height = 250
-        collectionView!.parallaxHeader.mode = .Fill
-        collectionView!.parallaxHeader.minimumHeight = 0;
-        
         collectionView!.backgroundColor = UIColor.blackColor()
         self.view.addSubview(collectionView!)
         
-        controlBar = UINib(nibName: "UserProfileControlBarView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! UserProfileControlBar
-        controlBar!.frame = CGRectMake(0,0, collectionView!.frame.width, navHeight)
-        controlBar!.setControlBar()
-        controlBar!.delegate = self
-        collectionView?.addSubview(controlBar!)
         
-        if user.getUserId() == mainStore.state.userState.uid {
-            controlBar?.messageBlock.userInteractionEnabled = false
-            controlBar?.messageBlock.alpha = 0.5
-        }
+        getKeys()
+
+//        let barButton = UIBarButtonItem(customView: followButton)
+////        self.navigationItem.rightBarButtonItem = barButton
         
 
         
-        headerView.imageView.loadImageUsingCacheWithURLString(user!.getLargeImageUrl(), completion: {result in})
-        headerView.populateUser(user!)
-        headerView.usernameLabel.hidden = true
-        headerView.bioTextView.hidden = true
-        headerView.locationIcon.hidden = true
-        headerView.locationLabel.hidden = true
-        //controlBar?.populateUser(user!)
-        getKeys()
-        
-        followButton.setFollowButton()
-        let barButton = UIBarButtonItem(customView: followButton)
-        self.navigationItem.rightBarButtonItem = barButton
-        
-        controlBar?.setFollowing(followers.count)
-        
     }
+    
+
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        let text = "MORE LIFE. MORE CHUNES.\nTop of 2017.\n\nOVOXO."
+        var size =  UILabel.size(withText: text, forWidth: collectionView.frame.size.width)
+        var height1 = size.height + 16 + 250 + 50 + 80 + 8
+        var height2 = size.height + 275 + 8 + 40 + 8 + 4 + 12 + 52
+        size.height = height2
+        return size
+    }
+    
+    func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+
+        switch kind {
+        case UICollectionElementKindSectionHeader:
+
+            let view = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier: "headerView", forIndexPath: indexPath) as! ProfileHeaderView
+            view.populateHeader(user)
+            return view
+            break
+        default:
+            return UICollectionReusableView()
+            break
+        }
+    }
+    
     
     
     func updateFriendStatus() {
         status =  checkFriendStatus(user.getUserId())
-        //controlBar?.setFriendStatus(status)
-        //followButton.setUser(user)
+
         followButton.hidden = true
     }
     
@@ -238,7 +243,7 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     }
     
     func downloadStory(postKeys:[String]) {
-        controlBar?.setPosts(postKeys.count)
+        //controlBar?.setPosts(postKeys.count)
         self.photos = [StoryItem]()
         collectionView?.reloadData()
         FirebaseService.downloadStory(postKeys, completionHandler: { story in
@@ -272,22 +277,7 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     
 
     func scrollViewDidScroll(scrollView: UIScrollView) {
-        let progress = scrollView.parallaxHeader.progress
-        headerView.setProgress(progress)
-        if progress < 0 {
-            
-            let scale = abs(progress)
-            if let _ = controlBar {
-                controlBar!.setBarScale(scale)
-            }
-            
-            if scale > 0.80 {
-                let prop = ((scale - 0.80) / 0.20) * 1.15
-                controlBar?.alpha = 1 - prop
-            } else {
-                controlBar?.alpha = 1
-            }
-        }
+
     }
     
     let transitionController: TransitionController = TransitionController()
@@ -328,7 +318,9 @@ extension UserProfileViewController: View2ViewTransitionPresenting {
         guard let indexPath: NSIndexPath = userInfo?["initialIndexPath"] as? NSIndexPath, attributes: UICollectionViewLayoutAttributes = self.collectionView!.layoutAttributesForItemAtIndexPath(indexPath) else {
             return CGRect.zero
         }
-        return self.collectionView!.convertRect(attributes.frame, toView: self.collectionView!.superview)
+        let navHeight = screenStatusBarHeight + navigationController!.navigationBar.frame.height
+        var rect = CGRect(x: attributes.frame.origin.x, y: attributes.frame.origin.y + navHeight, width: attributes.frame.width, height: attributes.frame.height)
+        return self.collectionView!.convertRect(rect, toView: self.collectionView!.superview)
     }
     
     func initialView(userInfo: [String: AnyObject]?, isPresenting: Bool) -> UIView {
@@ -348,6 +340,19 @@ extension UserProfileViewController: View2ViewTransitionPresenting {
             self.collectionView!.scrollToItemAtIndexPath(indexPath, atScrollPosition: .CenteredVertically, animated: false)
             self.collectionView!.layoutIfNeeded()
         }
+    }
+}
+
+public extension UILabel {
+    public class func size(withText text: String, forWidth width: CGFloat) -> CGSize {
+        let measurementLabel = UILabel()
+        measurementLabel.text = text
+        measurementLabel.numberOfLines = 0
+        measurementLabel.lineBreakMode = .ByWordWrapping
+        measurementLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        measurementLabel.widthAnchor.constraintEqualToConstant(width).active = true
+        return measurementLabel.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
     }
 }
 

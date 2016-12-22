@@ -157,6 +157,8 @@
 		B079BE861DA557B00042B586 /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079BE841DA557B00042B586 /* PhotoCell.swift */; };
 		B079BE871DA557B00042B586 /* PhotoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B079BE851DA557B00042B586 /* PhotoCell.xib */; };
 		B07D74BC1DC2E2AB001D66EA /* ActivityFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07D74BB1DC2E2AB001D66EA /* ActivityFeedViewController.swift */; };
+		B07E54CD1E0B235B008C2D23 /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07E54CB1E0B235B008C2D23 /* ProfileHeaderView.swift */; };
+		B07E54CE1E0B235B008C2D23 /* ProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B07E54CC1E0B235B008C2D23 /* ProfileHeaderView.xib */; };
 		B080078A1DCAEABC00695D5F /* EventsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08007891DCAEABC00695D5F /* EventsViewController.swift */; };
 		B080078C1DCAEAD300695D5F /* EventsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B080078B1DCAEAD300695D5F /* EventsViewController.storyboard */; };
 		B0873AC81D3EB8CC00862960 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0873AC51D3EB8CC00862960 /* FBSDKCoreKit.framework */; };
@@ -185,8 +187,6 @@
 		B0DAFBD01DF947E8004EB03D /* ProgressIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DAFBCF1DF947E8004EB03D /* ProgressIndicator.swift */; };
 		B0E2BDB91E0531E600D195A5 /* MyStoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E2BDB71E0531E600D195A5 /* MyStoryTableViewCell.swift */; };
 		B0E2BDBA1E0531E600D195A5 /* MyStoryTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0E2BDB81E0531E600D195A5 /* MyStoryTableViewCell.xib */; };
-		B0E2BDBE1E08647800D195A5 /* UserProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E2BDBD1E08647700D195A5 /* UserProfileHeaderView.swift */; };
-		B0E2BDC01E08666700D195A5 /* UserProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0E2BDBF1E08666700D195A5 /* UserProfileHeaderView.xib */; };
 		B0E2BDC21E086B1800D195A5 /* CameraTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E2BDC11E086B1800D195A5 /* CameraTransition.swift */; };
 		B0E591571DD1218D00C032D6 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E591561DD1218D00C032D6 /* SettingsViewController.swift */; };
 		B0E591591DD126C900C032D6 /* LogoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E591581DD126C900C032D6 /* LogoutView.swift */; };
@@ -386,6 +386,8 @@
 		B079BE841DA557B00042B586 /* PhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
 		B079BE851DA557B00042B586 /* PhotoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoCell.xib; sourceTree = "<group>"; };
 		B07D74BB1DC2E2AB001D66EA /* ActivityFeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityFeedViewController.swift; sourceTree = "<group>"; };
+		B07E54CB1E0B235B008C2D23 /* ProfileHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
+		B07E54CC1E0B235B008C2D23 /* ProfileHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileHeaderView.xib; sourceTree = "<group>"; };
 		B08007891DCAEABC00695D5F /* EventsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventsViewController.swift; sourceTree = "<group>"; };
 		B080078B1DCAEAD300695D5F /* EventsViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = EventsViewController.storyboard; sourceTree = "<group>"; };
 		B0873AC51D3EB8CC00862960 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
@@ -414,8 +416,6 @@
 		B0E2BDB71E0531E600D195A5 /* MyStoryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyStoryTableViewCell.swift; sourceTree = "<group>"; };
 		B0E2BDB81E0531E600D195A5 /* MyStoryTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyStoryTableViewCell.xib; sourceTree = "<group>"; };
 		B0E2BDBB1E067FAC00D195A5 /* blur.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = blur.mp4; sourceTree = "<group>"; };
-		B0E2BDBD1E08647700D195A5 /* UserProfileHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileHeaderView.swift; sourceTree = "<group>"; };
-		B0E2BDBF1E08666700D195A5 /* UserProfileHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserProfileHeaderView.xib; sourceTree = "<group>"; };
 		B0E2BDC11E086B1800D195A5 /* CameraTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraTransition.swift; sourceTree = "<group>"; };
 		B0E591561DD1218D00C032D6 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		B0E591581DD126C900C032D6 /* LogoutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogoutView.swift; sourceTree = "<group>"; };
@@ -598,8 +598,8 @@
 				B0E5915A1DD126D600C032D6 /* LogoutView.xib */,
 				B0E8E3151DD989F30077D1BC /* ProfilePictureMessageView.swift */,
 				B0E8E3171DD98A060077D1BC /* ProfilePictureMessageView.xib */,
-				B0E2BDBD1E08647700D195A5 /* UserProfileHeaderView.swift */,
-				B0E2BDBF1E08666700D195A5 /* UserProfileHeaderView.xib */,
+				B07E54CB1E0B235B008C2D23 /* ProfileHeaderView.swift */,
+				B07E54CC1E0B235B008C2D23 /* ProfileHeaderView.xib */,
 			);
 			name = UserProfile;
 			sourceTree = "<group>";
@@ -1006,6 +1006,7 @@
 				B0BA326A1DA7158B004352A7 /* HeaderView.xib in Resources */,
 				B03504C31DD0663100C9C83F /* LocationFooterView.xib in Resources */,
 				B0321ED01DB56C0500AD4C53 /* LocationHeaderView.xib in Resources */,
+				B07E54CE1E0B235B008C2D23 /* ProfileHeaderView.xib in Resources */,
 				B01CD8141DCC136800AA3499 /* EventCell.xib in Resources */,
 				76C0E7541D80D770004EFA4C /* VisitorCell.xib in Resources */,
 				76EE2B981D8766ED00EDB4CB /* ActivityFriendRequestCell.xib in Resources */,
@@ -1014,7 +1015,6 @@
 				B08BBB941DBBE4FD00AD3FF1 /* EventsBannerView.xib in Resources */,
 				B0FF114F1D3EB32100D709CE /* LaunchScreen.storyboard in Resources */,
 				B00BA91E1D9D6DB600F5EA30 /* StoryItemViewController.xib in Resources */,
-				B0E2BDC01E08666700D195A5 /* UserProfileHeaderView.xib in Resources */,
 				B0FF11571D3EB33100D709CE /* GoogleService-Info.plist in Resources */,
 				B032C9931DA807C000811779 /* SetupViewController.xib in Resources */,
 				B01B34A21DC15BC600B2B9CE /* DialogRow.xib in Resources */,
@@ -1120,7 +1120,6 @@
 				B0E8E3441DE203720077D1BC /* UserStoryTableViewCell.swift in Sources */,
 				765036281D59170E0062BCF0 /* StoryItem.swift in Sources */,
 				B06D54C81D9ECB6D00F6A4A7 /* YokoTextField.swift in Sources */,
-				B0E2BDBE1E08647800D195A5 /* UserProfileHeaderView.swift in Sources */,
 				767729831D5116930052CA17 /* CWStatusBarNotification.swift in Sources */,
 				B0351FB61DED0503000A4BF5 /* NVActivityIndicatorAnimationTriangleSkewSpin.swift in Sources */,
 				B09D5FCE1DA57C80004A188E /* ARNImageZoomTransition.swift in Sources */,
@@ -1266,6 +1265,7 @@
 				B0BA326E1DA7165A004352A7 /* CreateProfileHeaderView.swift in Sources */,
 				B0351F9A1DED0503000A4BF5 /* NVActivityIndicatorAnimationBallClipRotateMultiple.swift in Sources */,
 				B0351F9F1DED0503000A4BF5 /* NVActivityIndicatorAnimationBallPulseRise.swift in Sources */,
+				B07E54CD1E0B235B008C2D23 /* ProfileHeaderView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

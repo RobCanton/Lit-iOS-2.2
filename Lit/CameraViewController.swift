@@ -212,6 +212,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
         uploadSelector = try! SwiftMessages.viewFromNib() as? UploadSelectorView
         uploadSelector!.configureDropShadow()
         uploadSelector!.delegate = self
+        
         config = SwiftMessages.Config()
         config!.presentationContext = .Window(windowLevel: UIWindowLevelStatusBar)
         config!.duration = .Forever
@@ -253,12 +254,14 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
         sendButton.layer.cornerRadius = sendButton.frame.width/2
         sendButton.clipsToBounds = true
         
-        sendButton.applyShadow(10, opacity: 0.6, height: 2, shouldRasterize: false)
+        sendButton.applyShadow(6, opacity: 0.5, height: 2, shouldRasterize: false)
         
         cameraView.frame = self.view.frame
         
         reloadCamera()
         
+        dismissBtn.applyShadow(1, opacity: 0.25, height: 1, shouldRasterize: false)
+        cancelButton.applyShadow(1, opacity: 0.25, height: 1, shouldRasterize: false)
     
     }
     
@@ -338,6 +341,8 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
                     captureSession?.addOutput(stillImageOutput)
                     
                     previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
+                    previewLayer?.session.usesApplicationAudioSession = false
+
                     previewLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
                     previewLayer?.connection.videoOrientation = AVCaptureVideoOrientation.Portrait
                     previewLayer?.frame = cameraView.bounds

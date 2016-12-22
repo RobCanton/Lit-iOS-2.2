@@ -156,6 +156,7 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
     }
     
     override func viewDidLayoutSubviews() {
+        
         if let sup = self.view.superview {
             for sub in sup.subviews {
                 

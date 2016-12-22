@@ -38,6 +38,7 @@ class CameraButton: UIView {
         ring.userInteractionEnabled = true
         ring.transform = CGAffineTransformMakeScale(1.3, 1.3)
         ring.center = CGPointMake(self.frame.width / 2, self.frame.height/2)
+        ring.applyShadow(1, opacity: 0.25, height: 1, shouldRasterize: false)
         self.userInteractionEnabled = true
 
         let pMargin:CGFloat = 8.5

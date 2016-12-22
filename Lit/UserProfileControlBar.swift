@@ -42,12 +42,14 @@ class UserProfileControlBar: UIView {
     @IBOutlet weak var messageLabel: UILabel!
     
     var status:FriendStatus = .NOT_FRIENDS
+    let subColor = UIColor(white: 1.0, alpha: 0.30)
 
     func setControlBar() {
-        postsLabel.styleProfileBlockText(0, text: "Posts", color: UIColor.whiteColor(), color2: UIColor.whiteColor())
-        followersLabel.styleProfileBlockText(0, text: "Followers", color: UIColor.whiteColor(), color2: UIColor.whiteColor())
-        followingLabel.styleProfileBlockText(0, text: "Following", color: UIColor.whiteColor(), color2: UIColor.whiteColor())
-        messageLabel.styleProfileBlockText(0, text: "Message", color: UIColor.whiteColor(), color2: UIColor.clearColor())
+
+        postsLabel.styleProfileBlockText(0, text: "posts", color: subColor, color2: UIColor.whiteColor())
+        followersLabel.styleProfileBlockText(0, text: "followers", color: subColor, color2: UIColor.whiteColor())
+        followingLabel.styleProfileBlockText(0, text: "following", color: subColor, color2: UIColor.whiteColor())
+        messageLabel.styleProfileBlockText(0, text: "message", color: subColor, color2: UIColor.clearColor())
 
         followersBlockTap = UILongPressGestureRecognizer(target: self, action: #selector(followersBlockTapped))
         followersBlockTap.minimumPressDuration = 0
@@ -68,26 +70,27 @@ class UserProfileControlBar: UIView {
     }
     
     func setPosts(numPosts:Int) {
+        
         if numPosts != 1 {
-            postsLabel.styleProfileBlockText(numPosts, text: "Posts", color: UIColor.whiteColor(), color2: UIColor.whiteColor())
+            postsLabel.styleProfileBlockText(numPosts, text: "Posts", color: subColor, color2: UIColor.whiteColor())
         } else {
-            postsLabel.styleProfileBlockText(numPosts, text: "Post", color: UIColor.whiteColor(), color2: UIColor.whiteColor())
+            postsLabel.styleProfileBlockText(numPosts, text: "Post", color: subColor, color2: UIColor.whiteColor())
         }
     }
     
     func setFollowers(numFollowers:Int) {
         if numFollowers != 1 {
-            followersLabel.styleProfileBlockText(numFollowers, text: "Followers", color: UIColor.whiteColor(), color2: UIColor.whiteColor())
+            followersLabel.styleProfileBlockText(numFollowers, text: "Followers", color: subColor, color2: UIColor.whiteColor())
         } else {
-            followersLabel.styleProfileBlockText(numFollowers, text: "Follower", color: UIColor.whiteColor(), color2: UIColor.whiteColor())
+            followersLabel.styleProfileBlockText(numFollowers, text: "Follower", color: subColor, color2: UIColor.whiteColor())
         }
     }
     
     func setFollowing(numFollowing:Int) {
         if numFollowing != 1 {
-            followingLabel.styleProfileBlockText(numFollowing, text: "Following", color: UIColor.whiteColor(), color2: UIColor.whiteColor())
+            followingLabel.styleProfileBlockText(numFollowing, text: "Following", color: subColor, color2: UIColor.whiteColor())
         } else {
-            followingLabel.styleProfileBlockText(numFollowing, text: "Following", color: UIColor.whiteColor(), color2: UIColor.whiteColor())
+            followingLabel.styleProfileBlockText(numFollowing, text: "Following", color: subColor, color2: UIColor.whiteColor())
         }
     }
     

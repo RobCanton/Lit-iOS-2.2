@@ -717,10 +717,10 @@
                             <constraint firstAttribute="leadingMargin" secondItem="eDt-pF-x5t" secondAttribute="leading" id="7HA-7M-rXc"/>
                             <constraint firstItem="Ncg-MP-bVo" firstAttribute="leading" secondItem="LJP-ME-48w" secondAttribute="leading" id="9ra-aC-DmC"/>
                             <constraint firstItem="sjD-xV-zGV" firstAttribute="leading" secondItem="LJP-ME-48w" secondAttribute="leading" id="C3z-xn-yfy"/>
-                            <constraint firstItem="10W-xw-TSZ" firstAttribute="top" secondItem="LJP-ME-48w" secondAttribute="topMargin" constant="16" id="Dg5-8k-wJk"/>
+                            <constraint firstItem="10W-xw-TSZ" firstAttribute="top" secondItem="LJP-ME-48w" secondAttribute="topMargin" constant="14" id="Dg5-8k-wJk"/>
                             <constraint firstItem="Ri8-OT-mqm" firstAttribute="top" secondItem="LJP-ME-48w" secondAttribute="top" id="KMR-QR-ggh"/>
                             <constraint firstAttribute="trailing" secondItem="80H-Sb-wGz" secondAttribute="trailing" constant="14" id="KUB-Gh-HoQ"/>
-                            <constraint firstItem="10W-xw-TSZ" firstAttribute="leading" secondItem="LJP-ME-48w" secondAttribute="leading" constant="8" id="KYE-4u-xrY"/>
+                            <constraint firstItem="10W-xw-TSZ" firstAttribute="leading" secondItem="LJP-ME-48w" secondAttribute="leading" constant="6" id="KYE-4u-xrY"/>
                             <constraint firstItem="Ri8-OT-mqm" firstAttribute="leading" secondItem="LJP-ME-48w" secondAttribute="leading" id="QJe-RL-HoB"/>
                             <constraint firstItem="80H-Sb-wGz" firstAttribute="trailing" secondItem="LJP-ME-48w" secondAttribute="trailingMargin" id="QWz-Hn-dC4"/>
                             <constraint firstAttribute="trailing" secondItem="Ncg-MP-bVo" secondAttribute="trailing" id="aPm-Yj-Oco"/>

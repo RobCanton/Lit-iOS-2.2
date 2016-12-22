@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -65,8 +66,11 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1xR-Cm-mDD">
                     <rect key="frame" x="600" y="0.0" width="200" height="60"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ip6-Jg-trH">
-                            <rect key="frame" x="84" y="10" width="32" height="24"/>
+                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ip6-Jg-trH">
+                            <rect key="frame" x="79" y="10" width="43" height="32"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="Ip6-Jg-trH" secondAttribute="height" multiplier="1:1" id="pqY-GP-2Z1"/>
+                            </constraints>
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <state key="normal" image="message"/>
                         </button>
@@ -88,7 +92,7 @@
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="vZI-4s-FNq" secondAttribute="bottom" id="0dI-Vk-STN"/>
                 <constraint firstItem="vZI-4s-FNq" firstAttribute="width" secondItem="1xR-Cm-mDD" secondAttribute="width" id="3gq-Y4-b2Y"/>
