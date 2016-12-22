@@ -14,12 +14,6 @@ var dataSaveMode = false
 
 class LocViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, UINavigationControllerDelegate, NSCacheDelegate {
     
-    
-    
-    var statusBarBG:UIView?
-    
-    var scrollEndHandler:(()->())?
-    
     var screenSize: CGRect!
     var screenWidth: CGFloat!
     var screenHeight: CGFloat!
@@ -30,8 +24,6 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
     var tableView:UITableView?
     var controlBar:UserProfileControlBar?
     var headerView:LocationTableCell!
-    var eventsBanner:EventsBannerView?
-    var eventsBannerTap:UITapGestureRecognizer!
     var footerView:LocationFooterView!
     
     var location: Location!
@@ -226,15 +218,11 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
         tableView!.parallaxHeader.mode = .Bottom
         tableView!.parallaxHeader.minimumHeight = 0;
         tableView!.separatorColor = UIColor(white: 0.08, alpha: 1.0)
-        tableView!.decelerationRate = UIScrollViewDecelerationRateFast
         
         tableView!.backgroundColor = UIColor.blackColor()
         view.addSubview(tableView!)
         
         tableView!.tableFooterView = UIView(frame: CGRectMake(0,0,tableView!.frame.width, 160))
-        
-        statusBarBG = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: navHeight))
-        statusBarBG!.backgroundColor = UIColor(white: 0.0, alpha: 0.0)
         
         headerView.setCellLocation(location)
         headerView.addressLabel.superview!.hidden = true
@@ -266,14 +254,14 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
             }
         }
         btnName.sizeToFit()
+        btnName.layer.cornerRadius = 2.0
+        btnName.clipsToBounds = true
         
 
         let distanceItem = UIBarButtonItem(customView: btnName)
         
         self.navigationItem.rightBarButtonItem = distanceItem
 
-        
-        view.addSubview(statusBarBG!)
 
         guests = location.getVisitors()
     }
@@ -283,9 +271,7 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
         let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("UserProfileViewController")
         navigationController?.pushViewController(controller, animated: true)
     }
-    
-    func backTapped() {
-    }
+
     
     func showMap() {
         if let _ = location {
@@ -467,23 +453,7 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
             
         }
     }
-    
-    
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-        let progress = scrollView.parallaxHeader.progress
-        /*if progress < -0.75 {
-            statusBarBG!.backgroundColor = UIColor(white: 0.0, alpha: 1.0)
-        } else {
-            statusBarBG!.backgroundColor = UIColor(white: 0.0, alpha: 0)
-        }*/
-    }
-    
-    func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
-        print("DID END SHOULD CALL")
-        scrollEndHandler?()
-    }
-    
-    
+ 
     override func prefersStatusBarHidden() -> Bool {
         return false
     }

@@ -177,7 +177,7 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         let text = "MORE LIFE. MORE CHUNES.\nTop of 2017.\n\nOVOXO."
         var size =  UILabel.size(withText: text, forWidth: collectionView.frame.size.width)
-        var height2 = size.height + 275 + 8 + 40 + 8 + 4 + 12 + 52
+        let height2 = size.height + 275 + 8 + 40 + 8 + 4 + 12 + 52
         size.height = height2
         return size
     }
@@ -196,10 +196,8 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
             view.setFollowersCount(followers.count)
             view.setFollowingCount(following.count)
             return view
-            break
         default:
             return UICollectionReusableView()
-            break
         }
     }
 
@@ -248,17 +246,13 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         
         return CGSize(width: screenWidth/3, height: screenWidth/3);
     }
-    
 
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-
-    }
     
     let transitionController: TransitionController = TransitionController()
     var selectedIndexPath: NSIndexPath = NSIndexPath(forItem: 0, inSection: 0)
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(cellIdentifier, forIndexPath: indexPath) as! PhotoCell
+        let _ = collectionView.dequeueReusableCellWithReuseIdentifier(cellIdentifier, forIndexPath: indexPath) as! PhotoCell
 
         self.selectedIndexPath = indexPath
         
@@ -299,7 +293,7 @@ extension UserProfileViewController: View2ViewTransitionPresenting {
             return CGRect.zero
         }
         let navHeight = screenStatusBarHeight + navigationController!.navigationBar.frame.height
-        var rect = CGRect(x: attributes.frame.origin.x, y: attributes.frame.origin.y + navHeight, width: attributes.frame.width, height: attributes.frame.height)
+        let rect = CGRect(x: attributes.frame.origin.x, y: attributes.frame.origin.y + navHeight, width: attributes.frame.width, height: attributes.frame.height)
         return self.collectionView!.convertRect(rect, toView: self.collectionView!.superview)
     }
     

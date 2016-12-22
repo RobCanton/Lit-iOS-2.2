@@ -78,7 +78,7 @@ class CameraTransition: UIStoryboardSegue {
         fromViewController.cameraButton.hidden = true
         
         
-        UIView.animateWithDuration(0.35, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [], animations: {
+        UIView.animateWithDuration(0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [.CurveEaseInOut], animations: {
             //toViewController.view.frame = finalToFrame
             fromViewController.view.frame = finalFromFrame
             cameraButton.transform = CGAffineTransformMakeScale(1.3, 1.3)
@@ -176,7 +176,7 @@ class CameraUnwindTransition: UIStoryboardSegue {
         fromViewController.recordBtn.hidden = true
         containerView?.addSubview(cameraButton)
         
-        UIView.animateWithDuration(0.35, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [], animations: {
+        UIView.animateWithDuration(0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [.CurveEaseInOut], animations: {
             cameraButton.transform = CGAffineTransformIdentity
             cameraButton.frame = finalCameraFrame
             cameraButton.backgroundColor = UIColor.blackColor()

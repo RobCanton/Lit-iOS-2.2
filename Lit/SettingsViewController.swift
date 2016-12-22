@@ -21,27 +21,9 @@ class SettingsViewController: UITableViewController {
     var config: SwiftMessages.Config?
     var logoutWrapper = SwiftMessages()
     
-    var statusBarBG:UIView!
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
 
-    }
-    
-    override func loadView() {
-        super.loadView()
-        
-        
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-//        let navHeight = screenStatusBarHeight + navigationController!.navigationBar.frame.height
-//        statusBarBG = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: navHeight))
-//        statusBarBG.backgroundColor = UIColor.clearColor()
-        self.parentViewController?.title = "Settings"
-        
 
     }
 
