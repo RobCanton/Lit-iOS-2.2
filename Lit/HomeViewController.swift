@@ -18,10 +18,10 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.navigationController?.navigationBar.titleTextAttributes =
-            [NSFontAttributeName: UIFont(name: "Avenir-Medium", size: 18.0)!,
-             NSForegroundColorAttributeName: UIColor.whiteColor()]
-        self.navigationController?.navigationBar.shadowImage = UIImage()
+//        self.navigationController?.navigationBar.titleTextAttributes =
+//            [NSFontAttributeName: UIFont(name: "Avenir-Medium", size: 18.0)!,
+//             NSForegroundColorAttributeName: UIColor.whiteColor()]
+//        self.navigationController?.navigationBar.shadowImage = UIImage()
         navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Plain, target: nil, action: nil)
         tableView.delegate = self
         tableView.dataSource = self

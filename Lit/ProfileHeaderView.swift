@@ -20,6 +20,7 @@ class ProfileHeaderView: UICollectionReusableView {
     @IBOutlet weak var followButton: UIButton!
     @IBOutlet weak var messageButton: UIButton!
     
+    @IBOutlet weak var dividerView: UIView!
     let subColor = UIColor(white: 0.5, alpha: 1.0)
     
     var user:User?
@@ -38,9 +39,13 @@ class ProfileHeaderView: UICollectionReusableView {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        
+        dividerView.layer.borderColor = UIColor(white: 0.15, alpha: 1.0).CGColor
+        dividerView.layer.borderWidth = 0.5
     }
     
     func populateHeader(user:User){
+
         self.user = user
         loadImageUsingCacheWithURL(user.getLargeImageUrl(), completion: { image in
             self.profileImageView.image = image

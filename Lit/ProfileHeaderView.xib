@@ -235,26 +235,24 @@
                                 <constraint firstItem="kfn-oN-Zse" firstAttribute="top" secondItem="sZE-ye-38L" secondAttribute="top" id="zoG-aL-NsG"/>
                             </constraints>
                         </view>
-                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IGp-RQ-fYc">
-                            <rect key="frame" x="0.0" y="171" width="400" height="2"/>
-                            <color key="backgroundColor" white="0.12" alpha="1" colorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="1" id="kOe-Pk-zW9"/>
-                            </constraints>
+                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ljw-w5-yQg">
+                            <rect key="frame" x="0.0" y="173" width="400" height="64"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </view>
                     </subviews>
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="CXa-t2-xf9" secondAttribute="trailing" constant="16" id="1qb-oJ-6nI"/>
                         <constraint firstItem="QK9-4C-K4x" firstAttribute="top" secondItem="gwI-11-xuf" secondAttribute="top" id="5aj-80-Ae8"/>
+                        <constraint firstItem="ljw-w5-yQg" firstAttribute="height" secondItem="kfn-oN-Zse" secondAttribute="height" id="Mia-dG-LxA"/>
                         <constraint firstAttribute="bottom" secondItem="sZE-ye-38L" secondAttribute="bottom" id="SP5-aa-dm9"/>
+                        <constraint firstItem="ljw-w5-yQg" firstAttribute="leading" secondItem="gwI-11-xuf" secondAttribute="leading" constant="-4" id="SY0-m5-u6U"/>
                         <constraint firstAttribute="trailing" secondItem="QK9-4C-K4x" secondAttribute="trailing" id="TbY-6P-n41"/>
+                        <constraint firstAttribute="trailing" secondItem="ljw-w5-yQg" secondAttribute="trailing" constant="-4" id="U9J-qE-w0U"/>
                         <constraint firstItem="CXa-t2-xf9" firstAttribute="leading" secondItem="gwI-11-xuf" secondAttribute="leading" constant="16" id="Upp-8V-3hU"/>
-                        <constraint firstItem="sZE-ye-38L" firstAttribute="top" secondItem="IGp-RQ-fYc" secondAttribute="bottom" id="XE5-H5-8r1"/>
-                        <constraint firstAttribute="trailing" secondItem="IGp-RQ-fYc" secondAttribute="trailing" id="aQ7-LS-mhh"/>
                         <constraint firstItem="sZE-ye-38L" firstAttribute="leading" secondItem="gwI-11-xuf" secondAttribute="leading" id="d8V-LO-9l7"/>
                         <constraint firstAttribute="trailing" secondItem="sZE-ye-38L" secondAttribute="trailing" id="dMV-2V-bVE"/>
-                        <constraint firstItem="IGp-RQ-fYc" firstAttribute="leading" secondItem="gwI-11-xuf" secondAttribute="leading" id="eiK-bS-lma"/>
+                        <constraint firstAttribute="bottom" secondItem="ljw-w5-yQg" secondAttribute="bottom" id="e2d-Wr-Oka"/>
                         <constraint firstItem="QK9-4C-K4x" firstAttribute="leading" secondItem="gwI-11-xuf" secondAttribute="leading" id="mCn-8u-x4U"/>
                         <constraint firstAttribute="bottom" secondItem="CXa-t2-xf9" secondAttribute="bottom" constant="8" id="pZM-s0-w1m"/>
                         <constraint firstItem="CXa-t2-xf9" firstAttribute="top" secondItem="QK9-4C-K4x" secondAttribute="bottom" constant="8" id="xXb-6t-6nW"/>
@@ -279,6 +277,7 @@
             <connections>
                 <outlet property="bioLabel" destination="CXa-t2-xf9" id="eXs-hB-9AT"/>
                 <outlet property="controlBarContainer" destination="sZE-ye-38L" id="ihc-kR-jQz"/>
+                <outlet property="dividerView" destination="ljw-w5-yQg" id="0aT-jL-p5N"/>
                 <outlet property="followButton" destination="lnk-vc-dz6" id="YXP-wO-KZl"/>
                 <outlet property="followersLabel" destination="KeT-ft-BSO" id="XPB-hh-14Z"/>
                 <outlet property="followingLabel" destination="6l1-WH-qya" id="Act-6T-LFM"/>

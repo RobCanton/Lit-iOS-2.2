@@ -6,30 +6,30 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Edit Profile View Controller-->
+        <!--Edit Profile-->
         <scene sceneID="2DI-v8-ZvK">
             <objects>
                 <tableViewController id="1Bo-AW-rzB" customClass="EditProfileViewController" customModule="Lit" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="yIC-TN-YBY">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="yIC-TN-YBY">
                         <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="separatorColor" white="0.098107531060000003" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="separatorColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <sections>
-                            <tableViewSection id="Coc-nR-VT6">
+                            <tableViewSection headerTitle="Profile" id="Coc-nR-VT6">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="ck3-II-5tE">
-                                        <rect key="frame" x="0.0" y="35" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="50" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ck3-II-5tE" id="VfV-MT-ubZ">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="N8L-QE-ZaJ">
-                                                    <rect key="frame" x="52" y="8" width="540" height="27"/>
+                                                    <rect key="frame" x="16" y="10" width="568" height="23"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="16"/>
-                                                    <textInputTraits key="textInputTraits" keyboardAppearance="alert"/>
+                                                    <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="17"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="words" keyboardAppearance="alert"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="color" keyPath="_placeholderLabel.textColor">
                                                             <color key="value" white="0.45000000000000001" alpha="1" colorSpace="calibratedWhite"/>
@@ -38,11 +38,11 @@
                                                 </textField>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="bottomMargin" secondItem="N8L-QE-ZaJ" secondAttribute="bottom" id="3KE-y0-YRc"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="N8L-QE-ZaJ" secondAttribute="trailing" id="51X-eq-utF"/>
-                                                <constraint firstItem="N8L-QE-ZaJ" firstAttribute="leading" secondItem="VfV-MT-ubZ" secondAttribute="leadingMargin" constant="44" id="WPP-eH-kEk"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="N8L-QE-ZaJ" secondAttribute="bottom" constant="2" id="3KE-y0-YRc"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="N8L-QE-ZaJ" secondAttribute="trailing" constant="8" id="51X-eq-utF"/>
+                                                <constraint firstItem="N8L-QE-ZaJ" firstAttribute="leading" secondItem="VfV-MT-ubZ" secondAttribute="leadingMargin" constant="8" id="WPP-eH-kEk"/>
                                                 <constraint firstAttribute="leadingMargin" secondItem="N8L-QE-ZaJ" secondAttribute="leading" id="WXj-eI-yvB"/>
-                                                <constraint firstItem="N8L-QE-ZaJ" firstAttribute="top" secondItem="VfV-MT-ubZ" secondAttribute="topMargin" id="sXS-iN-cz2"/>
+                                                <constraint firstItem="N8L-QE-ZaJ" firstAttribute="top" secondItem="VfV-MT-ubZ" secondAttribute="topMargin" constant="2" id="sXS-iN-cz2"/>
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
@@ -53,17 +53,17 @@
                                         <color key="backgroundColor" white="0.098107531055900629" alpha="1" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="Lho-gR-9nZ">
-                                        <rect key="frame" x="0.0" y="79" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="94" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Lho-gR-9nZ" id="ZtA-Le-6c7">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="d3O-HK-fAA">
-                                                    <rect key="frame" x="52" y="8" width="540" height="27"/>
+                                                    <rect key="frame" x="16" y="10" width="568" height="23"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="16"/>
-                                                    <textInputTraits key="textInputTraits" keyboardAppearance="alert"/>
+                                                    <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="17"/>
+                                                    <textInputTraits key="textInputTraits" keyboardAppearance="alert" enablesReturnKeyAutomatically="YES"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="color" keyPath="_placeholderLabel.textColor">
                                                             <color key="value" white="0.45000000000000001" alpha="1" colorSpace="calibratedWhite"/>
@@ -72,15 +72,60 @@
                                                 </textField>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="d3O-HK-fAA" firstAttribute="leading" secondItem="ZtA-Le-6c7" secondAttribute="leadingMargin" constant="44" id="J9j-uK-J6K"/>
-                                                <constraint firstItem="d3O-HK-fAA" firstAttribute="top" secondItem="ZtA-Le-6c7" secondAttribute="topMargin" id="KRo-MY-auz"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="d3O-HK-fAA" secondAttribute="trailing" id="epi-Og-LDX"/>
+                                                <constraint firstItem="d3O-HK-fAA" firstAttribute="leading" secondItem="ZtA-Le-6c7" secondAttribute="leadingMargin" constant="8" id="J9j-uK-J6K"/>
+                                                <constraint firstItem="d3O-HK-fAA" firstAttribute="top" secondItem="ZtA-Le-6c7" secondAttribute="topMargin" constant="2" id="KRo-MY-auz"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="d3O-HK-fAA" secondAttribute="trailing" constant="8" id="epi-Og-LDX"/>
                                                 <constraint firstAttribute="leadingMargin" secondItem="d3O-HK-fAA" secondAttribute="leading" id="sZw-rv-YiU"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="d3O-HK-fAA" secondAttribute="bottom" id="vMR-gV-6Y8"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="d3O-HK-fAA" secondAttribute="bottom" constant="2" id="vMR-gV-6Y8"/>
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
                                                     <exclude reference="sZw-rv-YiU"/>
+                                                </mask>
+                                            </variation>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.098107531060000003" alpha="1" colorSpace="calibratedWhite"/>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="bb8-7o-Zn9" customClass="BioTableViewCell" customModule="Lit" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="138" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bb8-7o-Zn9" id="bYP-RS-SDk">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Bio" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Hwi-TP-t2i">
+                                                    <rect key="frame" x="16" y="8" width="572" height="27"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="17"/>
+                                                    <textInputTraits key="textInputTraits" keyboardAppearance="alert"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="_placeholderLabel.textColor">
+                                                            <color key="value" white="0.45000000000000001" alpha="1" colorSpace="calibratedWhite"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </textField>
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="CWj-Jo-xLS">
+                                                    <rect key="frame" x="10" y="8" width="580" height="27"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="17"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" keyboardAppearance="alert" enablesReturnKeyAutomatically="YES"/>
+                                                </textView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="topMargin" secondItem="Hwi-TP-t2i" secondAttribute="top" id="0UP-WN-WrH"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="Hwi-TP-t2i" secondAttribute="bottom" id="HKx-FF-IQO"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="CWj-Jo-xLS" secondAttribute="trailing" constant="2" id="Hzc-Vs-Y0E"/>
+                                                <constraint firstItem="Hwi-TP-t2i" firstAttribute="leading" secondItem="bYP-RS-SDk" secondAttribute="leadingMargin" constant="8" id="Qeb-16-Wbz"/>
+                                                <constraint firstAttribute="leadingMargin" secondItem="CWj-Jo-xLS" secondAttribute="leading" constant="44" id="Xip-al-2IT"/>
+                                                <constraint firstAttribute="topMargin" secondItem="CWj-Jo-xLS" secondAttribute="top" id="cr4-JF-6ay"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="CWj-Jo-xLS" secondAttribute="bottom" id="f3G-3i-15Y"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="Hwi-TP-t2i" secondAttribute="trailing" constant="4" id="gbG-ZX-Ype"/>
+                                                <constraint firstItem="CWj-Jo-xLS" firstAttribute="leading" secondItem="bYP-RS-SDk" secondAttribute="leadingMargin" constant="2" id="mfd-VB-JmW"/>
+                                            </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="Xip-al-2IT"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -94,7 +139,7 @@
                             <outlet property="delegate" destination="1Bo-AW-rzB" id="zeG-n3-XgK"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="Jg0-u8-dUe">
+                    <navigationItem key="navigationItem" title="Edit Profile" id="Jg0-u8-dUe">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="kHW-cr-WJD">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
@@ -109,7 +154,9 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="usernameTextField" destination="N8L-QE-ZaJ" id="M5J-ee-S4e"/>
+                        <outlet property="bioPlaceholder" destination="Hwi-TP-t2i" id="G8g-8m-AXn"/>
+                        <outlet property="bioTextView" destination="CWj-Jo-xLS" id="8gT-UR-R19"/>
+                        <outlet property="usernameTextField" destination="d3O-HK-fAA" id="joc-hF-DO9"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WR0-HK-PdX" userLabel="First Responder" sceneMemberID="firstResponder"/>
