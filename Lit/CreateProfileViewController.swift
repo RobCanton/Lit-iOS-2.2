@@ -62,8 +62,11 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = " "
+        title = "My Profile"
         
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: #selector(proceed))
+
+        navigationItem.rightBarButtonItem = doneButton
         self.automaticallyAdjustsScrollViewInsets = false
         
         headerView = UINib(nibName: "CreateProfileHeaderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! CreateProfileHeaderView
@@ -73,7 +76,7 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
         scrollView = MXScrollView()
         scrollView.parallaxHeader.view = headerView
         scrollView.parallaxHeader.height = 300
-        scrollView.parallaxHeader.mode = .Fill
+        scrollView.parallaxHeader.mode = .Bottom
         scrollView.parallaxHeader.minimumHeight = 20
         scrollView.frame = view.frame
         scrollView.contentSize = view.frame.size
@@ -84,25 +87,25 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
         scrollView.addSubview(bodyView)
         view.addSubview(scrollView)
         
-        usernameField = MadokaTextField(frame: CGRect(x: 0, y: 0, width: self.view.frame.width * 0.85, height: 80))
+        usernameField = MadokaTextField(frame: CGRect(x: 0, y: 0, width: self.view.frame.width * 0.80, height: 64))
         usernameField.placeholderColor = .whiteColor()
         usernameField.borderColor = .whiteColor()
         usernameField.textColor = .whiteColor()
         usernameField.placeholder = "Username (everyone)"
         usernameField.delegate = self
-        usernameField.font = UIFont(name: "Avenir-Book", size: 26.0)
+        usernameField.font = UIFont(name: "Avenir-Medium", size: 20.0)
         usernameField.textAlignment = .Center
         usernameField.autocapitalizationType = .None
         usernameField.addTarget(self, action: "textViewChanged", forControlEvents: .EditingChanged);
 
         
-        fullnameField = MadokaTextField(frame: CGRect(x: 0, y: 0, width: self.view.frame.width * 0.85, height: 80))
+        fullnameField = MadokaTextField(frame: CGRect(x: 0, y: 0, width: self.view.frame.width * 0.80, height: 64))
         fullnameField.placeholderColor = .whiteColor()
         fullnameField.borderColor = .whiteColor()
         fullnameField.textColor = .whiteColor()
         fullnameField.placeholder = "Full name (friends only)"
         fullnameField.delegate = self
-        fullnameField.font = UIFont(name: "Avenir-Book", size: 26.0)
+        fullnameField.font = UIFont(name: "Avenir-Medium", size: 20.0)
         fullnameField.textAlignment = .Center
         
         fullnameField.center = CGPoint(x: bodyView.frame.width/2, y: fullnameField.frame.height)
@@ -116,10 +119,9 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
         continueButton.backgroundColor = UIColor(red: 0.15, green: 0.15, blue: 0.15, alpha: 1.0)
         let label = UILabel(frame: continueButton.bounds)
         label.text = "create profile"
-        label.font = UIFont(name: "Avenir-Medium", size: 22.0)
+        label.font = UIFont(name: "Avenir-Medium", size: 20.0)
         label.textAlignment = .Center
         label.textColor = UIColor.blackColor()
-        continueButton.addSubview(label)
         
         tap = UITapGestureRecognizer(target: self, action: #selector(proceed))
         

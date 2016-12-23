@@ -30,6 +30,11 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         tabBarRef.setTabBarVisible(false, animated: true)
+        navigationController?.setNavigationBarHidden(true, animated: true)
+        UIView.animateWithDuration(0.15, animations: {
+            self.statusBarShouldHide = true
+            self.setNeedsStatusBarAppearanceUpdate()
+        })
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -42,6 +47,11 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
                 }
             }
         }
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -141,9 +151,19 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
         return Double(abs(translate.y)/abs(translate.x)) > M_PI_4
     }
     
+    var statusBarShouldHide = false
     override func prefersStatusBarHidden() -> Bool {
-        return true
+        return statusBarShouldHide
     }
+    
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return UIStatusBarStyle.LightContent
+    }
+    
+    override func preferredStatusBarUpdateAnimation() -> UIStatusBarAnimation {
+        return UIStatusBarAnimation.Fade
+    }
+
 }
 
 extension GalleryViewController: View2ViewTransitionPresented {

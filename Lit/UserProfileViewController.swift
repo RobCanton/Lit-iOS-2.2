@@ -121,6 +121,7 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     
     
     func followersBlockTapped() {
+        if followers.count == 0 { return }
         let controller = UIStoryboard(name: "Main", bundle: nil)
             .instantiateViewControllerWithIdentifier("UsersListViewController") as! UsersListViewController
         controller.title = "Followers"
@@ -129,6 +130,7 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     }
     
     func followingBlockTapped() {
+        if following.count == 0 { return }
         let controller = UIStoryboard(name: "Main", bundle: nil)
             .instantiateViewControllerWithIdentifier("UsersListViewController") as! UsersListViewController
         controller.title = "Following"
@@ -137,8 +139,10 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     }
     
     func messageBlockTapped() {
+        
         let uid = mainStore.state.userState.uid
         let partner_uid = user!.getUserId()
+        if uid == partner_uid { return }
         if let conversation = checkForExistingConversation(partner_uid) {
             presentConversation(conversation)
         } else {
@@ -156,6 +160,11 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
                 })
             })
         }
+    }
+    
+    func editProfileTapped() {
+        let controller = UIStoryboard(name: "EditProfileViewController", bundle: nil).instantiateViewControllerWithIdentifier("EditProfileNavigationController")
+        self.presentViewController(controller, animated: true, completion: nil)
     }
     
     var presentConversation:Conversation?
@@ -177,7 +186,7 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         let text = "MORE LIFE. MORE CHUNES.\nTop of 2017.\n\nOVOXO."
         var size =  UILabel.size(withText: text, forWidth: collectionView.frame.size.width)
-        let height2 = size.height + 275 + 8 + 40 + 8 + 4 + 12 + 52
+        let height2 = size.height + 275 + 50 + 8 + 56 + 8
         size.height = height2
         return size
     }
@@ -192,6 +201,7 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
             view.followersHandler = followersBlockTapped
             view.followingHandler = followingBlockTapped
             view.messageHandler = messageBlockTapped
+            view.editProfileHandler = editProfileTapped
             view.setPostsCount(postKeys.count)
             view.setFollowersCount(followers.count)
             view.setFollowingCount(following.count)

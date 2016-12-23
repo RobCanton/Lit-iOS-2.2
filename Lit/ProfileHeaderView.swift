@@ -10,21 +10,17 @@ import UIKit
 
 class ProfileHeaderView: UICollectionReusableView {
 
-    
+    @IBOutlet weak var postsLabel: UILabel!
+    @IBOutlet weak var followersLabel: UILabel!
+    @IBOutlet weak var followingLabel: UILabel!
+    @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var controlBarContainer: UIView!
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var bioLabel: UILabel!
-    
-    @IBOutlet weak var followingLabel: UILabel!
-
-    @IBOutlet weak var followersLabel: UILabel!
-    
-    @IBOutlet weak var postsLabel: UILabel!
-    
-    @IBOutlet weak var messageBtn: UIButton!
-    
     @IBOutlet weak var followButton: UIButton!
-    let subColor = UIColor(white: 0.4, alpha: 1.0)
+    @IBOutlet weak var messageButton: UIButton!
+    
+    let subColor = UIColor(white: 0.5, alpha: 1.0)
     
     var user:User?
     var status:FollowingStatus?
@@ -32,16 +28,16 @@ class ProfileHeaderView: UICollectionReusableView {
     var messageHandler:(()->())?
     var followersHandler:(()->())?
     var followingHandler:(()->())?
+    var editProfileHandler:(()->())?
     
     var followersTap: UITapGestureRecognizer!
     var followingTap: UITapGestureRecognizer!
+    var messageTap: UITapGestureRecognizer!
     
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        
-        
-
     }
     
     func populateHeader(user:User){
@@ -49,35 +45,43 @@ class ProfileHeaderView: UICollectionReusableView {
         loadImageUsingCacheWithURL(user.getLargeImageUrl(), completion: { image in
             self.profileImageView.image = image
         })
-        postsLabel.styleProfileBlockText(13, text: "posts", color: subColor, color2: UIColor.whiteColor())
+        
+        postsLabel.styleProfileBlockText(158, text: "posts", color: subColor, color2: UIColor.whiteColor())
+        
         followersLabel.styleProfileBlockText(158, text: "followers", color: subColor, color2: UIColor.whiteColor())
         followingLabel.styleProfileBlockText(87, text: "following", color: subColor, color2: UIColor.whiteColor())
-        
-//        followersLabel.center = CGPoint(x: (followingLabel.center.x - postsLabel.center.x) / 2 + postsLabel.center.x, y: postsLabel.center.y)
-//        
+        messageLabel.styleProfileBlockText(0, text: "Message", color: UIColor.whiteColor(), color2: UIColor.clearColor())
+
         followButton.layer.cornerRadius = 2.0
         followButton.clipsToBounds = true
+        followButton.layer.borderWidth = 1.0
         
-        messageBtn.layer.cornerRadius = 2.0
-        messageBtn.clipsToBounds = true
-   
-        messageBtn.layer.borderWidth = 1.0
-        messageBtn.layer.borderColor = UIColor.whiteColor().CGColor
-        messageBtn.tintColor = UIColor.whiteColor()
+        messageButton.layer.cornerRadius = 2.0
+        messageButton.clipsToBounds = true
 
         
         bioLabel.text = "MORE LIFE. MORE CHUNES.\nTop of 2017.\n\nOVOXO."
         
+        
         setUserStatus(checkFollowingStatus(user.getUserId()))
+        
         
         followersTap = UITapGestureRecognizer(target: self, action: #selector(handleFollowersTap))
         followingTap = UITapGestureRecognizer(target: self, action: #selector(handleFollowingTap))
+        messageTap = UITapGestureRecognizer(target: self, action: #selector(handleMessageTap))
         
-        followersLabel.userInteractionEnabled = true
-        followersLabel.addGestureRecognizer(followersTap)
+        let followersView = followersLabel.superview!
+        followersView.userInteractionEnabled = true
+        followersView.addGestureRecognizer(followersTap)
         
-        followingLabel.userInteractionEnabled = true
-        followingLabel.addGestureRecognizer(followingTap)
+        let followingView = followingLabel.superview!
+        followingView.userInteractionEnabled = true
+        followingView.addGestureRecognizer(followingTap)
+        
+        let messageView = messageButton.superview!
+        messageView.userInteractionEnabled = true
+        messageView.addGestureRecognizer(messageTap)
+ 
     }
     
     func setPostsCount(count:Int) {
@@ -106,27 +110,24 @@ class ProfileHeaderView: UICollectionReusableView {
         print("UPDATE USER STATUS")
         switch status {
         case .CurrentUser:
-            followButton.hidden = true
-            messageBtn.hidden = true
-            break
-        case .Following:
-            followButton.hidden = false
-            followButton.backgroundColor = UIColor(white: 0.4, alpha: 1.0)
-            followButton.setTitle("Following", forState: .Normal)
-            messageBtn.hidden = false
+            followButton.backgroundColor = UIColor.clearColor()
+            followButton.layer.borderColor = UIColor.whiteColor().CGColor
+            followButton.setTitle("Edit Profile", forState: .Normal)
             break
         case .None:
-            followButton.hidden = false
             followButton.backgroundColor = accentColor
+            followButton.layer.borderColor = UIColor.clearColor().CGColor
             followButton.setTitle("Follow", forState: .Normal)
-            messageBtn.hidden = false
             break
-            
         case .Requested:
-            followButton.hidden = false
-            followButton.backgroundColor = UIColor(white: 0.4, alpha: 1.0)
+            followButton.backgroundColor = UIColor.clearColor()
+            followButton.layer.borderColor = UIColor.whiteColor().CGColor
             followButton.setTitle("Requested", forState: .Normal)
-            messageBtn.hidden = false
+            break
+        case .Following:
+            followButton.backgroundColor = UIColor.clearColor()
+            followButton.layer.borderColor = UIColor.whiteColor().CGColor
+            followButton.setTitle("Following", forState: .Normal)
             break
         }
     }
@@ -136,6 +137,7 @@ class ProfileHeaderView: UICollectionReusableView {
 
         switch status {
         case .CurrentUser:
+            editProfileHandler?()
             break
         case .Following:
             SocialService.unfollowUser(user.getUserId())
@@ -148,16 +150,19 @@ class ProfileHeaderView: UICollectionReusableView {
         }
     }
     
-    @IBAction func handleMessageTap(sender: AnyObject) {
-        
-        messageHandler?()
-    }
     
+    
+
+
     func handleFollowersTap(sender:UITapGestureRecognizer) {
         followersHandler?()
     }
     
     func handleFollowingTap(sender:UITapGestureRecognizer) {
         followingHandler?()
+    }
+    
+    func handleMessageTap(sender:UITapGestureRecognizer) {
+        messageHandler?()
     }
 }

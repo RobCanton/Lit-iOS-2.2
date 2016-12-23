@@ -17,7 +17,6 @@ import Whisper
 
 class MainViewController: UICollectionViewController, UINavigationControllerDelegate, StoreSubscriber, CLLocationManagerDelegate, UIGestureRecognizerDelegate, UISearchBarDelegate {
     
-    let transtition = SwiftyExpandingTransition()
     var selectedCellFrame = CGRectZero
     
     var locations = [Location]()

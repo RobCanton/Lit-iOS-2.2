@@ -66,11 +66,7 @@ class LoginViewController: UIViewController, StoreSubscriber {
         createDirectory("location_images")
         createDirectory("temp")
         self.navigationController?.navigationBar.titleTextAttributes =
-            [NSFontAttributeName: UIFont(name: "Avenir-Book", size: 20.0)!]
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: .Default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.barStyle = .Black
-        self.navigationController?.navigationBar.translucent = true
+            [NSFontAttributeName: UIFont(name: "Avenir-Medium", size: 18.0)!]
         navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Plain, target: nil, action: nil)
         
 

@@ -159,6 +159,8 @@
 		B07D74BC1DC2E2AB001D66EA /* ActivityFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07D74BB1DC2E2AB001D66EA /* ActivityFeedViewController.swift */; };
 		B07E54CD1E0B235B008C2D23 /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07E54CB1E0B235B008C2D23 /* ProfileHeaderView.swift */; };
 		B07E54CE1E0B235B008C2D23 /* ProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B07E54CC1E0B235B008C2D23 /* ProfileHeaderView.xib */; };
+		B07E54D01E0C8AA8008C2D23 /* EditProfileViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B07E54CF1E0C8AA8008C2D23 /* EditProfileViewController.storyboard */; };
+		B07E54D21E0C8ADE008C2D23 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07E54D11E0C8ADE008C2D23 /* EditProfileViewController.swift */; };
 		B080078A1DCAEABC00695D5F /* EventsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08007891DCAEABC00695D5F /* EventsViewController.swift */; };
 		B080078C1DCAEAD300695D5F /* EventsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B080078B1DCAEAD300695D5F /* EventsViewController.storyboard */; };
 		B0873AC81D3EB8CC00862960 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0873AC51D3EB8CC00862960 /* FBSDKCoreKit.framework */; };
@@ -388,6 +390,8 @@
 		B07D74BB1DC2E2AB001D66EA /* ActivityFeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityFeedViewController.swift; sourceTree = "<group>"; };
 		B07E54CB1E0B235B008C2D23 /* ProfileHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
 		B07E54CC1E0B235B008C2D23 /* ProfileHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileHeaderView.xib; sourceTree = "<group>"; };
+		B07E54CF1E0C8AA8008C2D23 /* EditProfileViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = EditProfileViewController.storyboard; sourceTree = "<group>"; };
+		B07E54D11E0C8ADE008C2D23 /* EditProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 		B08007891DCAEABC00695D5F /* EventsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventsViewController.swift; sourceTree = "<group>"; };
 		B080078B1DCAEAD300695D5F /* EventsViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = EventsViewController.storyboard; sourceTree = "<group>"; };
 		B0873AC51D3EB8CC00862960 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
@@ -600,6 +604,8 @@
 				B0E8E3171DD98A060077D1BC /* ProfilePictureMessageView.xib */,
 				B07E54CB1E0B235B008C2D23 /* ProfileHeaderView.swift */,
 				B07E54CC1E0B235B008C2D23 /* ProfileHeaderView.xib */,
+				B07E54D11E0C8ADE008C2D23 /* EditProfileViewController.swift */,
+				B07E54CF1E0C8AA8008C2D23 /* EditProfileViewController.storyboard */,
 			);
 			name = UserProfile;
 			sourceTree = "<group>";
@@ -1034,6 +1040,7 @@
 				B0E5915B1DD126D600C032D6 /* LogoutView.xib in Resources */,
 				B003D49D1DE6B1A10026B2D8 /* EventTableViewCell.xib in Resources */,
 				76B361CB1D64E8160024CDC7 /* RatingViewController.xib in Resources */,
+				B07E54D01E0C8AA8008C2D23 /* EditProfileViewController.storyboard in Resources */,
 				76173B7B1D5784AC0093A137 /* Main.storyboard in Resources */,
 				B06D54C11D9ECB6D00F6A4A7 /* Info.plist in Resources */,
 			);
@@ -1160,6 +1167,7 @@
 				B01B34A61DC17B5C00B2B9CE /* Upload.swift in Sources */,
 				B0351FBB1DED0503000A4BF5 /* NVActivityIndicatorView.swift in Sources */,
 				B0351F9E1DED0503000A4BF5 /* NVActivityIndicatorAnimationBallPulse.swift in Sources */,
+				B07E54D21E0C8ADE008C2D23 /* EditProfileViewController.swift in Sources */,
 				B0E8E3231DDB817B0077D1BC /* DismissInteractiveTransition.swift in Sources */,
 				B087E9CA1D9B7CDD0079E2BF /* Tree.swift in Sources */,
 				76B361D71D6519ED0024CDC7 /* GPSService.swift in Sources */,

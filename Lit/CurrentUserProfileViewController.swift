@@ -156,7 +156,7 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         let text = "MORE LIFE. MORE CHUNES.\nTop of 2017.\n\nOVOXO."
         var size =  UILabel.size(withText: text, forWidth: collectionView.frame.size.width)
-        let height2 = size.height + 275 + 8 + 40 + 8 + 4 + 12 + 52
+        let height2 = size.height + 275 + 8 + 32 + 8 + 4 + 12 + 52
         size.height = height2
         return size
     }
@@ -168,8 +168,8 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
             
             let view = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier: "headerView", forIndexPath: indexPath) as! ProfileHeaderView
             view.populateHeader(user)
-            view.followersHandler = followersBlockTapped
-            view.followingHandler = followingBlockTapped
+//            view.followersHandler = followersBlockTapped
+//            view.followingHandler = followingBlockTapped
             view.setPostsCount(postKeys.count)
             view.setFollowersCount(followers.count)
             view.setFollowingCount(following.count)
