@@ -55,15 +55,15 @@ class FirebaseService {
         
         if let cachedUser = dataCache.objectForKey("user-\(uid)") as? User {
             completionHandler(user: cachedUser)
+            
         } else {
-            ref.child("users/profile/\(uid)").observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+            ref.child("users/profile/basic/\(uid)").observeSingleEventOfType(.Value, withBlock: { (snapshot) in
                 var user:User?
                 if snapshot.exists() {
+                    let name             = snapshot.value!["name"] as? String
                     let displayName      = snapshot.value!["username"] as! String
-                    let imageUrl         = snapshot.value!["smallProfilePicURL"] as! String
-                    let largeImageUrl    = snapshot.value!["largeProfilePicURL"] as! String
-                    let numFriends       = snapshot.value!["numFriends"] as! Int
-                    user = User(uid: uid, displayName: displayName, imageUrl: imageUrl, largeImageUrl: largeImageUrl, numFriends: numFriends)
+                    let imageURL         = snapshot.value!["profileImageURL"] as! String
+                    user = User(uid: uid, displayName: displayName, name: name, imageURL: imageURL, largeImageURL: nil, bio: nil)
                     dataCache.setObject(user!, forKey: "user-\(uid)")
                 }
                 
@@ -71,7 +71,29 @@ class FirebaseService {
                 
             })
         }
+    }
+    
+    static func getUserFullProfile(user:User, completionHandler: (user:User?)->()) {
+        if user.bio == nil || user.largeImageURL == nil {
+            let ref = FirebaseService.ref.child("users/profile/full/\(user.getUserId())")
+            ref.observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+                if snapshot.exists() {
+                    let largeImageURL = snapshot.value!["largeProfileImageURL"] as? String
+                    let bio           = snapshot.value!["bio"] as? String
 
+                    user.bio = bio
+                    user.largeImageURL = largeImageURL
+                    let uid = user.getUserId()
+                    dataCache.removeObjectForKey("user-\(uid)")
+                    dataCache.setObject(user, forKey: "user-\(uid)")
+                    completionHandler(user: user)
+                }
+                else {
+                    completionHandler(user: nil)
+                }
+            })
+        }
+        completionHandler(user: nil)
     }
     
 

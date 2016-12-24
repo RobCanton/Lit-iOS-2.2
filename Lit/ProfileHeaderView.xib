@@ -26,22 +26,24 @@
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Robert Canton" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lNR-9M-bfd">
                                     <rect key="frame" x="8" y="8" width="276" height="22"/>
-                                    <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="16"/>
+                                    <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="16"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Toronto, ON" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xDH-lw-zf7">
                                     <rect key="frame" x="8" y="30" width="80" height="20"/>
-                                    <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="14"/>
-                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                    <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="14"/>
+                                    <color key="textColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lnk-vc-dz6">
                                     <rect key="frame" x="292" y="10" width="100" height="30"/>
                                     <color key="backgroundColor" red="0.0" green="0.50196078431372548" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="100" id="KjX-Wh-jSq"/>
+                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="KjX-Wh-jSq"/>
+                                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="120" id="o1n-e3-hXY"/>
                                     </constraints>
+                                    <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
                                     <state key="normal" title="Follow">
                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
@@ -63,9 +65,9 @@
                                 <constraint firstAttribute="trailing" secondItem="lnk-vc-dz6" secondAttribute="trailing" constant="16" id="r6Y-Si-55r"/>
                             </constraints>
                         </view>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CXa-t2-xf9">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CXa-t2-xf9">
                             <rect key="frame" x="8" y="79" width="384" height="86"/>
-                            <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="14"/>
+                            <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="14"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -281,8 +283,10 @@
                 <outlet property="followButton" destination="lnk-vc-dz6" id="YXP-wO-KZl"/>
                 <outlet property="followersLabel" destination="KeT-ft-BSO" id="XPB-hh-14Z"/>
                 <outlet property="followingLabel" destination="6l1-WH-qya" id="Act-6T-LFM"/>
+                <outlet property="locationLabel" destination="xDH-lw-zf7" id="K96-dm-CgB"/>
                 <outlet property="messageButton" destination="pu2-UU-Aoq" id="0U7-JO-6Kv"/>
                 <outlet property="messageLabel" destination="k0X-LN-Upk" id="75H-98-URA"/>
+                <outlet property="nameLabel" destination="lNR-9M-bfd" id="8Vh-nr-Se1"/>
                 <outlet property="postsLabel" destination="0oi-kH-w4P" id="nPC-ZM-KkW"/>
                 <outlet property="profileImageView" destination="e0w-55-qsS" id="2Ix-lD-fc0"/>
             </connections>

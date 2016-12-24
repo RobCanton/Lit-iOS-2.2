@@ -264,7 +264,7 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
         fullnameField.enabled = false
         usernameField.enabled = false
         
-        let fullname = fullnameField.text!
+        let name = fullnameField.text!
         let username = usernameField.text!
         
         if let user = FIRAuth.auth()?.currentUser {
@@ -276,28 +276,31 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
                     let ref = FirebaseService.ref.child("users/facebook/\(self.facebook_uid)")
                     ref.setValue(user.uid)
                     
-                    let privateRef = FIRDatabase.database().reference().child("users/private/\(user.uid)")
-                    privateRef.setValue([
-                        "fullname":fullname
+                    let publicRef = FIRDatabase.database().reference().child("users/profile/basic/\(user.uid)")
+                    publicRef.setValue([
+                        "name": name,
+                        "username":username,
+                        "profileImageURL": smallImageURL!
                         ], withCompletionBlock: {error, ref in
                             if error != nil {
-                                return print(error?.localizedDescription)
+                                print(error!.localizedDescription)
                             }
-
-                            let publicRef = FIRDatabase.database().reference().child("users/profile/\(user.uid)")
-                            publicRef.setValue([
-                                "username":username,
-                                "smallProfilePicURL": smallImageURL!,
-                                "largeProfilePicURL": largeImageURL!,
-                                "numFriends":0
-                                ], withCompletionBlock: {error, ref in
-                                    if error != nil {
-                                        print(error!.localizedDescription)
-                                    }
-                                    else {
-                                        self.getNewUser()
-                                    }
-                            })
+                            else {
+                                let fullProfileRef = FIRDatabase.database().reference().child("users/profile/full/\(user.uid)")
+                                let obj = [
+                                    "largeProfileImageURL": largeImageURL!,
+                                    "bio": "This is the default bio description"
+                                ]
+                                
+                                fullProfileRef.setValue(obj, withCompletionBlock: {error, ref in
+                                        if error != nil {
+                                            print(error!.localizedDescription)
+                                        }
+                                        else {
+                                            self.getNewUser()
+                                        }
+                                })
+                            }
                     })
                 }
             })
@@ -308,7 +311,7 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
     func checkUsernameAvailability() {
         print("checkUsernameAvailability")
         
-        let ref = FIRDatabase.database().reference().child("users/profile")
+        let ref = FIRDatabase.database().reference().child("users/profile/basic")
         ref.queryOrderedByChild("username").queryEqualToValue(usernameField.text!).observeSingleEventOfType(.Value, withBlock: { snapshot in
             if snapshot.exists() {
                 self.usernameTaken()

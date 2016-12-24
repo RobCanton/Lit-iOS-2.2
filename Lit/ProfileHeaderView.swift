@@ -16,6 +16,10 @@ class ProfileHeaderView: UICollectionReusableView {
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var controlBarContainer: UIView!
     @IBOutlet weak var profileImageView: UIImageView!
+    
+    
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var bioLabel: UILabel!
     @IBOutlet weak var followButton: UIButton!
     @IBOutlet weak var messageButton: UIButton!
@@ -47,9 +51,15 @@ class ProfileHeaderView: UICollectionReusableView {
     func populateHeader(user:User){
 
         self.user = user
-        loadImageUsingCacheWithURL(user.getLargeImageUrl(), completion: { image in
-            self.profileImageView.image = image
-        })
+        
+        if let url = user.largeImageURL {
+            loadImageUsingCacheWithURL(url, completion: { image in
+                self.profileImageView.image = image
+            })
+        }
+        if let bio = user.bio {
+            bioLabel.text = bio
+        }
         
         postsLabel.styleProfileBlockText(158, text: "posts", color: subColor, color2: UIColor.whiteColor())
         
@@ -63,9 +73,12 @@ class ProfileHeaderView: UICollectionReusableView {
         
         messageButton.layer.cornerRadius = 2.0
         messageButton.clipsToBounds = true
-
         
-        bioLabel.text = "MORE LIFE. MORE CHUNES.\nTop of 2017.\n\nOVOXO."
+        if let name = user.getName() {
+            nameLabel.text = name
+        } else {
+            nameLabel.text = user.getDisplayName()
+        }
         
         
         setUserStatus(checkFollowingStatus(user.getUserId()))
@@ -87,6 +100,10 @@ class ProfileHeaderView: UICollectionReusableView {
         messageView.userInteractionEnabled = true
         messageView.addGestureRecognizer(messageTap)
  
+    }
+    
+    func setFullProfile(largeImageURL:String?, bio:String?) {
+        
     }
     
     func setPostsCount(count:Int) {

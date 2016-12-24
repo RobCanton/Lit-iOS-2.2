@@ -175,7 +175,7 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
         videoCache.delegate = self
         self.navigationItem.title = location.getName()
         self.navigationController?.navigationBar.titleTextAttributes =
-            [NSFontAttributeName: UIFont(name: "Avenir-Heavy", size: 16.0)!,
+            [NSFontAttributeName: UIFont(name: "AvenirNext-DemiBold", size: 16.0)!,
              NSForegroundColorAttributeName: UIColor.whiteColor()]
         self.automaticallyAdjustsScrollViewInsets = false
         navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Plain, target: nil, action: nil)
@@ -346,10 +346,10 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
             
         } else if section == 1 {
             headerView.hidden = false
-            headerView.label.text = "Recent Updates"
+            headerView.label.text = "RECENT ACTIVITY"
         } else if section == 2 {
             headerView.hidden = false
-            headerView.label.text = "Guests"
+            headerView.label.text = "GUESTS"
         }
         return headerView
     }

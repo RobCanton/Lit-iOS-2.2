@@ -50,6 +50,9 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.title = user.getDisplayName()
+        self.navigationController?.navigationBar.titleTextAttributes =
+            [NSFontAttributeName: UIFont(name: "AvenirNext-DemiBold", size: 16.0)!,
+             NSForegroundColorAttributeName: UIColor.whiteColor()]
         self.automaticallyAdjustsScrollViewInsets = false
         navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Plain, target: nil, action: nil)
         
@@ -81,8 +84,31 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         self.view.addSubview(collectionView!)
         
         getKeys()
+        
+        FirebaseService.getUserFullProfile(user, completionHandler: { user in
+            if user != nil {
+                self.user = user
+                self.collectionView?.reloadData()
+            }
+        })
+        
+        
     }
     
+    var largeImageURL:String?
+    var bio:String?
+    
+    func getFullProfile() {
+        let ref = FirebaseService.ref.child("users/profile/full/\(user.getUserId())")
+        ref.observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+            if snapshot.exists() {
+                self.largeImageURL = snapshot.value!["largeProfileImageURL"] as? String
+                self.bio           = snapshot.value!["bio"] as? String
+                self.collectionView?.reloadData()
+
+            }
+        })
+    }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -184,10 +210,14 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        let text = "MORE LIFE. MORE CHUNES.\nTop of 2017.\n\nOVOXO."
-        var size =  UILabel.size(withText: text, forWidth: collectionView.frame.size.width)
-        let height2 = size.height + 275 + 50 + 8 + 56 + 8
-        size.height = height2
+        let staticHeight:CGFloat = 275 + 50 + 8 + 56
+        if let text = self.user.bio {
+            var size =  UILabel.size(withText: text, forWidth: collectionView.frame.size.width)
+            let height2 = size.height + staticHeight + 8  // +8 for some bio padding
+            size.height = height2
+            return size
+        }
+        let size =  CGSize(width: collectionView.frame.size.width, height: staticHeight) // +8 for some empty padding
         return size
     }
     
@@ -205,6 +235,7 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
             view.setPostsCount(postKeys.count)
             view.setFollowersCount(followers.count)
             view.setFollowingCount(following.count)
+//            view.setFullProfile(self.largeImageURL, bio: self.bio)
             return view
         default:
             return UICollectionReusableView()

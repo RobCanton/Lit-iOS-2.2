@@ -161,12 +161,12 @@ class SearchViewController:UIViewController, UITableViewDelegate, UITableViewDat
             //If json is .Dictionary
             for (uid,profile):(String, JSON) in json["profiles"] {
 
-                let displayName      = profile["username"].stringValue
-                let imageUrl         = profile["smallProfilePicURL"].stringValue
-                let largeImageUrl    = profile["largeProfilePicURL"].stringValue
-                let numFriends       = profile["numFriends"].intValue
-                let user = User(uid: uid, displayName: displayName, imageUrl: imageUrl, largeImageUrl: largeImageUrl, numFriends: numFriends)
-                _users.append(user)
+//                let displayName      = profile["username"].stringValue
+//                let imageUrl         = profile["smallProfilePicURL"].stringValue
+//                let largeImageUrl    = profile["largeProfilePicURL"].stringValue
+//                let numFriends       = profile["numFriends"].intValue
+//                let user = User(uid: uid, displayName: displayName, imageUrl: imageUrl, largeImageUrl: largeImageUrl, numFriends: numFriends)
+//                _users.append(user)
             }
             
             //If json is .Dictionary

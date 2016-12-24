@@ -307,7 +307,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dmt-VN-qdX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3600" y="-364"/>
+            <point key="canvasLocation" x="3640" y="-415"/>
         </scene>
         <!--Messages-->
         <scene sceneID="aka-hU-Mpx">
@@ -873,7 +873,9 @@
                             </mask>
                         </variation>
                     </view>
-                    <navigationItem key="navigationItem" id="vf8-0n-EPP"/>
+                    <navigationItem key="navigationItem" id="vf8-0n-EPP">
+                        <nil key="title"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="Dto-u2-iP4" id="rSL-qL-qHX"/>
                     </connections>
@@ -991,7 +993,7 @@
             </objects>
             <point key="canvasLocation" x="2366" y="301"/>
         </scene>
-        <!--Activity-->
+        <!--Activity View Controller-->
         <scene sceneID="mkh-V2-7Yq">
             <objects>
                 <viewController storyboardIdentifier="ActivityViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="VQL-1a-jsd" customClass="ActivityViewController" customModule="Lit" customModuleProvider="target" sceneMemberID="viewController">
@@ -1016,7 +1018,18 @@
                             <constraint firstItem="QSJ-90-Nj6" firstAttribute="leading" secondItem="N48-9w-b61" secondAttribute="leading" id="ivs-JX-m1s"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Activity" id="iDX-9y-Rqa"/>
+                    <navigationItem key="navigationItem" id="iDX-9y-Rqa">
+                        <nil key="title"/>
+                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="PGZ-Ox-qQz">
+                            <rect key="frame" x="180" y="7" width="240" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <segments>
+                                <segment title="Following"/>
+                                <segment title="Discover"/>
+                            </segments>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </segmentedControl>
+                    </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="QSJ-90-Nj6" id="tlw-Xj-JGz"/>
                     </connections>

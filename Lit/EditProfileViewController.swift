@@ -16,6 +16,10 @@ class BioTableViewCell: UITableViewCell {
 
 class EditProfileViewController: UITableViewController {
 
+    
+    
+    @IBOutlet weak var nameTextField: UITextField!
+    
     @IBOutlet weak var usernameTextField: UITextField!
     
     @IBOutlet weak var bioTextView: UITextView!
@@ -29,7 +33,17 @@ class EditProfileViewController: UITableViewController {
         tableView.estimatedRowHeight = 240 // Something reasonable to help ios render your cells
         
         usernameTextField.delegate = self
-        usernameTextField.addTarget(self, action: "textViewChanged", forControlEvents: .EditingChanged);
+        usernameTextField.addTarget(self, action: #selector(textViewChanged), forControlEvents: .EditingChanged);
+        
+        if let user = mainStore.state.userState.user {
+            
+            nameTextField.text     = user.getName()
+            usernameTextField.text = user.getDisplayName()
+            
+            if let bio = user.bio {
+                bioTextView.text = bio
+            }
+        }
         
         bioTextView.delegate = self
         bioPlaceholder.hidden = !bioTextView.text.isEmpty
@@ -50,6 +64,49 @@ class EditProfileViewController: UITableViewController {
     }
     
     @IBAction func handleSave(sender: AnyObject) {
+        
+        var basicProfileObj = [String:AnyObject]()
+        var username = ""
+        if let _username = usernameTextField.text { username = _username }
+        
+        basicProfileObj["username"] = username
+        if let name = nameTextField.text {
+            basicProfileObj["name"] = name
+        }
+
+        let uid = mainStore.state.userState.uid
+        let basicProfileRef = FirebaseService.ref.child("users/profile/basic/\(uid)")
+        basicProfileRef.updateChildValues(basicProfileObj, withCompletionBlock: { error in
+        
+            let fullProfileRef = FirebaseService.ref.child("users/profile/full/\(uid)")
+            var fullProfileObj = [String:AnyObject]()
+            
+            if let bio = self.bioTextView.text {
+                fullProfileObj["bio"] = bio
+            } else {
+                fullProfileRef.child("bio").removeValue()
+            }
+            
+            fullProfileRef.updateChildValues(fullProfileObj, withCompletionBlock: { error in
+                self.retrieveUpdatedUser()
+            })
+        })
+    }
+    
+    func retrieveUpdatedUser() {
+        let uid = mainStore.state.userState.uid
+        
+        FirebaseService.dataCache.removeObjectForKey("user-\(uid)")
+        FirebaseService.getUser(uid, completionHandler: { _user in
+            if let user = _user {
+                FirebaseService.getUserFullProfile(user, completionHandler: { _fullUser in
+                    if let fullUser = _fullUser {
+                        mainStore.dispatch(UserIsAuthenticated(user: fullUser))
+                        self.dismissViewControllerAnimated(true, completion: nil)
+                    }
+                })
+            }
+        })
     }
 }
 

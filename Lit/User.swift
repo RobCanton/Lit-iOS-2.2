@@ -11,27 +11,31 @@ import Foundation
 class User:NSObject, NSCoding {
     var uid: String
     var displayName: String
-    var imageUrl: String
-    var largeImageUrl: String
-    var numFriends: Int
+    var name: String?
+    var imageURL: String
+    var largeImageURL: String?
+    var bio: String?
     
-    init(uid:String, displayName:String, imageUrl: String, largeImageUrl:String, numFriends: Int)
+    init(uid:String, displayName:String, name:String?, imageURL: String, largeImageURL: String?, bio: String?)
     {
         self.uid           = uid
         self.displayName   = displayName
-        self.imageUrl      = imageUrl
-        self.largeImageUrl = largeImageUrl
-        self.numFriends    = numFriends
+        self.name          = name
+        self.imageURL      = imageURL
+        self.largeImageURL = largeImageURL
+        self.bio           = bio
     }
     
     required convenience init(coder decoder: NSCoder) {
         
         let uid = decoder.decodeObjectForKey("uid") as! String
         let displayName = decoder.decodeObjectForKey("displayName") as! String
-        let imageUrl = decoder.decodeObjectForKey("imageUrl") as! String
-        let largeImageUrl = decoder.decodeObjectForKey("largeImageUrl") as! String
-        let numFriends = decoder.decodeObjectForKey("numFriends") as! Int
-        self.init(uid: uid, displayName: displayName, imageUrl: imageUrl, largeImageUrl: largeImageUrl, numFriends: numFriends)
+        let name = decoder.decodeObjectForKey("name") as? String
+        let imageURL = decoder.decodeObjectForKey("imageURL") as! String
+        let largeImageURL = decoder.decodeObjectForKey("largeImageURL") as? String
+        let bio = decoder.decodeObjectForKey("bio") as? String
+
+        self.init(uid: uid, displayName: displayName, name: name, imageURL: imageURL, largeImageURL: largeImageURL, bio: bio)
 
     }
 
@@ -39,10 +43,10 @@ class User:NSObject, NSCoding {
     func encodeWithCoder(coder: NSCoder) {
         coder.encodeObject(uid, forKey: "uid")
         coder.encodeObject(displayName, forKey: "displayName")
-        coder.encodeObject(imageUrl, forKey: "imageUrl")
-        coder.encodeObject(largeImageUrl, forKey: "largeImageUrl")
-        coder.encodeObject(numFriends, forKey: "numFriends")
-        
+        coder.encodeObject(name, forKey: "name")
+        coder.encodeObject(imageURL, forKey: "imageURL")
+        coder.encodeObject(largeImageURL, forKey: "largeImageURL")
+        coder.encodeObject(bio, forKey: "bio")
     }
     
 
@@ -55,27 +59,17 @@ class User:NSObject, NSCoding {
         return displayName
     }
     
+    func getName() -> String? {
+        return name
+    }
+    
     func getImageUrl() -> String {
-        return imageUrl
-    }
-    
-    func getLargeImageUrl() -> String {
-        return largeImageUrl
-    }
-    
-    func getNumFriends() -> Int{
-        return numFriends
-    }
-    
-    func printUser() {
-        print("uid: \(uid)")
-        print("displayName: \(displayName)")
-        print("imageUrl: \(imageUrl)")
+        return imageURL
     }
     
     func setImageURLS(largeImageURL:String, smallImageURL:String) {
-        self.largeImageUrl = largeImageURL
-        self.imageUrl = smallImageURL
+        self.largeImageURL = largeImageURL
+        self.imageURL = smallImageURL
     }
     
 }
