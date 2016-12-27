@@ -380,7 +380,7 @@ extension UILabel
         self.textAlignment = .Center
 
         let str = "\(count)\n\(text)"
-        let font = UIFont(name: "Avenir-Medium", size: 12)
+        let font = UIFont(name: "AvenirNext-Regular", size: 12)
         
         let attributes: [String: AnyObject] = [
             NSFontAttributeName : font!,
@@ -393,7 +393,7 @@ extension UILabel
         if let range = str.rangeOfString(countStr) {
             let index = str.startIndex.distanceTo(range.startIndex)
             let a: [String: AnyObject] = [
-                NSFontAttributeName : UIFont(name: "Avenir-Medium", size: 16)!,
+                NSFontAttributeName : UIFont(name: "AvenirNext-Medium", size: 16)!,
                 NSForegroundColorAttributeName : color2
             ]
             title.addAttributes(a, range: NSRange(location: index, length: countStr.characters.count))

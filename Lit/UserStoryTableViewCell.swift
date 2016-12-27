@@ -16,7 +16,7 @@ class UserStoryTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        contentImageView.layer.cornerRadius = 4
+        contentImageView.layer.cornerRadius = 2
         contentImageView.clipsToBounds = true
         timeLabel.textColor = UIColor.grayColor()
     }

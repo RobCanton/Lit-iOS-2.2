@@ -74,12 +74,17 @@ class UserService {
     
     static func updateProfilePictureURL(largeURL:String, smallURL:String, completionHandler:()->()) {
         let uid = mainStore.state.userState.uid
-        let publicRef = FIRDatabase.database().reference().child("users/profile/\(uid)")
-        publicRef.updateChildValues([
-            "smallProfilePicURL": smallURL,
-            "largeProfilePicURL":largeURL
+        let basicRef = FIRDatabase.database().reference().child("users/profile/basic/\(uid)")
+        basicRef.updateChildValues([
+            "profileImageURL": smallURL
             ], withCompletionBlock: { error, ref in
-                completionHandler()
+                let fullRef = FIRDatabase.database().reference().child("users/profile/full/\(uid)")
+                fullRef.updateChildValues([
+                    "largeProfileImageURL": largeURL
+                    ], withCompletionBlock: { error, ref in
+                        
+                        completionHandler()
+                })
         })
     }
 

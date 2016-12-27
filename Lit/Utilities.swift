@@ -87,7 +87,7 @@ func getDateFromString(string:String) -> NSDate {
     return dateFormatter.dateFromString(string)!
 }
 
-func downloadImageWithURLString(_url:String, completion: (image:UIImage)->()) {
+func downloadImageWithURLString(_url:String, completion: (image:UIImage, fromCache:Bool)->()) {
     
     let url = NSURL(string: _url)
     
@@ -110,16 +110,16 @@ func downloadImageWithURLString(_url:String, completion: (image:UIImage)->()) {
                 }
                 
                 let image = UIImage(data: data!)
-                return completion(image: image!)
+                return completion(image: image!, fromCache: false)
             })
             
     }).resume()
 }
 
-func loadImageUsingCacheWithURL(_url:String, completion: (image:UIImage)->()) {
+func loadImageUsingCacheWithURL(_url:String, completion: (image:UIImage, fromCache:Bool)->()) {
     // Check for cached image
     if let cachedImage = imageCache.objectForKey(_url) as? UIImage {
-        return completion(image: cachedImage)
+        return completion(image: cachedImage, fromCache: true)
     } else {
         downloadImageWithURLString(_url, completion: completion)
     }

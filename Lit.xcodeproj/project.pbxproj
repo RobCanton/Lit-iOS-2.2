@@ -161,6 +161,8 @@
 		B07E54CE1E0B235B008C2D23 /* ProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B07E54CC1E0B235B008C2D23 /* ProfileHeaderView.xib */; };
 		B07E54D01E0C8AA8008C2D23 /* EditProfileViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B07E54CF1E0C8AA8008C2D23 /* EditProfileViewController.storyboard */; };
 		B07E54D21E0C8ADE008C2D23 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07E54D11E0C8ADE008C2D23 /* EditProfileViewController.swift */; };
+		B07E54D41E130A91008C2D23 /* EditProfilePictureView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B07E54D31E130A90008C2D23 /* EditProfilePictureView.xib */; };
+		B07E54D61E130AFB008C2D23 /* EditProfilePictureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07E54D51E130AFB008C2D23 /* EditProfilePictureView.swift */; };
 		B080078A1DCAEABC00695D5F /* EventsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08007891DCAEABC00695D5F /* EventsViewController.swift */; };
 		B080078C1DCAEAD300695D5F /* EventsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B080078B1DCAEAD300695D5F /* EventsViewController.storyboard */; };
 		B0873AC81D3EB8CC00862960 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0873AC51D3EB8CC00862960 /* FBSDKCoreKit.framework */; };
@@ -392,6 +394,8 @@
 		B07E54CC1E0B235B008C2D23 /* ProfileHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileHeaderView.xib; sourceTree = "<group>"; };
 		B07E54CF1E0C8AA8008C2D23 /* EditProfileViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = EditProfileViewController.storyboard; sourceTree = "<group>"; };
 		B07E54D11E0C8ADE008C2D23 /* EditProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
+		B07E54D31E130A90008C2D23 /* EditProfilePictureView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditProfilePictureView.xib; sourceTree = "<group>"; };
+		B07E54D51E130AFB008C2D23 /* EditProfilePictureView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfilePictureView.swift; sourceTree = "<group>"; };
 		B08007891DCAEABC00695D5F /* EventsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventsViewController.swift; sourceTree = "<group>"; };
 		B080078B1DCAEAD300695D5F /* EventsViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = EventsViewController.storyboard; sourceTree = "<group>"; };
 		B0873AC51D3EB8CC00862960 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
@@ -606,6 +610,8 @@
 				B07E54CC1E0B235B008C2D23 /* ProfileHeaderView.xib */,
 				B07E54D11E0C8ADE008C2D23 /* EditProfileViewController.swift */,
 				B07E54CF1E0C8AA8008C2D23 /* EditProfileViewController.storyboard */,
+				B07E54D51E130AFB008C2D23 /* EditProfilePictureView.swift */,
+				B07E54D31E130A90008C2D23 /* EditProfilePictureView.xib */,
 			);
 			name = UserProfile;
 			sourceTree = "<group>";
@@ -1016,6 +1022,7 @@
 				B01CD8141DCC136800AA3499 /* EventCell.xib in Resources */,
 				76C0E7541D80D770004EFA4C /* VisitorCell.xib in Resources */,
 				76EE2B981D8766ED00EDB4CB /* ActivityFriendRequestCell.xib in Resources */,
+				B07E54D41E130A91008C2D23 /* EditProfilePictureView.xib in Resources */,
 				B0BA326C1DA7163D004352A7 /* CreateProfileHeaderView.xib in Resources */,
 				B01B34A01DC11A0600B2B9CE /* UploadSelectorView.xib in Resources */,
 				B08BBB941DBBE4FD00AD3FF1 /* EventsBannerView.xib in Resources */,
@@ -1114,6 +1121,7 @@
 				B0351FB81DED0503000A4BF5 /* NVActivityIndicatorAnimationDelegate.swift in Sources */,
 				B0E8E3241DDB817B0077D1BC /* PresentAnimationController.swift in Sources */,
 				B011B3531E012E6600FA4633 /* SwiftyExpandingTransition.swift in Sources */,
+				B07E54D61E130AFB008C2D23 /* EditProfilePictureView.swift in Sources */,
 				B0236E131DC00E0A0083C720 /* CurrentUserProfileViewController.swift in Sources */,
 				B09D5FCD1DA57C80004A188E /* ARNImageTransitionNavigationController.swift in Sources */,
 				B032C9921DA807C000811779 /* SetupViewController.swift in Sources */,

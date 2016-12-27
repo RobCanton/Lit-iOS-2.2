@@ -107,7 +107,7 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
         let cell: PresentedCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier("presented_cell", forIndexPath: indexPath) as! PresentedCollectionViewCell
         cell.contentView.backgroundColor = UIColor.blackColor()
         let item = photos[indexPath.item]
-        loadImageUsingCacheWithURL(item.getDownloadUrl().absoluteString, completion: { image in
+        loadImageUsingCacheWithURL(item.getDownloadUrl().absoluteString, completion: { image, fromCache in
             cell.content.image = image
         })
         

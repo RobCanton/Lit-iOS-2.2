@@ -186,7 +186,7 @@ class UsersListViewController: UIViewController, UITableViewDelegate, UITableVie
 
         let controller = UIStoryboard(name: "Main", bundle: nil)
                 .instantiateViewControllerWithIdentifier("UserProfileViewController") as! UserProfileViewController
-        controller.user = users[indexPath.item]
+        controller.uid = users[indexPath.row].getUserId()
         self.navigationController?.pushViewController(controller, animated: true)
          tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }

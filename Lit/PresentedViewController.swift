@@ -132,7 +132,7 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
         self.navigationController?.delegate = self
         let controller = UIStoryboard(name: "Main", bundle: nil)
             .instantiateViewControllerWithIdentifier("UserProfileViewController") as! UserProfileViewController
-        controller.user = user
+        controller.uid = user.getUserId()
         self.navigationController?.pushViewController(controller, animated: true)
     }
     

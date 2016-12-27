@@ -38,7 +38,6 @@ class ProfileHeaderView: UICollectionReusableView {
     var followersTap: UITapGestureRecognizer!
     var followingTap: UITapGestureRecognizer!
     var messageTap: UITapGestureRecognizer!
-    
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -53,8 +52,15 @@ class ProfileHeaderView: UICollectionReusableView {
         self.user = user
         
         if let url = user.largeImageURL {
-            loadImageUsingCacheWithURL(url, completion: { image in
+            loadImageUsingCacheWithURL(url, completion: { image, fromCache in
+                if !fromCache {
+                    self.profileImageView.alpha = 0.0
+                    UIView.animateWithDuration(0.25, animations: {
+                        self.profileImageView.alpha = 1.0
+                    })
+                }
                 self.profileImageView.image = image
+                
             })
         }
         if let bio = user.bio {
@@ -70,9 +76,11 @@ class ProfileHeaderView: UICollectionReusableView {
         followButton.layer.cornerRadius = 2.0
         followButton.clipsToBounds = true
         followButton.layer.borderWidth = 1.0
-        
+        followButton.hidden = false
+
         messageButton.layer.cornerRadius = 2.0
         messageButton.clipsToBounds = true
+        messageButton.hidden = false
         
         if let name = user.getName() {
             nameLabel.text = name
@@ -99,6 +107,8 @@ class ProfileHeaderView: UICollectionReusableView {
         let messageView = messageButton.superview!
         messageView.userInteractionEnabled = true
         messageView.addGestureRecognizer(messageTap)
+        
+        controlBarContainer.userInteractionEnabled = true
  
     }
     
@@ -172,19 +182,19 @@ class ProfileHeaderView: UICollectionReusableView {
         }
     }
     
-    
-    
-
 
     func handleFollowersTap(sender:UITapGestureRecognizer) {
+        print("handleFollowersTap")
         followersHandler?()
     }
     
     func handleFollowingTap(sender:UITapGestureRecognizer) {
+        print("handleFollowingTap")
         followingHandler?()
     }
     
     func handleMessageTap(sender:UITapGestureRecognizer) {
+        print("handleMessageTap")
         messageHandler?()
     }
 }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftMessages
 
 class BioTableViewCell: UITableViewCell {
     
@@ -26,11 +27,41 @@ class EditProfileViewController: UITableViewController {
     
     @IBOutlet weak var bioPlaceholder: UITextField!
     
+    var headerView: EditProfilePictureView!
     
+    var profileImageChanged = false
+    
+    var smallImageURL:String?
+    var largeImageURL:String?
+    
+    let imagePicker = UIImagePickerController()
+    var profilePhotoMessageView:ProfilePictureMessageView?
+    var config: SwiftMessages.Config?
+    var profilePhotoMessageWrapper = SwiftMessages()
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if let user = mainStore.state.userState.user {
+            if let largeImage = user.largeImageURL {
+                headerView.setImage(largeImage)
+                headerView.handler = showProfilePhotoMessagesView
+            }
+        }
+        
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        headerView = UINib(nibName: "EditProfilePictureView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! EditProfilePictureView
+        headerView.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: 280)
+        headerView.userInteractionEnabled = true
+        
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 240 // Something reasonable to help ios render your cells
+        
+        
+        
+        tableView.tableHeaderView = headerView
         
         usernameTextField.delegate = self
         usernameTextField.addTarget(self, action: #selector(textViewChanged), forControlEvents: .EditingChanged);
@@ -43,17 +74,15 @@ class EditProfileViewController: UITableViewController {
             if let bio = user.bio {
                 bioTextView.text = bio
             }
+            
         }
         
         bioTextView.delegate = self
         bioPlaceholder.hidden = !bioTextView.text.isEmpty
         
+        imagePicker.delegate = self
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+    
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
@@ -64,22 +93,50 @@ class EditProfileViewController: UITableViewController {
     }
     
     @IBAction func handleSave(sender: AnyObject) {
+
         
+        if profileImageChanged {
+            let image = headerView.imageView.image!
+            let largeImage = resizeImage(image, newWidth: 720)
+            let smallImage = resizeImage(image, newWidth: 150)
+            
+            UserService.uploadProfilePicture(largeImage, smallImage: smallImage, completionHandler: { success, largeImageURL, smallImageURL in
+                if success {
+                    self.smallImageURL = smallImageURL
+                    self.largeImageURL = largeImageURL
+                    UserService.updateProfilePictureURL(largeImageURL!, smallURL: smallImageURL!, completionHandler: {
+                        self.updateUser()
+                    })
+                }
+            })
+            
+        } else {
+            updateUser()
+        }
+        
+    }
+    
+    func updateUser() {
         var basicProfileObj = [String:AnyObject]()
-        var username = ""
-        if let _username = usernameTextField.text { username = _username }
         
-        basicProfileObj["username"] = username
         if let name = nameTextField.text {
             basicProfileObj["name"] = name
+        }
+        
+        if let smallURL = smallImageURL {
+            basicProfileObj["profileImageURL"] = smallURL
         }
 
         let uid = mainStore.state.userState.uid
         let basicProfileRef = FirebaseService.ref.child("users/profile/basic/\(uid)")
         basicProfileRef.updateChildValues(basicProfileObj, withCompletionBlock: { error in
-        
+            
             let fullProfileRef = FirebaseService.ref.child("users/profile/full/\(uid)")
             var fullProfileObj = [String:AnyObject]()
+            
+            if let largeURL = self.largeImageURL {
+                basicProfileObj["largeProfileImageURL"] = largeURL
+            }
             
             if let bio = self.bioTextView.text {
                 fullProfileObj["bio"] = bio
@@ -110,6 +167,88 @@ class EditProfileViewController: UITableViewController {
     }
 }
 
+extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+        if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+            previewNewImage(pickedImage)
+        }
+        
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func setFacebookProfilePicture() {
+        FacebookGraph.getProfilePicture({ imageURL in
+            if imageURL != nil {
+                loadImageUsingCacheWithURL(imageURL!, completion: { image, fromCache in
+                    self.previewNewImage(image)
+                })
+                
+            }
+        })
+    }
+    
+    func previewNewImage(image:UIImage) {
+        
+        dispatch_async(dispatch_get_main_queue(), {
+            print("Previewing new image")
+            self.profileImageChanged = true
+            self.headerView.imageView.image = image
+        })
+
+    }
+    
+    func uploadProfileImages(largeImage:UIImage, smallImage:UIImage) {
+        UserService.uploadProfilePicture(largeImage, smallImage: smallImage, completionHandler: { success, largeImageURL, smallImageURL in
+            if success {
+                UserService.updateProfilePictureURL(largeImageURL!, smallURL: smallImageURL!, completionHandler: {
+                    mainStore.dispatch(UpdateProfileImageURL(largeImageURL: largeImageURL!, smallImageURL: smallImageURL!))
+                    self.headerView.imageView.loadImageUsingCacheWithURLString(largeImageURL!, completion: {result in})
+                })
+            }
+        })
+    }
+    
+    
+    
+    func showProfilePhotoMessagesView() {
+        usernameTextField.resignFirstResponder()
+        bioTextView.resignFirstResponder()
+        
+        profilePhotoMessageView = try! SwiftMessages.viewFromNib() as? ProfilePictureMessageView
+        profilePhotoMessageView!.configureDropShadow()
+        
+        profilePhotoMessageView!.facebookHandler = {
+            self.profilePhotoMessageWrapper.hide()
+            self.setFacebookProfilePicture()
+        }
+        
+        profilePhotoMessageView!.libraryHandler = {
+            self.profilePhotoMessageWrapper.hide()
+            self.imagePicker.allowsEditing = false
+            self.imagePicker.sourceType = .PhotoLibrary
+            self.presentViewController(self.imagePicker, animated: true, completion: nil)
+        }
+        
+        profilePhotoMessageView!.cancelHandler = {
+            self.profilePhotoMessageWrapper.hide()
+        }
+        
+        config = SwiftMessages.Config()
+        config!.presentationContext = .Window(windowLevel: UIWindowLevelStatusBar)
+        config!.duration = .Forever
+        config!.presentationStyle = .Bottom
+        config!.dimMode = .Gray(interactive: true)
+        profilePhotoMessageWrapper.show(config: config!, view: profilePhotoMessageView!)
+    }
+    
+}
+
 extension EditProfileViewController: UITextViewDelegate {
     func textViewDidChange(textView: UITextView) {
         
@@ -128,25 +267,14 @@ extension EditProfileViewController: UITextViewDelegate {
         }
     }
     
-//    func textViewDidBeginEditing(textView: UITextView) {
-//        switch textView {
-//        case bioTextView:
-//            bioPlaceholder.hidden = true
-//            break
-//        default:
-//            break
-//        }
-//    }
-//    
-//    func textViewDidEndEditing(textView: UITextView) {
-//        switch textView {
-//        case bioTextView:
-//            bioPlaceholder.hidden = !textView.text.isEmpty
-//            break
-//        default:
-//            break
-//        }
-//    }
+    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        if(text == "\n") {
+            textView.resignFirstResponder()
+            return false
+        }
+        return true
+    }
+
 }
 
 extension EditProfileViewController: UITextFieldDelegate {
@@ -179,6 +307,12 @@ extension EditProfileViewController: UITextFieldDelegate {
     
     func textViewChanged(){
         usernameTextField.text = usernameTextField.text?.lowercaseString;
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool
+    {
+        textField.resignFirstResponder()
+        return true;
     }
     
     

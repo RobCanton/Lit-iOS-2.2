@@ -23,7 +23,7 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
     
     var tableView:UITableView?
     var controlBar:UserProfileControlBar?
-    var headerView:LocationTableCell!
+    var headerView:UIImageView!
     var footerView:LocationFooterView!
     
     var location: Location!
@@ -59,9 +59,6 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
                 }
             }
         }
-        
-        
-        
     }
     
     var events = [Event]()
@@ -187,7 +184,8 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
         let topInset:CGFloat = navHeight + eventsHeight + slack
         
         
-        headerView = UINib(nibName: "LocationTableCell", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! LocationTableCell
+        headerView = UIImageView()
+        headerView.contentMode = .ScaleAspectFill
         
         screenSize = self.view.frame
         screenWidth = screenSize.width
@@ -224,14 +222,18 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
         
         tableView!.tableFooterView = UIView(frame: CGRectMake(0,0,tableView!.frame.width, 160))
         
-        headerView.setCellLocation(location)
-        headerView.addressLabel.superview!.hidden = true
-        headerView.titleLabel.superview!.hidden = true
-        headerView.distanceLabel.superview!.hidden = true
-        headerView.guestsCountBubble.hidden = true
-        headerView.guestIcon1.hidden = true
-        headerView.guestIcon2.hidden = true
-        headerView.guestIcon3.hidden = true
+//        headerView.setCellLocation(location)
+//        headerView.addressLabel.superview!.hidden = true
+//        headerView.titleLabel.superview!.hidden = true
+//        headerView.distanceLabel.superview!.hidden = true
+//        headerView.guestsCountBubble.hidden = true
+//        headerView.guestIcon1.hidden = true
+//        headerView.guestIcon2.hidden = true
+//        headerView.guestIcon3.hidden = true
+        
+        loadImageUsingCacheWithURL(location.getImageURL(), completion: { image, fromCache in
+            self.headerView.image = image
+        })
         
         let btnName = UIButton()
         btnName.setTitleColor(UIColor.whiteColor(), forState: .Normal)
@@ -261,8 +263,7 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
         let distanceItem = UIBarButtonItem(customView: btnName)
         
         self.navigationItem.rightBarButtonItem = distanceItem
-
-
+        
         guests = location.getVisitors()
     }
     
@@ -425,7 +426,7 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
             if let user = cell.user {
                 let controller = UIStoryboard(name: "Main", bundle: nil)
                     .instantiateViewControllerWithIdentifier("UserProfileViewController") as! UserProfileViewController
-                controller.user = user
+                controller.uid = cell.user!.getUserId()
                 self.navigationController?.pushViewController(controller, animated: true)
                 tableView.deselectRowAtIndexPath(indexPath, animated: true)
             }

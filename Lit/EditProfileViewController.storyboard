@@ -25,9 +25,9 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="N8L-QE-ZaJ">
+                                                <textField opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="N8L-QE-ZaJ">
                                                     <rect key="frame" x="16" y="10" width="568" height="23"/>
-                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <color key="textColor" white="0.59996926759834368" alpha="1" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="words" keyboardAppearance="alert"/>
                                                     <userDefinedRuntimeAttributes>
@@ -59,7 +59,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="d3O-HK-fAA">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="d3O-HK-fAA">
                                                     <rect key="frame" x="16" y="10" width="568" height="23"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
@@ -156,8 +156,8 @@
                     <connections>
                         <outlet property="bioPlaceholder" destination="Hwi-TP-t2i" id="G8g-8m-AXn"/>
                         <outlet property="bioTextView" destination="CWj-Jo-xLS" id="8gT-UR-R19"/>
-                        <outlet property="nameTextField" destination="N8L-QE-ZaJ" id="nzG-ha-G9N"/>
-                        <outlet property="usernameTextField" destination="d3O-HK-fAA" id="joc-hF-DO9"/>
+                        <outlet property="nameTextField" destination="d3O-HK-fAA" id="BJS-1M-E6y"/>
+                        <outlet property="usernameTextField" destination="N8L-QE-ZaJ" id="3Zm-5T-YLh"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WR0-HK-PdX" userLabel="First Responder" sceneMemberID="firstResponder"/>

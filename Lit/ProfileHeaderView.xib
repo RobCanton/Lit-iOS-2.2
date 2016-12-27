@@ -24,7 +24,7 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QK9-4C-K4x">
                             <rect key="frame" x="0.0" y="0.0" width="400" height="50"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Robert Canton" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lNR-9M-bfd">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lNR-9M-bfd">
                                     <rect key="frame" x="8" y="8" width="276" height="22"/>
                                     <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="16"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -36,7 +36,7 @@
                                     <color key="textColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lnk-vc-dz6">
+                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lnk-vc-dz6">
                                     <rect key="frame" x="292" y="10" width="100" height="30"/>
                                     <color key="backgroundColor" red="0.0" green="0.50196078431372548" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
@@ -44,7 +44,7 @@
                                         <constraint firstAttribute="width" relation="lessThanOrEqual" constant="120" id="o1n-e3-hXY"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
-                                    <state key="normal" title="Follow">
+                                    <state key="normal">
                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                     <connections>
@@ -71,6 +71,10 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ljw-w5-yQg">
+                            <rect key="frame" x="0.0" y="173" width="400" height="64"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sZE-ye-38L">
                             <rect key="frame" x="0.0" y="181" width="400" height="56"/>
                             <subviews>
@@ -100,7 +104,6 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstItem="KeT-ft-BSO" firstAttribute="centerX" secondItem="pPu-v4-NBx" secondAttribute="centerX" id="7Vb-ft-oKJ"/>
                                         <constraint firstItem="KeT-ft-BSO" firstAttribute="centerY" secondItem="pPu-v4-NBx" secondAttribute="centerY" id="mcp-gd-hMy"/>
@@ -131,7 +134,7 @@
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pu2-UU-Aoq">
+                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pu2-UU-Aoq">
                                             <rect key="frame" x="16" y="0.0" width="69" height="40"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
@@ -236,10 +239,6 @@
                                 <constraint firstItem="fbD-55-JJa" firstAttribute="top" secondItem="sZE-ye-38L" secondAttribute="top" id="ufs-x9-pFV"/>
                                 <constraint firstItem="kfn-oN-Zse" firstAttribute="top" secondItem="sZE-ye-38L" secondAttribute="top" id="zoG-aL-NsG"/>
                             </constraints>
-                        </view>
-                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ljw-w5-yQg">
-                            <rect key="frame" x="0.0" y="173" width="400" height="64"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </view>
                     </subviews>
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>

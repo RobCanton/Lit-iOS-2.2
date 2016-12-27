@@ -19,7 +19,9 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     
     var posts = [StoryItem]()
     var collectionView:UICollectionView?
-    var user:User!
+    var user:User?
+    
+    var uid:String!
     
     var followers = [String]()
     {
@@ -49,7 +51,6 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.title = user.getDisplayName()
         self.navigationController?.navigationBar.titleTextAttributes =
             [NSFontAttributeName: UIFont(name: "AvenirNext-DemiBold", size: 16.0)!,
              NSForegroundColorAttributeName: UIColor.whiteColor()]
@@ -83,42 +84,32 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         collectionView!.backgroundColor = UIColor.blackColor()
         self.view.addSubview(collectionView!)
         
-        getKeys()
-        
-        FirebaseService.getUserFullProfile(user, completionHandler: { user in
-            if user != nil {
-                self.user = user
-                self.collectionView?.reloadData()
-            }
-        })
-        
-        
     }
     
     var largeImageURL:String?
     var bio:String?
     
-    func getFullProfile() {
-        let ref = FirebaseService.ref.child("users/profile/full/\(user.getUserId())")
-        ref.observeSingleEventOfType(.Value, withBlock: { (snapshot) in
-            if snapshot.exists() {
-                self.largeImageURL = snapshot.value!["largeProfileImageURL"] as? String
-                self.bio           = snapshot.value!["bio"] as? String
-                self.collectionView?.reloadData()
-
-            }
-        })
-    }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         mainStore.subscribe(self)
-        SocialService.listenToFollowers(user!.getUserId(), completionHandler: { followers in
-            self.followers = followers
-        })
-        
-        SocialService.listenToFollowing(user!.getUserId(), completionHandler: { following in
-            self.following = following
+        FirebaseService.getUser(uid, completionHandler: { _user in
+            if _user != nil {
+                FirebaseService.getUserFullProfile(_user!, completionHandler: { fullUser in
+                    if fullUser != nil {
+                        self.user = fullUser!
+                        self.navigationItem.title = self.user!.getDisplayName()
+                        self.collectionView?.reloadData()
+                        SocialService.listenToFollowers(self.user!.getUserId(), completionHandler: { followers in
+                            self.followers = followers
+                        })
+                        
+                        SocialService.listenToFollowing(self.user!.getUserId(), completionHandler: { following in
+                            self.following = following
+                        })
+                    }
+                })
+            }
         })
     }
     
@@ -132,14 +123,14 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         mainStore.unsubscribe(self)
-        SocialService.stopListeningToFollowers(user!.getUserId())
-        SocialService.stopListeningToFollowing(user!.getUserId())
+        SocialService.stopListeningToFollowers(uid)
+        SocialService.stopListeningToFollowing(uid)
     }
     
     func newState(state: AppState) {
         
         if let header = collectionView?.supplementaryViewForElementKind(UICollectionElementKindSectionHeader, atIndexPath: NSIndexPath(forItem: 0, inSection: 0)) as? ProfileHeaderView {
-            let status = checkFollowingStatus(user.uid)
+            let status = checkFollowingStatus(uid)
             header.setUserStatus(status)
         }
     }
@@ -190,6 +181,7 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     
     func editProfileTapped() {
         let controller = UIStoryboard(name: "EditProfileViewController", bundle: nil).instantiateViewControllerWithIdentifier("EditProfileNavigationController")
+        
         self.presentViewController(controller, animated: true, completion: nil)
     }
     
@@ -211,11 +203,14 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         let staticHeight:CGFloat = 275 + 50 + 8 + 56
-        if let text = self.user.bio {
-            var size =  UILabel.size(withText: text, forWidth: collectionView.frame.size.width)
-            let height2 = size.height + staticHeight + 8  // +8 for some bio padding
-            size.height = height2
-            return size
+        if user != nil {
+            if let text = self.user!.bio {
+                var size =  UILabel.size(withText: text, forWidth: collectionView.frame.size.width)
+                let height2 = size.height + staticHeight + 8  // +8 for some bio padding
+                size.height = height2
+                return size
+            }
+
         }
         let size =  CGSize(width: collectionView.frame.size.width, height: staticHeight) // +8 for some empty padding
         return size
@@ -223,11 +218,12 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     
     func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
 
-        switch kind {
-        case UICollectionElementKindSectionHeader:
-
+        if kind == UICollectionElementKindSectionHeader {
             let view = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier: "headerView", forIndexPath: indexPath) as! ProfileHeaderView
-            view.populateHeader(user)
+            if user != nil {
+                view.populateHeader(user!)
+                
+            }
             view.followersHandler = followersBlockTapped
             view.followingHandler = followingBlockTapped
             view.messageHandler = messageBlockTapped
@@ -235,11 +231,10 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
             view.setPostsCount(postKeys.count)
             view.setFollowersCount(followers.count)
             view.setFollowingCount(following.count)
-//            view.setFullProfile(self.largeImageURL, bio: self.bio)
             return view
-        default:
-            return UICollectionReusableView()
         }
+
+        return UICollectionReusableView()
     }
 
     func getKeys() {

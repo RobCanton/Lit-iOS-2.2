@@ -142,7 +142,7 @@ class StoryItem: NSObject, NSCoding {
     
     func download(completionHandler:(success:Bool)->()) {
             
-        loadImageUsingCacheWithURL(downloadUrl.absoluteString, completion: { image in
+        loadImageUsingCacheWithURL(downloadUrl.absoluteString, completion: { image, fromCache in
             self.image = image
             if self.contentType == .Image { return completionHandler(success: true) }
             

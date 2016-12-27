@@ -74,6 +74,9 @@ class FirebaseService {
     }
     
     static func getUserFullProfile(user:User, completionHandler: (user:User?)->()) {
+        if user.bio != nil || user.largeImageURL != nil {
+            completionHandler(user: user)
+        }
         if user.bio == nil || user.largeImageURL == nil {
             let ref = FirebaseService.ref.child("users/profile/full/\(user.getUserId())")
             ref.observeSingleEventOfType(.Value, withBlock: { (snapshot) in
@@ -93,7 +96,6 @@ class FirebaseService {
                 }
             })
         }
-        completionHandler(user: nil)
     }
     
 
