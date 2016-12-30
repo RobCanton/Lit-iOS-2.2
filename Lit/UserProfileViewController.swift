@@ -84,6 +84,8 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         collectionView!.backgroundColor = UIColor.blackColor()
         self.view.addSubview(collectionView!)
         
+        getKeys()
+        
     }
     
     var largeImageURL:String?
@@ -238,7 +240,6 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     }
 
     func getKeys() {
-        let uid = user!.getUserId()
         var postKeys = [String]()
         let ref = FirebaseService.ref.child("users/uploads/\(uid)")
         ref.observeSingleEventOfType(.Value, withBlock: { snapshot in

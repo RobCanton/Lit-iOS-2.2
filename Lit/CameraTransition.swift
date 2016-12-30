@@ -87,6 +87,7 @@ class CameraTransition: UIStoryboardSegue {
             }, completion: { finished in
                 cameraButton.removeFromSuperview()
                 toViewController.recordBtn?.hidden = false
+                fromViewController.cameraButton.hidden = false
                 let fromVC = self.sourceViewController
                 let toVC = self.destinationViewController
                 fromVC.presentViewController(toVC, animated: false, completion: nil)
@@ -171,6 +172,10 @@ class CameraUnwindTransition: UIStoryboardSegue {
         
         if fromViewController.recordBtn.hidden {
             cameraButton.hidden = true
+            toViewController.cameraButton.hidden = false
+        } else {
+            cameraButton.hidden = false
+            toViewController.cameraButton.hidden = true
         }
         
         fromViewController.recordBtn.hidden = true

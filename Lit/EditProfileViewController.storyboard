@@ -156,6 +156,7 @@
                     <connections>
                         <outlet property="bioPlaceholder" destination="Hwi-TP-t2i" id="G8g-8m-AXn"/>
                         <outlet property="bioTextView" destination="CWj-Jo-xLS" id="8gT-UR-R19"/>
+                        <outlet property="cancelButton" destination="kHW-cr-WJD" id="an1-Xw-gzn"/>
                         <outlet property="nameTextField" destination="d3O-HK-fAA" id="BJS-1M-E6y"/>
                         <outlet property="usernameTextField" destination="N8L-QE-ZaJ" id="3Zm-5T-YLh"/>
                     </connections>

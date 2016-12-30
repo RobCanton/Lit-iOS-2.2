@@ -17,12 +17,6 @@ class EditProfilePictureView: UIView {
     
     @IBOutlet weak var imageView: UIImageView!
     
-    
-
-    @IBAction func handleButton(sender: AnyObject) {
-        print("Change Profile Picture")
-        handler?()
-    }
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -30,10 +24,7 @@ class EditProfilePictureView: UIView {
     
     func setImage(url:String) {
         
-        
         loadImageUsingCacheWithURL(url, completion: { image, fromCache in
-            self.imageView.layer.cornerRadius = self.imageView.frame.width / 2
-            self.imageView.clipsToBounds = true
             self.imageView.image = image
             
             self.imageTap = UITapGestureRecognizer(target: self, action: #selector(self.handleChange))
@@ -41,9 +32,8 @@ class EditProfilePictureView: UIView {
             self.imageView.addGestureRecognizer(self.imageTap)
         })
     }
-    
+
     func handleChange() {
-        print("YO!")
         handler?()
     }
 

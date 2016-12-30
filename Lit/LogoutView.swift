@@ -26,9 +26,9 @@ class LogoutView: MessageView {
         cancelButton.backgroundColor = UIColor.grayColor()
         cancelButton.layer.cornerRadius = 5
         cancelButton.clipsToBounds = true
-        cancelButton.setTitle("cancel", forState: .Normal)
+        cancelButton.setTitle("Cancel", forState: .Normal)
         cancelButton.tintColor = UIColor.whiteColor()
-        cancelButton.titleLabel?.font = UIFont(name: "Avenir-Black", size: 20.0)
+        cancelButton.titleLabel?.font = UIFont(name: "AvenirNext-Medium", size: 18.0)
         cancelButton.addTarget(self, action: #selector(cancel), forControlEvents: .TouchUpInside)
         
         contentView.addArrangedSubview(cancelButton)
@@ -38,9 +38,9 @@ class LogoutView: MessageView {
         logoutButton.backgroundColor = errorColor
         logoutButton.layer.cornerRadius = 5
         logoutButton.clipsToBounds = true
-        logoutButton.setTitle("log out", forState: .Normal)
+        logoutButton.setTitle("Log Out", forState: .Normal)
         logoutButton.tintColor = UIColor.whiteColor()
-        logoutButton.titleLabel?.font = UIFont(name: "Avenir-Black", size: 20.0)
+        logoutButton.titleLabel?.font = UIFont(name: "AvenirNext-DemiBold", size: 18.0)
         logoutButton.addTarget(self, action: #selector(logout), forControlEvents: .TouchUpInside)
         
         contentView.addArrangedSubview(logoutButton)

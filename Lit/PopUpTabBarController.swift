@@ -172,7 +172,7 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
     
     var cameraButton:UIButton!
     let cameraDefaultWidth:CGFloat = 2.2
-    let cameraActiveWidth:CGFloat = 3.5
+    let cameraActiveWidth:CGFloat = 4
     func setupMiddleButton() {
         if cameraButton == nil {
             cameraButton = UIButton(frame: CGRect(x: 0, y: 0, width: 56, height: 56))
@@ -184,12 +184,28 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
             cameraButton.backgroundColor = UIColor.blackColor()
             cameraButton.layer.cornerRadius = menuButtonFrame.height/2
             cameraButton.layer.borderColor = UIColor.whiteColor().CGColor
-            cameraButton.layer.borderWidth = cameraDefaultWidth
+            cameraButton.layer.borderWidth = cameraActiveWidth
             //menuButton.setImage(UIImage(named: "camera"), forState: UIControlState.Normal)
             cameraButton.tintColor = UIColor.whiteColor()
             cameraButton.addTarget(self, action: #selector(presentCamera), forControlEvents: .TouchUpInside)
             
             self.tabBar.addSubview(cameraButton)
+            
+//            let purple = UIColor(red: 189/255, green: 106/255, blue: 252/255, alpha: 1.0)
+//            let angleGradientBorderView1Colors: [AnyObject] = [
+//                accentColor.CGColor,
+//                UIColor.purpleColor().CGColor,
+//                accentColor.CGColor
+//                ]
+//            
+////            let circle = AngleGradientBorderView(frame: menuButtonFrame)
+////            circle.setupGradientLayer(borderColors: angleGradientBorderView1Colors, borderWidth: cameraActiveWidth)
+////            circle.clipsToBounds = true
+////            circle.layer.cornerRadius = circle.frame.width/2
+////            circle.backgroundColor = UIColor.clearColor()
+////
+////            self.tabBar.addSubview(circle)
+            
             
         }
     }

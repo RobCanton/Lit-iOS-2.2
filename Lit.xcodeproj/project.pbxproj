@@ -163,6 +163,9 @@
 		B07E54D21E0C8ADE008C2D23 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07E54D11E0C8ADE008C2D23 /* EditProfileViewController.swift */; };
 		B07E54D41E130A91008C2D23 /* EditProfilePictureView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B07E54D31E130A90008C2D23 /* EditProfilePictureView.xib */; };
 		B07E54D61E130AFB008C2D23 /* EditProfilePictureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07E54D51E130AFB008C2D23 /* EditProfilePictureView.swift */; };
+		B07E54DB1E16596E008C2D23 /* AngleGradientLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = B07E54DA1E16596E008C2D23 /* AngleGradientLayer.m */; };
+		B07E54DD1E165A12008C2D23 /* AngleGradientBorderLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07E54DC1E165A12008C2D23 /* AngleGradientBorderLayer.swift */; };
+		B07E54DF1E165A4D008C2D23 /* AngleGradientBorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07E54DE1E165A4D008C2D23 /* AngleGradientBorderView.swift */; };
 		B080078A1DCAEABC00695D5F /* EventsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08007891DCAEABC00695D5F /* EventsViewController.swift */; };
 		B080078C1DCAEAD300695D5F /* EventsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B080078B1DCAEAD300695D5F /* EventsViewController.storyboard */; };
 		B0873AC81D3EB8CC00862960 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0873AC51D3EB8CC00862960 /* FBSDKCoreKit.framework */; };
@@ -396,6 +399,11 @@
 		B07E54D11E0C8ADE008C2D23 /* EditProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 		B07E54D31E130A90008C2D23 /* EditProfilePictureView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditProfilePictureView.xib; sourceTree = "<group>"; };
 		B07E54D51E130AFB008C2D23 /* EditProfilePictureView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfilePictureView.swift; sourceTree = "<group>"; };
+		B07E54D81E165967008C2D23 /* Lit-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Lit-Bridging-Header.h"; sourceTree = "<group>"; };
+		B07E54D91E16596E008C2D23 /* AngleGradientLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AngleGradientLayer.h; sourceTree = "<group>"; };
+		B07E54DA1E16596E008C2D23 /* AngleGradientLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AngleGradientLayer.m; sourceTree = "<group>"; };
+		B07E54DC1E165A12008C2D23 /* AngleGradientBorderLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AngleGradientBorderLayer.swift; sourceTree = "<group>"; };
+		B07E54DE1E165A4D008C2D23 /* AngleGradientBorderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AngleGradientBorderView.swift; sourceTree = "<group>"; };
 		B08007891DCAEABC00695D5F /* EventsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventsViewController.swift; sourceTree = "<group>"; };
 		B080078B1DCAEAD300695D5F /* EventsViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = EventsViewController.storyboard; sourceTree = "<group>"; };
 		B0873AC51D3EB8CC00862960 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
@@ -513,6 +521,7 @@
 		763566CE1D4A834A000BAA08 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				B07E54D71E165952008C2D23 /* AngleGradient */,
 				B011B34D1E00EFC600FA4633 /* ExpandingTransition */,
 				B0E8E31B1DDB81120077D1BC /* ImageTransition */,
 				B06D54B21D9ECB6D00F6A4A7 /* TextFieldEffects */,
@@ -710,6 +719,18 @@
 				B06D54BE1D9ECB6D00F6A4A7 /* YoshikoTextField.swift */,
 			);
 			path = TextFieldEffects;
+			sourceTree = "<group>";
+		};
+		B07E54D71E165952008C2D23 /* AngleGradient */ = {
+			isa = PBXGroup;
+			children = (
+				B07E54D91E16596E008C2D23 /* AngleGradientLayer.h */,
+				B07E54DA1E16596E008C2D23 /* AngleGradientLayer.m */,
+				B07E54D81E165967008C2D23 /* Lit-Bridging-Header.h */,
+				B07E54DC1E165A12008C2D23 /* AngleGradientBorderLayer.swift */,
+				B07E54DE1E165A4D008C2D23 /* AngleGradientBorderView.swift */,
+			);
+			name = AngleGradient;
 			sourceTree = "<group>";
 		};
 		B07E70841D3FC23700193D37 /* State */ = {
@@ -1133,6 +1154,7 @@
 				B0DAFBCE1DF8CB78004EB03D /* StoryViewController.swift in Sources */,
 				76136D3F1D493786003DB433 /* Location.swift in Sources */,
 				B0E8E3441DE203720077D1BC /* UserStoryTableViewCell.swift in Sources */,
+				B07E54DD1E165A12008C2D23 /* AngleGradientBorderLayer.swift in Sources */,
 				765036281D59170E0062BCF0 /* StoryItem.swift in Sources */,
 				B06D54C81D9ECB6D00F6A4A7 /* YokoTextField.swift in Sources */,
 				767729831D5116930052CA17 /* CWStatusBarNotification.swift in Sources */,
@@ -1158,6 +1180,7 @@
 				B05DB12A1DA22D9600567996 /* LocationFriendsViewController.swift in Sources */,
 				B0E8E31A1DDACE490077D1BC /* UserService.swift in Sources */,
 				B0351F971DED0502000A4BF5 /* NVActivityIndicatorAnimationAudioEqualizer.swift in Sources */,
+				B07E54DF1E165A4D008C2D23 /* AngleGradientBorderView.swift in Sources */,
 				B0BA32691DA7158B004352A7 /* HeaderView.swift in Sources */,
 				B0351FB41DED0503000A4BF5 /* NVActivityIndicatorAnimationSemiCircleSpin.swift in Sources */,
 				B026A84A1DAD76FB00DD2CCD /* UserProfileViewController.swift in Sources */,
@@ -1207,6 +1230,7 @@
 				B0351FA61DED0503000A4BF5 /* NVActivityIndicatorAnimationBallScaleRippleMultiple.swift in Sources */,
 				B0351F991DED0503000A4BF5 /* NVActivityIndicatorAnimationBallClipRotate.swift in Sources */,
 				B0FF11451D3EB32100D709CE /* AppDelegate.swift in Sources */,
+				B07E54DB1E16596E008C2D23 /* AngleGradientLayer.m in Sources */,
 				B0E8E3531DE265D50077D1BC /* Story.swift in Sources */,
 				B087E9C41D9B51EB0079E2BF /* FriendsActions.swift in Sources */,
 				B0E8E3311DDBC4640077D1BC /* PostAuthorView.swift in Sources */,
@@ -1395,6 +1419,7 @@
 			baseConfigurationReference = 8D537E6ED4088570C5138A44 /* Pods-Lit.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1405,6 +1430,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.robcanton.lit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Lit/Lit-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -1413,6 +1440,7 @@
 			baseConfigurationReference = 5F667299D61802A791018E20 /* Pods-Lit.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1423,6 +1451,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.robcanton.lit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Lit/Lit-Bridging-Header.h";
 			};
 			name = Release;
 		};

@@ -17,12 +17,16 @@ class ProfileHeaderView: UICollectionReusableView {
     @IBOutlet weak var controlBarContainer: UIView!
     @IBOutlet weak var profileImageView: UIImageView!
     
+    @IBOutlet weak var errorLabel: UILabel!
     
+
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var bioLabel: UILabel!
     @IBOutlet weak var followButton: UIButton!
     @IBOutlet weak var messageButton: UIButton!
+    
+    
     
     @IBOutlet weak var dividerView: UIView!
     let subColor = UIColor(white: 0.5, alpha: 1.0)
@@ -53,13 +57,19 @@ class ProfileHeaderView: UICollectionReusableView {
         
         if let url = user.largeImageURL {
             loadImageUsingCacheWithURL(url, completion: { image, fromCache in
-                if !fromCache {
-                    self.profileImageView.alpha = 0.0
-                    UIView.animateWithDuration(0.25, animations: {
-                        self.profileImageView.alpha = 1.0
-                    })
+                if image != nil {
+                    self.errorLabel.hidden = true
+                    if !fromCache {
+                        self.profileImageView.alpha = 0.0
+                        UIView.animateWithDuration(0.25, animations: {
+                            self.profileImageView.alpha = 1.0
+                        })
+                    }
+                    self.profileImageView.image = image
+                } else {
+                    self.errorLabel.hidden = false
                 }
-                self.profileImageView.image = image
+
                 
             })
         }
@@ -91,7 +101,6 @@ class ProfileHeaderView: UICollectionReusableView {
         
         setUserStatus(checkFollowingStatus(user.getUserId()))
         
-        
         followersTap = UITapGestureRecognizer(target: self, action: #selector(handleFollowersTap))
         followingTap = UITapGestureRecognizer(target: self, action: #selector(handleFollowingTap))
         messageTap = UITapGestureRecognizer(target: self, action: #selector(handleMessageTap))
@@ -109,7 +118,6 @@ class ProfileHeaderView: UICollectionReusableView {
         messageView.addGestureRecognizer(messageTap)
         
         controlBarContainer.userInteractionEnabled = true
- 
     }
     
     func setFullProfile(largeImageURL:String?, bio:String?) {

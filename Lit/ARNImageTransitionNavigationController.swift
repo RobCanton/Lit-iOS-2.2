@@ -22,8 +22,6 @@ class ARNImageTransitionNavigationController: UINavigationController, UINavigati
         }
     }
     
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         

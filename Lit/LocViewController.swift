@@ -184,8 +184,9 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
         let topInset:CGFloat = navHeight + eventsHeight + slack
         
         
-        headerView = UIImageView()
+        headerView = UIImageView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 190))
         headerView.contentMode = .ScaleAspectFill
+        headerView.clipsToBounds = true
         
         screenSize = self.view.frame
         screenWidth = screenSize.width
@@ -212,7 +213,7 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
         tableView!.pagingEnabled = false
         tableView!.showsVerticalScrollIndicator = false
         tableView!.parallaxHeader.view = headerView
-        tableView!.parallaxHeader.height = 190
+        tableView!.parallaxHeader.height = headerView.frame.height
         tableView!.parallaxHeader.mode = .Bottom
         tableView!.parallaxHeader.minimumHeight = 0;
         tableView!.separatorColor = UIColor(white: 0.08, alpha: 1.0)

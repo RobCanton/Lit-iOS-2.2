@@ -103,7 +103,7 @@ class CameraButton: UIView {
         switch state {
         case .Began:
             UIView.animateWithDuration(1.0, delay: 0, usingSpringWithDamping: 0.75, initialSpringVelocity: 0, options: [.CurveEaseInOut], animations: {
-                self.ring.alpha = 0.20
+                self.ring.alpha = 0.16
                 self.redCircle.transform = CGAffineTransformMakeScale(0.5, 0.5)
                 self.transform = CGAffineTransformMakeScale(1.3, 1.3)
             }, completion: { result in })

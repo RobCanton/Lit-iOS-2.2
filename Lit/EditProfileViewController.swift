@@ -18,6 +18,9 @@ class BioTableViewCell: UITableViewCell {
 class EditProfileViewController: UITableViewController {
 
     
+    @IBOutlet weak var cancelButton: UIBarButtonItem!
+    
+    
     
     @IBOutlet weak var nameTextField: UITextField!
     
@@ -43,8 +46,10 @@ class EditProfileViewController: UITableViewController {
         super.viewDidLayoutSubviews()
         if let user = mainStore.state.userState.user {
             if let largeImage = user.largeImageURL {
-                headerView.setImage(largeImage)
-                headerView.handler = showProfilePhotoMessagesView
+                if !profileImageChanged {
+                    headerView.setImage(largeImage)
+                    headerView.handler = showProfilePhotoMessagesView
+                }
             }
         }
         
@@ -53,7 +58,7 @@ class EditProfileViewController: UITableViewController {
         super.viewDidLoad()
         
         headerView = UINib(nibName: "EditProfilePictureView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! EditProfilePictureView
-        headerView.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: 280)
+        headerView.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: 300)
         headerView.userInteractionEnabled = true
         
         tableView.rowHeight = UITableViewAutomaticDimension
@@ -89,11 +94,32 @@ class EditProfileViewController: UITableViewController {
     }
 
     @IBAction func handleCancel(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        
+        let cancelAlert = UIAlertController(title: "Unsaved Changes", message: "You have unsaved changes. Are you sure you want to cancel?", preferredStyle: UIAlertControllerStyle.Alert)
+        
+        cancelAlert.addAction(UIAlertAction(title: "Yes", style: .Default, handler: { (action: UIAlertAction!) in
+            self.dismissViewControllerAnimated(true, completion: nil)
+        }))
+        
+        cancelAlert.addAction(UIAlertAction(title: "No", style: .Cancel, handler: { (action: UIAlertAction!) in
+            
+        }))
+        
+        presentViewController(cancelAlert, animated: true, completion: nil)
     }
     
     @IBAction func handleSave(sender: AnyObject) {
-
+        
+        cancelButton.enabled = false
+        headerView.userInteractionEnabled = false
+        nameTextField.enabled = false
+        bioTextView.userInteractionEnabled = false
+        title = "Saving..."
+        
+        let activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
+        let barButton = UIBarButtonItem(customView: activityIndicator)
+        self.navigationItem.setRightBarButtonItem(barButton, animated: true)
+        activityIndicator.startAnimating()
         
         if profileImageChanged {
             let image = headerView.imageView.image!
@@ -186,7 +212,9 @@ extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigati
         FacebookGraph.getProfilePicture({ imageURL in
             if imageURL != nil {
                 loadImageUsingCacheWithURL(imageURL!, completion: { image, fromCache in
-                    self.previewNewImage(image)
+                    if image != nil {
+                       self.previewNewImage(image!)
+                    }
                 })
                 
             }
