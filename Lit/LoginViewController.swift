@@ -74,7 +74,7 @@ class LoginViewController: UIViewController, StoreSubscriber {
         loginButton.layer.borderWidth = 2.0
         tap = UITapGestureRecognizer(target: self, action: #selector(initiateFBLogin))
         deactivateLoginButton()
-         
+        
         if let user = FIRAuth.auth()?.currentUser {
             print("already signed in")
             FirebaseService.getUser(user.uid, completionHandler: { _user in

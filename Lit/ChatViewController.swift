@@ -208,12 +208,21 @@ extension ChatViewController {
     
     override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
         
-        FirebaseService.ref.child("conversations/\(conversation.getKey())/messages").childByAutoId()
-            .setValue([
+        let messageRef = FirebaseService.ref.child("conversations/\(conversation.getKey())/messages").childByAutoId()
+            
+        messageRef.setValue([
                 "senderId": self.senderId,
+                "recipientId": self.conversation.getPartnerId(),
                 "text": text,
                 "timestamp": [".sv":"timestamp"]
                 ])
+        
+        let ref = FirebaseService.ref.child("api/requests/message").childByAutoId()
+        ref.setValue([
+                "sender": self.senderId,
+                "conversation": conversation.getKey(),
+                "messageID": messageRef.key,
+        ])
         
         self.finishSendingMessageAnimated(true)
     }

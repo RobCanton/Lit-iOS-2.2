@@ -48,6 +48,8 @@ class FirebaseService {
         Listeners.startListeningToFollowers()
         Listeners.startListeningToFollowing()
         Listeners.startListeningToResponses()
+        
+        sendFCMToken()
     }
     
     
@@ -98,6 +100,14 @@ class FirebaseService {
         }
     }
     
+    static func sendFCMToken() {
+        let token = FIRInstanceID.instanceID().token()!
+        if let user = mainStore.state.userState.user {
+            let fcmRef = ref.child("users/FCMToken/\(user.getUserId())")
+            fcmRef.setValue(token)
+        }
+    }
+    
 
     internal static func sendImage(upload:Upload) -> FIRStorageUploadTask? {
         
@@ -105,6 +115,7 @@ class FirebaseService {
         if !upload.toLocation() && !upload.toUserProfile() { return nil}
         let uid = mainStore.state.userState.uid
 
+        
         let dataRef = ref.child("uploads").childByAutoId()
         let postKey = dataRef.key
 

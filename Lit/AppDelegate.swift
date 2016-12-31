@@ -58,6 +58,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // the default appearance of all UITableViewCells in your app
         UITableViewCell.appearance().selectedBackgroundView = colorView
         
+        let notificationsTypes : UIUserNotificationType = [UIUserNotificationType.Alert, UIUserNotificationType.Badge, UIUserNotificationType.Sound]
+        let notificationSettings = UIUserNotificationSettings(forTypes: notificationsTypes, categories: nil)
+        application.registerForRemoteNotifications()
+        application.registerUserNotificationSettings(notificationSettings)
+        
+        
+        
         return true
     }
     
@@ -66,6 +73,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //let's make sure that the facebook SDK only sees urls intended for it,
         //facebook has enough info already!
         return FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
+    }
+    
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+        
+    }
+    
+    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+        
+    }
+    
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
+        print("MessageID: \(userInfo["gcm_message_id"])")
+        print(userInfo)
     }
 
     func applicationWillResignActive(application: UIApplication) {

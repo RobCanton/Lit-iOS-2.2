@@ -180,9 +180,11 @@ class ProfileHeaderView: UICollectionReusableView {
             editProfileHandler?()
             break
         case .Following:
+            
             SocialService.unfollowUser(user.getUserId())
             break
         case .None:
+            setUserStatus(.Requested)
             SocialService.followUser(user.getUserId())
             break
         case .Requested:

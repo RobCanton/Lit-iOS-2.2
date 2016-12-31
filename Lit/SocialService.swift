@@ -25,6 +25,13 @@ class SocialService {
         currentUserRef.setValue(false, withCompletionBlock: {
             error, ref in
         })
+        
+        let followRequestRef = FirebaseService.ref.child("api/requests/social").childByAutoId()
+        followRequestRef.setValue([
+                "type": "FOLLOW",
+                "sender": current_uid,
+                "recipient": uid
+        ])
     }
     
     static func unfollowUser(uid:String) {
@@ -35,6 +42,13 @@ class SocialService {
         
         let currentUserRef = FirebaseService.ref.child("users/social/following/\(current_uid)/\(uid)")
         currentUserRef.removeValue()
+        
+        let followRequestRef = FirebaseService.ref.child("api/requests/social").childByAutoId()
+        followRequestRef.setValue([
+            "type": "UNFOLLOW",
+            "sender": current_uid,
+            "recipient": uid
+            ])
     }
     
     static func listenToFollowers(uid:String, completionHandler:(followers:[String])->()) {

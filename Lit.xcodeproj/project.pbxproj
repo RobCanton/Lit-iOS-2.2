@@ -166,6 +166,7 @@
 		B07E54DB1E16596E008C2D23 /* AngleGradientLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = B07E54DA1E16596E008C2D23 /* AngleGradientLayer.m */; };
 		B07E54DD1E165A12008C2D23 /* AngleGradientBorderLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07E54DC1E165A12008C2D23 /* AngleGradientBorderLayer.swift */; };
 		B07E54DF1E165A4D008C2D23 /* AngleGradientBorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07E54DE1E165A4D008C2D23 /* AngleGradientBorderView.swift */; };
+		B07E54E11E16FC20008C2D23 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B07E54E01E16FC20008C2D23 /* GoogleService-Info.plist */; };
 		B080078A1DCAEABC00695D5F /* EventsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08007891DCAEABC00695D5F /* EventsViewController.swift */; };
 		B080078C1DCAEAD300695D5F /* EventsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B080078B1DCAEAD300695D5F /* EventsViewController.storyboard */; };
 		B0873AC81D3EB8CC00862960 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0873AC51D3EB8CC00862960 /* FBSDKCoreKit.framework */; };
@@ -232,7 +233,6 @@
 		B0FF11471D3EB32100D709CE /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FF11461D3EB32100D709CE /* LoginViewController.swift */; };
 		B0FF114C1D3EB32100D709CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B0FF114B1D3EB32100D709CE /* Assets.xcassets */; };
 		B0FF114F1D3EB32100D709CE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B0FF114D1D3EB32100D709CE /* LaunchScreen.storyboard */; };
-		B0FF11571D3EB33100D709CE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B0FF11561D3EB33100D709CE /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -404,6 +404,7 @@
 		B07E54DA1E16596E008C2D23 /* AngleGradientLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AngleGradientLayer.m; sourceTree = "<group>"; };
 		B07E54DC1E165A12008C2D23 /* AngleGradientBorderLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AngleGradientBorderLayer.swift; sourceTree = "<group>"; };
 		B07E54DE1E165A4D008C2D23 /* AngleGradientBorderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AngleGradientBorderView.swift; sourceTree = "<group>"; };
+		B07E54E01E16FC20008C2D23 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B08007891DCAEABC00695D5F /* EventsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventsViewController.swift; sourceTree = "<group>"; };
 		B080078B1DCAEAD300695D5F /* EventsViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = EventsViewController.storyboard; sourceTree = "<group>"; };
 		B0873AC51D3EB8CC00862960 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
@@ -431,7 +432,6 @@
 		B0DAFBCF1DF947E8004EB03D /* ProgressIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressIndicator.swift; sourceTree = "<group>"; };
 		B0E2BDB71E0531E600D195A5 /* MyStoryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyStoryTableViewCell.swift; sourceTree = "<group>"; };
 		B0E2BDB81E0531E600D195A5 /* MyStoryTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyStoryTableViewCell.xib; sourceTree = "<group>"; };
-		B0E2BDBB1E067FAC00D195A5 /* blur.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = blur.mp4; sourceTree = "<group>"; };
 		B0E2BDC11E086B1800D195A5 /* CameraTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraTransition.swift; sourceTree = "<group>"; };
 		B0E591561DD1218D00C032D6 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		B0E591581DD126C900C032D6 /* LogoutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogoutView.swift; sourceTree = "<group>"; };
@@ -473,7 +473,6 @@
 		B0FF114B1D3EB32100D709CE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B0FF114E1D3EB32100D709CE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B0FF11501D3EB32100D709CE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B0FF11561D3EB33100D709CE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -940,14 +939,13 @@
 		B0FF11431D3EB32100D709CE /* Lit */ = {
 			isa = PBXGroup;
 			children = (
-				B0E2BDBB1E067FAC00D195A5 /* blur.mp4 */,
 				B06D54CE1D9EE4D300F6A4A7 /* intro.mp4 */,
 				B06D54D71D9EEFD400F6A4A7 /* intro4.mp4 */,
 				B0FF114B1D3EB32100D709CE /* Assets.xcassets */,
 				B0FF11441D3EB32100D709CE /* AppDelegate.swift */,
 				B0FF114D1D3EB32100D709CE /* LaunchScreen.storyboard */,
 				B0FF11501D3EB32100D709CE /* Info.plist */,
-				B0FF11561D3EB33100D709CE /* GoogleService-Info.plist */,
+				B07E54E01E16FC20008C2D23 /* GoogleService-Info.plist */,
 				B087E9BE1D9B457D0079E2BF /* DataStructures */,
 				763566CE1D4A834A000BAA08 /* Extensions */,
 				76136D3D1D49373B003DB433 /* Models */,
@@ -997,7 +995,10 @@
 						DevelopmentTeam = 6BES3VUFCX;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
-								enabled = 0;
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 1;
 							};
 						};
 					};
@@ -1028,6 +1029,7 @@
 			files = (
 				B03DED101DAED40D0062357A /* UserProfileControlBarView.xib in Resources */,
 				B06D54D81D9EEFD700F6A4A7 /* intro4.mp4 in Resources */,
+				B07E54E11E16FC20008C2D23 /* GoogleService-Info.plist in Resources */,
 				B011B35F1E02261600FA4633 /* LocationTableCell.xib in Resources */,
 				B0E8E33D1DDFC8D30077D1BC /* CompactPhotoCell.xib in Resources */,
 				B09D5FD21DA57CE9004A188E /* ModalViewController.storyboard in Resources */,
@@ -1049,7 +1051,6 @@
 				B08BBB941DBBE4FD00AD3FF1 /* EventsBannerView.xib in Resources */,
 				B0FF114F1D3EB32100D709CE /* LaunchScreen.storyboard in Resources */,
 				B00BA91E1D9D6DB600F5EA30 /* StoryItemViewController.xib in Resources */,
-				B0FF11571D3EB33100D709CE /* GoogleService-Info.plist in Resources */,
 				B032C9931DA807C000811779 /* SetupViewController.xib in Resources */,
 				B01B34A21DC15BC600B2B9CE /* DialogRow.xib in Resources */,
 				B08BBB911DBAF4C200AD3FF1 /* UserTableViewCell.xib in Resources */,
