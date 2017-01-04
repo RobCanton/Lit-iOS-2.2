@@ -8,11 +8,15 @@
 
 import UIKit
 import SwiftMessages
+import Firebase
 
 class SettingsViewController: UITableViewController {
 
     
     @IBOutlet weak var addFacebookFriends: UITableViewCell!
+    
+    @IBOutlet weak var notificationsSwitch: UISwitch!
+    
     @IBOutlet weak var privacyPolicy: UITableViewCell!
     @IBOutlet weak var logout: UITableViewCell!
     
@@ -21,9 +25,27 @@ class SettingsViewController: UITableViewController {
     var config: SwiftMessages.Config?
     var logoutWrapper = SwiftMessages()
     
+    var notificationsRef:FIRDatabaseReference?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let uid = mainStore.state.userState.uid
+        
+        notificationsRef = FirebaseService.ref.child("users/settings/\(uid)/push_notifications")
+        notificationsRef!.observeSingleEventOfType(.Value, withBlock: { snapshot in
+            if snapshot.exists() {
+                if let val = snapshot.value as? Bool {
+                    if val {
+                        self.notificationsSwitch.setOn(true, animated: false)
+                    } else {
+                        self.notificationsSwitch.setOn(false, animated: false)
+                    }
+                }
+            } else {
+                self.notificationsSwitch.setOn(true, animated: false)
+            }
+        })
 
     }
 
@@ -59,6 +81,14 @@ class SettingsViewController: UITableViewController {
         self.parentViewController?.navigationController?.pushViewController(controller, animated: true)
     }
     
+    @IBAction func toggleNotificationsSwitch(sender: UISwitch) {
+        if sender.on {
+            notificationsRef?.setValue(true)
+        } else {
+            notificationsRef?.setValue(false)
+        }
+    }
+
     func showPrivacyPolicy() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewControllerWithIdentifier("WebViewController") as! WebViewController

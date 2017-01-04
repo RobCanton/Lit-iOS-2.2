@@ -12,8 +12,9 @@
             <rect key="frame" x="0.0" y="0.0" width="474" height="62"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="lit" translatesAutoresizingMaskIntoConstraints="NO" id="91d-Tl-Qcz">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="91d-Tl-Qcz">
                     <rect key="frame" x="8" y="8" width="46" height="46"/>
+                    <color key="backgroundColor" white="0.036733307453416152" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="91d-Tl-Qcz" secondAttribute="height" multiplier="1:1" id="CC8-P7-4na"/>
                         <constraint firstAttribute="width" secondItem="91d-Tl-Qcz" secondAttribute="height" multiplier="58:55" constant="1" id="dDz-TQ-nys"/>
@@ -27,7 +28,7 @@
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4rW-eR-l2i">
                     <rect key="frame" x="71" y="17" width="222" height="28"/>
-                    <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
+                    <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="16"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <color key="highlightedColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                 </label>
@@ -62,7 +63,6 @@
         </view>
     </objects>
     <resources>
-        <image name="lit" width="1944" height="1944"/>
         <image name="ok" width="32" height="32"/>
     </resources>
 </document>

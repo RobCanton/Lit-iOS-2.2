@@ -43,7 +43,6 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
             tabBar.setTabBarVisible(true, animated: true)
         }
         
-        
         if let nav = navigationController as? MasterNavigationController {
            nav.delegate = nav
         }
@@ -377,7 +376,7 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
         case 0:
             return 46
         case 1:
-            return 80
+            return 82
         case 2:
             return 64
         default:

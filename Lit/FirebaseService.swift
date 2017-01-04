@@ -101,11 +101,14 @@ class FirebaseService {
     }
     
     static func sendFCMToken() {
-        let token = FIRInstanceID.instanceID().token()!
-        if let user = mainStore.state.userState.user {
-            let fcmRef = ref.child("users/FCMToken/\(user.getUserId())")
-            fcmRef.setValue(token)
+        if let token = FIRInstanceID.instanceID().token() {
+            if let user = mainStore.state.userState.user {
+                let fcmRef = ref.child("users/FCMToken/\(user.getUserId())")
+                fcmRef.setValue(token)
+            }
         }
+        
+        
     }
     
 

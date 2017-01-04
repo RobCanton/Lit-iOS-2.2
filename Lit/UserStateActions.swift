@@ -17,6 +17,10 @@ struct UserIsAuthenticated: Action {
 
 struct UserIsUnauthenticated: Action {}
 
+struct UpdateUser: Action {
+    let user: User
+}
+
 struct UpdateFriendRequestsIn: Action {
     let requests:[String:FriendRequest]
     let unseen: Int

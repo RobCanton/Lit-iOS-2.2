@@ -107,7 +107,7 @@ class LocationService {
             return completionHandler(location: cachedData)
         }
         
-        let locRef = FirebaseService.ref.child("locations/info/\(locationKey)")
+        let locRef = FirebaseService.ref.child("locations/info/basic/\(locationKey)")
         locRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
             var location:Location?
             if snapshot.exists() {

@@ -194,10 +194,7 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
     }
     
     
-    
     func onBackItemClicked(sender: AnyObject) {
-        
-
     }
 
     
@@ -270,7 +267,7 @@ extension PresentedViewController: View2ViewTransitionPresented {
         
         let indexPath: NSIndexPath = userInfo!["destinationIndexPath"] as! NSIndexPath
         let cell: StoryViewController = self.collectionView.cellForItemAtIndexPath(indexPath) as! StoryViewController
-        return cell.content.frame
+        return view.frame
     }
     
     func destinationView(userInfo: [String: AnyObject]?, isPresenting: Bool) -> UIView {

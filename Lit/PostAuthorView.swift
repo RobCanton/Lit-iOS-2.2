@@ -39,6 +39,8 @@ class PostAuthorView: UIView {
         authorTap = UITapGestureRecognizer(target: self, action: #selector(authorTapped))
         let frame = CGRectMake(0, 0, authorImageView.frame.width + margin, authorImageView.frame.height + margin)
         addCircle(frame)
+        
+        self.applyShadow(2.0, opacity: 0.5, height: 1, shouldRasterize: false)
     }
     
     func setPostMetadata(post:StoryItem) {
@@ -54,7 +56,7 @@ class PostAuthorView: UIView {
                 self.timeLabel.text = post.getDateCreated()!.timeStringSinceNow()
                 for location in mainStore.state.locations {
                     if location.getKey() == post.getLocationKey() {
-                        self.locationLabel.text = location.getName().lowercaseString
+                        self.locationLabel.text = location.getName()
                     }
                 }
             }

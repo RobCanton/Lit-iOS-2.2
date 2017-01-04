@@ -220,7 +220,7 @@ class ActivityViewController: UIViewController, UITableViewDelegate, UITableView
 
         if section == 1 && stories.count > 0 {
             headerView.hidden = false
-            headerView.label.text = "Recent Updates"
+            headerView.label.text = "RECENT ACTIVITY"
         }
         
         return headerView

@@ -18,7 +18,7 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol, StoreSubsc
 
 
     var containerDelegate:ContainerViewController?
-    let incomingBubble = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor.grayColor())
+    let incomingBubble = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor.darkGrayColor())
     let outgoingBubble = JSQMessagesBubbleImageFactory().outgoingMessagesBubbleImageWithColor(accentColor)
     var messages = [JSQMessage]()
     
@@ -47,10 +47,10 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol, StoreSubsc
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        self.collectionView?.backgroundColor = UIColor(white: 0.10, alpha: 1.0)
+        self.collectionView?.backgroundColor = UIColor.blackColor()
         self.navigationController?.navigationBar.backItem?.backBarButtonItem?.title = " "
         
-        self.inputToolbar.barTintColor = UIColor(white: 0.10, alpha: 1.0)
+        self.inputToolbar.barTintColor = UIColor.blackColor()
         self.inputToolbar.contentView.leftBarButtonItemWidth = 0
         self.inputToolbar.contentView.textView.keyboardAppearance = .Dark
         self.inputToolbar.contentView.textView.backgroundColor = UIColor(white: 0.10, alpha: 1.0)
@@ -58,7 +58,7 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol, StoreSubsc
         self.inputToolbar.contentView.textView.layer.borderColor = UIColor(white: 0.10, alpha: 1.0).CGColor
         self.inputToolbar.contentView.textView.layer.borderWidth = 1.0
         collectionView?.collectionViewLayout.outgoingAvatarViewSize = .zero
-        collectionView?.collectionViewLayout.springinessEnabled = true
+        collectionView?.collectionViewLayout.springinessEnabled = false
         
         conversation.delegate = self
         if let user = conversation.getPartner() {
@@ -79,7 +79,7 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol, StoreSubsc
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         //mainStore.unsubscribe(self)
-        //downloadRef?.removeAllObservers()
+        downloadRef?.removeAllObservers()
         //conversation.listenToConversation()
     }
     
@@ -232,6 +232,7 @@ extension ChatViewController {
     }
     
     func downloadMessages() {
+        self.messages = []
 
         downloadRef?.observeEventType(.ChildAdded, withBlock: { snapshot in
                 let senderId = snapshot.value!["senderId"] as! String
@@ -251,4 +252,6 @@ extension ChatViewController {
     override func prefersStatusBarHidden() -> Bool {
         return false
     }
+    
+
 }

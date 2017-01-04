@@ -11,6 +11,10 @@ import AVFoundation
 import RecordButton
 import Firebase
 import SwiftMessages
+import MapKit
+import CoreLocation
+
+
 
 enum CameraState {
     case Initiating, Running, PhotoTaken, VideoTaken, Recording, Sending, Sent
@@ -71,6 +75,8 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     
     var recordBtn:CameraButton!
     
+    var uploadCoordinate:CLLocation?
+    
 
     var pinchGesture:UIPinchGestureRecognizer!
 
@@ -105,7 +111,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
                 sendButton.hidden       = false
                 recordBtn.hidden        = true
                 dismissBtn.hidden       = true
-
+                uploadCoordinate        = GPSService.sharedInstance.lastLocation
                 break
             case .VideoTaken:
                 resetProgress()
@@ -116,6 +122,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
                 sendButton.hidden       = false
                 recordBtn.hidden        = true
                 dismissBtn.hidden       = true
+                uploadCoordinate        = GPSService.sharedInstance.lastLocation
                 break
             case .Recording:
                 dismissBtn.hidden       = true
@@ -202,6 +209,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     
     @IBAction func sendButtonTapped(sender: UIButton) {
         
+        guard let coordinate = uploadCoordinate else { return }
         UIView.animateWithDuration(0.3, delay: 0, usingSpringWithDamping: 0.75, initialSpringVelocity: 0, options: [.CurveEaseInOut], animations: {
 
             self.sendButton.transform = CGAffineTransformMakeScale(0.8, 0.8)
@@ -212,12 +220,14 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
         uploadSelector = try! SwiftMessages.viewFromNib() as? UploadSelectorView
         uploadSelector!.configureDropShadow()
         uploadSelector!.delegate = self
+        uploadSelector?.setCoordinate(coordinate)
         
         config = SwiftMessages.Config()
         config!.presentationContext = .Window(windowLevel: UIWindowLevelStatusBar)
         config!.duration = .Forever
         config!.presentationStyle = .Bottom
-        config!.dimMode = .Gray(interactive: true)
+        config!.dimMode = .Gray(interactive: false)
+        
         uploadWrapper.show(config: config!, view: uploadSelector!)
     }
 
@@ -262,8 +272,9 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
         
         dismissBtn.applyShadow(1, opacity: 0.25, height: 1, shouldRasterize: false)
         cancelButton.applyShadow(1, opacity: 0.25, height: 1, shouldRasterize: false)
-    
+
     }
+
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -287,6 +298,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     
     func reloadCamera() {
         captureSession?.stopRunning()
+        
         previewLayer?.removeFromSuperlayer()
         
         captureSession = AVCaptureSession()

@@ -99,7 +99,12 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
             if _user != nil {
                 FirebaseService.getUserFullProfile(_user!, completionHandler: { fullUser in
                     if fullUser != nil {
+                        
                         self.user = fullUser!
+                        if self.user!.getUserId() == mainStore.state.userState.uid {
+                            mainStore.dispatch(UpdateUser(user: self.user!))
+                        }
+                        
                         self.navigationItem.title = self.user!.getDisplayName()
                         self.collectionView?.reloadData()
                         SocialService.listenToFollowers(self.user!.getUserId(), completionHandler: { followers in
@@ -298,6 +303,7 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         guard let tabBarController = self.tabBarController as? PopUpTabBarController else { return }
         
         galleryViewController.photos = self.posts
+        galleryViewController.uid = user!.getUserId()
         galleryViewController.tabBarRef = tabBarController
         galleryViewController.transitionController = self.transitionController
         self.transitionController.userInfo = ["destinationIndexPath": indexPath, "initialIndexPath": indexPath]

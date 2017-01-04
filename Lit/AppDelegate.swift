@@ -12,6 +12,7 @@ import FBSDKCoreKit
 import FBSDKLoginKit
 import ReSwift
 import AVFoundation
+import GoogleMaps
 
 let mainStore = Store<AppState>(
     reducer: AppReducer(),
@@ -45,11 +46,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FIRApp.configure()
     
         
+        GMSServices.provideAPIKey("AIzaSyD5keC5NA5IXYLp_hX6qscQwNyhy1QFecU")
         UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.LightContent
         
         let audioSession = AVAudioSession.sharedInstance()
         try! audioSession.setCategory(AVAudioSessionCategoryAmbient,
-                                      withOptions: AVAudioSessionCategoryOptions.MixWithOthers)
+                                      withOptions: AVAudioSessionCategoryOptions.DuckOthers)
         
         let colorView = UIView()
         colorView.backgroundColor = selectedColor

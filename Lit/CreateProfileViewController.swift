@@ -288,8 +288,7 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
                             else {
                                 let fullProfileRef = FIRDatabase.database().reference().child("users/profile/full/\(user.uid)")
                                 let obj = [
-                                    "largeProfileImageURL": largeImageURL!,
-                                    "bio": "This is the default bio description"
+                                    "largeProfileImageURL": largeImageURL!
                                 ]
                                 
                                 fullProfileRef.setValue(obj, withCompletionBlock: {error, ref in

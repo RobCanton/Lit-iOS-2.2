@@ -13,6 +13,18 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     
     var photos = [StoryItem]()
+    var uid:String!
+    var tabBarRef:PopUpTabBarController!
+    
+    lazy var editOverlay: EditPostToolbar = {
+        let margin:CGFloat = 0.0
+        var view = UINib(nibName: "EditPostToolbar", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! EditPostToolbar
+        let width: CGFloat = (UIScreen.mainScreen().bounds.size.width)
+        let height: CGFloat = 60
+        
+        view.frame = CGRect(x: margin, y: margin + 2.0, width: width, height: view.frame.height)
+        return view
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,9 +35,13 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
         self.view.backgroundColor = UIColor.blackColor()
         
         self.view.addSubview(self.collectionView)
+        
+        if uid == mainStore.state.userState.uid {
+            currentUserEditMode()
+        }
     }
     
-    var tabBarRef:PopUpTabBarController!
+    
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -58,6 +74,10 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
         super.viewDidDisappear(animated)
         print("viewDidDisappear")
         tabBarRef.setTabBarVisible(true, animated: true)
+    }
+    
+    func currentUserEditMode() {
+        self.view.addSubview(editOverlay)
     }
     
     // MARK: Elements
@@ -106,6 +126,7 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
         
         let cell: PresentedCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier("presented_cell", forIndexPath: indexPath) as! PresentedCollectionViewCell
         cell.contentView.backgroundColor = UIColor.blackColor()
+        
         let item = photos[indexPath.item]
         loadImageUsingCacheWithURL(item.getDownloadUrl().absoluteString, completion: { image, fromCache in
             cell.content.image = image
@@ -195,6 +216,8 @@ extension GalleryViewController: View2ViewTransitionPresented {
             self.collectionView.layoutIfNeeded()
         }
     }
+    
+    
 }
 
 public class PresentedCollectionViewCell: UICollectionViewCell {
@@ -202,7 +225,10 @@ public class PresentedCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.contentView.addSubview(self.content)
+        
+        
     }
+    
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -219,5 +245,7 @@ public class PresentedCollectionViewCell: UICollectionViewCell {
         view.contentMode = .ScaleAspectFill
         return view
     }()
+    
+    
 }
 

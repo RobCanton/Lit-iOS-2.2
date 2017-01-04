@@ -365,7 +365,6 @@ extension UILabel
             }
         }
         
-        
         self.attributedText = title
         self.layer.masksToBounds = false
         self.layer.shadowOffset = CGSize(width: 0, height: 4)
@@ -515,6 +514,7 @@ extension UIImage {
 public extension UILabel {
     public class func size(withText text: String, forWidth width: CGFloat) -> CGSize {
         let measurementLabel = UILabel()
+        measurementLabel.font = UIFont(name: "AvenirNext-Regular", size: 14.0)
         measurementLabel.text = text
         measurementLabel.numberOfLines = 0
         measurementLabel.lineBreakMode = .ByWordWrapping

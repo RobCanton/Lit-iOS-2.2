@@ -182,6 +182,9 @@
 		B08BBB911DBAF4C200AD3FF1 /* UserTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B08BBB8F1DBAF4C200AD3FF1 /* UserTableViewCell.xib */; };
 		B08BBB941DBBE4FD00AD3FF1 /* EventsBannerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B08BBB931DBBE4FD00AD3FF1 /* EventsBannerView.xib */; };
 		B08BBB961DBBE51400AD3FF1 /* EventsBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08BBB951DBBE51400AD3FF1 /* EventsBannerView.swift */; };
+		B09801B01E1B6773006782E6 /* EditPostToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09801AF1E1B6773006782E6 /* EditPostToolbar.swift */; };
+		B09801B21E1B6784006782E6 /* EditPostToolbar.xib in Resources */ = {isa = PBXBuildFile; fileRef = B09801B11E1B6784006782E6 /* EditPostToolbar.xib */; };
+		B09801F51E1C7869006782E6 /* mapStyle.json in Resources */ = {isa = PBXBuildFile; fileRef = B09801F41E1C7869006782E6 /* mapStyle.json */; };
 		B09D5FCD1DA57C80004A188E /* ARNImageTransitionNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09D5FCA1DA57C80004A188E /* ARNImageTransitionNavigationController.swift */; };
 		B09D5FCE1DA57C80004A188E /* ARNImageZoomTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09D5FCB1DA57C80004A188E /* ARNImageZoomTransition.swift */; };
 		B09D5FCF1DA57C80004A188E /* ARNModalImageTransitionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09D5FCC1DA57C80004A188E /* ARNModalImageTransitionViewController.swift */; };
@@ -420,6 +423,9 @@
 		B08BBB8F1DBAF4C200AD3FF1 /* UserTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserTableViewCell.xib; sourceTree = "<group>"; };
 		B08BBB931DBBE4FD00AD3FF1 /* EventsBannerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventsBannerView.xib; sourceTree = "<group>"; };
 		B08BBB951DBBE51400AD3FF1 /* EventsBannerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventsBannerView.swift; sourceTree = "<group>"; };
+		B09801AF1E1B6773006782E6 /* EditPostToolbar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditPostToolbar.swift; sourceTree = "<group>"; };
+		B09801B11E1B6784006782E6 /* EditPostToolbar.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditPostToolbar.xib; sourceTree = "<group>"; };
+		B09801F41E1C7869006782E6 /* mapStyle.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = mapStyle.json; sourceTree = "<group>"; };
 		B09D5FCA1DA57C80004A188E /* ARNImageTransitionNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ARNImageTransitionNavigationController.swift; sourceTree = "<group>"; };
 		B09D5FCB1DA57C80004A188E /* ARNImageZoomTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ARNImageZoomTransition.swift; sourceTree = "<group>"; };
 		B09D5FCC1DA57C80004A188E /* ARNModalImageTransitionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ARNModalImageTransitionViewController.swift; sourceTree = "<group>"; };
@@ -604,10 +610,8 @@
 				B026A8481DAD76FB00DD2CCD /* UserProfileViewController.swift */,
 				B0236E121DC00E0A0083C720 /* CurrentUserProfileViewController.swift */,
 				B011B3471DFE7FAD00FA4633 /* GalleryViewController.swift */,
-				B0E8E30F1DD7AC190077D1BC /* FollowButton.swift */,
-				B03DED111DAED45A0062357A /* UserProfileControlBar.swift */,
-				B03DED0F1DAED40D0062357A /* UserProfileControlBarView.xib */,
-				B01441091DCCFC5C00D95FCB /* ControlButton.swift */,
+				B09801AF1E1B6773006782E6 /* EditPostToolbar.swift */,
+				B09801B11E1B6784006782E6 /* EditPostToolbar.xib */,
 				B0E591561DD1218D00C032D6 /* SettingsViewController.swift */,
 				B0E8E30B1DD7739B0077D1BC /* ContainerViewController.swift */,
 				B0E591581DD126C900C032D6 /* LogoutView.swift */,
@@ -875,6 +879,10 @@
 		B08BBB921DBBE06300AD3FF1 /* Deprecated */ = {
 			isa = PBXGroup;
 			children = (
+				B01441091DCCFC5C00D95FCB /* ControlButton.swift */,
+				B0E8E30F1DD7AC190077D1BC /* FollowButton.swift */,
+				B03DED111DAED45A0062357A /* UserProfileControlBar.swift */,
+				B03DED0F1DAED40D0062357A /* UserProfileControlBarView.xib */,
 				B00BA9201D9E4E0700F5EA30 /* FirstScreenViewController.swift */,
 				B00BA9211D9E4E0700F5EA30 /* FirstScreenViewController.xib */,
 				B032C9901DA807C000811779 /* SetupViewController.swift */,
@@ -946,6 +954,7 @@
 				B0FF114D1D3EB32100D709CE /* LaunchScreen.storyboard */,
 				B0FF11501D3EB32100D709CE /* Info.plist */,
 				B07E54E01E16FC20008C2D23 /* GoogleService-Info.plist */,
+				B09801F41E1C7869006782E6 /* mapStyle.json */,
 				B087E9BE1D9B457D0079E2BF /* DataStructures */,
 				763566CE1D4A834A000BAA08 /* Extensions */,
 				76136D3D1D49373B003DB433 /* Models */,
@@ -1032,6 +1041,7 @@
 				B07E54E11E16FC20008C2D23 /* GoogleService-Info.plist in Resources */,
 				B011B35F1E02261600FA4633 /* LocationTableCell.xib in Resources */,
 				B0E8E33D1DDFC8D30077D1BC /* CompactPhotoCell.xib in Resources */,
+				B09801B21E1B6784006782E6 /* EditPostToolbar.xib in Resources */,
 				B09D5FD21DA57CE9004A188E /* ModalViewController.storyboard in Resources */,
 				B0E5915D1DD2988D00C032D6 /* ActiveLocationView.xib in Resources */,
 				B011B34C1DFFB2BD00FA4633 /* InfoTableViewCell.xib in Resources */,
@@ -1070,6 +1080,7 @@
 				B003D49D1DE6B1A10026B2D8 /* EventTableViewCell.xib in Resources */,
 				76B361CB1D64E8160024CDC7 /* RatingViewController.xib in Resources */,
 				B07E54D01E0C8AA8008C2D23 /* EditProfileViewController.storyboard in Resources */,
+				B09801F51E1C7869006782E6 /* mapStyle.json in Resources */,
 				76173B7B1D5784AC0093A137 /* Main.storyboard in Resources */,
 				B06D54C11D9ECB6D00F6A4A7 /* Info.plist in Resources */,
 			);
@@ -1153,6 +1164,7 @@
 				B0321EC41DB5337900AD4C53 /* DismissAnimator.swift in Sources */,
 				B0FF11471D3EB32100D709CE /* LoginViewController.swift in Sources */,
 				B0DAFBCE1DF8CB78004EB03D /* StoryViewController.swift in Sources */,
+				B09801B01E1B6773006782E6 /* EditPostToolbar.swift in Sources */,
 				76136D3F1D493786003DB433 /* Location.swift in Sources */,
 				B0E8E3441DE203720077D1BC /* UserStoryTableViewCell.swift in Sources */,
 				B07E54DD1E165A12008C2D23 /* AngleGradientBorderLayer.swift in Sources */,

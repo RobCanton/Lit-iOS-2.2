@@ -16,11 +16,16 @@ func UserStateReducer(action: Action, state: UserState?) -> UserState {
         state.uid = a.user.getUserId()
         state.user = a.user
         break
+    
     case _ as UserIsUnauthenticated:
         Listeners.stopListeningToAll()
         state = UserState()
         break
-
+    
+    case _ as UpdateUser:
+        let a = action as! UpdateUser
+        state.user = a.user
+        break
     case _ as SetActiveLocation:
         let a = action as! SetActiveLocation
         state.activeLocationKey = a.locationKey

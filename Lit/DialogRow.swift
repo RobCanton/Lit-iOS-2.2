@@ -19,9 +19,11 @@ class DialogRow: UIButton {
     @IBOutlet weak var selectionIndicator: UIImageView!
     
     override func awakeFromNib() {
-         super.awakeFromNib()
+        super.awakeFromNib()
         
-        
+        self.layer.cornerRadius = 4
+        self.clipsToBounds = true
+        active(false)
     }
     
     func setToProfileRow() {
@@ -46,13 +48,16 @@ class DialogRow: UIButton {
     func active(_isActive:Bool) {
         isActive = _isActive
         if isActive {
-            self.locationTitle.alpha = 1.0
-            self.locationImageView.alpha = 1.0
+//            self.locationTitle.alpha = 1.0
+//            self.locationImageView.alpha = 1.0
             self.selectionIndicator.alpha = 1.0
+            backgroundColor = UIColor(white: 0.15, alpha: 1.0)
+            
         } else {
-            self.locationTitle.alpha = 0.4
-            self.locationImageView.alpha = 0.4
+//            self.locationTitle.alpha = 0.75
+//            self.locationImageView.alpha = 0.75
             self.selectionIndicator.alpha = 0.0
+            backgroundColor = UIColor(white: 0.0, alpha: 1.0)
         }
     }
 }

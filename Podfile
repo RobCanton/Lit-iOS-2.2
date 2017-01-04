@@ -29,6 +29,8 @@ pod 'SwiftMessages', '~> 1.1.4'
 pod 'SwiftyJSON', '2.4.0'
 pod 'DataCache', '1.1'
 pod 'KTCenterFlowLayout'
+pod 'GoogleMaps'
+pod 'GooglePlaces'
 
 end
 

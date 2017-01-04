@@ -34,6 +34,8 @@ class EditProfileViewController: UITableViewController {
     
     var profileImageChanged = false
     
+    var didEdit = false
+    
     var smallImageURL:String?
     var largeImageURL:String?
     
@@ -68,6 +70,9 @@ class EditProfileViewController: UITableViewController {
         
         tableView.tableHeaderView = headerView
         
+        nameTextField.delegate = self
+        nameTextField.addTarget(self, action: #selector(textViewChanged), forControlEvents: .EditingChanged);
+        
         usernameTextField.delegate = self
         usernameTextField.addTarget(self, action: #selector(textViewChanged), forControlEvents: .EditingChanged);
         
@@ -95,17 +100,21 @@ class EditProfileViewController: UITableViewController {
 
     @IBAction func handleCancel(sender: AnyObject) {
         
-        let cancelAlert = UIAlertController(title: "Unsaved Changes", message: "You have unsaved changes. Are you sure you want to cancel?", preferredStyle: UIAlertControllerStyle.Alert)
-        
-        cancelAlert.addAction(UIAlertAction(title: "Yes", style: .Default, handler: { (action: UIAlertAction!) in
-            self.dismissViewControllerAnimated(true, completion: nil)
-        }))
-        
-        cancelAlert.addAction(UIAlertAction(title: "No", style: .Cancel, handler: { (action: UIAlertAction!) in
+        if didEdit {
+            let cancelAlert = UIAlertController(title: "Unsaved Changes", message: "You have unsaved changes. Are you sure you want to cancel?", preferredStyle: UIAlertControllerStyle.Alert)
             
-        }))
-        
-        presentViewController(cancelAlert, animated: true, completion: nil)
+            cancelAlert.addAction(UIAlertAction(title: "Yes", style: .Default, handler: { (action: UIAlertAction!) in
+                self.dismissViewControllerAnimated(true, completion: nil)
+            }))
+            
+            cancelAlert.addAction(UIAlertAction(title: "No", style: .Cancel, handler: { (action: UIAlertAction!) in
+                
+            }))
+            
+            presentViewController(cancelAlert, animated: true, completion: nil)
+        } else {
+            self.dismissViewControllerAnimated(true, completion: nil)
+        }
     }
     
     @IBAction func handleSave(sender: AnyObject) {
@@ -225,6 +234,7 @@ extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigati
         
         dispatch_async(dispatch_get_main_queue(), {
             print("Previewing new image")
+            self.didEdit = true
             self.profileImageChanged = true
             self.headerView.imageView.image = image
         })
@@ -279,7 +289,7 @@ extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigati
 
 extension EditProfileViewController: UITextViewDelegate {
     func textViewDidChange(textView: UITextView) {
-        
+        didEdit = true
         switch textView {
         case bioTextView:
             let currentOffset = tableView.contentOffset
@@ -334,7 +344,8 @@ extension EditProfileViewController: UITextFieldDelegate {
     }
     
     func textViewChanged(){
-        usernameTextField.text = usernameTextField.text?.lowercaseString;
+        didEdit = true
+        //usernameTextField.text = usernameTextField.text?.lowercaseString;
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool
