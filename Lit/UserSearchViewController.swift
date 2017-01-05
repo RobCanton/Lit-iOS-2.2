@@ -12,16 +12,18 @@ class UserSearchViewController: UITableViewController, UISearchBarDelegate {
     
     @IBOutlet weak var searchBar: UISearchBar!
     var searchBarActive:Bool = false
-    
-    @IBAction func handleDone(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
+//    
+//    @IBAction func handleDone(sender: AnyObject) {
+//        searchBar.resignFirstResponder()
+//        self.dismissViewControllerAnimated(true, completion: nil)
+//    }
     
     var userIds = [String]()
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         listenToSearchResults()
+        searchBar.becomeFirstResponder()
         
     }
     
@@ -76,7 +78,7 @@ class UserSearchViewController: UITableViewController, UISearchBarDelegate {
         
         
         searchBar.delegate = self
-        
+        searchBar.showsCancelButton    = false
         searchBar.keyboardAppearance   = .Dark
         searchBar.searchBarStyle       = UISearchBarStyle.Minimal
         searchBar.tintColor            = UIColor.whiteColor()
@@ -112,7 +114,6 @@ class UserSearchViewController: UITableViewController, UISearchBarDelegate {
     }
     
     func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
-        self.searchBar.setShowsCancelButton(true, animated: true)
         
     }
     
@@ -120,7 +121,6 @@ class UserSearchViewController: UITableViewController, UISearchBarDelegate {
 
     }
     func cancelSearching(){
-        self.searchBar.setShowsCancelButton(false, animated: true)
         self.searchBarActive = false
         self.searchBar.resignFirstResponder()
         self.searchBar.text = ""

@@ -77,7 +77,6 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol, StoreSubsc
     
     func appMovedToBackground() {
         downloadRef?.removeAllObservers()
-        messages = [JSQMessage]()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -91,7 +90,6 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol, StoreSubsc
         super.viewWillDisappear(animated)
         //mainStore.unsubscribe(self)
         downloadRef?.removeAllObservers()
-        messages = [JSQMessage]()
         //conversation.listenToConversation()
     }
     

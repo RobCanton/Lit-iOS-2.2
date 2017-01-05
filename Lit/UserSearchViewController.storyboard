@@ -8,9 +8,9 @@
         <!--User Search-->
         <scene sceneID="T2z-QW-a6x">
             <objects>
-                <tableViewController storyboardIdentifier="UserSearchViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="drk-KG-bQc" customClass="UserSearchViewController" customModule="Lit" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="UserSearchViewController" title="User Search" useStoryboardIdentifierAsRestorationIdentifier="YES" id="drk-KG-bQc" customClass="UserSearchViewController" customModule="Lit" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="POc-FF-lga">
-                        <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <searchBar key="tableHeaderView" contentMode="redraw" barStyle="black" searchBarStyle="minimal" placeholder="Search by username" translucent="NO" id="Fhw-YW-x9o">
@@ -34,17 +34,7 @@
                             <outlet property="delegate" destination="drk-KG-bQc" id="HL2-6l-IxE"/>
                         </connections>
                     </tableView>
-                    <toolbarItems>
-                        <barButtonItem title="Item" id="gMz-Ty-CSo"/>
-                    </toolbarItems>
-                    <navigationItem key="navigationItem" title="User Search" id="AhV-nD-IiK">
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="rEv-DX-AtP">
-                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <connections>
-                                <action selector="handleDone:" destination="drk-KG-bQc" id="DEe-fg-0Wj"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <toolbarItems/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="searchBar" destination="Fhw-YW-x9o" id="6aM-J7-z3k"/>
@@ -52,27 +42,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CGw-3B-9BD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1311" y="259"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="ysJ-gl-jiR">
-            <objects>
-                <navigationController storyboardIdentifier="UserSearchNavigationController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="1Zv-DA-T8S" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="wqr-m0-ZTz">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <color key="barTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="drk-KG-bQc" kind="relationship" relationship="rootViewController" id="vMF-J3-xdV"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="moe-qL-Wsw" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="499" y="259"/>
+            <point key="canvasLocation" x="812" y="250"/>
         </scene>
     </scenes>
 </document>

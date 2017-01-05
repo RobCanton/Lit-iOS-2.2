@@ -37,11 +37,23 @@ class ActivityViewController: UITableViewController, UISearchBarDelegate {
         responseRef?.removeAllObservers()
     }
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if let tabBar = self.tabBarController as? PopUpTabBarController {
+            tabBar.setTabBarVisible(true, animated: true)
+        }
+        
+        if let nav = navigationController as? MasterNavigationController {
+            nav.delegate = nav
+        }
+    }
+    
     @IBAction func showUserSearch(sender: AnyObject) {
         
         let controller = UIStoryboard(name: "UserSearchViewController", bundle: nil)
-            .instantiateViewControllerWithIdentifier("UserSearchNavigationController")
-        self.presentViewController(controller, animated: true, completion: nil)
+            .instantiateViewControllerWithIdentifier("UserSearchViewController")
+        self.navigationController?.pushViewController(controller, animated: true)
         
     }
     
@@ -199,6 +211,7 @@ class ActivityViewController: UITableViewController, UISearchBarDelegate {
         self.navigationController!.navigationBar.titleTextAttributes =
             [NSFontAttributeName: UIFont(name: "Avenir-Medium", size: 18.0)!,
              NSForegroundColorAttributeName: UIColor.whiteColor()]
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Plain, target: nil, action: nil)
         
         let nib = UINib(nibName: "UserStoryTableViewCell", bundle: nil)
         tableView.registerNib(nib, forCellReuseIdentifier: "UserStoryCell")

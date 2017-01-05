@@ -303,7 +303,7 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         guard let tabBarController = self.tabBarController as? PopUpTabBarController else { return }
         
         galleryViewController.photos = self.posts
-        galleryViewController.uid = user!.getUserId()
+        galleryViewController.uid = uid
         galleryViewController.tabBarRef = tabBarController
         galleryViewController.transitionController = self.transitionController
         self.transitionController.userInfo = ["destinationIndexPath": indexPath, "initialIndexPath": indexPath]

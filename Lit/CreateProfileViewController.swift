@@ -36,7 +36,6 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
     let imagePicker = UIImagePickerController()
     
     var tap: UITapGestureRecognizer!
-    var continueButton:UIView!
     
     var profilePhotoMessageView:ProfilePictureMessageView?
     var config: SwiftMessages.Config?
@@ -60,13 +59,24 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
     
     }
     
+    func cancel() {
+        FirebaseService.logout()
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    var doneButton: UIBarButtonItem!
+    var cancelButton: UIBarButtonItem!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "My Profile"
         
-        let doneButton = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: #selector(proceed))
-
+        doneButton = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: #selector(proceed))
         navigationItem.rightBarButtonItem = doneButton
+        deactivateCreateProfileButton()
+        
+        cancelButton = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: #selector(cancel))
+        navigationItem.leftBarButtonItem = cancelButton
+        
         self.automaticallyAdjustsScrollViewInsets = false
         
         headerView = UINib(nibName: "CreateProfileHeaderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! CreateProfileHeaderView
@@ -91,19 +101,19 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
         usernameField.placeholderColor = .whiteColor()
         usernameField.borderColor = .whiteColor()
         usernameField.textColor = .whiteColor()
-        usernameField.placeholder = "Username (everyone)"
+        usernameField.placeholder = "User name"
         usernameField.delegate = self
         usernameField.font = UIFont(name: "Avenir-Medium", size: 20.0)
         usernameField.textAlignment = .Center
         usernameField.autocapitalizationType = .None
-        usernameField.addTarget(self, action: "textViewChanged", forControlEvents: .EditingChanged);
+        usernameField.addTarget(self, action: #selector(textViewChanged), forControlEvents: .EditingChanged);
 
         
         fullnameField = MadokaTextField(frame: CGRect(x: 0, y: 0, width: self.view.frame.width * 0.80, height: 64))
         fullnameField.placeholderColor = .whiteColor()
         fullnameField.borderColor = .whiteColor()
         fullnameField.textColor = .whiteColor()
-        fullnameField.placeholder = "Full name (friends only)"
+        fullnameField.placeholder = "Full name"
         fullnameField.delegate = self
         fullnameField.font = UIFont(name: "Avenir-Medium", size: 20.0)
         fullnameField.textAlignment = .Center
@@ -114,23 +124,16 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
         usernameField.center = CGPoint(x: bodyView.frame.width/2, y: fullnameField.center.y + usernameField.frame.height + 15)
         bodyView.addSubview(usernameField)
         
-        continueButton = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 60))
-        continueButton.center = CGPointMake(view.frame.width/2, view.frame.height - (continueButton.frame.height/2))
-        continueButton.backgroundColor = UIColor(red: 0.15, green: 0.15, blue: 0.15, alpha: 1.0)
-        let label = UILabel(frame: continueButton.bounds)
-        label.text = "create profile"
-        label.font = UIFont(name: "Avenir-Medium", size: 20.0)
-        label.textAlignment = .Center
-        label.textColor = UIColor.blackColor()
+
         
         tap = UITapGestureRecognizer(target: self, action: #selector(proceed))
         
         headerTap = UITapGestureRecognizer(target: self, action: #selector(showProfilePhotoMessagesView))
         headerView.imageView.addGestureRecognizer(headerTap)
         headerView.imageView.userInteractionEnabled = true
-    
-        view.addSubview(continueButton)
+
         imagePicker.delegate = self
+        
         
         doSet()
 
@@ -228,7 +231,9 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
             
             FirebaseService.getUser(user.uid, completionHandler: { _user in
                 if _user != nil {
-                    FacebookGraph.getFacebookFriends({ _userIds in
+                    FirebaseService.login(_user!)
+                    self.performSegueWithIdentifier("showLit", sender: self)
+                    /*FacebookGraph.getFacebookFriends({ _userIds in
                         FirebaseService.login(_user!)
                         if _userIds.count == 0 {
                             self.performSegueWithIdentifier("showLit", sender: self)
@@ -239,7 +244,7 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
                                 self.performSegueWithIdentifier("toAddFriends", sender: self)
                             })
                         }
-                    })
+                    })*/
                 }
             })
         }
@@ -260,9 +265,21 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
     
     
     func proceed() {
+        if usernameField.text == nil || usernameField.text == "" { return }
+        
+        
+        let activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
+        let barButton = UIBarButtonItem(customView: activityIndicator)
+        self.navigationItem.setRightBarButtonItem(barButton, animated: true)
+        activityIndicator.startAnimating()
+        
         deactivateCreateProfileButton()
         fullnameField.enabled = false
         usernameField.enabled = false
+        cancelButton.enabled  = false
+        
+        usernameField.resignFirstResponder()
+        fullnameField.resignFirstResponder()
         
         let name = fullnameField.text!
         let username = usernameField.text!
@@ -304,7 +321,6 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
                 }
             })
         }
-
     }
     
     func checkUsernameAvailability() {
@@ -325,17 +341,14 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
         AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         usernameField.borderColor = errorColor
         usernameField.placeholderColor = errorColor
-        usernameField.placeholderLabel.text = "Username taken"
         usernameField.shake()
-        deactivateCreateProfileButton()
     }
     
     func usernameAvailable() {
         activateCreateProfileButton()
         usernameField.borderColor = accentColor
         usernameField.placeholderColor = accentColor
-        usernameField.placeholderLabel.text = "Username Available"
-        activateCreateProfileButton()
+        
     }
     
 
@@ -381,26 +394,21 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
         
         usernameField.borderColor = UIColor.whiteColor()
         usernameField.placeholderColor = UIColor.whiteColor()
-        usernameField.placeholderLabel.text = "Username (everyone)"
+        usernameField.placeholderLabel.text = "User name"
     }
     
     func textFieldDidEndEditing(textField: UITextField) {
         if usernameField.text?.characters.count > 0 {
             checkUsernameAvailability()
-            //activateCreateProfileButton()
-        } else {
-            //disableCreateProfileButton()
         }
     }
     
     func deactivateCreateProfileButton() {
-        continueButton.backgroundColor = UIColor(red: 0.15, green: 0.15, blue: 0.15, alpha: 1.0)
-        continueButton.removeGestureRecognizer(tap)
+        doneButton.enabled = false
     }
     
     func activateCreateProfileButton() {
-        continueButton.backgroundColor = UIColor.whiteColor()
-        continueButton.addGestureRecognizer(tap)
+        doneButton.enabled = true
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {

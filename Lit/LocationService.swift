@@ -27,7 +27,7 @@ class LocationService {
         ref.setValue([
                 "lat": latitude,
                 "lon": longitude,
-                "rad": 50
+                "rad": 150
             ])
         
     }

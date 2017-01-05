@@ -77,7 +77,7 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     func currentUserEditMode() {
-        self.view.addSubview(editOverlay)
+        //self.view.addSubview(editOverlay)
     }
     
     // MARK: Elements

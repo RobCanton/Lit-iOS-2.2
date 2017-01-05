@@ -30,6 +30,22 @@ class LoginViewController: UIViewController, StoreSubscriber {
 
     override func viewWillAppear(animated: Bool) {
         mainStore.subscribe(self)
+        
+        deactivateLoginButton()
+        
+        if let user = FIRAuth.auth()?.currentUser {
+            print("already signed in")
+            FirebaseService.getUser(user.uid, completionHandler: { _user in
+                if _user != nil {
+                    FirebaseService.login(_user!)
+                } else {
+                    FirebaseService.logout()
+                    self.activateLoginButton()
+                }
+            })
+        } else {
+            activateLoginButton()
+        }
 
     }
     
@@ -50,44 +66,26 @@ class LoginViewController: UIViewController, StoreSubscriber {
     }
     
     func createProfile(){
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let controller = storyboard.instantiateViewControllerWithIdentifier("CreateProfileViewController") as! CreateProfileViewController
-        navigationController?.navigationBar.tintColor = UIColor.whiteColor()
-        navigationController?.pushViewController(controller, animated: true)
+        self.performSegueWithIdentifier("createProfile", sender: self)
     }
     
 
     @IBOutlet weak var loginButton: UIView!
-    
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         createDirectory("location_images")
         createDirectory("temp")
-        self.navigationController?.navigationBar.titleTextAttributes =
-            [NSFontAttributeName: UIFont(name: "Avenir-Medium", size: 18.0)!]
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Plain, target: nil, action: nil)
-        
+//        self.navigationController?.navigationBar.titleTextAttributes =
+//            [NSFontAttributeName: UIFont(name: "Avenir-Medium", size: 18.0)!]
+//        navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Plain, target: nil, action: nil)
+//        
 
         loginButton.layer.borderColor = UIColor.whiteColor().CGColor
         loginButton.layer.borderWidth = 2.0
         tap = UITapGestureRecognizer(target: self, action: #selector(initiateFBLogin))
-        deactivateLoginButton()
         
-        if let user = FIRAuth.auth()?.currentUser {
-            print("already signed in")
-            FirebaseService.getUser(user.uid, completionHandler: { _user in
-                if _user != nil {
-                    FirebaseService.login(_user!)
-                } else {
-                    FirebaseService.logout()
-                    self.activateLoginButton()
-                }
-            })
-        } else {
-            activateLoginButton()
-        }
         
         //setupVideoBackground()
         
