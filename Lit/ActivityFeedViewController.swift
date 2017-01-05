@@ -81,10 +81,6 @@ class ActivityFeedViewController: UIViewController, UICollectionViewDelegate, UI
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(toSearchView))
         coverTapView.addGestureRecognizer(tap)
-        
-        
-        
-
     }
     
     func addSearchBar(){
@@ -100,7 +96,6 @@ class ActivityFeedViewController: UIViewController, UICollectionViewDelegate, UI
             self.searchBar!.sizeToFit()
             self.searchBar!.setTextColor(UIColor.whiteColor())
             self.searchBar!.userInteractionEnabled = false
-
         }
         
         if !self.searchBar!.isDescendantOfView(self.view){

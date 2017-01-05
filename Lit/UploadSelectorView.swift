@@ -63,28 +63,24 @@ class UploadSelectorView: MessageView, MKMapViewDelegate {
         
         mapView.delegate = self
         mapView.showsUserLocation = false
-        mapView.showsCompass = false
-        mapView.showsBuildings = true
-        mapView.pitchEnabled = true
         mapView.userInteractionEnabled = false
 
     }
-    
     
     
     var largeOverlay:MKCircle!
     var smallOverlay:MKCircle!
     func setCoordinate(coordinate:CLLocation) {
         
-        let regionRadius = 100.0
+        let regionRadius = 65.0
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(coordinate.coordinate,
                                                                   regionRadius * 2.0, regionRadius * 2.0)
         mapView.setRegion(coordinateRegion, animated: false)
         
         largeOverlay = MKCircle(centerCoordinate: coordinate.coordinate, radius: 64.0)
-        mapView.addOverlay(largeOverlay)
+        //mapView.addOverlay(largeOverlay)
         
-        smallOverlay = MKCircle(centerCoordinate: coordinate.coordinate, radius: 12.0)
+        smallOverlay = MKCircle(centerCoordinate: coordinate.coordinate, radius: 8.0)
         mapView.addOverlay(smallOverlay)
     }
     
@@ -93,12 +89,10 @@ class UploadSelectorView: MessageView, MKMapViewDelegate {
             // draw the track
             
             let circleRenderer = MKCircleRenderer(overlay: overlay)
-            circleRenderer.fillColor = UIColor(red: 0, green: 128/255, blue: 255, alpha: 0.3)
+            circleRenderer.fillColor = UIColor(red: 0, green: 128/255, blue: 255, alpha: 0.4)
             
             return circleRenderer
-        }
-        
-        if overlay === smallOverlay {
+        } else if overlay === smallOverlay {
             // draw the track
             
             let circleRenderer = MKCircleRenderer(overlay: overlay)
@@ -107,10 +101,23 @@ class UploadSelectorView: MessageView, MKMapViewDelegate {
             circleRenderer.lineWidth = 2.0
             
             return circleRenderer
+        } else {
+            for _overlay in locationOverlays {
+                if overlay === _overlay {
+                    let circleRenderer = MKCircleRenderer(overlay: overlay)
+                    circleRenderer.fillColor = UIColor(red: 0, green: 128/255, blue: 255, alpha: 0.3)
+                    
+                    return circleRenderer
+                }
+            }
         }
+        
+        
         
         return MKCircleRenderer()
     }
+    
+    var locationOverlays = [MKCircle]()
 
     
     func addLocationOption(location:Location) {
@@ -119,6 +126,15 @@ class UploadSelectorView: MessageView, MKMapViewDelegate {
         row.addTarget(self, action: #selector(rowTapped), forControlEvents: .TouchUpInside)
         contentView.addArrangedSubview(row)
         rows.append(row)
+        
+        let coordinate = location.getCoordinates().coordinate
+        let locationOverlay = MKCircle(centerCoordinate: coordinate, radius: 50.0)
+        mapView.addOverlay(locationOverlay)
+        locationOverlays.append(locationOverlay)
+        
+        let a = MapPin(coordinate: coordinate, title: location.getName(), subtitle: location.getAddress())
+        mapView.addAnnotation(a)
+        
     }
     
     func rowTapped(sender:DialogRow) {

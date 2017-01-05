@@ -146,9 +146,11 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     var config: SwiftMessages.Config?
     
     func send(upload:Upload) {
+        
         if cameraState == .PhotoTaken {
             if let image = imageCaptureView.image{
                 upload.image = image
+                cameraState = .Sending
                 if let uploadTask = FirebaseService.sendImage(upload)
                 {
                     self.sent(uploadTask)
@@ -156,7 +158,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
             }
         } else if cameraState == .VideoTaken {
             if let url = videoUrl {
-                
+                cameraState = .Sending
                 playerLayer?.player?.seekToTime(CMTimeMake(0, 1))
                 playerLayer?.player?.pause()
                 playerLayer?.removeFromSuperlayer()

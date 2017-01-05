@@ -56,15 +56,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let colorView = UIView()
         colorView.backgroundColor = selectedColor
         
-        // use UITableViewCell.appearance() to configure
-        // the default appearance of all UITableViewCells in your app
-        UITableViewCell.appearance().selectedBackgroundView = colorView
+        
         
         let notificationsTypes : UIUserNotificationType = [UIUserNotificationType.Alert, UIUserNotificationType.Badge, UIUserNotificationType.Sound]
         let notificationSettings = UIUserNotificationSettings(forTypes: notificationsTypes, categories: nil)
         application.registerForRemoteNotifications()
         application.registerUserNotificationSettings(notificationSettings)
         
+        
+        /* APP APPEARANCE */
+        
+        UITableViewCell.appearance().selectedBackgroundView = colorView
+        
+        let cancelButtonAttributes: NSDictionary = [NSForegroundColorAttributeName: UIColor.whiteColor()]
+        UIBarButtonItem.appearance().setTitleTextAttributes(cancelButtonAttributes as? [String : AnyObject], forState: UIControlState.Normal)
         
         
         return true

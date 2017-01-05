@@ -20,7 +20,7 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol, StoreSubsc
     var containerDelegate:ContainerViewController?
     let incomingBubble = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor.darkGrayColor())
     let outgoingBubble = JSQMessagesBubbleImageFactory().outgoingMessagesBubbleImageWithColor(accentColor)
-    var messages = [JSQMessage]()
+    var messages:[JSQMessage]!
     
     var conversation:Conversation!
     var partner:User!
@@ -46,6 +46,7 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol, StoreSubsc
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        messages = [JSQMessage]()
         // Do any additional setup after loading the view, typically from a nib.
         self.collectionView?.backgroundColor = UIColor.blackColor()
         self.navigationController?.navigationBar.backItem?.backBarButtonItem?.title = " "
@@ -60,6 +61,8 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol, StoreSubsc
         collectionView?.collectionViewLayout.outgoingAvatarViewSize = .zero
         collectionView?.collectionViewLayout.springinessEnabled = false
         
+        
+        
         conversation.delegate = self
         if let user = conversation.getPartner() {
             partner = user
@@ -68,10 +71,18 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol, StoreSubsc
         downloadRef = FirebaseService.ref.child("conversations/\(conversation.getKey())/messages")
         self.setup()
         self.downloadMessages()
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(appMovedToBackground), name:UIApplicationDidEnterBackgroundNotification, object: nil)
+    }
+    
+    func appMovedToBackground() {
+        downloadRef?.removeAllObservers()
+        messages = [JSQMessage]()
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
         //mainStore.subscribe(self)
         //profileBtn.enabled = true
     }
@@ -80,6 +91,7 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol, StoreSubsc
         super.viewWillDisappear(animated)
         //mainStore.unsubscribe(self)
         downloadRef?.removeAllObservers()
+        messages = [JSQMessage]()
         //conversation.listenToConversation()
     }
     

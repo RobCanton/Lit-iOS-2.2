@@ -10,7 +10,7 @@ import UIKit
 import ReSwift
 import Firebase
 
-class ActivityViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ActivityViewController: UITableViewController, UISearchBarDelegate {
     
     
     var myStory:Story?
@@ -23,7 +23,6 @@ class ActivityViewController: UIViewController, UITableViewDelegate, UITableView
     var myStoryRef:FIRDatabaseReference?
     var responseRef:FIRDatabaseReference?
     
-    @IBOutlet weak var tableView: UITableView!
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         requestActivity()
@@ -38,6 +37,13 @@ class ActivityViewController: UIViewController, UITableViewDelegate, UITableView
         responseRef?.removeAllObservers()
     }
     
+    @IBAction func showUserSearch(sender: AnyObject) {
+        
+        let controller = UIStoryboard(name: "UserSearchViewController", bundle: nil)
+            .instantiateViewControllerWithIdentifier("UserSearchNavigationController")
+        self.presentViewController(controller, animated: true, completion: nil)
+        
+    }
     
     func listenToMyStory() {
         let uid = mainStore.state.userState.uid
@@ -72,13 +78,13 @@ class ActivityViewController: UIViewController, UITableViewDelegate, UITableView
         if story.needsDownload() {
             if force {
                 story.downloadStory({ complete in
-                    self.tableView?.reloadRowsAtIndexPaths(indexPath, withRowAnimation: .Automatic)
+                    self.tableView.reloadRowsAtIndexPaths(indexPath, withRowAnimation: .Automatic)
                 })
             }
         } else {
             story.state = .Loaded
         }
-        self.tableView?.reloadRowsAtIndexPaths(indexPath, withRowAnimation: .Automatic)
+        self.tableView.reloadRowsAtIndexPaths(indexPath, withRowAnimation: .Automatic)
     }
     
     func requestActivity() {
@@ -168,7 +174,7 @@ class ActivityViewController: UIViewController, UITableViewDelegate, UITableView
         if story.needsDownload() {
             if force {
                 story.downloadStory({ complete in
-                    self.tableView?.reloadRowsAtIndexPaths(indexPath, withRowAnimation: .Automatic)
+                    self.tableView.reloadRowsAtIndexPaths(indexPath, withRowAnimation: .Automatic)
                 })
             }
         } else {
@@ -190,7 +196,7 @@ class ActivityViewController: UIViewController, UITableViewDelegate, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationController?.navigationBar.titleTextAttributes =
+        self.navigationController!.navigationBar.titleTextAttributes =
             [NSFontAttributeName: UIFont(name: "Avenir-Medium", size: 18.0)!,
              NSForegroundColorAttributeName: UIColor.whiteColor()]
         
@@ -206,15 +212,23 @@ class ActivityViewController: UIViewController, UITableViewDelegate, UITableView
         tableView.tableFooterView = UIView(frame: CGRectMake(0,0,tableView!.frame.width, 160))
         tableView!.separatorColor = UIColor(white: 0.08, alpha: 1.0)
         tableView!.reloadData()
+        
+    }
+    
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+    
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
     }
     
     
-    
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 2
     }
     
-    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         let headerView = UINib(nibName: "ListHeaderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! ListHeaderView
 
@@ -226,14 +240,14 @@ class ActivityViewController: UIViewController, UITableViewDelegate, UITableView
         return headerView
     }
     
-    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 1 && stories.count > 0 {
             return 34
         }
         return 0
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         
         switch indexPath.section {
         default:
@@ -241,7 +255,7 @@ class ActivityViewController: UIViewController, UITableViewDelegate, UITableView
         }
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
             if myStory != nil {
@@ -255,7 +269,7 @@ class ActivityViewController: UIViewController, UITableViewDelegate, UITableView
         
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCellWithIdentifier("MyStoryCell", forIndexPath: indexPath) as! MyStoryTableViewCell
             cell.setStory(myStory!)
@@ -274,7 +288,7 @@ class ActivityViewController: UIViewController, UITableViewDelegate, UITableView
     let transitionController: TransitionController = TransitionController()
     var selectedIndexPath: NSIndexPath!
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
 
         if indexPath.section == 0 {
             if let story = myStory {
@@ -294,7 +308,6 @@ class ActivityViewController: UIViewController, UITableViewDelegate, UITableView
                 downloadStory(story, force: true)
             }
         }
-        
 
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }

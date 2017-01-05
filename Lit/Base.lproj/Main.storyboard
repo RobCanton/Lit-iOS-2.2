@@ -1016,7 +1016,7 @@
         <scene sceneID="0l9-U7-pGl">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="r5N-WM-LIr" customClass="ARNImageTransitionNavigationController" customModule="Lit" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" tag="1" title="" image="search" id="pso-by-sb3">
+                    <tabBarItem key="tabBarItem" tag="1" title="" image="activity" id="pso-by-sb3">
                         <inset key="imageInsets" minX="0.0" minY="6" maxX="0.0" maxY="-6"/>
                     </tabBarItem>
                     <toolbarItems/>
@@ -1032,57 +1032,47 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="VQL-1a-jsd" kind="relationship" relationship="rootViewController" id="8JK-Fc-qxM"/>
+                        <segue destination="t2W-A8-Ssg" kind="relationship" relationship="rootViewController" id="xUv-Q6-wjm"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XQW-dN-guL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2366" y="301"/>
         </scene>
-        <!--Activity View Controller-->
-        <scene sceneID="mkh-V2-7Yq">
+        <!--Activity-->
+        <scene sceneID="UB6-YX-cdM">
             <objects>
-                <viewController storyboardIdentifier="ActivityViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="VQL-1a-jsd" customClass="ActivityViewController" customModule="Lit" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="ub8-hZ-zjC"/>
-                        <viewControllerLayoutGuide type="bottom" id="YuS-bp-3Bc"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="N48-9w-b61">
+                <tableViewController restorationIdentifier="ActivityViewController" storyboardIdentifier="ActivityViewController" id="t2W-A8-Ssg" customClass="ActivityViewController" customModule="Lit" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="qZd-SP-tJ8">
                         <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="QSJ-90-Nj6">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="487"/>
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                            </tableView>
-                        </subviews>
-                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        <constraints>
-                            <constraint firstItem="QSJ-90-Nj6" firstAttribute="top" secondItem="N48-9w-b61" secondAttribute="topMargin" id="587-tm-gRs"/>
-                            <constraint firstAttribute="trailing" secondItem="QSJ-90-Nj6" secondAttribute="trailing" id="OfO-DZ-5oK"/>
-                            <constraint firstAttribute="bottomMargin" secondItem="QSJ-90-Nj6" secondAttribute="bottom" constant="49" id="fLb-RL-hLf"/>
-                            <constraint firstItem="QSJ-90-Nj6" firstAttribute="leading" secondItem="N48-9w-b61" secondAttribute="leading" id="ivs-JX-m1s"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" id="iDX-9y-Rqa">
-                        <nil key="title"/>
-                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="PGZ-Ox-qQz">
-                            <rect key="frame" x="180" y="7" width="240" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <segments>
-                                <segment title="Following"/>
-                                <segment title="Discover"/>
-                            </segments>
-                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        </segmentedControl>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="HvC-Eh-ixJ">
+                                <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="HvC-Eh-ixJ" id="F4V-r5-mGp">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="t2W-A8-Ssg" id="avF-IK-zbD"/>
+                            <outlet property="delegate" destination="t2W-A8-Ssg" id="7pt-Ey-GNe"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Activity" id="hTe-4Q-KLM">
+                        <barButtonItem key="rightBarButtonItem" image="find_user" id="VB8-ws-qo0">
+                            <connections>
+                                <action selector="showUserSearch:" destination="t2W-A8-Ssg" id="9oR-fo-Dsk"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
-                    <connections>
-                        <outlet property="tableView" destination="QSJ-90-Nj6" id="tlw-Xj-JGz"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="bgS-Sl-mJ9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="NQ7-PK-3dn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2986" y="301"/>
+            <point key="canvasLocation" x="3042" y="296"/>
         </scene>
         <!--Current User Profile View Controller-->
         <scene sceneID="AbF-Zj-Kj8">
@@ -1510,14 +1500,15 @@
     </scenes>
     <resources>
         <image name="Send" width="32" height="32"/>
+        <image name="activity" width="32" height="32"/>
         <image name="collapse" width="32" height="32"/>
         <image name="delete_filled" width="32" height="32"/>
         <image name="fb" width="512" height="512"/>
+        <image name="find_user" width="32" height="32"/>
         <image name="home" width="32" height="32"/>
         <image name="lit" width="1944" height="1944"/>
         <image name="message" width="32" height="32"/>
         <image name="right_arrow" width="32" height="32"/>
-        <image name="search" width="32" height="32"/>
         <image name="settings" width="32" height="32"/>
         <image name="user" width="32" height="32"/>
     </resources>

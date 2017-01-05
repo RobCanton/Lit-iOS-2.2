@@ -9,11 +9,15 @@
 import UIKit
 import ReSwift
 
-class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, StoreSubscriber, UIScrollViewDelegate {
+class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, StoreSubscriber, UIScrollViewDelegate, UISearchBarDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     
     var locations = [Location]()
+    var filteredLocations = [Location]()
+    
+    var searchBarActive:Bool = false
+    var searchBar:UISearchBar!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,7 +40,79 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.reloadData()
         setCellAlphas()
         
+        searchBar = UISearchBar()
+        //searchBar.showsCancelButton = true
+        searchBar.placeholder = "Search Nearby"
+        searchBar.delegate = self
+        
+        searchBar.keyboardAppearance   = .Dark
+        searchBar.searchBarStyle       = UISearchBarStyle.Minimal
+        searchBar.tintColor            = UIColor.whiteColor()
+        searchBar.barTintColor         = UIColor(white: 0.05, alpha: 1.0)
+        searchBar.setTextColor(UIColor.whiteColor())
+        
+        
+        self.navigationItem.titleView = searchBar
+        
     }
+    
+    // MARK: Search
+    func filterContentForSearchText(searchText:String){
+        self.filteredLocations = locations.filter({ (location:Location) -> Bool in
+            return location.getName().containsIgnoringCase(searchText)
+        })
+    }
+    
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        // user did type something, check our datasource for text that looks the same
+        if searchText.characters.count > 0 {
+            // search and reload data source
+            self.searchBarActive    = true
+            self.filterContentForSearchText(searchText)
+            self.tableView?.contentOffset = CGPoint(x: 0, y: 0)
+            self.tableView?.reloadData()
+        }else{
+            // if text lenght == 0
+            // we will consider the searchbar is not active
+            self.searchBarActive = false
+            self.tableView?.reloadData()
+        }
+        
+    }
+    
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        self .cancelSearching()
+        self.tableView?.reloadData()
+    }
+    
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        print("SEARCH")
+        self.searchBar.resignFirstResponder()
+    }
+    
+    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
+        // we used here to set self.searchBarActive = YES
+        // but we'll not do that any more... it made problems
+        // it's better to set self.searchBarActive = YES when user typed something
+        self.searchBar.setShowsCancelButton(true, animated: true)
+        
+    }
+    
+    func searchBarTextDidEndEditing(searchBar: UISearchBar) {
+        // this method is being called when search btn in the keyboard tapped
+        // we set searchBarActive = NO
+        // but no need to reloadCollectionView
+        //self.searchBarActive = false
+        //self.searchBar.setShowsCancelButton(false, animated: false)
+    }
+    func cancelSearching(){
+        self.searchBar.setShowsCancelButton(false, animated: true)
+        self.searchBarActive = false
+        self.searchBar.resignFirstResponder()
+        self.searchBar.text = ""
+    }
+    
+    
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -79,12 +155,20 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if self.searchBarActive {
+            return filteredLocations.count;
+        }
         return locations.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("locationCell", forIndexPath: indexPath) as! LocationTableCell
-        let location = locations[indexPath.item]
+        var location:Location!
+        if (searchBarActive) {
+            location = filteredLocations[indexPath.item]
+        } else {
+            location = locations[indexPath.item]
+        }
         cell.setCellLocation(location)
         
         return cell
@@ -93,7 +177,15 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewControllerWithIdentifier("LocViewController") as! LocViewController
-        controller.location = locations[indexPath.item]
+        var location:Location
+        if (searchBarActive) {
+            location = filteredLocations[indexPath.item]
+            cancelSearching()
+        } else {
+            location = locations[indexPath.item]
+        }
+
+        controller.location = location
         navigationController?.pushViewController(controller, animated: true)
     }
     

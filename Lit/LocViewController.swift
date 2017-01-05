@@ -167,6 +167,7 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         videoCache.countLimit = 25
         videoCache.delegate = self
         self.navigationItem.title = location.getName()
@@ -265,6 +266,7 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
         self.navigationItem.rightBarButtonItem = distanceItem
         
         guests = location.getVisitors()
+        
     }
     
     
@@ -423,13 +425,11 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
         }
         else if indexPath.section == 2 {
             let cell = tableView.cellForRowAtIndexPath(indexPath) as! UserViewCell
-            if let user = cell.user {
-                let controller = UIStoryboard(name: "Main", bundle: nil)
-                    .instantiateViewControllerWithIdentifier("UserProfileViewController") as! UserProfileViewController
-                controller.uid = cell.user!.getUserId()
-                self.navigationController?.pushViewController(controller, animated: true)
-                tableView.deselectRowAtIndexPath(indexPath, animated: true)
-            }
+            let controller = UIStoryboard(name: "Main", bundle: nil)
+                .instantiateViewControllerWithIdentifier("UserProfileViewController") as! UserProfileViewController
+            controller.uid = cell.user!.getUserId()
+            self.navigationController?.pushViewController(controller, animated: true)
+            tableView.deselectRowAtIndexPath(indexPath, animated: true)
         }
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }

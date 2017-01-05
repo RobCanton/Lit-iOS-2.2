@@ -190,6 +190,8 @@
 		B09D5FCF1DA57C80004A188E /* ARNModalImageTransitionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09D5FCC1DA57C80004A188E /* ARNModalImageTransitionViewController.swift */; };
 		B09D5FD21DA57CE9004A188E /* ModalViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B09D5FD01DA57CE9004A188E /* ModalViewController.storyboard */; };
 		B09D5FD31DA57CE9004A188E /* ModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09D5FD11DA57CE9004A188E /* ModalViewController.swift */; };
+		B0B35DF61E1DB6E400E4546D /* UserSearchViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B0B35DF51E1DB6E400E4546D /* UserSearchViewController.storyboard */; };
+		B0B35DF81E1DB72B00E4546D /* UserSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B35DF71E1DB72B00E4546D /* UserSearchViewController.swift */; };
 		B0BA32691DA7158B004352A7 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0BA32671DA7158B004352A7 /* HeaderView.swift */; };
 		B0BA326A1DA7158B004352A7 /* HeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0BA32681DA7158B004352A7 /* HeaderView.xib */; };
 		B0BA326C1DA7163D004352A7 /* CreateProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0BA326B1DA7163D004352A7 /* CreateProfileHeaderView.xib */; };
@@ -431,6 +433,8 @@
 		B09D5FCC1DA57C80004A188E /* ARNModalImageTransitionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ARNModalImageTransitionViewController.swift; sourceTree = "<group>"; };
 		B09D5FD01DA57CE9004A188E /* ModalViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ModalViewController.storyboard; sourceTree = "<group>"; };
 		B09D5FD11DA57CE9004A188E /* ModalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModalViewController.swift; sourceTree = "<group>"; };
+		B0B35DF51E1DB6E400E4546D /* UserSearchViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = UserSearchViewController.storyboard; sourceTree = "<group>"; };
+		B0B35DF71E1DB72B00E4546D /* UserSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSearchViewController.swift; sourceTree = "<group>"; };
 		B0BA32671DA7158B004352A7 /* HeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		B0BA32681DA7158B004352A7 /* HeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeaderView.xib; sourceTree = "<group>"; };
 		B0BA326B1DA7163D004352A7 /* CreateProfileHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreateProfileHeaderView.xib; sourceTree = "<group>"; };
@@ -765,6 +769,8 @@
 				76EE2B931D87653700EDB4CB /* ActivityViewController.swift */,
 				B07D74BB1DC2E2AB001D66EA /* ActivityFeedViewController.swift */,
 				B02D4C371DC7B125004E2673 /* SearchViewController.swift */,
+				B0B35DF71E1DB72B00E4546D /* UserSearchViewController.swift */,
+				B0B35DF51E1DB6E400E4546D /* UserSearchViewController.storyboard */,
 			);
 			name = Activity;
 			sourceTree = "<group>";
@@ -1050,6 +1056,7 @@
 				B0E8E3451DE203720077D1BC /* UserStoryTableViewCell.xib in Resources */,
 				B0BA326A1DA7158B004352A7 /* HeaderView.xib in Resources */,
 				B03504C31DD0663100C9C83F /* LocationFooterView.xib in Resources */,
+				B0B35DF61E1DB6E400E4546D /* UserSearchViewController.storyboard in Resources */,
 				B0321ED01DB56C0500AD4C53 /* LocationHeaderView.xib in Resources */,
 				B07E54CE1E0B235B008C2D23 /* ProfileHeaderView.xib in Resources */,
 				B01CD8141DCC136800AA3499 /* EventCell.xib in Resources */,
@@ -1302,6 +1309,7 @@
 				B011B3571E01367800FA4633 /* MasterNavigationController.swift in Sources */,
 				B03DED121DAED45A0062357A /* UserProfileControlBar.swift in Sources */,
 				B0351F981DED0503000A4BF5 /* NVActivityIndicatorAnimationBallBeat.swift in Sources */,
+				B0B35DF81E1DB72B00E4546D /* UserSearchViewController.swift in Sources */,
 				B02B23DE1E09D2F800CD6953 /* KDCircularProgress.swift in Sources */,
 				76EC36041D58EB600056D4CF /* CircleProgressView.swift in Sources */,
 				B05ABD041D41211100364322 /* MainViewController.swift in Sources */,
