@@ -15,6 +15,12 @@ class MyUserProfileViewController: UserProfileViewController {
         uid = mainStore.state.userState.uid
         super.viewDidLoad()
     }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        getKeys()
+    }
 }
 
 
@@ -274,7 +280,6 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     
     func downloadStory(postKeys:[String]) {
         self.posts = [StoryItem]()
-        collectionView?.reloadData()
         FirebaseService.downloadStory(postKeys, completionHandler: { story in
             self.posts = story.reverse()
             self.collectionView!.reloadData()

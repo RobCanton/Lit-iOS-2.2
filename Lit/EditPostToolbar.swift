@@ -10,13 +10,14 @@ import UIKit
 
 class EditPostToolbar: UIView {
 
-    @IBAction func handleDeletePost(sender: AnyObject) {
-    }
-    
+    var deleteHandler:(()->())?
     override func awakeFromNib() {
         super.awakeFromNib()
         
         
+    }
+    @IBAction func handleDelete(sender: AnyObject) {
+        deleteHandler?()
     }
     
     /*

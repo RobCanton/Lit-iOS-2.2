@@ -16,15 +16,15 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
     var uid:String!
     var tabBarRef:PopUpTabBarController!
     
-    lazy var editOverlay: EditPostToolbar = {
-        let margin:CGFloat = 0.0
-        var view = UINib(nibName: "EditPostToolbar", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! EditPostToolbar
-        let width: CGFloat = (UIScreen.mainScreen().bounds.size.width)
-        let height: CGFloat = 60
-        
-        view.frame = CGRect(x: margin, y: margin + 2.0, width: width, height: view.frame.height)
-        return view
-    }()
+//    lazy var editOverlay: EditPostToolbar = {
+//        let margin:CGFloat = 0.0
+//        var view = UINib(nibName: "EditPostToolbar", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! EditPostToolbar
+//        let width: CGFloat = (UIScreen.mainScreen().bounds.size.width)
+//        let height: CGFloat = 60
+//        
+//        view.frame = CGRect(x: margin, y: margin + 2.0, width: width, height: view.frame.height)
+//        return view
+//    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,10 +35,7 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
         self.view.backgroundColor = UIColor.blackColor()
         
         self.view.addSubview(self.collectionView)
-        
-        if uid == mainStore.state.userState.uid {
-            currentUserEditMode()
-        }
+
     }
     
     
@@ -63,11 +60,16 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
                 }
             }
         }
+        
+        if uid == mainStore.state.userState.uid {
+            currentUserEditMode()
+        }
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(false, animated: true)
+        toolbar?.removeFromSuperview()
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -76,8 +78,33 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
         tabBarRef.setTabBarVisible(true, animated: true)
     }
     
+    var toolbar:EditPostToolbar?
     func currentUserEditMode() {
         //self.view.addSubview(editOverlay)
+        toolbar = UINib(nibName: "EditPostToolbar", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! EditPostToolbar
+        toolbar!.frame = CGRectMake(view.frame.width - toolbar!.frame.width - 8, 8, toolbar!.frame.width, toolbar!.frame.height)
+        toolbar!.deleteHandler = deleteCurrentPost
+        self.view.addSubview(toolbar!)
+    }
+    
+    func deleteCurrentPost() {
+        let uid = mainStore.state.userState.uid
+        let indexPath = self.collectionView.indexPathsForVisibleItems().first!
+        let item = photos[indexPath.item]
+        
+        let ref = FirebaseService.ref.child("users/uploads/\(uid)/\(item.getKey())")
+        ref.removeValueWithCompletionBlock({ error, ref in
+            
+            let locRef = FirebaseService.ref.child("locations/uploads/\(item.getLocationKey())/\(item.getKey())")
+            locRef.removeValueWithCompletionBlock({ error, ref in
+                let uploadRef = FirebaseService.ref.child("uploads/\(item.getKey())")
+                uploadRef.removeValueWithCompletionBlock({ error, ref in
+                    if let navigationController = self.navigationController {
+                        navigationController.popViewControllerAnimated(true)
+                    }
+                })
+            })
+        })
     }
     
     // MARK: Elements

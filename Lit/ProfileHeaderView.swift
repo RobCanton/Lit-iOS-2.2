@@ -87,6 +87,7 @@ class ProfileHeaderView: UICollectionReusableView {
         followingLabel.styleProfileBlockText(0, text: "following", color: subColor, color2: UIColor.whiteColor())
         messageLabel.styleProfileBlockText(0, text: "Message", color: UIColor.whiteColor(), color2: UIColor.clearColor())
 
+        
         followButton.layer.cornerRadius = 2.0
         followButton.clipsToBounds = true
         followButton.layer.borderWidth = 1.0
@@ -109,6 +110,7 @@ class ProfileHeaderView: UICollectionReusableView {
         followingTap = UITapGestureRecognizer(target: self, action: #selector(handleFollowingTap))
         messageTap = UITapGestureRecognizer(target: self, action: #selector(handleMessageTap))
         
+        
         let followersView = followersLabel.superview!
         followersView.userInteractionEnabled = true
         followersView.addGestureRecognizer(followersTap)
@@ -116,12 +118,17 @@ class ProfileHeaderView: UICollectionReusableView {
         let followingView = followingLabel.superview!
         followingView.userInteractionEnabled = true
         followingView.addGestureRecognizer(followingTap)
-        
-        let messageView = messageButton.superview!
-        messageView.userInteractionEnabled = true
-        messageView.addGestureRecognizer(messageTap)
+
         
         controlBarContainer.userInteractionEnabled = true
+        let messageView = messageButton.superview!
+        if user.uid == mainStore.state.userState.uid {
+            messageView.alpha = 0.5
+        } else {
+            messageView.alpha = 1.0
+            messageView.userInteractionEnabled = true
+            messageView.addGestureRecognizer(messageTap)
+        }
     }
     
     func setFullProfile(largeImageURL:String?, bio:String?) {
