@@ -9,8 +9,16 @@
 import UIKit
 import ReSwift
 
+class MyUserProfileViewController: UserProfileViewController {
+    
+    override func viewDidLoad() {
+        uid = mainStore.state.userState.uid
+        super.viewDidLoad()
+    }
+}
 
-class UserProfileViewController: UIViewController, StoreSubscriber, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, UINavigationControllerDelegate, UICollectionViewDelegateFlowLayout {
+
+class UserProfileViewController: UIViewController, StoreSubscriber, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, UINavigationControllerDelegate, UICollectionViewDelegateFlowLayout, EditProfileProtocol {
 
     let cellIdentifier = "photoCell"
     var screenSize: CGRect!
@@ -26,31 +34,29 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     var followers = [String]()
     {
         didSet {
-            if let header = collectionView?.supplementaryViewForElementKind(UICollectionElementKindSectionHeader, atIndexPath: NSIndexPath(forItem: 0, inSection: 0)) as? ProfileHeaderView {
-                header.setFollowersCount(followers.count)
-            }
+            getHeaderView()?.setFollowersCount(followers.count)
         }
     }
     var following = [String]()
         {
         didSet {
-            if let header = collectionView?.supplementaryViewForElementKind(UICollectionElementKindSectionHeader, atIndexPath: NSIndexPath(forItem: 0, inSection: 0)) as? ProfileHeaderView {
-                header.setFollowingCount(following.count)
-            }
+            getHeaderView()?.setFollowingCount(following.count)
         }
     }
     
     var postKeys = [String]()
         {
         didSet {
-            if let header = collectionView?.supplementaryViewForElementKind(UICollectionElementKindSectionHeader, atIndexPath: NSIndexPath(forItem: 0, inSection: 0)) as? ProfileHeaderView {
-                header.setPostsCount(postKeys.count)
-            }
+
+            getHeaderView()?.setPostsCount(postKeys.count)
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        itemSideLength = (UIScreen.mainScreen().bounds.width - 4.0)/3.0
+        
         self.navigationController?.navigationBar.titleTextAttributes =
             [NSFontAttributeName: UIFont(name: "AvenirNext-DemiBold", size: 16.0)!,
              NSForegroundColorAttributeName: UIColor.whiteColor()]
@@ -64,8 +70,8 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 200, right: 0)
         layout.itemSize = getItemSize()
-        layout.minimumInteritemSpacing = 0
-        layout.minimumLineSpacing = 0
+        layout.minimumInteritemSpacing = 1.0
+        layout.minimumLineSpacing = 1.0
         
         collectionView = UICollectionView(frame: CGRectMake(0, 0, view.frame.width, view.frame.height), collectionViewLayout: layout)
         
@@ -76,6 +82,7 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         
         self.collectionView?.registerNib(headerNib, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "headerView")
         
+        collectionView!.contentInset = UIEdgeInsets(top: 1.0, left: 1.0, bottom: 1.0, right: 1.0)
         collectionView!.dataSource = self
         collectionView!.delegate = self
         collectionView!.bounces = true
@@ -84,17 +91,14 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         collectionView!.backgroundColor = UIColor.blackColor()
         self.view.addSubview(collectionView!)
         
+        
+        getFullUser()
         getKeys()
         
     }
     
-    var largeImageURL:String?
-    var bio:String?
-    
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        mainStore.subscribe(self)
+    func getFullUser() {
+        self.getHeaderView()?.fetched = false
         FirebaseService.getUser(uid, completionHandler: { _user in
             if _user != nil {
                 FirebaseService.getUserFullProfile(_user!, completionHandler: { fullUser in
@@ -106,6 +110,7 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
                         }
                         
                         self.navigationItem.title = self.user!.getDisplayName()
+                        
                         self.collectionView?.reloadData()
                         SocialService.listenToFollowers(self.user!.getUserId(), completionHandler: { followers in
                             self.followers = followers
@@ -118,6 +123,15 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
                 })
             }
         })
+    }
+    
+    var largeImageURL:String?
+    var bio:String?
+    
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        mainStore.subscribe(self)
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -135,11 +149,9 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     }
     
     func newState(state: AppState) {
-        
-        if let header = collectionView?.supplementaryViewForElementKind(UICollectionElementKindSectionHeader, atIndexPath: NSIndexPath(forItem: 0, inSection: 0)) as? ProfileHeaderView {
-            let status = checkFollowingStatus(uid)
-            header.setUserStatus(status)
-        }
+
+        let status = checkFollowingStatus(uid)
+        getHeaderView()?.setUserStatus(status)
     }
 
     
@@ -187,8 +199,10 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     }
     
     func editProfileTapped() {
-        let controller = UIStoryboard(name: "EditProfileViewController", bundle: nil).instantiateViewControllerWithIdentifier("EditProfileNavigationController")
-        
+        let controller = UIStoryboard(name: "EditProfileViewController", bundle: nil)
+            .instantiateViewControllerWithIdentifier("EditProfileNavigationController") as! UINavigationController
+        let c = controller.viewControllers[0] as! EditProfileViewController
+        c.delegate = self
         self.presentViewController(controller, animated: true, completion: nil)
     }
     
@@ -283,10 +297,9 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         
         return getItemSize()
     }
-    
+    var itemSideLength:CGFloat!
     func getItemSize() -> CGSize {
-        
-        return CGSize(width: screenWidth/3, height: screenWidth/3);
+        return CGSize(width: itemSideLength, height: itemSideLength)
     }
 
     
@@ -326,6 +339,15 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return .LightContent
     }
+    
+    
+    func getHeaderView() -> ProfileHeaderView? {
+        if let header = collectionView?.supplementaryViewForElementKind(UICollectionElementKindSectionHeader, atIndexPath: NSIndexPath(forItem: 0, inSection: 0)) as? ProfileHeaderView {
+            return header
+        }
+        return nil
+    }
+    
 }
 
 extension UserProfileViewController: View2ViewTransitionPresenting {

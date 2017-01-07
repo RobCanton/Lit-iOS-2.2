@@ -107,6 +107,7 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
         usernameField.textAlignment = .Center
         usernameField.autocapitalizationType = .None
         usernameField.addTarget(self, action: #selector(textViewChanged), forControlEvents: .EditingChanged);
+        usernameField.keyboardAppearance = .Dark
 
         
         fullnameField = MadokaTextField(frame: CGRect(x: 0, y: 0, width: self.view.frame.width * 0.80, height: 64))
@@ -117,6 +118,7 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
         fullnameField.delegate = self
         fullnameField.font = UIFont(name: "Avenir-Medium", size: 20.0)
         fullnameField.textAlignment = .Center
+        fullnameField.keyboardAppearance = .Dark
         
         fullnameField.center = CGPoint(x: bodyView.frame.width/2, y: fullnameField.frame.height)
         bodyView.addSubview(fullnameField)

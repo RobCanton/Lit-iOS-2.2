@@ -8,9 +8,39 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="LocationHeaderView" customModule="Lit" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <rect key="frame" x="0.0" y="0.0" width="600" height="190"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+            <subviews>
+                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3yr-oD-f8R">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="190"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kXI-a0-mgH">
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="190"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="190" id="biG-f5-Jfg"/>
+                            </constraints>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="kXI-a0-mgH" firstAttribute="top" secondItem="3yr-oD-f8R" secondAttribute="top" id="O7z-Ta-nEt"/>
+                        <constraint firstItem="kXI-a0-mgH" firstAttribute="leading" secondItem="3yr-oD-f8R" secondAttribute="leading" id="WoB-0k-CjU"/>
+                        <constraint firstAttribute="trailing" secondItem="kXI-a0-mgH" secondAttribute="trailing" id="jSq-qU-HZ2"/>
+                        <constraint firstAttribute="bottom" secondItem="kXI-a0-mgH" secondAttribute="bottom" id="oD1-M3-3fb"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="3yr-oD-f8R" secondAttribute="bottom" id="AQy-1Y-brx"/>
+                <constraint firstItem="3yr-oD-f8R" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="KfC-ro-NNC"/>
+                <constraint firstAttribute="trailing" secondItem="3yr-oD-f8R" secondAttribute="trailing" id="ONs-QT-3ZY"/>
+                <constraint firstItem="3yr-oD-f8R" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="cmI-TY-xQD"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="imageView" destination="kXI-a0-mgH" id="UFr-Np-J1X"/>
+            </connections>
+            <point key="canvasLocation" x="454" y="173"/>
         </view>
     </objects>
 </document>

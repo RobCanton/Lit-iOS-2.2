@@ -165,7 +165,7 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
     func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
         
         let indexPath: NSIndexPath = self.collectionView.indexPathsForVisibleItems().first!
-        self.transitionController.userInfo = ["destinationIndexPath": indexPath, "initialIndexPath": indexPath]
+        self.transitionController.userInfo?["destinationIndexPath"] = indexPath
         
         let panGestureRecognizer: UIPanGestureRecognizer = gestureRecognizer as! UIPanGestureRecognizer
         let translate: CGPoint = panGestureRecognizer.translationInView(self.view)

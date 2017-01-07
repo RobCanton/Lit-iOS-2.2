@@ -15,6 +15,10 @@ class BioTableViewCell: UITableViewCell {
     
 }
 
+protocol EditProfileProtocol {
+    func getFullUser()
+}
+
 class EditProfileViewController: UITableViewController {
 
     
@@ -43,6 +47,8 @@ class EditProfileViewController: UITableViewController {
     var profilePhotoMessageView:ProfilePictureMessageView?
     var config: SwiftMessages.Config?
     var profilePhotoMessageWrapper = SwiftMessages()
+    
+    var delegate:EditProfileProtocol?
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -194,7 +200,9 @@ class EditProfileViewController: UITableViewController {
                 FirebaseService.getUserFullProfile(user, completionHandler: { _fullUser in
                     if let fullUser = _fullUser {
                         mainStore.dispatch(UserIsAuthenticated(user: fullUser))
-                        self.dismissViewControllerAnimated(true, completion: nil)
+                        self.dismissViewControllerAnimated(true, completion: {
+                            self.delegate?.getFullUser()
+                        })
                     }
                 })
             }

@@ -377,6 +377,7 @@ extension UILabel
     func styleProfileBlockText(count:Int, text:String, color:UIColor, color2:UIColor) {
         self.numberOfLines = 2
         self.textAlignment = .Center
+    
 
         let str = "\(count)\n\(text)"
         let font = UIFont(name: "AvenirNext-Regular", size: 12)

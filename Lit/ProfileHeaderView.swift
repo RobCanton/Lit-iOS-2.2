@@ -51,7 +51,11 @@ class ProfileHeaderView: UICollectionReusableView {
         dividerView.layer.borderWidth = 0.5
     }
     
+    var fetched = false
+    
     func populateHeader(user:User){
+        if fetched { return }
+        fetched = true
 
         self.user = user
         
@@ -77,10 +81,10 @@ class ProfileHeaderView: UICollectionReusableView {
             bioLabel.text = bio
         }
         
-        postsLabel.styleProfileBlockText(158, text: "posts", color: subColor, color2: UIColor.whiteColor())
+        postsLabel.styleProfileBlockText(0, text: "posts", color: subColor, color2: UIColor.whiteColor())
         
-        followersLabel.styleProfileBlockText(158, text: "followers", color: subColor, color2: UIColor.whiteColor())
-        followingLabel.styleProfileBlockText(87, text: "following", color: subColor, color2: UIColor.whiteColor())
+        followersLabel.styleProfileBlockText(0, text: "followers", color: subColor, color2: UIColor.whiteColor())
+        followingLabel.styleProfileBlockText(0, text: "following", color: subColor, color2: UIColor.whiteColor())
         messageLabel.styleProfileBlockText(0, text: "Message", color: UIColor.whiteColor(), color2: UIColor.clearColor())
 
         followButton.layer.cornerRadius = 2.0

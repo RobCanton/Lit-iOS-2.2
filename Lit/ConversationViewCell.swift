@@ -37,12 +37,12 @@ class ConversationViewCell: UITableViewCell, GetUserProtocol {
             if !conversation!.seen {
                 userImageView.layer.borderColor = accentColor.CGColor
                 userImageView.layer.borderWidth = 2.0
-                messageLabel.font = UIFont(name: "Avenir-Heavy", size: 16.0)
+                messageLabel.font = UIFont(name: "AvenirNext-DemiBold", size: 16.0)
                 messageLabel.textColor = UIColor.whiteColor()
             } else {
                 userImageView.layer.borderColor = UIColor.clearColor().CGColor
                 userImageView.layer.borderWidth = 0
-                messageLabel.font = UIFont(name: "Avenir-Medium", size: 16.0)
+                messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 16.0)
                 messageLabel.textColor = UIColor(white: 0.7, alpha: 1.0)
             }
             
@@ -54,6 +54,7 @@ class ConversationViewCell: UITableViewCell, GetUserProtocol {
     func userLoaded(user: User) {
         userImageView.clipsToBounds = true
         userImageView.layer.cornerRadius = userImageView.frame.width/2
+        userImageView.contentMode = .ScaleAspectFill
         userImageView.loadImageUsingCacheWithURLString(user.getImageUrl(), completion: {result in})
         usernameLabel.text = user.getDisplayName()
     }

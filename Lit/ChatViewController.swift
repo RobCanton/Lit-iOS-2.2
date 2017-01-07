@@ -142,6 +142,7 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol, StoreSubsc
             return nil
         default:
             if partnerImageView != nil {
+                
                 let image = JSQMessagesAvatarImageFactory.avatarImageWithImage(partnerImageView!.image, diameter: 48)
                 return image
             }

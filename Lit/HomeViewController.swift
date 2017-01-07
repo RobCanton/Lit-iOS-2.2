@@ -36,7 +36,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.separatorColor = UIColor(white: 0.1, alpha: 1.0)
         tableView.separatorInset = UIEdgeInsetsZero
         tableView.tableHeaderView = nil
-        self.tableView.tableFooterView = UIView()
+        tableView.showsVerticalScrollIndicator = false
+        tableView.tableFooterView = UIView()
         tableView.reloadData()
         setCellAlphas()
         

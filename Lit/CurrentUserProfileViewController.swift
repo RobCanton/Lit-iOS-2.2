@@ -85,9 +85,6 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
         collectionView!.showsVerticalScrollIndicator = false
         collectionView!.backgroundColor = UIColor.blackColor()
         self.view.addSubview(collectionView!)
-        
-        getKeys()
-        
     }
     
     var largeImageURL:String?
@@ -115,6 +112,18 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
                 })
             }
         })
+        
+        var postKeys = [String]()
+        let ref = FirebaseService.ref.child("users/uploads/\(uid)")
+        ref.observeEventType(.Value, withBlock: { snapshot in
+            if snapshot.exists() {
+                for child in snapshot.children {
+                    postKeys.append(child.key!!)
+                }
+                self.postKeys = postKeys
+                self.downloadStory(postKeys)
+            }
+        })
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -129,6 +138,7 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
         mainStore.unsubscribe(self)
         SocialService.stopListeningToFollowers(uid)
         SocialService.stopListeningToFollowing(uid)
+        FirebaseService.ref.child("users/uploads/\(uid)").removeAllObservers()
     }
     
     func newState(state: AppState) {
@@ -138,7 +148,6 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
             header.setUserStatus(status)
         }
     }
-    
     
     
     func followersBlockTapped() {
@@ -239,20 +248,6 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
         }
         
         return UICollectionReusableView()
-    }
-    
-    func getKeys() {
-        var postKeys = [String]()
-        let ref = FirebaseService.ref.child("users/uploads/\(uid)")
-        ref.observeSingleEventOfType(.Value, withBlock: { snapshot in
-            if snapshot.exists() {
-                for child in snapshot.children {
-                    postKeys.append(child.key!!)
-                }
-                self.postKeys = postKeys
-                self.downloadStory(postKeys)
-            }
-        })
     }
     
     func downloadStory(postKeys:[String]) {

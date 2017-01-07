@@ -28,6 +28,8 @@ class MessagesViewController: UITableViewController, StoreSubscriber {
     func getConversations() {
         conversations = getNonEmptyConversations()
         conversations.sortInPlace({ $0 > $1 })
+        
+        print("GET CONVERSATONS: \(conversations.count)")
         tableView.reloadData()
     }
     

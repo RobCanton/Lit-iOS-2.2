@@ -184,9 +184,6 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
         let topInset:CGFloat = navHeight + eventsHeight + slack
         
         
-        headerView = UIImageView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 190))
-        headerView.contentMode = .ScaleAspectFill
-        headerView.clipsToBounds = true
         
         screenSize = self.view.frame
         screenWidth = screenSize.width
@@ -212,29 +209,20 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
         tableView!.bounces = true
         tableView!.pagingEnabled = false
         tableView!.showsVerticalScrollIndicator = false
-        tableView!.parallaxHeader.view = headerView
-        tableView!.parallaxHeader.height = headerView.frame.height
-        tableView!.parallaxHeader.mode = .Bottom
-        tableView!.parallaxHeader.minimumHeight = 0;
         tableView!.separatorColor = UIColor(white: 0.08, alpha: 1.0)
         
         tableView!.backgroundColor = UIColor.blackColor()
+        
+        let headerNib = UINib(nibName: "LocationHeaderView", bundle: nil)
+        tableView!.registerNib(headerNib, forHeaderFooterViewReuseIdentifier: "headerView")
+        
         view.addSubview(tableView!)
         
         tableView!.tableFooterView = UIView(frame: CGRectMake(0,0,tableView!.frame.width, 160))
         
-//        headerView.setCellLocation(location)
-//        headerView.addressLabel.superview!.hidden = true
-//        headerView.titleLabel.superview!.hidden = true
-//        headerView.distanceLabel.superview!.hidden = true
-//        headerView.guestsCountBubble.hidden = true
-//        headerView.guestIcon1.hidden = true
-//        headerView.guestIcon2.hidden = true
-//        headerView.guestIcon3.hidden = true
-        
-        loadImageUsingCacheWithURL(location.getImageURL(), completion: { image, fromCache in
-            self.headerView.image = image
-        })
+//        loadImageUsingCacheWithURL(location.getImageURL(), completion: { image, fromCache in
+//            //self.headerView.image = image
+//        })
         
         let btnName = UIButton()
         btnName.setTitleColor(UIColor.whiteColor(), forState: .Normal)
@@ -303,18 +291,7 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
             self.navigationController?.pushViewController(controller, animated: true)
         }
     }
-    
-    func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
-        switch kind {
-        case UICollectionElementKindSectionFooter:
-            let view = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionFooter, withReuseIdentifier: "myFooterView", forIndexPath: indexPath)
-            return view
-        default:
-            return UICollectionReusableView()
-        }
-    }
-
-    
+ 
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 3
@@ -322,7 +299,7 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 0 {
-            return 0
+            return 190
         }
         if section == 1 && stories.count == 0 {
             return 0
@@ -336,32 +313,33 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
-        let headerView = UINib(nibName: "ListHeaderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! ListHeaderView
+        
         if section == 0 {
-            headerView.hidden = true
-//            if events.count > 0 {
-//                headerView.label.text = ""
-//                headerView.label.textColor = UIColor.whiteColor()
-//            } else {
-//                headerView.label.text = "No Upcoming Events"
-//                headerView.label.textColor = UIColor.grayColor()
-//            }
+            let cell = tableView.dequeueReusableHeaderFooterViewWithIdentifier("headerView")
+            let header = cell as! LocationHeaderView
+            header.backgroundColor = accentColor
+            header.setLocationDetails(location)
+            return cell
             
         } else if section == 1 {
+            let headerView = UINib(nibName: "ListHeaderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! ListHeaderView
             headerView.hidden = false
             headerView.label.text = "RECENT ACTIVITY"
+            return headerView
         } else if section == 2 {
+            let headerView = UINib(nibName: "ListHeaderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! ListHeaderView
             headerView.hidden = false
             headerView.label.text = "GUESTS"
+            return headerView
         }
-        return headerView
+        return nil
     }
     
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if section == 0 {
-            return 1
+            return 0
         }
         if section == 1 {
             return stories.count

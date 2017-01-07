@@ -323,7 +323,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="iZ7-aA-gWJ">
-                                            <rect key="frame" x="8" y="8" width="53" height="53"/>
+                                            <rect key="frame" x="12" y="8" width="53" height="53"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="53" id="PSp-NX-RCf"/>
                                                 <constraint firstAttribute="height" constant="53" id="xrp-zX-g2h"/>
@@ -331,13 +331,13 @@
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v5J-KA-10H">
                                             <rect key="frame" x="69" y="8" width="419" height="25"/>
-                                            <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="18"/>
+                                            <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="16"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eRw-aE-qg7">
                                             <rect key="frame" x="69" y="37" width="419" height="24"/>
-                                            <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="16"/>
+                                            <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
                                             <color key="textColor" white="0.69999999999999996" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -369,12 +369,13 @@
                                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstItem="asB-y7-5eK" firstAttribute="centerY" secondItem="FY7-Ww-Mgg" secondAttribute="centerY" id="125-4G-39q"/>
-                                        <constraint firstItem="v5J-KA-10H" firstAttribute="leading" secondItem="iZ7-aA-gWJ" secondAttribute="trailing" constant="8" id="6of-bg-E5C"/>
+                                        <constraint firstItem="v5J-KA-10H" firstAttribute="leading" secondItem="iZ7-aA-gWJ" secondAttribute="trailing" constant="12" id="6of-bg-E5C"/>
                                         <constraint firstItem="asB-y7-5eK" firstAttribute="leading" secondItem="QE5-ZG-Ird" secondAttribute="trailing" constant="3" id="7gx-Tt-861"/>
                                         <constraint firstItem="asB-y7-5eK" firstAttribute="leading" secondItem="eRw-aE-qg7" secondAttribute="trailing" constant="8" id="AFY-69-W2f"/>
                                         <constraint firstAttribute="leadingMargin" secondItem="iZ7-aA-gWJ" secondAttribute="leading" id="Fh1-gv-322"/>
                                         <constraint firstItem="QE5-ZG-Ird" firstAttribute="leading" secondItem="v5J-KA-10H" secondAttribute="trailing" constant="8" id="GwJ-l3-hvo"/>
                                         <constraint firstItem="QE5-ZG-Ird" firstAttribute="leading" secondItem="eRw-aE-qg7" secondAttribute="trailing" constant="8" id="KHW-Of-4Qc"/>
+                                        <constraint firstItem="iZ7-aA-gWJ" firstAttribute="leading" secondItem="FY7-Ww-Mgg" secondAttribute="leading" constant="12" id="Pbd-lD-qqN"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="asB-y7-5eK" secondAttribute="trailing" id="RGa-Q6-zlp"/>
                                         <constraint firstAttribute="topMargin" secondItem="v5J-KA-10H" secondAttribute="top" id="UIn-VG-P8z"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="iZ7-aA-gWJ" secondAttribute="bottom" id="aE4-oG-7ed"/>
@@ -382,11 +383,12 @@
                                         <constraint firstItem="asB-y7-5eK" firstAttribute="leading" secondItem="v5J-KA-10H" secondAttribute="trailing" constant="8" id="gO0-55-tzn"/>
                                         <constraint firstAttribute="topMargin" secondItem="iZ7-aA-gWJ" secondAttribute="top" id="nRd-sL-t7W"/>
                                         <constraint firstItem="v5J-KA-10H" firstAttribute="top" secondItem="iZ7-aA-gWJ" secondAttribute="top" id="qC2-Ti-9jQ"/>
-                                        <constraint firstItem="eRw-aE-qg7" firstAttribute="leading" secondItem="iZ7-aA-gWJ" secondAttribute="trailing" constant="8" id="si8-np-hNa"/>
+                                        <constraint firstItem="eRw-aE-qg7" firstAttribute="leading" secondItem="iZ7-aA-gWJ" secondAttribute="trailing" constant="12" id="si8-np-hNa"/>
                                         <constraint firstItem="QE5-ZG-Ird" firstAttribute="centerY" secondItem="FY7-Ww-Mgg" secondAttribute="centerY" id="yJX-er-SIA"/>
                                     </constraints>
                                     <variation key="default">
                                         <mask key="constraints">
+                                            <exclude reference="Fh1-gv-322"/>
                                             <exclude reference="AFY-69-W2f"/>
                                             <exclude reference="gO0-55-tzn"/>
                                         </mask>
@@ -1067,10 +1069,10 @@
             </objects>
             <point key="canvasLocation" x="3042" y="296"/>
         </scene>
-        <!--Current User Profile View Controller-->
+        <!--My User Profile View Controller-->
         <scene sceneID="AbF-Zj-Kj8">
             <objects>
-                <viewController storyboardIdentifier="CurrentUserProfileViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="j2M-qo-4D8" customClass="CurrentUserProfileViewController" customModule="Lit" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MyUserProfileViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="j2M-qo-4D8" customClass="MyUserProfileViewController" customModule="Lit" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Waa-Pe-n8E"/>
                         <viewControllerLayoutGuide type="bottom" id="szF-Yd-wDE"/>
@@ -1437,7 +1439,6 @@
         <!-- -->
         <scene sceneID="HKm-Fp-bFd">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="6eb-rG-csF" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController storyboardIdentifier="DummyViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="DAc-2n-Ogm" customClass="DummyViewController" customModule="Lit" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="oJD-6c-PVL"/>
@@ -1452,6 +1453,7 @@
                         <inset key="imageInsets" minX="0.0" minY="6" maxX="0.0" maxY="-6"/>
                     </tabBarItem>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6eb-rG-csF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="470" y="1979"/>
         </scene>

@@ -155,4 +155,12 @@ class Location:NSObject, NSCoding {
     func getDistance() -> Double? {
         return distance
     }
+    
+//    func getImageFilePath() {
+//        let  documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
+//        let fileURL = documentsURL.URLByAppendingPathComponent("location_images").URLByAppendingPathComponent("\(key)).jpg")
+//        if let content = UIImage(contentsOfFile: file.path!) {
+//            
+//        }
+//    }
 }

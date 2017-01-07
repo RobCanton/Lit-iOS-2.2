@@ -35,18 +35,40 @@ class LoginViewController: UIViewController, StoreSubscriber {
         
         if let user = FIRAuth.auth()?.currentUser {
             print("already signed in")
-            FirebaseService.getUser(user.uid, completionHandler: { _user in
-                if _user != nil {
-                    FirebaseService.login(_user!)
+            
+            checkUserAgainstDatabase({success, error in
+                if success {
+                    FirebaseService.getUser(user.uid, completionHandler: { _user in
+                        if _user != nil {
+                            FirebaseService.login(_user!)
+                        } else {
+                            FirebaseService.logoutOfFirebase()
+                            self.activateLoginButton()
+                        }
+                    })
                 } else {
-                    FirebaseService.logout()
+                    FirebaseService.logoutOfFirebase()
                     self.activateLoginButton()
                 }
             })
+            
         } else {
+            FirebaseService.logoutOfFirebase()
             activateLoginButton()
         }
 
+    }
+    
+    func checkUserAgainstDatabase(completion: (success: Bool, error: NSError?) -> Void) {
+        guard let currentUser = FIRAuth.auth()?.currentUser else { return }
+        currentUser.getTokenForcingRefresh(true) { (idToken, error) in
+            if let error = error {
+                completion(success: false, error: error)
+                print(error.localizedDescription)
+            } else {
+                completion(success: true, error: nil)
+            }
+        }
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -106,7 +128,6 @@ class LoginViewController: UIViewController, StoreSubscriber {
 
 
     func initiateFBLogin() {
-        loginButton.layer.opacity = 0.4
         loginButton.removeGestureRecognizer(tap)
         let loginManager = FBSDKLoginManager()
         

@@ -20,7 +20,7 @@ class PhotoCell: UICollectionViewCell {
         super.awakeFromNib()
         
         self.layer.borderColor = UIColor.blackColor().CGColor
-        self.layer.borderWidth = 1.0
+        self.layer.borderWidth = 0.0
 
     }
     

@@ -27,6 +27,10 @@ class FirebaseService {
     static func logout() {
         let loginManager = FBSDKLoginManager()
         loginManager.logOut()
+        logoutOfFirebase()
+    }
+    
+    static func logoutOfFirebase() {
         try! FIRAuth.auth()!.signOut()
         GPSService.sharedInstance.stopUpdatingLocation()
         LocationService.shouldCalculateNearbyArea = true
@@ -59,6 +63,7 @@ class FirebaseService {
             completionHandler(user: cachedUser)
             
         } else {
+            print("DO FB FETCH")
             ref.child("users/profile/basic/\(uid)").observeSingleEventOfType(.Value, withBlock: { (snapshot) in
                 var user:User?
                 if snapshot.exists() {
@@ -68,7 +73,7 @@ class FirebaseService {
                     user = User(uid: uid, displayName: displayName, name: name, imageURL: imageURL, largeImageURL: nil, bio: nil)
                     dataCache.setObject(user!, forKey: "user-\(uid)")
                 }
-                
+                print("FIREBASE RESULT: \(user)")
                 completionHandler(user: user)
                 
             })
