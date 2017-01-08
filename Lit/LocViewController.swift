@@ -459,13 +459,13 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
                 showMap()
                 break
             case .Phone:
-                promptPhoneCall(location.phone!)
+                promptPhoneCall()
                 break
             case .Email:
-                openEmail(location.email!)
+                promptEmail()
                 break
             case .Website:
-                openWebsite(location.website!)
+                promptWebsite()
                 break
             default:
                 break
@@ -474,7 +474,8 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
-    func promptPhoneCall(phoneNumber:String) {
+    func promptPhoneCall() {
+        guard let phoneNumber = location.phone else { return }
         let phoneAlert = UIAlertController(title: "Call \(location.getName())?", message: phoneNumber, preferredStyle: UIAlertControllerStyle.Alert)
         
         phoneAlert.addAction(UIAlertAction(title: "Call", style: .Default, handler: { (action: UIAlertAction!) in
@@ -489,6 +490,7 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
     }
     
     private func callNumber(phoneNumber:String) {
+        
         let stringArray = phoneNumber.componentsSeparatedByCharactersInSet(
             NSCharacterSet.decimalDigitCharacterSet().invertedSet)
         let cleanNumber = stringArray.joinWithSeparator("")
@@ -500,9 +502,40 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
         }
     }
     
-    func openEmail(address:String) {
-        let url = NSURL(string: "mailto:\(address)")
+    func promptEmail() {
+        guard let email = location.email else { return }
+        let phoneAlert = UIAlertController(title: "Contact \(location.getName())?", message: email, preferredStyle: UIAlertControllerStyle.Alert)
+        
+        phoneAlert.addAction(UIAlertAction(title: "Email", style: .Default, handler: { (action: UIAlertAction!) in
+            self.openEmail(email)
+        }))
+        
+        phoneAlert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: { (action: UIAlertAction!) in
+            
+        }))
+        
+        presentViewController(phoneAlert, animated: true, completion: nil)
+    }
+    
+    func openEmail(email:String) {
+
+        let url = NSURL(string: "mailto:\(email)")
         UIApplication.sharedApplication().openURL(url!)
+    }
+    
+    func promptWebsite() {
+        guard let website = location.website else { return }
+        let phoneAlert = UIAlertController(title: "Visit \(website)?", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
+        
+        phoneAlert.addAction(UIAlertAction(title: "Open", style: .Default, handler: { (action: UIAlertAction!) in
+            self.openWebsite(website)
+        }))
+        
+        phoneAlert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: { (action: UIAlertAction!) in
+            
+        }))
+        
+        presentViewController(phoneAlert, animated: true, completion: nil)
     }
     
     func openWebsite(website:String) {
