@@ -35,7 +35,9 @@ class UploadSelectorView: MessageView, MKMapViewDelegate {
         profileRow = UINib(nibName: "DialogRow", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! DialogRow
 
         profileRow.setToProfileRow()
-        profileRow.addTarget(self, action: #selector(rowTapped), forControlEvents: .TouchUpInside)
+        //profileRow.addTarget(self, action: #selector(rowTapped), forControlEvents: .TouchUpInside)
+        profileRow.active(true)
+        profileRow.userInteractionEnabled = false
         contentView.addArrangedSubview(profileRow)
 
         
@@ -54,7 +56,7 @@ class UploadSelectorView: MessageView, MKMapViewDelegate {
         sendButton.titleLabel?.font = UIFont(name: "Avenir-Heavy", size: 18.0)
         sendButton.addTarget(self, action: #selector(doSend), forControlEvents: .TouchUpInside)
         sendButton.enabled = false
-        deactivateSendButton()
+        activateSendButton()
         
         contentView.addArrangedSubview(sendButton)
 
@@ -72,12 +74,12 @@ class UploadSelectorView: MessageView, MKMapViewDelegate {
     var smallOverlay:MKCircle!
     func setCoordinate(coordinate:CLLocation) {
         
-        let regionRadius = 65.0
+        let regionRadius = 80.0
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(coordinate.coordinate,
                                                                   regionRadius * 2.0, regionRadius * 2.0)
         mapView.setRegion(coordinateRegion, animated: false)
         
-        largeOverlay = MKCircle(centerCoordinate: coordinate.coordinate, radius: 64.0)
+        largeOverlay = MKCircle(centerCoordinate: coordinate.coordinate, radius: 100.0)
         //mapView.addOverlay(largeOverlay)
         
         smallOverlay = MKCircle(centerCoordinate: coordinate.coordinate, radius: 8.0)
@@ -155,12 +157,12 @@ class UploadSelectorView: MessageView, MKMapViewDelegate {
                 }
             }
         }
-        
-        if hasSelection {
-            activateSendButton()
-        } else {
-            deactivateSendButton()
-        }
+//        
+//        if hasSelection {
+//            activateSendButton()
+//        } else {
+//            deactivateSendButton()
+//        }
     }
     
     func activateSendButton() {

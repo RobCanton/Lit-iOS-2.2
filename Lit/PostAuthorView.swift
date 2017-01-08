@@ -40,7 +40,7 @@ class PostAuthorView: UIView {
         let frame = CGRectMake(0, 0, authorImageView.frame.width + margin, authorImageView.frame.height + margin)
         addCircle(frame)
         
-        self.applyShadow(2.0, opacity: 0.5, height: 1, shouldRasterize: false)
+        self.applyShadow(2.0, opacity: 0.25, height: 1, shouldRasterize: false)
     }
     
     func setPostMetadata(post:StoryItem) {
@@ -49,9 +49,14 @@ class PostAuthorView: UIView {
             if user != nil {
                 self.authorImageView.loadImageUsingCacheWithURLString(user!.getImageUrl(), completion: { result in })
                 self.authorUsernameLabel.text = user!.getDisplayName()
-                self.authorImageView.userInteractionEnabled = true
                 self.authorImageView.removeGestureRecognizer(self.authorTap)
                 self.authorImageView.addGestureRecognizer(self.authorTap)
+                
+                let superView = self.authorImageView.superview!
+                superView.userInteractionEnabled = true
+                superView.removeGestureRecognizer(self.authorTap)
+                superView.addGestureRecognizer(self.authorTap)
+
                 self.user = user
                 self.timeLabel.text = post.getDateCreated()!.timeStringSinceNow()
                 for location in mainStore.state.locations {

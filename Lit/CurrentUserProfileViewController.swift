@@ -97,18 +97,16 @@ class CurrentUserProfileViewController: UIViewController, StoreSubscriber, UICol
         FirebaseService.getUser(uid, completionHandler: { _user in
             if _user != nil {
                 FirebaseService.getUserFullProfile(_user!, completionHandler: { fullUser in
-                    if fullUser != nil {
-                        self.user = fullUser!
-                        self.navigationItem.title = self.user!.getDisplayName()
-                        self.collectionView?.reloadData()
-                        SocialService.listenToFollowers(self.user!.getUserId(), completionHandler: { followers in
-                            self.followers = followers
-                        })
-                        
-                        SocialService.listenToFollowing(self.user!.getUserId(), completionHandler: { following in
-                            self.following = following
-                        })
-                    }
+                    self.user = fullUser
+                    self.navigationItem.title = self.user!.getDisplayName()
+                    self.collectionView?.reloadData()
+                    SocialService.listenToFollowers(self.user!.getUserId(), completionHandler: { followers in
+                        self.followers = followers
+                    })
+                    
+                    SocialService.listenToFollowing(self.user!.getUserId(), completionHandler: { following in
+                        self.following = following
+                    })
                 })
             }
         })

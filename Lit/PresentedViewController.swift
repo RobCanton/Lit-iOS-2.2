@@ -81,8 +81,8 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
         self.extendedLayoutIncludesOpaqueBars = true
         self.automaticallyAdjustsScrollViewInsets = false
         //self.navigationItem.titleView = self.titleLabel
-        self.navigationItem.leftBarButtonItem = backItem
         self.view.backgroundColor = UIColor.blackColor()
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Plain, target: nil, action: nil)
         
         
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
@@ -147,21 +147,6 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
     
     weak var transitionController: TransitionController!
     
-    lazy var backItem: UIBarButtonItem = {
-        let item = UIBarButtonItem(title: " ", style: .Plain, target: self, action: #selector(pushAuthorProfile))
-        item.tintColor = UIColor.whiteColor()
-        return item
-    }()
-    
-    lazy var moreItem: UIBarButtonItem = {
-        let item = UIBarButtonItem(image: UIImage(named:"more"), style: .Plain, target: self, action: #selector(moreItemTapped(_:)))
-        item.tintColor = UIColor.whiteColor()
-        return item
-    }()
-    
-    func moreItemTapped(sender:UIBarButtonItem) {
-        
-    }
     
     // MARK: CollectionView Data Source
     
@@ -209,7 +194,7 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
         
         let panGestureRecognizer: UIPanGestureRecognizer = gestureRecognizer as! UIPanGestureRecognizer
         let translate: CGPoint = panGestureRecognizer.translationInView(self.view)
-        return Double(abs(translate.y)/abs(translate.x)) > M_PI_4
+        return Double(abs(translate.y)/abs(translate.x)) > M_PI_4 && translate.y > 0
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {

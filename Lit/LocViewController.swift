@@ -216,13 +216,14 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
         let headerNib = UINib(nibName: "LocationHeaderView", bundle: nil)
         tableView!.registerNib(headerNib, forHeaderFooterViewReuseIdentifier: "headerView")
         
+        let footerNib = UINib(nibName: "LocationFooterView", bundle: nil)
+        tableView!.registerNib(footerNib, forHeaderFooterViewReuseIdentifier: "footerView")
+        
+        let footerView = UINib(nibName: "LocationFooterView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! LocationFooterView
+        tableView!.tableFooterView = footerView
+        
         view.addSubview(tableView!)
         
-        tableView!.tableFooterView = UIView(frame: CGRectMake(0,0,tableView!.frame.width, 160))
-        
-//        loadImageUsingCacheWithURL(location.getImageURL(), completion: { image, fromCache in
-//            //self.headerView.image = image
-//        })
         
         let btnName = UIButton()
         btnName.setTitleColor(UIColor.whiteColor(), forState: .Normal)
@@ -255,7 +256,16 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
         
         guests = location.getVisitors()
         
+        LocationService.getLocationDetails(location, completionHandler: { location in
+            self.location = location
+            if let footer = self.tableView?.tableFooterView as? LocationFooterView {
+               footer.descriptionLabel.text = self.location.desc
+            }
+            self.tableView?.reloadData()
+        })
+        
     }
+    
     
     
     func pushUserProfile(uid:String) {
@@ -294,7 +304,7 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
  
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 3
+        return 4
     }
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -307,6 +317,7 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
         if section == 2 && guests.count == 0 {
             return 0
         }
+        
         return 34
     }
     
@@ -317,7 +328,6 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
         if section == 0 {
             let cell = tableView.dequeueReusableHeaderFooterViewWithIdentifier("headerView")
             let header = cell as! LocationHeaderView
-            header.backgroundColor = accentColor
             header.setLocationDetails(location)
             return cell
             
@@ -331,9 +341,15 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
             headerView.hidden = false
             headerView.label.text = "GUESTS"
             return headerView
+        } else if section == 3 {
+            let headerView = UINib(nibName: "ListHeaderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! ListHeaderView
+            headerView.hidden = false
+            headerView.label.text = "INFO"
+            return headerView
         }
         return nil
     }
+    
     
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -345,10 +361,11 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
             return stories.count
         } else if section == 2  {
             return guests.count
+        } else if section == 3 {
+            return 4
         }
         return 0
     }
-    
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         
@@ -359,6 +376,17 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
             return 82
         case 2:
             return 64
+        case 3:
+            if indexPath.row == 0 && location.full_address != nil {
+                return 42
+            } else if indexPath.row == 1 && location.phone != nil {
+                return 42
+            } else if indexPath.row == 2 && location.email != nil {
+                return 42
+            } else if indexPath.row == 3 && location.website != nil {
+                return 42
+            }
+            return 0
         default:
             return 64
         }
@@ -379,6 +407,18 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
         } else if indexPath.section == 2 {
             let cell = tableView.dequeueReusableCellWithIdentifier("UserCell", forIndexPath: indexPath) as! UserViewCell
             cell.setupUser(guests[indexPath.item])
+            return cell
+        } else if indexPath.section == 3 {
+            let cell = tableView.dequeueReusableCellWithIdentifier("InfoCell", forIndexPath: indexPath) as! InfoTableViewCell
+            if indexPath.row == 0 {
+                cell.label.text = location.full_address
+            } else if indexPath.row == 1 {
+                cell.label.text = location.phone
+            } else if indexPath.row == 2 {
+                cell.label.text = location.email
+            }  else if indexPath.row == 3 {
+                cell.label.text = location.website
+            }
             return cell
         }
         

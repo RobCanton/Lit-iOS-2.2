@@ -154,45 +154,46 @@ class SearchViewController:UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     func extractFeedFromJSON(data:NSData) {
-        var _users = [User]()
-        var _locations = [Location]()
-        let json = JSON(data: data)
-        if json.exists() {
-            //If json is .Dictionary
-            for (uid,profile):(String, JSON) in json["profiles"] {
-
-//                let displayName      = profile["username"].stringValue
-//                let imageUrl         = profile["smallProfilePicURL"].stringValue
-//                let largeImageUrl    = profile["largeProfilePicURL"].stringValue
-//                let numFriends       = profile["numFriends"].intValue
-//                let user = User(uid: uid, displayName: displayName, imageUrl: imageUrl, largeImageUrl: largeImageUrl, numFriends: numFriends)
-//                _users.append(user)
-            }
-            
-            //If json is .Dictionary
-            for (key,location):(String, JSON) in json["locations"] {
-                
-                let name             = location["name"].stringValue
-                let lat              = location["coordinates"]["latitude"].doubleValue
-                let lon              = location["coordinates"]["longitude"].doubleValue
-                let imageURL         = location["imageURL"].stringValue
-                let address          = location["address"].stringValue
-                
-                let loc = Location(key: key, name: name, latitude: lat, longitude: lon, imageURL: imageURL, address: address)
-                _locations.append(loc)
-            }
-        }
-        
-        
-        
-        dispatch_async(dispatch_get_main_queue(), {
-            self.users = _users
-            self.locations = _locations
-            if self.users.count == 0 && self.locations.count == 0 {
-                self.noDataLabel.hidden = false
-            }
-            self.tableView.reloadData()
-        })
+//        var _users = [User]()
+//        var _locations = [Location]()
+//        let json = JSON(data: data)
+//        if json.exists() {
+//            //If json is .Dictionary
+//            for (uid,profile):(String, JSON) in json["profiles"] {
+//
+////                let displayName      = profile["username"].stringValue
+////                let imageUrl         = profile["smallProfilePicURL"].stringValue
+////                let largeImageUrl    = profile["largeProfilePicURL"].stringValue
+////                let numFriends       = profile["numFriends"].intValue
+////                let user = User(uid: uid, displayName: displayName, imageUrl: imageUrl, largeImageUrl: largeImageUrl, numFriends: numFriends)
+////                _users.append(user)
+//            }
+//            
+//            //If json is .Dictionary
+//            for (key,location):(String, JSON) in json["locations"] {
+//                
+//                let name             = location["name"].stringValue
+//                let lat              = location["coordinates"]["latitude"].doubleValue
+//                let lon              = location["coordinates"]["longitude"].doubleValue
+//                let imageURL         = location["imageURL"].stringValue
+//                let address          = location["address"].stringValue
+//                
+//                let loc = Location(key: key, name: name, latitude: lat, longitude: lon, imageURL: imageURL, address: address,
+//                                   full_address: nil, phone: nil, website: nil, desc: nil)
+//                _locations.append(loc)
+//            }
+//        }
+//        
+//        
+//        
+//        dispatch_async(dispatch_get_main_queue(), {
+//            self.users = _users
+//            self.locations = _locations
+//            if self.users.count == 0 && self.locations.count == 0 {
+//                self.noDataLabel.hidden = false
+//            }
+//            self.tableView.reloadData()
+//        })
     }
     
     func didPresentSearchController(searchController: UISearchController) {

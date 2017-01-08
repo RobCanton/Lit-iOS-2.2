@@ -8,14 +8,14 @@
 
 import UIKit
 
-class LocationFooterView: UIView {
+class LocationFooterView: UITableViewHeaderFooterView {
 
-    /*
-    // Only override drawRect: if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func drawRect(rect: CGRect) {
-        // Drawing code
+    @IBOutlet weak var descriptionLabel: UILabel!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
     }
-    */
+
 
 }

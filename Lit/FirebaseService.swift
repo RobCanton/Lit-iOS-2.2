@@ -80,27 +80,22 @@ class FirebaseService {
         }
     }
     
-    static func getUserFullProfile(user:User, completionHandler: (user:User?)->()) {
-        if user.bio != nil || user.largeImageURL != nil {
+    static func getUserFullProfile(user:User, completionHandler: (user:User)->()) {
+        if user.bio != nil && user.largeImageURL != nil {
             completionHandler(user: user)
         }
         if user.bio == nil || user.largeImageURL == nil {
             let ref = FirebaseService.ref.child("users/profile/full/\(user.getUserId())")
             ref.observeSingleEventOfType(.Value, withBlock: { (snapshot) in
                 if snapshot.exists() {
-                    let largeImageURL = snapshot.value!["largeProfileImageURL"] as? String
-                    let bio           = snapshot.value!["bio"] as? String
+                    user.largeImageURL = snapshot.value!["largeProfileImageURL"] as? String
+                    user.bio           = snapshot.value!["bio"] as? String
 
-                    user.bio = bio
-                    user.largeImageURL = largeImageURL
                     let uid = user.getUserId()
                     dataCache.removeObjectForKey("user-\(uid)")
                     dataCache.setObject(user, forKey: "user-\(uid)")
-                    completionHandler(user: user)
                 }
-                else {
-                    completionHandler(user: nil)
-                }
+                completionHandler(user: user)
             })
         }
     }

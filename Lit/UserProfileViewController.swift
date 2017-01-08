@@ -108,9 +108,8 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         FirebaseService.getUser(uid, completionHandler: { _user in
             if _user != nil {
                 FirebaseService.getUserFullProfile(_user!, completionHandler: { fullUser in
-                    if fullUser != nil {
                         
-                        self.user = fullUser!
+                        self.user = fullUser
                         if self.user!.getUserId() == mainStore.state.userState.uid {
                             mainStore.dispatch(UpdateUser(user: self.user!))
                         }
@@ -125,7 +124,6 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
                         SocialService.listenToFollowing(self.user!.getUserId(), completionHandler: { following in
                             self.following = following
                         })
-                    }
                 })
             }
         })
@@ -265,25 +263,30 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     }
 
     func getKeys() {
-        var postKeys = [String]()
         let ref = FirebaseService.ref.child("users/uploads/\(uid)")
         ref.observeSingleEventOfType(.Value, withBlock: { snapshot in
+            var postKeys = [String]()
             if snapshot.exists() {
                 for child in snapshot.children {
                     postKeys.append(child.key!!)
                 }
-                self.postKeys = postKeys
-                self.downloadStory(postKeys)
             }
+            print("KEYS: \(postKeys)")
+            self.postKeys = postKeys
+            self.downloadStory(postKeys)
         })
     }
     
     func downloadStory(postKeys:[String]) {
-        self.posts = [StoryItem]()
-        FirebaseService.downloadStory(postKeys, completionHandler: { story in
-            self.posts = story.reverse()
+        if postKeys.count > 0 {
+            FirebaseService.downloadStory(postKeys, completionHandler: { story in
+                self.posts = story.reverse()
+                self.collectionView!.reloadData()
+            })
+        } else {
+            self.posts = [StoryItem]()
             self.collectionView!.reloadData()
-        })
+        }
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

@@ -45,10 +45,11 @@ public class StoryViewController: UICollectionViewCell {
             let screenWidth: CGFloat = (UIScreen.mainScreen().bounds.size.width)
             let screenHeight: CGFloat = (UIScreen.mainScreen().bounds.size.height)
             let width: CGFloat = screenWidth
-            let height: CGFloat = 2.0
+            let height: CGFloat = 1.0
             
+            let margin:CGFloat = 8.0
             progressBar?.removeFromSuperview()
-            progressBar = StoryProgressIndicator(frame: CGRectMake(0,0,width,height))
+            progressBar = StoryProgressIndicator(frame: CGRectMake(margin,margin,width - margin * 2,1.0))
             progressBar!.createProgressIndicator(story)
             contentView.addSubview(progressBar!)
             
@@ -56,7 +57,7 @@ public class StoryViewController: UICollectionViewCell {
                 totalTime += item.getLength()
             }
             
-            getViews()
+            //getViews()
             
         }
     }
@@ -173,7 +174,7 @@ public class StoryViewController: UICollectionViewCell {
         }
         self.progressBar?.activateIndicator(viewIndex)
         timer = NSTimer.scheduledTimerWithTimeInterval(itemLength, target: self, selector: #selector(nextItem), userInfo: nil, repeats: false)
-        FirebaseService.addView(item.getKey(), uid: mainStore.state.userState.uid)
+        //FirebaseService.addView(item.getKey(), uid: mainStore.state.userState.uid)
     }
     
     func createVideoPlayer() {
@@ -196,19 +197,19 @@ public class StoryViewController: UICollectionViewCell {
     }
     
     func getViews() {
-        guard let item = self.item else { return }
-        let postRef = FirebaseService.ref.child("uploads/\(item.getKey())/views")
-        postRef.observeEventType(.Value, withBlock: { snapshot in
-            var viewers = [String]()
-            for child in snapshot.children {
-                viewers.append(child.key!!)
-            }
-            if viewers.count == 1 {
-               self.statsView.viewsLabel.text = "\(viewers.count) view"
-            } else {
-                self.statsView.viewsLabel.text = "\(viewers.count) views"
-            }
-        })
+//        guard let item = self.item else { return }
+//        let postRef = FirebaseService.ref.child("uploads/\(item.getKey())/views")
+//        postRef.observeEventType(.Value, withBlock: { snapshot in
+//            var viewers = [String]()
+//            for child in snapshot.children {
+//                viewers.append(child.key!!)
+//            }
+//            if viewers.count == 1 {
+//               self.statsView.viewsLabel.text = "\(viewers.count) view"
+//            } else {
+//                self.statsView.viewsLabel.text = "\(viewers.count) views"
+//            }
+//        })
     }
     
     func cleanUp() {
@@ -326,12 +327,12 @@ public class StoryViewController: UICollectionViewCell {
     }()
     
     lazy var authorOverlay: PostAuthorView = {
-        let margin:CGFloat = 3.0
+        let margin:CGFloat = 2.0
         var authorView = UINib(nibName: "PostAuthorView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! PostAuthorView
         let width: CGFloat = (UIScreen.mainScreen().bounds.size.width)
         let height: CGFloat = (UIScreen.mainScreen().bounds.size.height)
         
-        authorView.frame = CGRect(x: margin, y: margin + 2.0, width: width, height: authorView.frame.height)
+        authorView.frame = CGRect(x: margin, y: margin + 8.0, width: width, height: authorView.frame.height)
         authorView.authorTappedHandler = self.authorTappedHandler
         return authorView
     }()

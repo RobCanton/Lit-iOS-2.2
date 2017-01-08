@@ -94,15 +94,9 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
         
         let ref = FirebaseService.ref.child("users/uploads/\(uid)/\(item.getKey())")
         ref.removeValueWithCompletionBlock({ error, ref in
-            
-            let locRef = FirebaseService.ref.child("locations/uploads/\(item.getLocationKey())/\(item.getKey())")
-            locRef.removeValueWithCompletionBlock({ error, ref in
-                let uploadRef = FirebaseService.ref.child("uploads/\(item.getKey())")
-                uploadRef.removeValueWithCompletionBlock({ error, ref in
-                    if let navigationController = self.navigationController {
-                        navigationController.popViewControllerAnimated(true)
-                    }
-                })
+            let deleteRef = FirebaseService.ref.child("api/requests/upload/delete/\(item.getKey())")
+            deleteRef.setValue(uid, withCompletionBlock: { error, ref in
+                self.navigationController?.popViewControllerAnimated(true)
             })
         })
     }

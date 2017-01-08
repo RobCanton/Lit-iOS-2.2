@@ -24,8 +24,8 @@ class StoryProgressIndicator: UIView {
     
     var activeBarIndex = 0
     
-    let progressColor = UIColor(white: 0.75, alpha: 1.0)
-    let trackColor = UIColor(white: 1.0, alpha: 0.25)
+    let progressColor = UIColor(white: 1.0, alpha: 0.4)
+    let trackColor = UIColor(white: 1.0, alpha: 0.18)
 
     
     func createProgressIndicator(_story:Story) {
@@ -49,7 +49,7 @@ class StoryProgressIndicator: UIView {
             for i in 0 ... storyItems.count - 1 {
                 let item = storyItems[i]
                 let barWidth = itemWidth
-                let frame = CGRect(x: x, y: CGFloat(0), width: barWidth, height: 2.5)
+                let frame = CGRect(x: x, y: CGFloat(0), width: barWidth, height: 1.6)
                 let bar = ProgressIndicator(frame: frame)
                 progressBars.append(bar)
                 self.addSubview(bar)

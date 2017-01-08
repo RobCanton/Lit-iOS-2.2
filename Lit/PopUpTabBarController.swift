@@ -173,6 +173,7 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
     var cameraButton:UIButton!
     let cameraDefaultWidth:CGFloat = 2.2
     let cameraActiveWidth:CGFloat = 4
+    var cameraActivity:NVActivityIndicatorView!
     func setupMiddleButton() {
         if cameraButton == nil {
             cameraButton = UIButton(frame: CGRect(x: 0, y: 0, width: 56, height: 56))
@@ -190,6 +191,11 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
             cameraButton.addTarget(self, action: #selector(presentCamera), forControlEvents: .TouchUpInside)
             
             self.tabBar.addSubview(cameraButton)
+            
+            cameraActivity = NVActivityIndicatorView(frame: cameraButton.bounds, type: .BallScale, color: UIColor.whiteColor(), padding: 1.0)
+            self.cameraButton.addSubview(cameraActivity)
+            cameraActivity.userInteractionEnabled = false
+            
             
 //            let purple = UIColor(red: 189/255, green: 106/255, blue: 252/255, alpha: 1.0)
 //            let angleGradientBorderView1Colors: [AnyObject] = [

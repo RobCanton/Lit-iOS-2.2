@@ -197,13 +197,11 @@ class EditProfileViewController: UITableViewController {
         FirebaseService.dataCache.removeObjectForKey("user-\(uid)")
         FirebaseService.getUser(uid, completionHandler: { _user in
             if let user = _user {
-                FirebaseService.getUserFullProfile(user, completionHandler: { _fullUser in
-                    if let fullUser = _fullUser {
-                        mainStore.dispatch(UserIsAuthenticated(user: fullUser))
-                        self.dismissViewControllerAnimated(true, completion: {
-                            self.delegate?.getFullUser()
-                        })
-                    }
+                FirebaseService.getUserFullProfile(user, completionHandler: { fullUser in
+                    mainStore.dispatch(UserIsAuthenticated(user: fullUser))
+                    self.dismissViewControllerAnimated(true, completion: {
+                        self.delegate?.getFullUser()
+                    })
                 })
             }
         })
