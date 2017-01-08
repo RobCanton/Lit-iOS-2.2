@@ -411,12 +411,16 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
         } else if indexPath.section == 3 {
             let cell = tableView.dequeueReusableCellWithIdentifier("InfoCell", forIndexPath: indexPath) as! InfoTableViewCell
             if indexPath.row == 0 {
+                cell.type = .FullAddress
                 cell.label.text = location.full_address
             } else if indexPath.row == 1 {
+                cell.type = .Phone
                 cell.label.text = location.phone
             } else if indexPath.row == 2 {
+                cell.type = .Email
                 cell.label.text = location.email
             }  else if indexPath.row == 3 {
+                cell.type = .Website
                 cell.label.text = location.website
             }
             return cell
@@ -448,8 +452,62 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
             controller.uid = cell.user!.getUserId()
             self.navigationController?.pushViewController(controller, animated: true)
             tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        } else if indexPath.section == 3 {
+            let cell = tableView.cellForRowAtIndexPath(indexPath) as! InfoTableViewCell
+            switch cell.type {
+            case .FullAddress:
+                showMap()
+                break
+            case .Phone:
+                promptPhoneCall(location.phone!)
+                break
+            case .Email:
+                openEmail(location.email!)
+                break
+            case .Website:
+                openWebsite(location.website!)
+                break
+            default:
+                break
+            }
         }
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
+    
+    func promptPhoneCall(phoneNumber:String) {
+        let phoneAlert = UIAlertController(title: "Call \(location.getName())?", message: phoneNumber, preferredStyle: UIAlertControllerStyle.Alert)
+        
+        phoneAlert.addAction(UIAlertAction(title: "Call", style: .Default, handler: { (action: UIAlertAction!) in
+            self.callNumber(phoneNumber)
+        }))
+        
+        phoneAlert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: { (action: UIAlertAction!) in
+            
+        }))
+        
+        presentViewController(phoneAlert, animated: true, completion: nil)
+    }
+    
+    private func callNumber(phoneNumber:String) {
+        let stringArray = phoneNumber.componentsSeparatedByCharactersInSet(
+            NSCharacterSet.decimalDigitCharacterSet().invertedSet)
+        let cleanNumber = stringArray.joinWithSeparator("")
+        if let phoneCallURL:NSURL = NSURL(string:"tel://\(cleanNumber)") {
+            let application:UIApplication = UIApplication.sharedApplication()
+            if (application.canOpenURL(phoneCallURL)) {
+                application.openURL(phoneCallURL);
+            }
+        }
+    }
+    
+    func openEmail(address:String) {
+        let url = NSURL(string: "mailto:\(address)")
+        UIApplication.sharedApplication().openURL(url!)
+    }
+    
+    func openWebsite(website:String) {
+        let url = NSURL(string: "http://\(website)")!
+        UIApplication.sharedApplication().openURL(url)
     }
     
     func presentStory(indexPath:NSIndexPath) {

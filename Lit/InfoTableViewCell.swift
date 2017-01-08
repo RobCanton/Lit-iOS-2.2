@@ -8,8 +8,14 @@
 
 import UIKit
 
+enum InfoType {
+    case FullAddress, Phone, Email, Website, None
+}
+
 class InfoTableViewCell: UITableViewCell {
 
+    var type:InfoType = .None
+    
     @IBOutlet weak var label: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()

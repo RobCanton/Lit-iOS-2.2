@@ -29,7 +29,11 @@ class MapViewController: UIViewController {
             [NSFontAttributeName: UIFont(name: "Avenir-Heavy", size: 16.0)!,
              NSForegroundColorAttributeName: UIColor.whiteColor()]
         
-        addressLabel.text = location.getAddress()
+        if let fullAddress = location.full_address {
+            addressLabel.text = fullAddress
+        } else {
+            addressLabel.text = location.getAddress()
+        }
         
         mapView.showsUserLocation = true
         mapView.showsCompass = true

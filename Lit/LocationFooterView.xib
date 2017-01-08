@@ -23,10 +23,10 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="q5c-va-Rfw" firstAttribute="top" secondItem="vrY-h2-DMp" secondAttribute="top" constant="8" id="0P7-MD-u0K"/>
-                        <constraint firstItem="q5c-va-Rfw" firstAttribute="leading" secondItem="vrY-h2-DMp" secondAttribute="leading" constant="12" id="2SJ-M2-Mgl"/>
+                        <constraint firstItem="q5c-va-Rfw" firstAttribute="top" secondItem="vrY-h2-DMp" secondAttribute="top" constant="6" id="0P7-MD-u0K"/>
+                        <constraint firstItem="q5c-va-Rfw" firstAttribute="leading" secondItem="vrY-h2-DMp" secondAttribute="leading" constant="14" id="2SJ-M2-Mgl"/>
                         <constraint firstItem="q5c-va-Rfw" firstAttribute="top" secondItem="vrY-h2-DMp" secondAttribute="top" constant="8" id="3xd-Tv-SJY"/>
-                        <constraint firstAttribute="trailing" secondItem="q5c-va-Rfw" secondAttribute="trailing" constant="12" id="Q29-q6-5bP"/>
+                        <constraint firstAttribute="trailing" secondItem="q5c-va-Rfw" secondAttribute="trailing" constant="14" id="Q29-q6-5bP"/>
                         <constraint firstAttribute="height" constant="300" id="oAr-eR-FJ5"/>
                     </constraints>
                     <variation key="default">
