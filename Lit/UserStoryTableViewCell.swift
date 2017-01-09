@@ -70,7 +70,8 @@ class UserStoryTableViewCell: UITableViewCell, StoryProtocol {
             if user != nil {
                 self.usernameLabel.text = user!.getDisplayName()
                 
-                
+                // Load in image to avoid blip in story view
+                loadImageUsingCacheWithURL(user!.getImageUrl(), completion: { image, fromCache in})
             }
         })
     }

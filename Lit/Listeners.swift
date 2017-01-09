@@ -79,7 +79,7 @@ class Listeners {
                 
                 locationRef.child("visitors/\(location.getKey())").observeEventType(.ChildAdded, withBlock: { snapshot in
                     if snapshot.exists() {
-                        mainStore.dispatch(AddVisitorToLocation(locationIndex: i, uid: snapshot.key, timestamp: snapshot.value as! Double))
+                        mainStore.dispatch(AddVisitorToLocation(locationIndex: i, uid: snapshot.key, timestamp: 0))
                     }
                 })
                 

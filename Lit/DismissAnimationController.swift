@@ -94,7 +94,6 @@ public final class DismissAnimationController: NSObject, UIViewControllerAnimate
         self.initialTransitionView.layer.cornerRadius = self.initialTransitionView.frame.width / 2
         self.initialTransitionView.backgroundColor = UIColor.clearColor()
         
-        print("CORNER RADIUS TINGS")
         
         // Hide Transisioning Views
         initialView.hidden = true
@@ -124,7 +123,6 @@ public final class DismissAnimationController: NSObject, UIViewControllerAnimate
         let duration: NSTimeInterval = transitionDuration(transitionContext)
         
         if transitionContext.isInteractive() {
-            print("IS INTERACTIVE")
             UIView.animateWithDuration(duration, delay: 0.0, usingSpringWithDamping: self.usingSpringWithDampingCancelling, initialSpringVelocity: self.initialSpringVelocityCancelling, options: self.animationOptionsCancelling, animations: {
                 
                 fromViewControllerView.alpha = CGFloat.min
@@ -132,9 +130,12 @@ public final class DismissAnimationController: NSObject, UIViewControllerAnimate
                 }, completion: nil)
             
         } else {
-            print("NOT INTERACTIVE")
             self.initialTransitionView.layer.cornerRadius = self.initialTransitionView.frame.width / 2
             self.initialTransitionView.backgroundColor = UIColor.clearColor()
+            
+//            self.destinationTransitionView.layer.cornerRadius = self.destinationTransitionView.frame.width / 2
+//            self.destinationTransitionView.backgroundColor = UIColor.clearColor()
+            
             UIView.animateWithDuration(duration, delay: 0.0, usingSpringWithDamping: self.usingSpringWithDamping, initialSpringVelocity: self.initialSpringVelocity, options: self.animationOptions, animations: {
                 
                 self.destinationTransitionView.frame = self.initialFrame

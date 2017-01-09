@@ -12,7 +12,7 @@ import ReSwift
 
 var dataSaveMode = false
 
-class LocViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, UINavigationControllerDelegate, NSCacheDelegate {
+class LocViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, UINavigationControllerDelegate {
     
     var screenSize: CGRect!
     var screenWidth: CGFloat!
@@ -31,13 +31,16 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
     
     var returningCell:UserStoryTableViewCell?
     
+    var events = [Event]()
+    var postKeys = [String]()
     
     override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         listenToUserUploads()
-        
     }
     
     override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
         FirebaseService.ref.child("locations/uploads/\(location.getKey())").removeAllObservers()
     }
     
@@ -52,14 +55,10 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
            nav.delegate = nav
         }
         
-        //reloadStoryCells()
         if let sup = self.view.superview {
             for sub in sup.subviews {
                 if sub !== self.view && !sub.isKindOfClass(UIImageView) {
                     sub.removeFromSuperview()
-
-                } else {
-                    
                 }
             }
         }
@@ -69,9 +68,7 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
             returningCell = nil
         }
     }
-    
-    var events = [Event]()
-    var postKeys = [String]()
+
     
     func getStoryIndex(_story:Story) -> Int? {
         for i in 0..<stories.count {
@@ -102,7 +99,7 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
             }
             
             self.processStories(stories, tempCollection: tempKeyCollection)
-            
+
         })
     }
     
@@ -117,79 +114,6 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
             self.userStories = stories
             self.tableView?.reloadData()
         }
-        
-
-    }
-    
-    
-    func listenToLocationUploads() {
-        
-        let locRef = FirebaseService.ref.child("locations/uploads/\(location.getKey())")
-        locRef.removeAllObservers()
-        locRef.observeEventType(.Value, withBlock: { snapshot in
-            if snapshot.exists() {
-                var postKeys = [String]()
-                for post in snapshot.children {
-                    postKeys.append(post.key!!)
-                }
-                self.crossCheckPostKeys(postKeys)
-            }
-        })
-    }
-    
-    func crossCheckPostKeys(newKeys:[String]) {
-        let sortedPosts = postKeys.sort()
-        let sortedNewPosts = newKeys.sort()
-        
-        if sortedPosts == sortedNewPosts {
-        } else {
-            self.downloadMedia(newKeys)
-        }
-    }
-    
-    func downloadMedia(_postKeys:[String]) {
-        self.postKeys = _postKeys
-        FirebaseService.downloadStory(postKeys, completionHandler: { items in
-            self.stories = sortStoryItems(items)
-            self.stories.sortInPlace({ $0 > $1 })
-            self.tableView!.reloadData()
-            if !dataSaveMode {
-                self.downloadAllStories()
-            }
-        })
-    }
-    
-    func downloadAllStories() {
-        for story in self.stories {
-            downloadStory(story, force: false)
-        }
-    }
-    
-    func downloadStory(story:Story, force:Bool) {
-        
-        if let i = self.getStoryIndex(story) {
-            let indexPath = [NSIndexPath(forRow: i, inSection: 1)]
-            if story.needsDownload() {
-                if force {
-                    story.downloadStory({ complete in
-                        self.tableView?.reloadRowsAtIndexPaths(indexPath, withRowAnimation: .Automatic)
-                    })
-                }
-            } else {
-                story.state = .Loaded
-            }
-            self.tableView?.reloadRowsAtIndexPaths(indexPath, withRowAnimation: .Automatic)
-        }
-    }
-    
-    func reloadStoryCells() {
-        
-        var indexPaths = [NSIndexPath]()
-        for i in 0..<stories.count {
-            indexPaths.append(NSIndexPath(forRow: i, inSection: 1))
-        }
-        
-        self.tableView?.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
     }
     
     override func viewDidLayoutSubviews() {
@@ -200,25 +124,13 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
                 if sub !== self.view && !sub.isKindOfClass(UIImageView) {
                     sup.sendSubviewToBack(sub)
                     //sub.removeFromSuperview()
-                } else {
-                
                 }
             }
         }
     }
     
-    func cache(cache: NSCache, willEvictObject obj: AnyObject) {
-        
-        if cache === videoCache {
-            // downloadAllStories()
-        }
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        videoCache.countLimit = 25
-        videoCache.delegate = self
         self.navigationItem.title = location.getName()
         self.navigationController?.navigationBar.titleTextAttributes =
             [NSFontAttributeName: UIFont(name: "AvenirNext-DemiBold", size: 16.0)!,
@@ -232,8 +144,7 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
         let eventsHeight:CGFloat = 0
         let topInset:CGFloat = navHeight + eventsHeight + slack
         
-        
-        
+
         screenSize = self.view.frame
         screenWidth = screenSize.width
         screenHeight = screenSize.height
@@ -637,7 +548,7 @@ extension LocViewController: View2ViewTransitionPresenting {
         
         let navHeight = screenStatusBarHeight + navigationController!.navigationBar.frame.height
         
-        let y = cell.frame.origin.y + margin + navHeight
+        let y = cell.frame.origin.y + 12 + navHeight
         
         let rect = CGRectMake(x,y,image_height, image_height)
         return self.tableView!.convertRect(rect, toView: self.tableView!.superview)
