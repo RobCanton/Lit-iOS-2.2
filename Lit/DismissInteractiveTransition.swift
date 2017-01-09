@@ -84,7 +84,7 @@ public class DismissInteractiveTransition: UIPercentDrivenInteractiveTransition 
             self.interactionInProgress = false
             panGestureRecognizer.setTranslation(CGPoint.zero, inView: panGestureRecognizer.view)
             
-            if progress < 0.5 {
+            if progress < 0.35 {
                 
                 cancelInteractiveTransition()
                 
@@ -113,7 +113,7 @@ public class DismissInteractiveTransition: UIPercentDrivenInteractiveTransition 
                 self.transitionController.presentingViewController.view.userInteractionEnabled = false
                 
                 let duration: Double = animationController.transitionDuration
-                UIView.animateWithDuration(duration, delay: 0.0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.0, options: .CurveEaseInOut, animations: {
+                UIView.animateWithDuration(duration, delay: 0.0, usingSpringWithDamping: 0.85, initialSpringVelocity: 0.0, options: .CurveEaseInOut, animations: {
                     
                     self.animationController.destinationTransitionView.alpha = 0.0
                     self.animationController.initialTransitionView.alpha = 1.0

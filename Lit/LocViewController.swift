@@ -19,6 +19,7 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
     var screenHeight: CGFloat!
     
     var stories = [Story]()
+    var userStories = [UserStory]()
     var guests = [String]()
     
     var tableView:UITableView?
@@ -27,8 +28,12 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
     var footerView:LocationFooterView!
     
     var location: Location!
+    
+    var returningCell:UserStoryTableViewCell?
+    
+    
     override func viewWillAppear(animated: Bool) {
-        listenToLocationUploads()
+        listenToUserUploads()
         
     }
     
@@ -58,6 +63,11 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
                 }
             }
         }
+        
+        if returningCell != nil {
+            returningCell!.activate(true)
+            returningCell = nil
+        }
     }
     
     var events = [Event]()
@@ -72,6 +82,45 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
         }
         return nil
     }
+    
+    func listenToUserUploads() {
+        let locRef = FirebaseService.ref.child("locations/uploads/\(location.getKey())")
+        locRef.removeAllObservers()
+        locRef.observeEventType(.Value, withBlock: { snapshot in
+            var stories = [UserStory]()
+            var tempKeyCollection = [String]()
+            for user in snapshot.children {
+                
+                let userSnap = user as! FIRDataSnapshot
+                var postKeys = [String]()
+                for post in userSnap.children {
+                    postKeys.append(post.key!!)
+                    tempKeyCollection.append(post.key!!)
+                }
+                let userStory = UserStory(user_id: userSnap.key, postKeys: postKeys)
+                stories.append(userStory)
+            }
+            
+            self.processStories(stories, tempCollection: tempKeyCollection)
+            
+        })
+    }
+    
+    func processStories(stories:[UserStory], tempCollection:[String]) {
+        let sortedPosts = postKeys.sort()
+        let sortedNewPosts = tempCollection.sort()
+        
+        if sortedPosts == sortedNewPosts {
+            
+        } else {
+            postKeys = tempCollection
+            self.userStories = stories
+            self.tableView?.reloadData()
+        }
+        
+
+    }
+    
     
     func listenToLocationUploads() {
         
@@ -311,10 +360,10 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
         if section == 0 {
             return 190
         }
-        if section == 1 && stories.count == 0 {
+        if section == 1 && userStories.count == 0 {
             return 0
         }
-        if section == 2 && guests.count == 0 {
+        if section == 2 {
             return 0
         }
         
@@ -323,7 +372,6 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
     
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        
         
         if section == 0 {
             let cell = tableView.dequeueReusableHeaderFooterViewWithIdentifier("headerView")
@@ -334,7 +382,7 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
         } else if section == 1 {
             let headerView = UINib(nibName: "ListHeaderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! ListHeaderView
             headerView.hidden = false
-            headerView.label.text = "RECENT ACTIVITY"
+            headerView.label.text = "RECENT GUESTS"
             return headerView
         } else if section == 2 {
             let headerView = UINib(nibName: "ListHeaderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! ListHeaderView
@@ -358,9 +406,9 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
             return 0
         }
         if section == 1 {
-            return stories.count
+            return userStories.count
         } else if section == 2  {
-            return guests.count
+            return 0
         } else if section == 3 {
             return 4
         }
@@ -373,9 +421,9 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
         case 0:
             return 46
         case 1:
-            return 82
+            return 76
         case 2:
-            return 64
+            return 70
         case 3:
             if indexPath.row == 0 && location.full_address != nil {
                 return 42
@@ -402,7 +450,7 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
             return cell
         } else if indexPath.section == 1 {
             let cell = tableView.dequeueReusableCellWithIdentifier("UserStoryCell", forIndexPath: indexPath) as! UserStoryTableViewCell
-            cell.setStory(stories[indexPath.item])
+            cell.setUserStory(userStories[indexPath.item])
             return cell
         } else if indexPath.section == 2 {
             let cell = tableView.dequeueReusableCellWithIdentifier("UserCell", forIndexPath: indexPath) as! UserViewCell
@@ -433,17 +481,17 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
     let transitionController: TransitionController = TransitionController()
     var selectedIndexPath: NSIndexPath = NSIndexPath(forItem: 0, inSection: 0)
     
+    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.section == 0 && indexPath.row == 0 {
             showMap()
         } else if indexPath.section == 1 {
-            let story = stories[indexPath.item]
-            if story.state == .Loaded {
+            let story = userStories[indexPath.item]
+            if story.state == .ContentLoaded {
                 presentStory(indexPath)
             } else {
-                downloadStory(story, force: true)
+                story.downloadStory()
             }
-            
         }
         else if indexPath.section == 2 {
             let cell = tableView.cellForRowAtIndexPath(indexPath) as! UserViewCell
@@ -548,7 +596,7 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
         
         let presentedViewController: PresentedViewController = PresentedViewController()
         presentedViewController.tabBarRef = self.tabBarController! as! PopUpTabBarController
-        presentedViewController.stories = stories
+        presentedViewController.userStories = userStories
         presentedViewController.transitionController = self.transitionController
         let i = NSIndexPath(forItem: indexPath.row, inSection: 0)
         self.transitionController.userInfo = ["destinationIndexPath": i, "initialIndexPath": i]
@@ -585,7 +633,7 @@ extension LocViewController: View2ViewTransitionPresenting {
         let image_frame = cell.contentImageView.frame
         let image_height = image_frame.height
         let margin = (cell.frame.height - image_height) / 2
-        let x = cell.frame.origin.x + margin
+        let x = cell.frame.origin.x + 20
         
         let navHeight = screenStatusBarHeight + navigationController!.navigationBar.frame.height
         
@@ -608,6 +656,14 @@ extension LocViewController: View2ViewTransitionPresenting {
         
         let indexPath: NSIndexPath = userInfo!["initialIndexPath"] as! NSIndexPath
         let i = NSIndexPath(forRow: indexPath.item, inSection: 1)
+        if !isPresenting {
+            print("INDEX PATH: \(indexPath)")
+            if let cell = tableView?.cellForRowAtIndexPath(i) as? UserStoryTableViewCell {
+                returningCell?.activate(false)
+                returningCell = cell
+                returningCell!.deactivate()
+            }
+        }
         if !isPresenting && !self.tableView!.indexPathsForVisibleRows!.contains(i) {
             self.tableView!.reloadData()
             self.tableView!.scrollToRowAtIndexPath(i, atScrollPosition: .Middle, animated: false)

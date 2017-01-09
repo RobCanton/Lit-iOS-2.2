@@ -14,7 +14,7 @@ public final class DismissAnimationController: NSObject, UIViewControllerAnimate
     
     public weak var transitionController: TransitionController!
     
-    public var transitionDuration: NSTimeInterval = 0.45
+    public var transitionDuration: NSTimeInterval = 0.40
     
     public var usingSpringWithDamping: CGFloat = 1.0
     
@@ -91,6 +91,11 @@ public final class DismissAnimationController: NSObject, UIViewControllerAnimate
         self.initialTransitionView.clipsToBounds = true
         self.initialTransitionView.contentMode = .ScaleAspectFill
         
+        self.initialTransitionView.layer.cornerRadius = self.initialTransitionView.frame.width / 2
+        self.initialTransitionView.backgroundColor = UIColor.clearColor()
+        
+        print("CORNER RADIUS TINGS")
+        
         // Hide Transisioning Views
         initialView.hidden = true
         destinationView.hidden = true
@@ -119,7 +124,7 @@ public final class DismissAnimationController: NSObject, UIViewControllerAnimate
         let duration: NSTimeInterval = transitionDuration(transitionContext)
         
         if transitionContext.isInteractive() {
-            
+            print("IS INTERACTIVE")
             UIView.animateWithDuration(duration, delay: 0.0, usingSpringWithDamping: self.usingSpringWithDampingCancelling, initialSpringVelocity: self.initialSpringVelocityCancelling, options: self.animationOptionsCancelling, animations: {
                 
                 fromViewControllerView.alpha = CGFloat.min
@@ -127,12 +132,16 @@ public final class DismissAnimationController: NSObject, UIViewControllerAnimate
                 }, completion: nil)
             
         } else {
-            
+            print("NOT INTERACTIVE")
+            self.initialTransitionView.layer.cornerRadius = self.initialTransitionView.frame.width / 2
+            self.initialTransitionView.backgroundColor = UIColor.clearColor()
             UIView.animateWithDuration(duration, delay: 0.0, usingSpringWithDamping: self.usingSpringWithDamping, initialSpringVelocity: self.initialSpringVelocity, options: self.animationOptions, animations: {
                 
                 self.destinationTransitionView.frame = self.initialFrame
+                self.destinationTransitionView.layer.cornerRadius = self.destinationTransitionView.frame.width / 2
                 self.initialTransitionView.frame = self.initialFrame
                 self.initialTransitionView.alpha = 1.0
+                self.initialTransitionView.layer.cornerRadius = self.initialTransitionView.frame.width / 2
                 fromViewControllerView.alpha = CGFloat.min
                 
                 }, completion: { _ in

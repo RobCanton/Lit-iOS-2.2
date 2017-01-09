@@ -14,11 +14,17 @@ class UserViewCell: UITableViewCell {
     @IBOutlet weak var contentImageView: UIImageView!
     @IBOutlet weak var usernameLabel: UILabel!
     
+    @IBOutlet weak var imageContainer: UIView!
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        
         contentImageView.layer.cornerRadius = contentImageView.frame.width/2
         contentImageView.clipsToBounds = true
+        
+        
     }
 
     override func setSelected(selected: Bool, animated: Bool) {

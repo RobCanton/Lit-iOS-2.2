@@ -14,6 +14,7 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
     var label:UILabel!
     var tabBarRef:PopUpTabBarController!
     var stories = [Story]()
+    var userStories = [UserStory]()
     var currentIndex:NSIndexPath!
     var collectionView:UICollectionView!
     
@@ -137,12 +138,12 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
     }
     
     func pushAuthorProfile() {
-        let item = stories[currentIndex.item]
-        FirebaseService.getUser(item.getAuthorID(), completionHandler: { user in
-            if user != nil {
-                self.showAuthor(user!)
-            }
-        })
+//        let item = stories[currentIndex.item]
+//        FirebaseService.getUser(item.getAuthorID(), completionHandler: { user in
+//            if user != nil {
+//                self.showAuthor(user!)
+//            }
+//        })
     }
     
     weak var transitionController: TransitionController!
@@ -151,7 +152,7 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
     // MARK: CollectionView Data Source
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return stories.count
+        return userStories.count
     }
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
@@ -162,7 +163,7 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
         
         let cell: StoryViewController = collectionView.dequeueReusableCellWithReuseIdentifier("presented_cell", forIndexPath: indexPath) as! StoryViewController
         cell.contentView.backgroundColor = UIColor.blackColor()
-        cell.story = stories[indexPath.item]
+        cell.story = userStories[indexPath.item]
         cell.authorOverlay.authorTappedHandler = showAuthor
         cell.delegate = self
         return cell

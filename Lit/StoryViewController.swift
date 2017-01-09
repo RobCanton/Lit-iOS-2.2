@@ -34,11 +34,11 @@ public class StoryViewController: UICollectionViewCell {
     
     var progressBar:StoryProgressIndicator?
     
-    var story:Story!
+    var story:UserStory!
         {
         didSet {
             
-            if story.getItems().count == 0 { return }
+            if story.items!.count == 0 { return }
             enableTap()
             viewIndex = 0
             setupItem({})
@@ -53,7 +53,7 @@ public class StoryViewController: UICollectionViewCell {
             progressBar!.createProgressIndicator(story)
             contentView.addSubview(progressBar!)
             
-            for item in story.getItems() {
+            for item in story.items! {
                 totalTime += item.getLength()
             }
             
@@ -86,8 +86,8 @@ public class StoryViewController: UICollectionViewCell {
     func setupItem(completion:()->()) {
         killTimer()
         pauseVideo()
-        if viewIndex < story.getItems().count {
-            let item = story.getItems()[viewIndex]
+        if viewIndex < story.items!.count {
+            let item = story.items![viewIndex]
             self.item = item
             self.authorOverlay.setPostMetadata(item)
             if item.contentType == .Image {
@@ -135,22 +135,22 @@ public class StoryViewController: UICollectionViewCell {
                 })
             })
         } else {
-            content.hidden = false
-            videoContent.hidden = true
-            disableTap()
-            self.fadeCoverIn()
-            self.activityView.startAnimating()
-            story.downloadStory({ complete in
-                if complete {
-                    
-                    self.setupItem({
-                        self.activityView.stopAnimating()
-                        self.enableTap()
-                        self.fadeCoverOut()
-                        self.setForPlay()
-                    })
-                }
-            })
+//            content.hidden = false
+//            videoContent.hidden = true
+//            disableTap()
+//            self.fadeCoverIn()
+//            self.activityView.startAnimating()
+//            story.downloadStory({ complete in
+//                if complete {
+//                    
+//                    self.setupItem({
+//                        self.activityView.stopAnimating()
+//                        self.enableTap()
+//                        self.fadeCoverOut()
+//                        self.setForPlay()
+//                    })
+//                }
+//            })
         }
     }
     

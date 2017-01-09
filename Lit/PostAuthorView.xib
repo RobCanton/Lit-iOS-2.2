@@ -23,7 +23,7 @@
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="oMp-3g-Vyj">
                             <rect key="frame" x="8" y="8" width="36" height="36"/>
-                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" white="1" alpha="0.12268610668789809" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="oMp-3g-Vyj" secondAttribute="height" multiplier="1:1" id="26g-gf-SbS"/>
                                 <constraint firstAttribute="width" constant="36" id="RVo-cp-edk"/>

@@ -18,7 +18,7 @@ class StoryProgressIndicator: UIView {
     var currentProgress: Double = 0
     var x: CGFloat = 0
     
-    let gap: CGFloat = 2.0
+    let gap: CGFloat = 3.0
     
     var storyItems:[StoryItem]!
     
@@ -28,10 +28,10 @@ class StoryProgressIndicator: UIView {
     let trackColor = UIColor(white: 1.0, alpha: 0.18)
 
     
-    func createProgressIndicator(_story:Story) {
+    func createProgressIndicator(_story:UserStory) {
         //destroyStoryProgressIndicator()
         progressBars = [ProgressIndicator]()
-        storyItems = _story.getItems()
+        storyItems = _story.items!
         if storyItems.count > 0 {
             
 

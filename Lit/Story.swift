@@ -37,6 +37,108 @@ func sortStoryItems(items:[StoryItem]) -> [Story] {
 enum StoryState {
     case NotLoaded, Loading, Loaded
 }
+
+enum UserStoryState {
+    case NotLoaded, LoadingItemInfo, ItemInfoLoaded, LoadingContent, ContentLoaded
+}
+
+protocol StoryProtocol {
+    func stateChange(state: UserStoryState)
+}
+
+class UserStory {
+    private var user_id:String
+    private var postKeys:[String]
+    
+    
+    var delegate:StoryProtocol?
+
+    var items:[StoryItem]?
+    var state:UserStoryState = .NotLoaded
+        {
+        didSet {
+            delegate?.stateChange(state)
+        }
+    }
+    
+    init(user_id:String, postKeys:[String]) {
+        self.user_id = user_id
+        self.postKeys = postKeys
+    }
+    
+    func getUserId() -> String {
+        return user_id
+    }
+    
+    func getPostKeys() -> [String] {
+        return postKeys
+    }
+    
+    func downloadItems(completionHandler:(()->())) {
+        if state == .NotLoaded {
+            state = .LoadingItemInfo
+            FirebaseService.downloadStory(postKeys, completionHandler: { items in
+                self.items = items
+                self.state = .ItemInfoLoaded
+                if !self.needsDownload() {
+                    self.state = .ContentLoaded
+                }
+                completionHandler()
+            })
+        } else if items != nil {
+            if !self.needsDownload() {
+                self.state = .ContentLoaded
+            }
+        }
+    }
+    
+    func downloadContent() {
+        
+    }
+    
+    func needsDownload() -> Bool {
+        if items != nil {
+            for item in items! {
+                if item.needsDownload() {
+                    return true
+                }
+            }
+            return false
+        }
+        return true
+    }
+    
+    
+    func downloadStory() {
+        if state == .ItemInfoLoaded && items != nil {
+            state = .LoadingContent
+            var count = 0
+            for item in items! {
+                item.download({ success in
+                    count += 1
+                    if count >= self.items!.count {
+                        dispatch_async(dispatch_get_main_queue(), {
+                            self.state = .ContentLoaded
+                        })
+                    }
+                })
+            }
+        }
+    }
+    
+
+    
+    func printDescription() {
+        print("USER STORY: \(user_id)")
+        
+        for key in postKeys {
+            print(" * \(key)")
+        }
+        
+        print("\n")
+    }
+}
+
 class Story: NSObject, Comparable {
     
     private var author_uid:String
