@@ -46,7 +46,7 @@ class CameraTransition: UIStoryboardSegue {
         
         let definiteBounds = UIScreen.mainScreen().bounds
         
-        let recordButtonCenter = CGPoint(x: cameraButton.center.x, y: definiteBounds.height - 112)
+        let recordButtonCenter = CGPoint(x: cameraButton.center.x, y: definiteBounds.height - 100)
         
         let color:CABasicAnimation = CABasicAnimation(keyPath: "borderColor")
         color.fromValue = cameraButton.layer.borderColor

@@ -17,6 +17,9 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
     var userStories = [UserStory]()
     var currentIndex:NSIndexPath!
     var collectionView:UICollectionView!
+
+    var location:Location?
+    
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -129,22 +132,7 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
 
     // MARK: Elements
     
-    func showAuthor(user:User) {
-        self.navigationController?.delegate = self
-        let controller = UIStoryboard(name: "Main", bundle: nil)
-            .instantiateViewControllerWithIdentifier("UserProfileViewController") as! UserProfileViewController
-        controller.uid = user.getUserId()
-        self.navigationController?.pushViewController(controller, animated: true)
-    }
     
-    func pushAuthorProfile() {
-//        let item = stories[currentIndex.item]
-//        FirebaseService.getUser(item.getAuthorID(), completionHandler: { user in
-//            if user != nil {
-//                self.showAuthor(user!)
-//            }
-//        })
-    }
     
     weak var transitionController: TransitionController!
     
@@ -165,11 +153,12 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
         cell.contentView.backgroundColor = UIColor.blackColor()
         cell.story = userStories[indexPath.item]
         cell.authorOverlay.authorTappedHandler = showAuthor
+        cell.authorOverlay.locationTappedHandler = showLocation
         cell.delegate = self
         return cell
     }
     
-    func storyComplete() {
+    func popStoryController() {
         let indexPath: NSIndexPath = self.collectionView.indexPathsForVisibleItems().first!
         let initialPath = self.transitionController.userInfo!["initialIndexPath"] as! NSIndexPath
         self.transitionController.userInfo!["destinationIndexPath"] = indexPath
@@ -180,9 +169,29 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
     }
     
     
-    func onBackItemClicked(sender: AnyObject) {
+    func storyComplete() {
+        popStoryController()
     }
-
+    
+    func showAuthor(user:User) {
+        self.navigationController?.delegate = self
+        let controller = UIStoryboard(name: "Main", bundle: nil)
+            .instantiateViewControllerWithIdentifier("UserProfileViewController") as! UserProfileViewController
+        controller.uid = user.getUserId()
+        self.navigationController?.pushViewController(controller, animated: true)
+    }
+    
+    func showLocation(location:Location) {
+        if self.location != nil {
+            popStoryController()
+        } else {
+            self.navigationController?.delegate = self
+            let controller = UIStoryboard(name: "Main", bundle: nil)
+                .instantiateViewControllerWithIdentifier("LocViewController") as! LocViewController
+            controller.location = location
+            self.navigationController?.pushViewController(controller, animated: true)
+        }
+    }
     
     // MARK: Gesture Delegate
     

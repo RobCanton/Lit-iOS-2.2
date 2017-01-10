@@ -25,7 +25,7 @@ class Location:NSObject, NSCoding {
     
     private var distance:Double?
     
-    private var visitors = [String]()
+    var visitors = [String]()
     private var postKeys = [String]()
 
     private var friendsCount = 0

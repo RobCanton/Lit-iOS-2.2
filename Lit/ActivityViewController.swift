@@ -13,12 +13,15 @@ import Firebase
 class ActivityViewController: UITableViewController, UISearchBarDelegate {
     
     
-    var myStory:Story?
+    var myStory:UserStory?
     var myStoryKeys = [String]()
     var stories = [Story]()
+    var userStories = [UserStory]()
     var postKeys = [String]()
     
     var storiesDictionary = [String:[String]]()
+    
+    var returningCell:UserStoryTableViewCell?
     
     var myStoryRef:FIRDatabaseReference?
     var responseRef:FIRDatabaseReference?
@@ -47,6 +50,11 @@ class ActivityViewController: UITableViewController, UISearchBarDelegate {
         if let nav = navigationController as? MasterNavigationController {
             nav.delegate = nav
         }
+        
+        if returningCell != nil {
+            returningCell!.activate(true)
+            returningCell = nil
+        }
     }
     
     @IBAction func showUserSearch(sender: AnyObject) {
@@ -72,32 +80,13 @@ class ActivityViewController: UITableViewController, UISearchBarDelegate {
             } else {
                 print("MyStory changed.")
                 self.myStoryKeys = itemKeys
-                FirebaseService.downloadStory(self.myStoryKeys, completionHandler: { items in
-                    let story = Story(author_uid: uid)
-                    story.setItems(items)
-                    self.myStory = story
-                    self.tableView?.reloadData()
-                    self.downloadMyStory(false)
-                })
+                let myStory = UserStory(user_id: uid, postKeys: self.myStoryKeys)
+                self.myStory = myStory
+                self.tableView.reloadData()
             }
         })
     }
 
-    func downloadMyStory(force:Bool) {
-        
-        guard let story = myStory else { return }
-        let indexPath = [NSIndexPath(forRow: 0, inSection: 0)]
-        if story.needsDownload() {
-            if force {
-                story.downloadStory({ complete in
-                    self.tableView.reloadRowsAtIndexPaths(indexPath, withRowAnimation: .Automatic)
-                })
-            }
-        } else {
-            story.state = .Loaded
-        }
-        self.tableView.reloadRowsAtIndexPaths(indexPath, withRowAnimation: .Automatic)
-    }
     
     func requestActivity() {
         let uid = mainStore.state.userState.uid
@@ -132,77 +121,15 @@ class ActivityViewController: UITableViewController, UISearchBarDelegate {
         } else {
             print("Stories updated. Download initiated")
             storiesDictionary = tempDictionary
-            downloadStoryItems()
-        }
-    }
-    
-    
-    func downloadStoryItems() {
-        var _stories = [Story]()
-        var count = 0
-        if storiesDictionary.count == 0 {
-            self.stories = [Story]()
-            self.tableView!.reloadData()
-        }
-        for (uid, itemKeys) in storiesDictionary {
+            var stories = [UserStory]()
+            for (uid, itemKeys) in storiesDictionary {
+                let story = UserStory(user_id: uid, postKeys: itemKeys)
+                stories.append(story)
+            }
             
-            FirebaseService.downloadStory(itemKeys, completionHandler: { items in
-                if items.count > 0 {
-                    let story = Story(author_uid: uid)
-                    story.setItems(items)
-                    _stories.append(story)
-                }
-                count += 1
-                if count >= self.storiesDictionary.count {
-                    count = -1
-                    self.stories = _stories
-                    self.tableView!.reloadData()
-                    self.downloadAllStories()
-                }
-            })
+            self.userStories = stories
+            self.tableView.reloadData()
         }
-    }
-    
-    func getStoryIndex(_story:Story) -> Int? {
-        for i in 0..<stories.count {
-            let story = stories[i]
-            if _story.getAuthorID() == story.getAuthorID() {
-                return i
-            }
-        }
-        return nil
-    }
-    
-    func downloadAllStories() {
-        for story in self.stories {
-            downloadStory(story, force: false)
-        }
-    }
-    
-    func downloadStory(story:Story, force:Bool) {
-        
-        guard let i = self.getStoryIndex(story)  else { return }
-        let indexPath = [NSIndexPath(forRow: i, inSection: 1)]
-        if story.needsDownload() {
-            if force {
-                story.downloadStory({ complete in
-                    self.tableView.reloadRowsAtIndexPaths(indexPath, withRowAnimation: .Automatic)
-                })
-            }
-        } else {
-            story.state = .Loaded
-        }
-        self.tableView?.reloadRowsAtIndexPaths(indexPath, withRowAnimation: .Automatic)
-    }
-    
-    func reloadStoryCells() {
-        
-        var indexPaths = [NSIndexPath]()
-        for i in 0..<stories.count {
-            indexPaths.append(NSIndexPath(forRow: i, inSection: 1))
-        }
-        
-        self.tableView?.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
     }
     
     override func viewDidLoad() {
@@ -245,7 +172,7 @@ class ActivityViewController: UITableViewController, UISearchBarDelegate {
         
         let headerView = UINib(nibName: "ListHeaderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! ListHeaderView
 
-        if section == 1 && stories.count > 0 {
+        if section == 1 && userStories.count > 0 {
             headerView.hidden = false
             headerView.label.text = "RECENT ACTIVITY"
         }
@@ -254,7 +181,7 @@ class ActivityViewController: UITableViewController, UISearchBarDelegate {
     }
     
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 1 && stories.count > 0 {
+        if section == 1 && userStories.count > 0 {
             return 34
         }
         return 0
@@ -264,7 +191,7 @@ class ActivityViewController: UITableViewController, UISearchBarDelegate {
         
         switch indexPath.section {
         default:
-            return 80
+            return 76
         }
     }
     
@@ -275,7 +202,7 @@ class ActivityViewController: UITableViewController, UISearchBarDelegate {
                 return 1
             } else { return 0 }
         case 1:
-            return stories.count
+            return userStories.count
         default:
             return 0
         }
@@ -284,12 +211,12 @@ class ActivityViewController: UITableViewController, UISearchBarDelegate {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            let cell = tableView.dequeueReusableCellWithIdentifier("MyStoryCell", forIndexPath: indexPath) as! MyStoryTableViewCell
-            cell.setStory(myStory!)
+            let cell = tableView.dequeueReusableCellWithIdentifier("UserStoryCell", forIndexPath: indexPath) as! UserStoryTableViewCell
+            cell.setUserStory(myStory!)
             return cell
         } else {
             let cell = tableView.dequeueReusableCellWithIdentifier("UserStoryCell", forIndexPath: indexPath) as! UserStoryTableViewCell
-            cell.setStory(stories[indexPath.item])
+            cell.setUserStory(userStories[indexPath.item])
             return cell
         }
     }
@@ -305,20 +232,18 @@ class ActivityViewController: UITableViewController, UISearchBarDelegate {
 
         if indexPath.section == 0 {
             if let story = myStory {
-                if story.state == .Loaded {
-                    print("PRESENT MY STORY")
+                if story.state == .ContentLoaded {
                     presentStory(indexPath)
                 } else {
-                    print("DOWNLOAD MY STORY")
-                    downloadMyStory(true)
+                    story.downloadStory()
                 }
             }
         } else if indexPath.section == 1 {
-            let story = stories[indexPath.item]
-            if story.state == .Loaded {
+            let story = userStories[indexPath.item]
+            if story.state == .ContentLoaded {
                 presentStory(indexPath)
             } else {
-                downloadStory(story, force: true)
+                story.downloadStory()
             }
         }
 
@@ -331,9 +256,9 @@ class ActivityViewController: UITableViewController, UISearchBarDelegate {
         let presentedViewController: PresentedViewController = PresentedViewController()
         presentedViewController.tabBarRef = self.tabBarController! as! PopUpTabBarController
         if indexPath.section == 0 {
-            presentedViewController.stories = [myStory!]
+            presentedViewController.userStories = [myStory!]
         } else {
-            presentedViewController.stories = stories
+            presentedViewController.userStories = userStories
         }
         presentedViewController.transitionController = self.transitionController
         let i = NSIndexPath(forItem: indexPath.row, inSection: 0)
@@ -357,15 +282,15 @@ extension ActivityViewController: View2ViewTransitionPresenting {
             return CGRect.zero
         }
         if indexPath.section == 0 {
-            let cell: MyStoryTableViewCell = self.tableView!.cellForRowAtIndexPath(indexPath)! as! MyStoryTableViewCell
+            let cell: UserStoryTableViewCell = self.tableView!.cellForRowAtIndexPath(indexPath)! as! UserStoryTableViewCell
             let image_frame = cell.contentImageView.frame
             let image_height = image_frame.height
             let margin = (cell.frame.height - image_height) / 2
-            let x = cell.frame.origin.x + margin
+            let x = cell.frame.origin.x + 20
             
             let navHeight = screenStatusBarHeight + navigationController!.navigationBar.frame.height
             
-            let y = cell.frame.origin.y + margin + navHeight
+            let y = cell.frame.origin.y + 12 + navHeight
             
             let rect = CGRectMake(x,y,image_height, image_height)
             return self.tableView!.convertRect(rect, toView: self.tableView!.superview)
@@ -375,11 +300,11 @@ extension ActivityViewController: View2ViewTransitionPresenting {
             let image_frame = cell.contentImageView.frame
             let image_height = image_frame.height
             let margin = (cell.frame.height - image_height) / 2
-            let x = cell.frame.origin.x + margin
+            let x = cell.frame.origin.x + 20
             
             let navHeight = screenStatusBarHeight + navigationController!.navigationBar.frame.height
             
-            let y = cell.frame.origin.y + margin + navHeight
+            let y = cell.frame.origin.y + 12 + navHeight
             
             let rect = CGRectMake(x,y,image_height, image_height)
             return self.tableView!.convertRect(rect, toView: self.tableView!.superview)
@@ -391,7 +316,7 @@ extension ActivityViewController: View2ViewTransitionPresenting {
         
         let indexPath: NSIndexPath = userInfo!["initialIndexPath"] as! NSIndexPath
         if indexPath.section == 0 {
-            let cell: MyStoryTableViewCell = self.tableView!.cellForRowAtIndexPath(indexPath)! as! MyStoryTableViewCell
+            let cell: UserStoryTableViewCell = self.tableView!.cellForRowAtIndexPath(indexPath)! as! UserStoryTableViewCell
             return cell.contentImageView
         } else {
             let cell: UserStoryTableViewCell = self.tableView!.cellForRowAtIndexPath(indexPath)! as! UserStoryTableViewCell
@@ -402,6 +327,15 @@ extension ActivityViewController: View2ViewTransitionPresenting {
     func prepareInitialView(userInfo: [String : AnyObject]?, isPresenting: Bool) {
         
         let indexPath: NSIndexPath = userInfo!["initialIndexPath"] as! NSIndexPath
+        let i = NSIndexPath(forRow: indexPath.item, inSection: 1)
+        if !isPresenting {
+            if let cell = tableView?.cellForRowAtIndexPath(i) as? UserStoryTableViewCell {
+                returningCell?.activate(false)
+                returningCell = cell
+                returningCell!.deactivate()
+            }
+        }
+        
         if !isPresenting && !self.tableView!.indexPathsForVisibleRows!.contains(indexPath) {
             self.tableView!.reloadData()
             self.tableView!.scrollToRowAtIndexPath(indexPath, atScrollPosition: .Middle, animated: false)

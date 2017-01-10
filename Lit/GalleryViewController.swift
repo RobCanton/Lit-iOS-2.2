@@ -8,6 +8,7 @@
 
 
 import UIKit
+import AVFoundation
 
 class GalleryViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIGestureRecognizerDelegate, UINavigationControllerDelegate {
     
@@ -64,6 +65,13 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
         if uid == mainStore.state.userState.uid {
             currentUserEditMode()
         }
+        
+        
+        let indexPath: NSIndexPath = self.collectionView.indexPathsForVisibleItems().first!
+        if let cell = collectionView.cellForItemAtIndexPath(indexPath) as? PresentedCollectionViewCell {
+            print("WE EVER GET HERE?")
+            cell.setForPlay()
+        }
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -76,6 +84,10 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
         super.viewDidDisappear(animated)
         print("viewDidDisappear")
         tabBarRef.setTabBarVisible(true, animated: true)
+        
+        for cell in collectionView.visibleCells() as! [PresentedCollectionViewCell] {
+            cell.cleanUp()
+        }
     }
     
     var toolbar:EditPostToolbar?
@@ -149,11 +161,14 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
         cell.contentView.backgroundColor = UIColor.blackColor()
         
         let item = photos[indexPath.item]
-        loadImageUsingCacheWithURL(item.getDownloadUrl().absoluteString, completion: { image, fromCache in
-            cell.content.image = image
-        })
+        cell.setItem(item)
         
         return cell
+    }
+    
+    func collectionView(collectionView: UICollectionView, didEndDisplayingCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+        let cell = cell as! PresentedCollectionViewCell
+        cell.cleanUp()
     }
     
     // MARK: Actions
@@ -186,12 +201,16 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
     func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
         
         let indexPath: NSIndexPath = self.collectionView.indexPathsForVisibleItems().first!
-        self.transitionController.userInfo?["destinationIndexPath"] = indexPath
+        let initialPath = self.transitionController.userInfo!["initialIndexPath"] as! NSIndexPath
+        self.transitionController.userInfo!["destinationIndexPath"] = indexPath
+        self.transitionController.userInfo!["initialIndexPath"] = NSIndexPath(forItem: indexPath.item, inSection: initialPath.section)
         
         let panGestureRecognizer: UIPanGestureRecognizer = gestureRecognizer as! UIPanGestureRecognizer
         let translate: CGPoint = panGestureRecognizer.translationInView(self.view)
-        return Double(abs(translate.y)/abs(translate.x)) > M_PI_4
+        return Double(abs(translate.y)/abs(translate.x)) > M_PI_4 && translate.y > 0
     }
+    
+    
     
     var statusBarShouldHide = false
     override func prefersStatusBarHidden() -> Bool {
@@ -243,10 +262,87 @@ extension GalleryViewController: View2ViewTransitionPresented {
 
 public class PresentedCollectionViewCell: UICollectionViewCell {
     
+    var playerLayer:AVPlayerLayer?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.contentView.addSubview(self.content)
+        self.contentView.addSubview(self.videoContent)
+        videoContent.hidden = true
         
+        
+    }
+    
+    func cleanUp() {
+        destroyVideoPlayer()
+    }
+    
+    func createVideoPlayer() {
+        if playerLayer == nil {
+            playerLayer = AVPlayerLayer(player: AVPlayer())
+            playerLayer!.player?.actionAtItemEnd = .Pause
+            playerLayer!.videoGravity = AVLayerVideoGravityResizeAspectFill
+            
+            playerLayer!.frame = videoContent.bounds
+            self.videoContent.layer.addSublayer(playerLayer!)
+        }
+    }
+    
+    func destroyVideoPlayer() {
+        self.playerLayer?.removeFromSuperlayer()
+        self.playerLayer?.player = nil
+        self.playerLayer = nil
+        videoContent.hidden = true
+        
+    }
+    
+    func playVideo() {
+        self.playerLayer?.player?.play()
+    }
+    
+    func pauseVideo() {
+        self.playerLayer?.player?.pause()
+    }
+    
+    func setItem(item:StoryItem) {
+        
+        loadImageUsingCacheWithURL(item.getDownloadUrl().absoluteString, completion: { image, fromCache in
+            self.content.image = image
+        })
+        
+        if item.contentType == .Image {
+            
+        } else if item.contentType == .Video {
+            if let videoData = loadVideoFromCache(item.key) {
+                createVideoPlayer()
+                print("VIDEO READY")
+                
+                let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
+                let filePath = documentsURL.URLByAppendingPathComponent("temp/\(item.key).mp4")
+                
+                try! videoData.writeToURL(filePath, options: NSDataWritingOptions.DataWritingAtomic)
+                
+                
+                let asset = AVAsset(URL: filePath)
+                asset.loadValuesAsynchronouslyForKeys(["duration"], completionHandler: {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        let item = AVPlayerItem(asset: asset)
+                        self.playerLayer?.player?.replaceCurrentItemWithPlayerItem(item)
+                    })
+                })
+            } else {
+                print("VIDEO NOT READY")
+                item.download({ success in
+                    self.setItem(item)
+                })
+            }
+        }
+    }
+    
+    func setForPlay(){
+        print("PLAY VIDEO!")
+        videoContent.hidden = false
+        self.playVideo()
         
     }
     
@@ -266,6 +362,20 @@ public class PresentedCollectionViewCell: UICollectionViewCell {
         view.contentMode = .ScaleAspectFill
         return view
     }()
+    
+    public lazy var videoContent: UIView = {
+        let width: CGFloat = (UIScreen.mainScreen().bounds.size.width)
+        let height: CGFloat = (UIScreen.mainScreen().bounds.size.height)
+        let frame = CGRectMake(0,-6,width, height + 12)
+        let view: UIImageView = UIImageView(frame: frame)
+        view.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+        view.backgroundColor = UIColor.clearColor()
+        view.clipsToBounds = true
+        view.contentMode = .ScaleAspectFill
+        return view
+    }()
+    
+    
     
     
 }

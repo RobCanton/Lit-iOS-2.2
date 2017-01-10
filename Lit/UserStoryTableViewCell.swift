@@ -66,9 +66,15 @@ class UserStoryTableViewCell: UITableViewCell, StoryProtocol {
         story.delegate = self
         stateChange(story.state)
         //story.downloadItems({})
+        
         FirebaseService.getUser(story.getUserId(), completionHandler: { user in
             if user != nil {
-                self.usernameLabel.text = user!.getDisplayName()
+                if user!.getUserId() == mainStore.state.userState.uid {
+                    self.usernameLabel.text = "My Activity"
+                } else {
+                    self.usernameLabel.text = user!.getDisplayName()
+                }
+                
                 
                 // Load in image to avoid blip in story view
                 loadImageUsingCacheWithURL(user!.getImageUrl(), completion: { image, fromCache in})
@@ -106,7 +112,7 @@ class UserStoryTableViewCell: UITableViewCell, StoryProtocol {
         if items.count > 0 {
             let lastItem = items[items.count - 1]
             self.timeLabel.text = "\(lastItem.getDateCreated()!.timeStringSinceNowWithAgo())"
-            activate(true)
+            activate(false)
             loadImageUsingCacheWithURL(lastItem.getDownloadUrl().absoluteString, completion: { image, fromCache in
                 
                 if !fromCache {

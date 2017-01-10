@@ -19,6 +19,8 @@ public final class TransitionController: NSObject {
     
     public var userInfo: [String: AnyObject]? = nil
     
+    public var rounded: Bool = true
+    
     private(set) var type: TransitionControllerType = .Presenting
     
     public lazy var presentAnimationController: PresentAnimationController = {

@@ -834,8 +834,6 @@
 				B0E8E3431DE203720077D1BC /* UserStoryTableViewCell.xib */,
 				B0E2BDB71E0531E600D195A5 /* MyStoryTableViewCell.swift */,
 				B0E2BDB81E0531E600D195A5 /* MyStoryTableViewCell.xib */,
-				B0E8E34E1DE23A630077D1BC /* UserViewCell.swift */,
-				B0E8E34F1DE23A630077D1BC /* UserViewCell.xib */,
 				B079BE841DA557B00042B586 /* PhotoCell.swift */,
 				B079BE851DA557B00042B586 /* PhotoCell.xib */,
 				76EC36031D58EB600056D4CF /* CircleProgressView.swift */,
@@ -876,6 +874,8 @@
 			isa = PBXGroup;
 			children = (
 				B08BBB8B1DBAF42000AD3FF1 /* UsersListViewController.swift */,
+				B0E8E34E1DE23A630077D1BC /* UserViewCell.swift */,
+				B0E8E34F1DE23A630077D1BC /* UserViewCell.xib */,
 				B08BBB8E1DBAF4C200AD3FF1 /* UserTableViewCell.swift */,
 				B08BBB8F1DBAF4C200AD3FF1 /* UserTableViewCell.xib */,
 			);

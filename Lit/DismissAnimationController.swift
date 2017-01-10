@@ -91,8 +91,10 @@ public final class DismissAnimationController: NSObject, UIViewControllerAnimate
         self.initialTransitionView.clipsToBounds = true
         self.initialTransitionView.contentMode = .ScaleAspectFill
         
-        self.initialTransitionView.layer.cornerRadius = self.initialTransitionView.frame.width / 2
-        self.initialTransitionView.backgroundColor = UIColor.clearColor()
+        if self.transitionController.rounded {
+            self.initialTransitionView.layer.cornerRadius = self.initialTransitionView.frame.width / 2
+            self.initialTransitionView.backgroundColor = UIColor.clearColor()
+        }
         
         
         // Hide Transisioning Views
@@ -130,19 +132,25 @@ public final class DismissAnimationController: NSObject, UIViewControllerAnimate
                 }, completion: nil)
             
         } else {
-            self.initialTransitionView.layer.cornerRadius = self.initialTransitionView.frame.width / 2
-            self.initialTransitionView.backgroundColor = UIColor.clearColor()
             
-//            self.destinationTransitionView.layer.cornerRadius = self.destinationTransitionView.frame.width / 2
-//            self.destinationTransitionView.backgroundColor = UIColor.clearColor()
+            if transitionController.rounded {
+                self.initialTransitionView.layer.cornerRadius = self.initialTransitionView.frame.width / 2
+                self.initialTransitionView.backgroundColor = UIColor.clearColor()
+            }
+            
             
             UIView.animateWithDuration(duration, delay: 0.0, usingSpringWithDamping: self.usingSpringWithDamping, initialSpringVelocity: self.initialSpringVelocity, options: self.animationOptions, animations: {
                 
                 self.destinationTransitionView.frame = self.initialFrame
-                self.destinationTransitionView.layer.cornerRadius = self.destinationTransitionView.frame.width / 2
+                
                 self.initialTransitionView.frame = self.initialFrame
                 self.initialTransitionView.alpha = 1.0
-                self.initialTransitionView.layer.cornerRadius = self.initialTransitionView.frame.width / 2
+                
+                if self.transitionController.rounded {
+                    self.destinationTransitionView.layer.cornerRadius = self.destinationTransitionView.frame.width / 2
+                    self.initialTransitionView.layer.cornerRadius = self.initialTransitionView.frame.width / 2
+                }
+                
                 fromViewControllerView.alpha = CGFloat.min
                 
                 }, completion: { _ in

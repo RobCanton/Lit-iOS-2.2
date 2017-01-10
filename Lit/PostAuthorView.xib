@@ -12,12 +12,6 @@
             <rect key="frame" x="0.0" y="0.0" width="429" height="52"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a8c-9B-TCZ">
-                    <rect key="frame" x="275" y="17" width="146" height="26"/>
-                    <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="16"/>
-                    <color key="textColor" red="0.82352941176470584" green="0.82352941176470584" blue="0.82352941176470584" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sbx-ev-NXw">
                     <rect key="frame" x="0.0" y="0.0" width="176" height="52"/>
                     <subviews>
@@ -54,15 +48,39 @@
                         <constraint firstItem="oMp-3g-Vyj" firstAttribute="leading" secondItem="Sbx-ev-NXw" secondAttribute="leading" constant="8" id="yED-RP-FT0"/>
                     </constraints>
                 </view>
+                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QHe-Ty-rfz">
+                    <rect key="frame" x="262" y="0.0" width="167" height="52"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a8c-9B-TCZ">
+                            <rect key="frame" x="8" y="8" width="151" height="36"/>
+                            <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="16"/>
+                            <color key="textColor" white="0.81999999999999995" alpha="0.66000000000000003" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="a8c-9B-TCZ" firstAttribute="top" secondItem="QHe-Ty-rfz" secondAttribute="top" id="Kq7-kZ-HEy"/>
+                        <constraint firstAttribute="bottom" secondItem="a8c-9B-TCZ" secondAttribute="bottom" id="Rqg-yj-Fjr"/>
+                        <constraint firstAttribute="trailing" secondItem="a8c-9B-TCZ" secondAttribute="trailing" constant="8" id="dwK-dp-6AJ"/>
+                        <constraint firstItem="a8c-9B-TCZ" firstAttribute="leading" secondItem="QHe-Ty-rfz" secondAttribute="leading" constant="8" id="hHU-cq-Pjw"/>
+                    </constraints>
+                </view>
             </subviews>
             <constraints>
-                <constraint firstItem="a8c-9B-TCZ" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="FPg-eH-Tw7"/>
+                <constraint firstAttribute="bottom" secondItem="QHe-Ty-rfz" secondAttribute="bottom" id="Fyu-Mv-mU4"/>
                 <constraint firstItem="Sbx-ev-NXw" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Vfi-mM-BX2"/>
+                <constraint firstItem="QHe-Ty-rfz" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Zbn-qH-2Ay"/>
+                <constraint firstItem="QHe-Ty-rfz" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="dfi-j8-trP"/>
                 <constraint firstAttribute="bottom" secondItem="Sbx-ev-NXw" secondAttribute="bottom" id="g2J-eb-OvD"/>
-                <constraint firstAttribute="trailing" secondItem="a8c-9B-TCZ" secondAttribute="trailing" constant="10" id="han-i4-ol8"/>
+                <constraint firstAttribute="trailing" secondItem="QHe-Ty-rfz" secondAttribute="trailing" id="kKr-N9-Hhb"/>
                 <constraint firstItem="Sbx-ev-NXw" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="xqc-5f-Te3"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="dfi-j8-trP"/>
+                </mask>
+            </variation>
             <connections>
                 <outlet property="authorImageView" destination="oMp-3g-Vyj" id="j6Z-45-fFR"/>
                 <outlet property="authorUsernameLabel" destination="BEh-Gd-JVu" id="DBm-6r-Rgu"/>

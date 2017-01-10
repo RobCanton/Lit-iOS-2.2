@@ -56,9 +56,6 @@ public class StoryViewController: UICollectionViewCell {
             for item in story.items! {
                 totalTime += item.getLength()
             }
-            
-            //getViews()
-            
         }
     }
     

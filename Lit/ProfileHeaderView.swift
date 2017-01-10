@@ -103,6 +103,8 @@ class ProfileHeaderView: UICollectionReusableView {
             nameLabel.text = user.getDisplayName()
         }
         
+        locationLabel.text = "@\(user.getDisplayName())"
+        
         
         setUserStatus(checkFollowingStatus(user.getUserId()))
         

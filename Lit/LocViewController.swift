@@ -111,7 +111,18 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
             
         } else {
             postKeys = tempCollection
-            self.userStories = stories
+            
+            var sortedStories = stories
+            for i in 0..<sortedStories.count {
+                let story = stories[i]
+                if story.getUserId() == mainStore.state.userState.uid {
+                    print("Place my story at top")
+                    sortedStories.removeAtIndex(i)
+                    sortedStories.insert(story, atIndex: 0)
+                }
+            }
+            
+            self.userStories = sortedStories
             self.tableView?.reloadData()
         }
     }
@@ -309,8 +320,6 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
         return nil
     }
     
-    
-    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if section == 0 {
@@ -506,8 +515,9 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
         self.selectedIndexPath = indexPath
         
         let presentedViewController: PresentedViewController = PresentedViewController()
-        presentedViewController.tabBarRef = self.tabBarController! as! PopUpTabBarController
+        presentedViewController.tabBarRef   = self.tabBarController! as! PopUpTabBarController
         presentedViewController.userStories = userStories
+        presentedViewController.location    = location
         presentedViewController.transitionController = self.transitionController
         let i = NSIndexPath(forItem: indexPath.row, inSection: 0)
         self.transitionController.userInfo = ["destinationIndexPath": i, "initialIndexPath": i]
@@ -543,7 +553,6 @@ extension LocViewController: View2ViewTransitionPresenting {
         let cell: UserStoryTableViewCell = self.tableView!.cellForRowAtIndexPath(i)! as! UserStoryTableViewCell
         let image_frame = cell.contentImageView.frame
         let image_height = image_frame.height
-        let margin = (cell.frame.height - image_height) / 2
         let x = cell.frame.origin.x + 20
         
         let navHeight = screenStatusBarHeight + navigationController!.navigationBar.frame.height
@@ -568,7 +577,6 @@ extension LocViewController: View2ViewTransitionPresenting {
         let indexPath: NSIndexPath = userInfo!["initialIndexPath"] as! NSIndexPath
         let i = NSIndexPath(forRow: indexPath.item, inSection: 1)
         if !isPresenting {
-            print("INDEX PATH: \(indexPath)")
             if let cell = tableView?.cellForRowAtIndexPath(i) as? UserStoryTableViewCell {
                 returningCell?.activate(false)
                 returningCell = cell

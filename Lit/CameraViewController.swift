@@ -252,7 +252,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
         let definiteBounds = UIScreen.mainScreen().bounds
         recordBtn = CameraButton(frame: CGRect(x: 0, y: 0, width: 80, height: 80))
         var cameraBtnFrame = recordBtn.frame
-        cameraBtnFrame.origin.y = definiteBounds.height - 152
+        cameraBtnFrame.origin.y = definiteBounds.height - 140
         cameraBtnFrame.origin.x = self.view.bounds.width/2 - cameraBtnFrame.size.width/2
         recordBtn.frame = cameraBtnFrame
         

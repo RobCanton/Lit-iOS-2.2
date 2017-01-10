@@ -22,6 +22,12 @@ class PostAuthorView: UIView {
     var authorTap:UITapGestureRecognizer!
     var authorTappedHandler:((user:User)->())?
 
+    var locationTap:UITapGestureRecognizer!
+    var locationTappedHandler:((location:Location)->())?
+    
+    var location:Location?
+
+    
     var margin:CGFloat = 16
     
     /*
@@ -37,6 +43,9 @@ class PostAuthorView: UIView {
         authorImageView.layer.cornerRadius = authorImageView.frame.width/2
         authorImageView.clipsToBounds = true
         authorTap = UITapGestureRecognizer(target: self, action: #selector(authorTapped))
+        
+        locationTap = UITapGestureRecognizer(target: self, action: #selector(locationTapped))
+        
         let frame = CGRectMake(0, 0, authorImageView.frame.width + margin, authorImageView.frame.height + margin)
         addCircle(frame)
         
@@ -56,11 +65,17 @@ class PostAuthorView: UIView {
                 superView.userInteractionEnabled = true
                 superView.removeGestureRecognizer(self.authorTap)
                 superView.addGestureRecognizer(self.authorTap)
+                
+                let locSuperview = self.locationLabel.superview!
+                locSuperview.userInteractionEnabled = true
+                locSuperview.removeGestureRecognizer(self.locationTap)
+                locSuperview.addGestureRecognizer(self.locationTap)
 
                 self.user = user
                 self.timeLabel.text = post.getDateCreated()!.timeStringSinceNow()
                 for location in mainStore.state.locations {
                     if location.getKey() == post.getLocationKey() {
+                        self.location = location
                         self.locationLabel.text = location.getName()
                     }
                 }
@@ -71,8 +86,13 @@ class PostAuthorView: UIView {
     
     func authorTapped(gesture:UITapGestureRecognizer) {
         if user != nil {
-            print("CALLED INSIDE")
             authorTappedHandler?(user: user!)
+        }
+    }
+    
+    func locationTapped(gesture:UITapGestureRecognizer) {
+        if location != nil {
+           locationTappedHandler?(location: location!)
         }
     }
     

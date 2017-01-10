@@ -328,6 +328,7 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         galleryViewController.tabBarRef = tabBarController
         galleryViewController.transitionController = self.transitionController
         self.transitionController.userInfo = ["destinationIndexPath": indexPath, "initialIndexPath": indexPath]
+        self.transitionController.rounded = false
         
         // This example will push view controller if presenting view controller has navigation controller.
         // Otherwise, present another view controller
