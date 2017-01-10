@@ -174,7 +174,7 @@ class ActivityViewController: UITableViewController, UISearchBarDelegate {
 
         if section == 1 && userStories.count > 0 {
             headerView.hidden = false
-            headerView.label.text = "RECENT ACTIVITY"
+            headerView.label.text = "FOLLOWING"
         }
         
         return headerView

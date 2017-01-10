@@ -44,6 +44,9 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     @IBOutlet weak var sendButton: UIButton!
     @IBOutlet weak var flashView: UIView!
     
+    @IBOutlet weak var flashButton: UIButton!
+    
+    @IBOutlet weak var switchButton: UIButton!
     
     @IBAction func cancelButtonTapped(sender: UIButton) {
         
@@ -90,7 +93,10 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
                 cancelButton.hidden     = true
                 sendButton.enabled      = false
                 sendButton.hidden       = true
-                
+                flashButton.enabled     = true
+                flashButton.hidden      = false
+                switchButton.enabled    = true
+                switchButton.hidden     = false
                 break
             case .Running:
                 imageCaptureView.image  = nil
@@ -100,6 +106,14 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
                 sendButton.enabled      = false
                 sendButton.hidden       = true
                 dismissBtn.hidden       = false
+                flashButton.enabled     = true
+                flashButton.hidden      = false
+                switchButton.enabled    = true
+                switchButton.hidden     = false
+                playerLayer?.player?.pause()
+                playerLayer?.removeFromSuperlayer()
+                playerLayer?.player = nil
+                playerLayer = nil
                 break
             case .PhotoTaken:
                 resetProgress()
@@ -111,6 +125,10 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
                 sendButton.hidden       = false
                 recordBtn.hidden        = true
                 dismissBtn.hidden       = true
+                flashButton.enabled     = false
+                flashButton.hidden      = true
+                switchButton.enabled    = false
+                switchButton.hidden     = true
                 uploadCoordinate        = GPSService.sharedInstance.lastLocation
                 break
             case .VideoTaken:
@@ -122,17 +140,27 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
                 sendButton.hidden       = false
                 recordBtn.hidden        = true
                 dismissBtn.hidden       = true
+                flashButton.enabled     = false
+                flashButton.hidden      = true
+                switchButton.enabled    = false
+                switchButton.hidden     = true
                 uploadCoordinate        = GPSService.sharedInstance.lastLocation
                 break
             case .Recording:
-                dismissBtn.hidden       = true
+                flashButton.enabled     = false
+                flashButton.hidden      = true
+                switchButton.enabled    = false
+                switchButton.hidden     = true
                 break
             case .Sending:
                 sendButton.hidden       = true
                 sendButton.enabled      = false
                 cancelButton.hidden     = true
                 cancelButton.enabled    = false
-
+                flashButton.enabled     = false
+                flashButton.hidden      = true
+                switchButton.enabled    = false
+                switchButton.hidden     = true
                 break
             case .Sent:
                 break
@@ -241,6 +269,14 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
         
     }
     
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        captureSession?.stopRunning()
+        previewLayer?.removeFromSuperlayer()
+        playerLayer?.player = nil
+        playerLayer = nil
+        
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -274,6 +310,9 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
         
         dismissBtn.applyShadow(1, opacity: 0.25, height: 1, shouldRasterize: false)
         cancelButton.applyShadow(1, opacity: 0.25, height: 1, shouldRasterize: false)
+        
+        flashButton.addTarget(self, action: #selector(switchFlashMode), forControlEvents: .TouchUpInside)
+        switchButton.addTarget(self, action: #selector(switchCamera), forControlEvents: .TouchUpInside)
 
     }
 
@@ -410,14 +449,17 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
                     
                     avDevice.flashMode = .Auto
                     flashMode = .Auto
+                    flashButton.setImage(UIImage(named: "flashauto"), forState: .Normal)
                     break
                 case .Auto:
                     avDevice.flashMode = .Off
                     flashMode = .Off
+                    flashButton.setImage(UIImage(named: "flashoff"), forState: .Normal)
                     break
                 case .Off:
                     avDevice.flashMode = .On
                     flashMode = .On
+                    flashButton.setImage(UIImage(named: "flashauto"), forState: .Normal)
                     break
                 }
                 // unlock your device
@@ -581,6 +623,10 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
             videoPlayer.seekToTime(kCMTimeZero)
             videoPlayer.play()
         }
+    }
+    
+    func endLoopVideo() {
+        NSNotificationCenter.defaultCenter().removeObserver(AVPlayerItemDidPlayToEndTimeNotification, name: nil, object: nil)
     }
     
     func captureOutput(captureOutput: AVCaptureFileOutput!, didStartRecordingToOutputFileAtURL fileURL: NSURL!, fromConnections connections: [AnyObject]!) {

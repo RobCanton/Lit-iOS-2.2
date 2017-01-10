@@ -663,6 +663,20 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vHG-nK-Maa">
+                                <rect key="frame" x="12" y="28" width="28" height="25"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <state key="normal" image="flashoff">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PnC-fp-rwU">
+                                <rect key="frame" x="558" y="28" width="28" height="25"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <state key="normal" image="switchcamera">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="10W-xw-TSZ">
                                 <rect key="frame" x="12" y="530" width="48" height="52"/>
                                 <constraints>
@@ -713,6 +727,8 @@
                             <constraint firstItem="eDt-pF-x5t" firstAttribute="centerX" secondItem="LJP-ME-48w" secondAttribute="centerX" id="20k-1z-Q1E"/>
                             <constraint firstAttribute="bottomMargin" secondItem="10W-xw-TSZ" secondAttribute="bottom" constant="12" id="2oT-Gs-sLj"/>
                             <constraint firstAttribute="bottomMargin" secondItem="sjD-xV-zGV" secondAttribute="bottom" id="3Q4-aK-JjM"/>
+                            <constraint firstItem="PnC-fp-rwU" firstAttribute="top" secondItem="aZc-UQ-w0e" secondAttribute="bottom" constant="8" id="4UU-PG-G4K"/>
+                            <constraint firstItem="vHG-nK-Maa" firstAttribute="leading" secondItem="LJP-ME-48w" secondAttribute="leadingMargin" constant="-8" id="6X9-MA-Dc1"/>
                             <constraint firstAttribute="leadingMargin" secondItem="eDt-pF-x5t" secondAttribute="leading" id="7HA-7M-rXc"/>
                             <constraint firstItem="Ncg-MP-bVo" firstAttribute="leading" secondItem="LJP-ME-48w" secondAttribute="leading" id="9ra-aC-DmC"/>
                             <constraint firstItem="sjD-xV-zGV" firstAttribute="leading" secondItem="LJP-ME-48w" secondAttribute="leading" id="C3z-xn-yfy"/>
@@ -720,13 +736,17 @@
                             <constraint firstItem="Ri8-OT-mqm" firstAttribute="top" secondItem="LJP-ME-48w" secondAttribute="top" id="KMR-QR-ggh"/>
                             <constraint firstAttribute="trailing" secondItem="80H-Sb-wGz" secondAttribute="trailing" constant="14" id="KUB-Gh-HoQ"/>
                             <constraint firstItem="10W-xw-TSZ" firstAttribute="leading" secondItem="LJP-ME-48w" secondAttribute="leading" constant="6" id="KYE-4u-xrY"/>
+                            <constraint firstAttribute="trailing" secondItem="PnC-fp-rwU" secondAttribute="trailing" constant="16" id="LgS-Tg-SSc"/>
+                            <constraint firstItem="vHG-nK-Maa" firstAttribute="leading" secondItem="LJP-ME-48w" secondAttribute="leading" constant="16" id="N6t-on-owq"/>
                             <constraint firstItem="Ri8-OT-mqm" firstAttribute="leading" secondItem="LJP-ME-48w" secondAttribute="leading" id="QJe-RL-HoB"/>
                             <constraint firstItem="80H-Sb-wGz" firstAttribute="trailing" secondItem="LJP-ME-48w" secondAttribute="trailingMargin" id="QWz-Hn-dC4"/>
                             <constraint firstItem="ORk-Dn-btY" firstAttribute="top" secondItem="10W-xw-TSZ" secondAttribute="bottom" constant="8" id="Rl7-Jz-c4M"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="PnC-fp-rwU" secondAttribute="trailing" constant="-6" id="Yor-N1-vM7"/>
                             <constraint firstAttribute="trailing" secondItem="Ncg-MP-bVo" secondAttribute="trailing" id="aPm-Yj-Oco"/>
                             <constraint firstItem="eDt-pF-x5t" firstAttribute="top" secondItem="aZc-UQ-w0e" secondAttribute="bottom" constant="8" id="b02-G2-2XX"/>
                             <constraint firstItem="ORk-Dn-btY" firstAttribute="top" secondItem="80H-Sb-wGz" secondAttribute="bottom" constant="8" symbolic="YES" id="bUF-Ev-9sI"/>
                             <constraint firstAttribute="trailing" secondItem="sjD-xV-zGV" secondAttribute="trailing" id="dDO-Ap-6TH"/>
+                            <constraint firstItem="vHG-nK-Maa" firstAttribute="top" secondItem="aZc-UQ-w0e" secondAttribute="bottom" constant="8" id="dvI-j8-ka1"/>
                             <constraint firstItem="ORk-Dn-btY" firstAttribute="top" secondItem="eDt-pF-x5t" secondAttribute="bottom" constant="8" id="eOh-MC-FnE"/>
                             <constraint firstItem="10W-xw-TSZ" firstAttribute="top" secondItem="aZc-UQ-w0e" secondAttribute="bottom" constant="8" symbolic="YES" id="fPp-nG-8PP"/>
                             <constraint firstAttribute="topMargin" secondItem="Ncg-MP-bVo" secondAttribute="top" id="iiK-qc-cwP"/>
@@ -739,10 +759,12 @@
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
+                                <exclude reference="6X9-MA-Dc1"/>
                                 <exclude reference="2oT-Gs-sLj"/>
                                 <exclude reference="Dg5-8k-wJk"/>
                                 <exclude reference="fPp-nG-8PP"/>
                                 <exclude reference="kOP-dW-mP8"/>
+                                <exclude reference="Yor-N1-vM7"/>
                                 <exclude reference="bUF-Ev-9sI"/>
                                 <exclude reference="7HA-7M-rXc"/>
                                 <exclude reference="b02-G2-2XX"/>
@@ -754,9 +776,11 @@
                         <outlet property="cameraView" destination="Ri8-OT-mqm" id="HPm-DC-TAp"/>
                         <outlet property="cancelButton" destination="10W-xw-TSZ" id="HVm-9p-meX"/>
                         <outlet property="dismissBtn" destination="eDt-pF-x5t" id="qoM-6S-nRY"/>
+                        <outlet property="flashButton" destination="vHG-nK-Maa" id="0pl-7C-9Ur"/>
                         <outlet property="flashView" destination="Ncg-MP-bVo" id="s75-vq-Cts"/>
                         <outlet property="imageCaptureView" destination="sjD-xV-zGV" id="hkd-Mg-qM1"/>
                         <outlet property="sendButton" destination="80H-Sb-wGz" id="LYD-9R-oHx"/>
+                        <outlet property="switchButton" destination="PnC-fp-rwU" id="2sc-wj-6hM"/>
                         <outlet property="videoLayer" destination="btD-UE-qeB" id="q8m-F5-iAu"/>
                         <segue destination="kMi-ij-NIb" kind="show" identifier="toSendSelector" animates="NO" id="x7U-xf-5Le"/>
                     </connections>
@@ -789,7 +813,7 @@
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </tableView>
                         </subviews>
-                        <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="0F0-CC-N2d" firstAttribute="top" secondItem="gHv-sR-TTQ" secondAttribute="bottom" id="Edw-Gj-BLz"/>
                             <constraint firstItem="YaG-qS-fXx" firstAttribute="leading" secondItem="qEo-Cy-hjr" secondAttribute="leadingMargin" constant="-20" id="gw4-oh-k3b"/>
@@ -1525,11 +1549,13 @@
         <image name="delete_filled" width="32" height="32"/>
         <image name="fb" width="512" height="512"/>
         <image name="find_user" width="32" height="32"/>
+        <image name="flashoff" width="25" height="25"/>
         <image name="home" width="32" height="32"/>
         <image name="lit" width="1944" height="1944"/>
         <image name="message" width="32" height="32"/>
         <image name="right_arrow" width="32" height="32"/>
         <image name="settings" width="32" height="32"/>
+        <image name="switchcamera" width="25" height="25"/>
         <image name="user" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>

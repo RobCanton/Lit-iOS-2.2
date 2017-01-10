@@ -50,9 +50,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         GMSServices.provideAPIKey("AIzaSyD5keC5NA5IXYLp_hX6qscQwNyhy1QFecU")
         UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.LightContent
         
-        let audioSession = AVAudioSession.sharedInstance()
-        try! audioSession.setCategory(AVAudioSessionCategoryAmbient,
-                                      withOptions: AVAudioSessionCategoryOptions.DuckOthers)
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback, withOptions: .MixWithOthers)
+            //print("AVAudioSession Category Playback OK")
+            do {
+                try AVAudioSession.sharedInstance().setActive(true)
+                //print("AVAudioSession is Active")
+            } catch _ as NSError {
+                //print(error.localizedDescription)
+            }
+        } catch _ as NSError {
+            //print(error.localizedDescription)
+        }
         
         let colorView = UIView()
         colorView.backgroundColor = selectedColor
