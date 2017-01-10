@@ -115,7 +115,7 @@ class FirebaseService {
     internal static func sendImage(upload:Upload) -> FIRStorageUploadTask? {
         
         //If upload has no destination do not upload it
-        if !upload.toLocation() && !upload.toUserProfile() { return nil}
+        //if !upload.toLocation() && !upload.toUserProfile() { return nil}
         let uid = mainStore.state.userState.uid
 
         
@@ -138,6 +138,7 @@ class FirebaseService {
                     let downloadURL = metadata!.downloadURL()
                     let obj = [
                         "author": uid,
+                        "toProfile": upload.toUserProfile(),
                         "location": upload.getLocationKey(),
                         "url": downloadURL!.absoluteString,
                         "contentType": contentTypeStr,
@@ -162,7 +163,7 @@ class FirebaseService {
     internal static func uploadVideo(upload:Upload, completionHander:(success:Bool, uploadTask:FIRStorageUploadTask?)->()){
         
         //If upload has no destination do not upload it
-        if !upload.toLocation() && !upload.toUserProfile() { return completionHander(success:false, uploadTask: nil) }
+        //if !upload.toLocation() && !upload.toUserProfile() { return completionHander(success:false, uploadTask: nil) }
         
         let uid = mainStore.state.userState.uid
         let url = upload.videoURL!
@@ -188,6 +189,7 @@ class FirebaseService {
                     let downloadURL = metadata!.downloadURL()
                     let obj = [
                         "author": uid,
+                        "toProfile": upload.toUserProfile(),
                         "location": upload.getLocationKey(),
                         "videoURL": downloadURL!.absoluteString,
                         "url": thumbURL,

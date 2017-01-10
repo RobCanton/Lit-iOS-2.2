@@ -29,12 +29,21 @@ class DialogRow: UIButton {
     func setToProfileRow() {
         key = "profile"
         if let user = mainStore.state.userState.user {
-            locationImageView.loadImageUsingCacheWithURLString(user.getImageUrl(), completion: { result in })
+            locationImageView.image = UIImage(named: "user")
             locationImageView.layer.cornerRadius = locationImageView.frame.width/2
             locationImageView.clipsToBounds = true
             locationTitle.text = "My Profile"
         }
-        
+    }
+    
+    func setToActivityRow() {
+        key = "activity"
+        if let user = mainStore.state.userState.user {
+            locationImageView.loadImageUsingCacheWithURLString(user.getImageUrl(), completion: { result in })
+            locationImageView.layer.cornerRadius = locationImageView.frame.width/2
+            locationImageView.clipsToBounds = true
+            locationTitle.text = "My Story"
+        }
     }
     
     func setToLocationRow(location:Location) {

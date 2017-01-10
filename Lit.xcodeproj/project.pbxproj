@@ -139,6 +139,13 @@
 		B05ABD041D41211100364322 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05ABD031D41211100364322 /* MainViewController.swift */; };
 		B05DB12A1DA22D9600567996 /* LocationFriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05DB1291DA22D9600567996 /* LocationFriendsViewController.swift */; };
 		B0678FBB1E09C44600FA6B50 /* CameraButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0678FBA1E09C44600FA6B50 /* CameraButton.swift */; };
+		B06BC65D1E24C8CE0045D920 /* SendTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06BC65C1E24C8CE0045D920 /* SendTableViewController.swift */; };
+		B06BC6611E24DC350045D920 /* SendFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B06BC6601E24DC350045D920 /* SendFooterView.xib */; };
+		B06BC6631E24DC7B0045D920 /* SendFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06BC6621E24DC7B0045D920 /* SendFooterView.swift */; };
+		B06BC66A1E24E7250045D920 /* SendProfileViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06BC6681E24E7250045D920 /* SendProfileViewCell.swift */; };
+		B06BC66B1E24E7250045D920 /* SendProfileViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B06BC6691E24E7250045D920 /* SendProfileViewCell.xib */; };
+		B06BC66E1E24EFCA0045D920 /* SendLocationViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06BC66C1E24EFCA0045D920 /* SendLocationViewCell.swift */; };
+		B06BC66F1E24EFCA0045D920 /* SendLocationViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B06BC66D1E24EFCA0045D920 /* SendLocationViewCell.xib */; };
 		B06D54BF1D9ECB6D00F6A4A7 /* AkiraTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06D54B31D9ECB6D00F6A4A7 /* AkiraTextField.swift */; };
 		B06D54C01D9ECB6D00F6A4A7 /* HoshiTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06D54B41D9ECB6D00F6A4A7 /* HoshiTextField.swift */; };
 		B06D54C11D9ECB6D00F6A4A7 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B06D54B51D9ECB6D00F6A4A7 /* Info.plist */; };
@@ -378,6 +385,13 @@
 		B05ABD031D41211100364322 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		B05DB1291DA22D9600567996 /* LocationFriendsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationFriendsViewController.swift; sourceTree = "<group>"; };
 		B0678FBA1E09C44600FA6B50 /* CameraButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraButton.swift; sourceTree = "<group>"; };
+		B06BC65C1E24C8CE0045D920 /* SendTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendTableViewController.swift; sourceTree = "<group>"; };
+		B06BC6601E24DC350045D920 /* SendFooterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SendFooterView.xib; sourceTree = "<group>"; };
+		B06BC6621E24DC7B0045D920 /* SendFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendFooterView.swift; sourceTree = "<group>"; };
+		B06BC6681E24E7250045D920 /* SendProfileViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendProfileViewCell.swift; sourceTree = "<group>"; };
+		B06BC6691E24E7250045D920 /* SendProfileViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SendProfileViewCell.xib; sourceTree = "<group>"; };
+		B06BC66C1E24EFCA0045D920 /* SendLocationViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendLocationViewCell.swift; sourceTree = "<group>"; };
+		B06BC66D1E24EFCA0045D920 /* SendLocationViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SendLocationViewCell.xib; sourceTree = "<group>"; };
 		B06D54B31D9ECB6D00F6A4A7 /* AkiraTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AkiraTextField.swift; sourceTree = "<group>"; };
 		B06D54B41D9ECB6D00F6A4A7 /* HoshiTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HoshiTextField.swift; sourceTree = "<group>"; };
 		B06D54B51D9ECB6D00F6A4A7 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -785,6 +799,13 @@
 				B01B349F1DC11A0600B2B9CE /* UploadSelectorView.xib */,
 				B01B34A31DC15BDA00B2B9CE /* DialogRow.swift */,
 				B01B34A11DC15BC600B2B9CE /* DialogRow.xib */,
+				B06BC65C1E24C8CE0045D920 /* SendTableViewController.swift */,
+				B06BC6621E24DC7B0045D920 /* SendFooterView.swift */,
+				B06BC6601E24DC350045D920 /* SendFooterView.xib */,
+				B06BC6681E24E7250045D920 /* SendProfileViewCell.swift */,
+				B06BC6691E24E7250045D920 /* SendProfileViewCell.xib */,
+				B06BC66C1E24EFCA0045D920 /* SendLocationViewCell.swift */,
+				B06BC66D1E24EFCA0045D920 /* SendLocationViewCell.xib */,
 			);
 			name = Camera;
 			sourceTree = "<group>";
@@ -1053,6 +1074,7 @@
 				B011B34C1DFFB2BD00FA4633 /* InfoTableViewCell.xib in Resources */,
 				B0ED4B671DBD84D20040E5F0 /* LocationDetailsView.xib in Resources */,
 				B00BA9271D9E4E1D00F5EA30 /* CreateProfileViewController.xib in Resources */,
+				B06BC66F1E24EFCA0045D920 /* SendLocationViewCell.xib in Resources */,
 				B0E8E3451DE203720077D1BC /* UserStoryTableViewCell.xib in Resources */,
 				B0BA326A1DA7158B004352A7 /* HeaderView.xib in Resources */,
 				B03504C31DD0663100C9C83F /* LocationFooterView.xib in Resources */,
@@ -1077,6 +1099,7 @@
 				B00BA9231D9E4E0700F5EA30 /* FirstScreenViewController.xib in Resources */,
 				B0E8E32F1DDBC44C0077D1BC /* PostAuthorView.xib in Resources */,
 				B0351FB71DED0503000A4BF5 /* Info.plist in Resources */,
+				B06BC6611E24DC350045D920 /* SendFooterView.xib in Resources */,
 				B011B3461DFBF5B300FA4633 /* PostStatsView.xib in Resources */,
 				B0B35DFC1E1F716800E4546D /* LocationHeaderView.xib in Resources */,
 				B0E8E3181DD98A060077D1BC /* ProfilePictureMessageView.xib in Resources */,
@@ -1089,6 +1112,7 @@
 				B07E54D01E0C8AA8008C2D23 /* EditProfileViewController.storyboard in Resources */,
 				B09801F51E1C7869006782E6 /* mapStyle.json in Resources */,
 				76173B7B1D5784AC0093A137 /* Main.storyboard in Resources */,
+				B06BC66B1E24E7250045D920 /* SendProfileViewCell.xib in Resources */,
 				B06D54C11D9ECB6D00F6A4A7 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1166,6 +1190,7 @@
 				B09D5FCD1DA57C80004A188E /* ARNImageTransitionNavigationController.swift in Sources */,
 				B032C9921DA807C000811779 /* SetupViewController.swift in Sources */,
 				B0351FB01DED0503000A4BF5 /* NVActivityIndicatorAnimationLineScalePulseOutRapid.swift in Sources */,
+				B06BC66A1E24E7250045D920 /* SendProfileViewCell.swift in Sources */,
 				B0E8E3121DD7B2A50077D1BC /* SocialService.swift in Sources */,
 				76D2E46B1D7F50AF00B7C939 /* City.swift in Sources */,
 				B0321EC41DB5337900AD4C53 /* DismissAnimator.swift in Sources */,
@@ -1177,6 +1202,7 @@
 				B07E54DD1E165A12008C2D23 /* AngleGradientBorderLayer.swift in Sources */,
 				765036281D59170E0062BCF0 /* StoryItem.swift in Sources */,
 				B06D54C81D9ECB6D00F6A4A7 /* YokoTextField.swift in Sources */,
+				B06BC65D1E24C8CE0045D920 /* SendTableViewController.swift in Sources */,
 				767729831D5116930052CA17 /* CWStatusBarNotification.swift in Sources */,
 				B0351FB61DED0503000A4BF5 /* NVActivityIndicatorAnimationTriangleSkewSpin.swift in Sources */,
 				B09D5FCE1DA57C80004A188E /* ARNImageZoomTransition.swift in Sources */,
@@ -1271,6 +1297,7 @@
 				B06D54C61D9ECB6D00F6A4A7 /* MinoruTextField.swift in Sources */,
 				B0254F701DAFE00C0082D898 /* MessagesViewController.swift in Sources */,
 				B06D54C71D9ECB6D00F6A4A7 /* TextFieldsEffects.swift in Sources */,
+				B06BC6631E24DC7B0045D920 /* SendFooterView.swift in Sources */,
 				B087E9CC1D9B88700079E2BF /* LocationsReducer.swift in Sources */,
 				768FB9781D5BB55000251035 /* User.swift in Sources */,
 				B0E591591DD126C900C032D6 /* LogoutView.swift in Sources */,
@@ -1297,6 +1324,7 @@
 				B0351FA31DED0503000A4BF5 /* NVActivityIndicatorAnimationBallScale.swift in Sources */,
 				B06D54CD1D9ED55A00F6A4A7 /* UserReducer.swift in Sources */,
 				B01783901D98EF040088AD33 /* FriendRequest.swift in Sources */,
+				B06BC66E1E24EFCA0045D920 /* SendLocationViewCell.swift in Sources */,
 				B05ABCFB1D4117CB00364322 /* UserStateActions.swift in Sources */,
 				76136D451D495E8E003DB433 /* FirebaseService.swift in Sources */,
 				B09D5FD31DA57CE9004A188E /* ModalViewController.swift in Sources */,

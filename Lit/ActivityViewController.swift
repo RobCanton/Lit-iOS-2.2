@@ -67,7 +67,7 @@ class ActivityViewController: UITableViewController, UISearchBarDelegate {
     
     func listenToMyStory() {
         let uid = mainStore.state.userState.uid
-        myStoryRef = FirebaseService.ref.child("users/uploads/\(uid)")
+        myStoryRef = FirebaseService.ref.child("users/activity/\(uid)")
         myStoryRef?.removeAllObservers()
         myStoryRef?.observeEventType(.Value, withBlock: { snapshot in
             var itemKeys = [String]()

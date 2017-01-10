@@ -21,6 +21,7 @@ class UploadSelectorView: MessageView, MKMapViewDelegate {
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var contentView: UIStackView!
     
+    var activityRow:DialogRow!
     var profileRow:DialogRow!
     
     var rows = [DialogRow]()
@@ -32,13 +33,24 @@ class UploadSelectorView: MessageView, MKMapViewDelegate {
     override func awakeFromNib() {
         super.awakeFromNib()
         
+        
+        activityRow = UINib(nibName: "DialogRow", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! DialogRow
+        
+        activityRow.setToActivityRow()
+        //activityRow.addTarget(self, action: #selector(rowTapped), forControlEvents: .TouchUpInside)
+        contentView.addArrangedSubview(activityRow)
+        
+        
+        
+        
+        
         profileRow = UINib(nibName: "DialogRow", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! DialogRow
 
         profileRow.setToProfileRow()
-        //profileRow.addTarget(self, action: #selector(rowTapped), forControlEvents: .TouchUpInside)
-        profileRow.active(true)
-        profileRow.userInteractionEnabled = false
+        profileRow.addTarget(self, action: #selector(rowTapped), forControlEvents: .TouchUpInside)
         contentView.addArrangedSubview(profileRow)
+        
+        
 
         
         let key = mainStore.state.userState.activeLocationKey
@@ -60,12 +72,12 @@ class UploadSelectorView: MessageView, MKMapViewDelegate {
         
         contentView.addArrangedSubview(sendButton)
 
-        mapView.layer.cornerRadius = 5
-        mapView.clipsToBounds = true
-        
-        mapView.delegate = self
-        mapView.showsUserLocation = false
-        mapView.userInteractionEnabled = false
+//        mapView.layer.cornerRadius = 5
+//        mapView.clipsToBounds = true
+//        
+//        mapView.delegate = self
+//        mapView.showsUserLocation = false
+//        mapView.userInteractionEnabled = false
 
     }
     
@@ -74,16 +86,16 @@ class UploadSelectorView: MessageView, MKMapViewDelegate {
     var smallOverlay:MKCircle!
     func setCoordinate(coordinate:CLLocation) {
         
-        let regionRadius = 80.0
-        let coordinateRegion = MKCoordinateRegionMakeWithDistance(coordinate.coordinate,
-                                                                  regionRadius * 2.0, regionRadius * 2.0)
-        mapView.setRegion(coordinateRegion, animated: false)
-        
-        largeOverlay = MKCircle(centerCoordinate: coordinate.coordinate, radius: 100.0)
-        //mapView.addOverlay(largeOverlay)
-        
-        smallOverlay = MKCircle(centerCoordinate: coordinate.coordinate, radius: 8.0)
-        mapView.addOverlay(smallOverlay)
+//        let regionRadius = 80.0
+//        let coordinateRegion = MKCoordinateRegionMakeWithDistance(coordinate.coordinate,
+//                                                                  regionRadius * 2.0, regionRadius * 2.0)
+//        mapView.setRegion(coordinateRegion, animated: false)
+//        
+//        largeOverlay = MKCircle(centerCoordinate: coordinate.coordinate, radius: 100.0)
+//        //mapView.addOverlay(largeOverlay)
+//        
+//        smallOverlay = MKCircle(centerCoordinate: coordinate.coordinate, radius: 8.0)
+//        mapView.addOverlay(smallOverlay)
     }
     
     func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer {
@@ -171,7 +183,7 @@ class UploadSelectorView: MessageView, MKMapViewDelegate {
     }
     
     func deactivateSendButton() {
-        sendButton.backgroundColor = UIColor(white: 0.15, alpha: 1.0)
+        sendButton.backgroundColor = UIColor(white: 0.18, alpha: 1.0)
         sendButton.enabled = false
     }
     
@@ -188,6 +200,8 @@ class UploadSelectorView: MessageView, MKMapViewDelegate {
                 break
             }
         }
+        
+        print("TO PROFILE: \(toUserProfile) | locationKey: \(locationKey)")
         let upload = Upload(toUserProfile: toUserProfile, locationKey: locationKey)
         delegate?.send(upload)
         
