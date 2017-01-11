@@ -104,7 +104,8 @@ class SendViewController: UIViewController, UITableViewDataSource, UITableViewDe
         var _activeLocations = [Location]()
         
         for location in mainStore.state.locations {
-            if location.isActive() {
+            let distance = location.getCoordinates().distanceFromLocation(upload.coordinates!) / 1000
+            if distance < 0.05 {
                 _activeLocations.append(location)
             }
         }
@@ -114,7 +115,6 @@ class SendViewController: UIViewController, UITableViewDataSource, UITableViewDe
         })
         
         self.activeLocations = _activeLocations
-        print(self.activeLocations)
         
         tableView.reloadData()
         

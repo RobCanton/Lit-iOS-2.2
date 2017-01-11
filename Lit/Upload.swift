@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import CoreLocation
 
 
 class Upload {
@@ -17,6 +18,7 @@ class Upload {
     var toStory = false
     var locationKey:String = ""
     
+    var coordinates:CLLocation?
     var image:UIImage?
     var videoURL:NSURL?
 }

@@ -17,7 +17,7 @@ import CoreLocation
 
 
 enum CameraState {
-    case Initiating, Running, PhotoTaken, VideoTaken, Recording, Sending, Sent
+    case Initiating, Running, PhotoTaken, VideoTaken, Recording
 }
 
 enum CameraMode {
@@ -34,31 +34,14 @@ protocol PopUpProtocolDelegate {
     func returnToPreviousSelection()
 }
 
-class CameraViewController: UIViewController, UIImagePickerControllerDelegate, AVCaptureFileOutputRecordingDelegate, UploadSelectorDelegate, UITextViewDelegate, UIGestureRecognizerDelegate {
+class CameraViewController: UIViewController, UIImagePickerControllerDelegate, AVCaptureFileOutputRecordingDelegate, UIGestureRecognizerDelegate {
 
     @IBOutlet weak var imageCaptureView: UIImageView!
     @IBOutlet weak var videoLayer: UIView!
     @IBOutlet weak var cameraView: UIView!
     @IBOutlet weak var dismissBtn: UIButton!
-    @IBOutlet weak var cancelButton: UIButton!
-    @IBOutlet weak var sendButton: UIButton!
-    @IBOutlet weak var flashView: UIView!
     
-    @IBOutlet weak var flashButton: UIButton!
-    
-    @IBOutlet weak var switchButton: UIButton!
-    
-    @IBAction func cancelButtonTapped(sender: UIButton) {
-        
-        playerLayer?.player?.seekToTime(CMTimeMake(0, 1))
-        playerLayer?.player?.pause()
-        
-        playerLayer?.removeFromSuperlayer()
-        videoUrl = nil
-        
-        recordBtn.hidden = false
-        cameraState = .Running
-    }
+
 
     
     var captureSession: AVCaptureSession?
@@ -79,9 +62,35 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     var recordBtn:CameraButton!
     
     var uploadCoordinate:CLLocation?
-    
-
     var pinchGesture:UIPinchGestureRecognizer!
+    
+    var flashButton:UIButton!
+    var switchButton:UIButton!
+    
+    var flashView:UIView!
+    
+    lazy var cancelButton: UIButton = {
+        let definiteBounds = UIScreen.mainScreen().bounds
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 48, height: 48))
+        button.setImage(UIImage(named: "delete_filled"), forState: .Normal)
+        button.center = CGPoint(x: button.frame.width * 0.75, y: definiteBounds.height - button.frame.height * 0.75)
+        button.tintColor = UIColor.whiteColor()
+        return button
+    }()
+    
+    lazy var sendButton: UIButton = {
+        let definiteBounds = UIScreen.mainScreen().bounds
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 54, height: 54))
+        button.setImage(UIImage(named: "right_arrow"), forState: .Normal)
+        button.center = CGPoint(x: definiteBounds.width - button.frame.width * 0.75, y: definiteBounds.height - button.frame.height * 0.75)
+        button.tintColor = UIColor.whiteColor()
+        button.backgroundColor = accentColor
+        button.layer.cornerRadius = button.frame.width / 2
+        button.clipsToBounds = true
+        button.applyShadow(2.0, opacity: 0.5, height: 1.0, shouldRasterize: false)
+        return button
+    }()
+    
 
     
     var cameraState:CameraState = .Initiating
@@ -89,163 +98,88 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
         didSet {
             switch cameraState {
             case .Initiating:
-                cancelButton.enabled    = false
-                cancelButton.hidden     = true
-                sendButton.enabled      = false
-                sendButton.hidden       = true
-                flashButton.enabled     = true
-                flashButton.hidden      = false
-                switchButton.enabled    = true
-                switchButton.hidden     = false
+                
                 break
             case .Running:
                 imageCaptureView.image  = nil
                 imageCaptureView.hidden = true
-                cancelButton.enabled    = false
-                cancelButton.hidden     = true
-                sendButton.enabled      = false
-                sendButton.hidden       = true
-                dismissBtn.hidden       = false
-                flashButton.enabled     = true
-                flashButton.hidden      = false
-                switchButton.enabled    = true
-                switchButton.hidden     = false
+                
                 playerLayer?.player?.pause()
                 playerLayer?.removeFromSuperlayer()
                 playerLayer?.player = nil
                 playerLayer = nil
+                
+                showCameraOptions()
+                hideEditOptions()
                 break
             case .PhotoTaken:
                 resetProgress()
                 imageCaptureView.hidden = false
                 videoLayer.hidden       = true
-                cancelButton.enabled    = true
-                cancelButton.hidden     = false
-                sendButton.enabled      = true
-                sendButton.hidden       = false
                 recordBtn.hidden        = true
-                dismissBtn.hidden       = true
-                flashButton.enabled     = false
-                flashButton.hidden      = true
-                switchButton.enabled    = false
-                switchButton.hidden     = true
+                hideCameraOptions()
+                showEditOptions()
                 uploadCoordinate        = GPSService.sharedInstance.lastLocation
+                break
+            case .Recording:
+                hideCameraOptions()
                 break
             case .VideoTaken:
                 resetProgress()
                 videoLayer.hidden       = false
-                cancelButton.enabled    = true
-                cancelButton.hidden     = false
-                sendButton.enabled      = true
-                sendButton.hidden       = false
                 recordBtn.hidden        = true
-                dismissBtn.hidden       = true
-                flashButton.enabled     = false
-                flashButton.hidden      = true
-                switchButton.enabled    = false
-                switchButton.hidden     = true
+                
+                hideCameraOptions()
+                showEditOptions()
                 uploadCoordinate        = GPSService.sharedInstance.lastLocation
                 break
-            case .Recording:
-                flashButton.enabled     = false
-                flashButton.hidden      = true
-                switchButton.enabled    = false
-                switchButton.hidden     = true
-                break
-            case .Sending:
-                sendButton.hidden       = true
-                sendButton.enabled      = false
-                cancelButton.hidden     = true
-                cancelButton.enabled    = false
-                flashButton.enabled     = false
-                flashButton.hidden      = true
-                switchButton.enabled    = false
-                switchButton.hidden     = true
-                break
-            case .Sent:
-                break
-
-            }
-        }
-    }
-
-    
-    var uploadSelector:UploadSelectorView?
-    var config: SwiftMessages.Config?
-    
-    func send(upload:Upload) {
-        
-        if cameraState == .PhotoTaken {
-            if let image = imageCaptureView.image{
-                upload.image = image
-                cameraState = .Sending
-                if let uploadTask = FirebaseService.sendImage(upload)
-                {
-                    self.sent(uploadTask)
-                }
-            }
-        } else if cameraState == .VideoTaken {
-            if let url = videoUrl {
-                cameraState = .Sending
-                playerLayer?.player?.seekToTime(CMTimeMake(0, 1))
-                playerLayer?.player?.pause()
-                playerLayer?.removeFromSuperlayer()
-                videoLayer.hidden = true
-           
-                print("Send tapped video taken")
-                
-                let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
-                let outputUrl = documentsURL.URLByAppendingPathComponent("output.mp4")
-                
-                do {
-                    try NSFileManager.defaultManager().removeItemAtURL(outputUrl)
-                }
-                catch let error as NSError {
-                    if error.code != 4 && error.code != 2 {
-                        return print("Error \(error)")
-                    }
-                }
-                upload.videoURL = outputUrl
-                FirebaseService.compressVideo(url, outputURL: outputUrl, handler: { session in
-                    print("here: \(session.status)")
-                    /*
-                    T0D0 - HANDLE COMPRESSION ERRORS
-                    */
-                    dispatch_async(dispatch_get_main_queue(), {
-                        FirebaseService.uploadVideo(upload, completionHander: { success, task in
-                            if task != nil {
-                                self.sent(task!)
-                            }
-                        })
-
-                    })
-                })
             }
         }
     }
     
-    func sent(uploadTask:FIRStorageUploadTask) {
-        self.tabBarDelegate?.upload(uploadTask)
-        self.uploadWrapper.hide()
-        
-        let time = dispatch_time(dispatch_time_t(DISPATCH_TIME_NOW), 1 * Int64(NSEC_PER_SEC))
-        dispatch_after(time, dispatch_get_main_queue()) {
-            self.cameraState = .Sent
-            // Put your code which should be executed with a delay here
-            self.dismissViewControllerAnimated(true, completion: nil)
-            
-        }
+    func showCameraOptions() {
+        dismissBtn.hidden       = false
+        flashButton.enabled     = true
+        flashButton.hidden      = false
+        switchButton.enabled    = true
+        switchButton.hidden     = false
     }
     
-    @IBAction func sendButtonTapped(sender: UIButton) {
+    func hideCameraOptions() {
+        dismissBtn.hidden       = true
+        flashButton.enabled     = false
+        flashButton.hidden      = true
+        switchButton.enabled    = false
+        switchButton.hidden     = true
+    }
+    
+    func showEditOptions() {
+        self.view.addSubview(cancelButton)
+        self.view.addSubview(sendButton)
         
-        var upload = Upload()
+        cancelButton.addTarget(self, action: #selector(cancelButtonTapped), forControlEvents: .TouchUpInside)
+        sendButton.addTarget(self, action: #selector(sendButtonTapped), forControlEvents: .TouchUpInside)
+    }
+    
+    func hideEditOptions() {
+        cancelButton.removeFromSuperview()
+        sendButton.removeFromSuperview()
+        
+        cancelButton.removeTarget(self, action: #selector(cancelButtonTapped), forControlEvents: .TouchUpInside)
+        sendButton.removeTarget(self, action: #selector(sendButtonTapped), forControlEvents: .TouchUpInside)
+    }
+
+    
+    func sendButtonTapped(sender: UIButton) {
+        
+        let upload = Upload()
         if cameraState == .PhotoTaken {
             upload.image = imageCaptureView.image!
         } else if cameraState == .VideoTaken {
             upload.videoURL = videoUrl
         }
         
+        upload.coordinates = uploadCoordinate
         
         let nav = UIStoryboard(name: "Main", bundle: nil)
             .instantiateViewControllerWithIdentifier("SendOffNavigationController") as! UINavigationController
@@ -253,89 +187,74 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
         controller.upload = upload
         
         self.presentViewController(nav, animated: false, completion: nil)
-        
-        /*guard let coordinate = uploadCoordinate else { return }
-        UIView.animateWithDuration(0.3, delay: 0, usingSpringWithDamping: 0.75, initialSpringVelocity: 0, options: [.CurveEaseInOut], animations: {
-
-            self.sendButton.transform = CGAffineTransformMakeScale(0.8, 0.8)
-            }, completion: { result in
-                self.sendButton.transform = CGAffineTransformMakeScale(1.0, 1.0)
-        })
-        
-        uploadSelector = try! SwiftMessages.viewFromNib() as? UploadSelectorView
-        uploadSelector!.configureDropShadow()
-        uploadSelector!.delegate = self
-        uploadSelector?.setCoordinate(coordinate)
-        
-        config = SwiftMessages.Config()
-        config!.presentationContext = .Window(windowLevel: UIWindowLevelStatusBar)
-        config!.duration = .Forever
-        config!.presentationStyle = .Bottom
-        config!.dimMode = .Gray(interactive: false)
-        
-        uploadWrapper.show(config: config!, view: uploadSelector!)*/
-    }
-
-
-    var uploadWrapper = SwiftMessages()
-    
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        
     }
     
-    override func viewDidDisappear(animated: Bool) {
-        super.viewDidDisappear(animated)
-        captureSession?.stopRunning()
-        previewLayer?.removeFromSuperlayer()
-        playerLayer?.player = nil
-        playerLayer = nil
+    func cancelButtonTapped(sender: UIButton) {
         
+        playerLayer?.player?.seekToTime(CMTimeMake(0, 1))
+        playerLayer?.player?.pause()
+        
+        playerLayer?.removeFromSuperlayer()
+        videoUrl = nil
+        
+        recordBtn.hidden = false
+        cameraState = .Running
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(pinch))
-
-
-        view.addGestureRecognizer(pinchGesture)
-        
         let definiteBounds = UIScreen.mainScreen().bounds
+       
+        flashView = UIView(frame: view.bounds)
+        flashView.backgroundColor = UIColor.whiteColor()
+        flashView.alpha = 0.0
+        
         recordBtn = CameraButton(frame: CGRect(x: 0, y: 0, width: 80, height: 80))
         var cameraBtnFrame = recordBtn.frame
         cameraBtnFrame.origin.y = definiteBounds.height - 140
         cameraBtnFrame.origin.x = self.view.bounds.width/2 - cameraBtnFrame.size.width/2
         recordBtn.frame = cameraBtnFrame
         
-        self.view.addSubview(recordBtn)
         recordBtn.hidden = true
         recordBtn.tappedHandler = didPressTakePhoto
         recordBtn.pressedHandler = pressed
         
-        
-        sendButton.backgroundColor = accentColor
-        sendButton.layer.cornerRadius = sendButton.frame.width/2
-        sendButton.clipsToBounds = true
-        
-        sendButton.applyShadow(6, opacity: 0.5, height: 2, shouldRasterize: false)
-        
         cameraView.frame = self.view.frame
         
-        reloadCamera()
+        flashButton = UIButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        flashButton.setImage(UIImage(named: "flashoff"), forState: .Normal)
+        flashButton.center = CGPoint(x: cameraBtnFrame.origin.x / 2, y: cameraBtnFrame.origin.y + cameraBtnFrame.height / 2)
+        flashButton.alpha = 0.6
         
-        dismissBtn.applyShadow(1, opacity: 0.25, height: 1, shouldRasterize: false)
-        cancelButton.applyShadow(1, opacity: 0.25, height: 1, shouldRasterize: false)
+        switchButton = UIButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        switchButton.setImage(UIImage(named: "switchcamera"), forState: .Normal)
+        switchButton.center = CGPoint(x: view.frame.width - cameraBtnFrame.origin.x / 2, y: cameraBtnFrame.origin.y + cameraBtnFrame.height / 2)
+        switchButton.alpha = 0.6
+        
+        self.view.insertSubview(flashView, aboveSubview: imageCaptureView)
+        self.view.addSubview(recordBtn)
+        self.view.addSubview(flashButton)
+        self.view.addSubview(switchButton)
         
         flashButton.addTarget(self, action: #selector(switchFlashMode), forControlEvents: .TouchUpInside)
         switchButton.addTarget(self, action: #selector(switchCamera), forControlEvents: .TouchUpInside)
+        
+        reloadCamera()
 
+        dismissBtn.applyShadow(1, opacity: 0.25, height: 1, shouldRasterize: false)
+
+    
+        pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(pinch))
+        view.addGestureRecognizer(pinchGesture)
+        
     }
 
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         UIView.animateWithDuration(0.6, animations: {
-            self.dismissBtn.alpha = 0.5
+            self.dismissBtn.alpha = 0.6
         })
     }
     
@@ -347,8 +266,13 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
         })
     }
     
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        captureSession?.stopRunning()
+        previewLayer?.removeFromSuperlayer()
+        playerLayer?.player = nil
+        playerLayer = nil
+        
     }
     
     
@@ -372,7 +296,6 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
                         break
                     }
                 }
-                
             }
         }
         else
@@ -474,7 +397,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
                 case .Off:
                     avDevice.flashMode = .On
                     flashMode = .On
-                    flashButton.setImage(UIImage(named: "flashauto"), forState: .Normal)
+                    flashButton.setImage(UIImage(named: "flashon"), forState: .Normal)
                     break
                 }
                 // unlock your device
