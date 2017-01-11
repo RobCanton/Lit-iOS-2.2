@@ -202,8 +202,8 @@ class UploadSelectorView: MessageView, MKMapViewDelegate {
         }
         
         print("TO PROFILE: \(toUserProfile) | locationKey: \(locationKey)")
-        let upload = Upload(toUserProfile: toUserProfile, locationKey: locationKey)
-        delegate?.send(upload)
+//        let upload = Upload(toUserProfile: toUserProfile, locationKey: locationKey)
+//        delegate?.send(upload)
         
     }
     

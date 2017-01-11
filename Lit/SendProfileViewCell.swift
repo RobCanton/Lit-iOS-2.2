@@ -10,10 +10,12 @@ import UIKit
 
 class SendProfileViewCell: UITableViewCell {
     
+    @IBOutlet weak var circleButton: UIButton!
 
     @IBOutlet weak var label: UILabel!
-
     @IBOutlet weak var subtitle: UILabel!
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -24,6 +26,20 @@ class SendProfileViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+    
+    var key = ""
+    var isActive = false
+    func toggleSelection() {
+        isActive = !isActive
+        
+        if isActive {
+            circleButton.setImage(UIImage(named: "circle_checked"), forState: .Normal)
+            circleButton.tintColor = accentColor
+        } else {
+            circleButton.setImage(UIImage(named: "circle_unchecked"), forState: .Normal)
+            circleButton.tintColor = UIColor.grayColor()
+        }
     }
     
 }

@@ -1574,6 +1574,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="sendLabel" destination="BmR-Hz-Bdb" id="fnp-Ls-WPy"/>
+                        <outlet property="sendView" destination="yJJ-cq-3nW" id="6U4-I0-2Hc"/>
                         <outlet property="tableView" destination="OIW-x4-nIW" id="e8p-u0-SAw"/>
                     </connections>
                 </viewController>

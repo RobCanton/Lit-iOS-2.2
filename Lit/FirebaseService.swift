@@ -115,7 +115,10 @@ class FirebaseService {
     internal static func sendImage(upload:Upload) -> FIRStorageUploadTask? {
         
         //If upload has no destination do not upload it
-        //if !upload.toLocation() && !upload.toUserProfile() { return nil}
+        if !upload.toProfile && !upload.toStory && upload.locationKey == "" { return nil }
+        
+        if upload.image == nil { return nil }
+        
         let uid = mainStore.state.userState.uid
 
         
@@ -138,8 +141,9 @@ class FirebaseService {
                     let downloadURL = metadata!.downloadURL()
                     let obj = [
                         "author": uid,
-                        "toProfile": upload.toUserProfile(),
-                        "location": upload.getLocationKey(),
+                        "toProfile": upload.toProfile,
+                        "toStory": upload.toStory,
+                        "location": upload.locationKey,
                         "url": downloadURL!.absoluteString,
                         "contentType": contentTypeStr,
                         "dateCreated": [".sv": "timestamp"],
@@ -163,7 +167,9 @@ class FirebaseService {
     internal static func uploadVideo(upload:Upload, completionHander:(success:Bool, uploadTask:FIRStorageUploadTask?)->()){
         
         //If upload has no destination do not upload it
-        //if !upload.toLocation() && !upload.toUserProfile() { return completionHander(success:false, uploadTask: nil) }
+        if !upload.toProfile && !upload.toStory && upload.locationKey == "" { return }
+        
+        if upload.videoURL == nil { return }
         
         let uid = mainStore.state.userState.uid
         let url = upload.videoURL!
@@ -189,8 +195,9 @@ class FirebaseService {
                     let downloadURL = metadata!.downloadURL()
                     let obj = [
                         "author": uid,
-                        "toProfile": upload.toUserProfile(),
-                        "location": upload.getLocationKey(),
+                        "toProfile": upload.toProfile,
+                        "toStory": upload.toStory,
+                        "location": upload.locationKey,
                         "videoURL": downloadURL!.absoluteString,
                         "url": thumbURL,
                         "contentType": contentTypeStr,

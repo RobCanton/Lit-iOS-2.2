@@ -12,28 +12,11 @@ import UIKit
 
 class Upload {
     
-    private var userProfile = false
-    private var locationKey:String = ""
+    var userProfile = false
+    var toProfile = false
+    var toStory = false
+    var locationKey:String = ""
     
     var image:UIImage?
     var videoURL:NSURL?
-    
-    
-    init(toUserProfile: Bool, locationKey:String)
-    {
-        self.userProfile = toUserProfile
-        self.locationKey = locationKey
-    }
-    
-    func toUserProfile() -> Bool {
-        return userProfile
-    }
-    
-    func toLocation() -> Bool {
-        return locationKey != ""
-    }
-    
-    func getLocationKey() -> String {
-        return locationKey
-    }
 }

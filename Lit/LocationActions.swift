@@ -49,3 +49,9 @@ struct SetLocations: Action {
 struct ClearLocations: Action {}
 struct ClearCities: Action {}
 
+struct SetActiveLocations: Action {
+    let indexes:[Int]
+}
+
+struct ClearActiveLocations: Action {}
+

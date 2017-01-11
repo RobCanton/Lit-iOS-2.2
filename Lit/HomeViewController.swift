@@ -82,7 +82,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
-        self .cancelSearching()
+        self.cancelSearching()
         self.tableView?.reloadData()
     }
     

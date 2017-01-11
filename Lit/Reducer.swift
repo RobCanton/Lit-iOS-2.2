@@ -16,7 +16,7 @@ struct AppReducer: Reducer {
         return AppState(
             userState: UserStateReducer(action, state: state?.userState),
             locations:LocationsReducer(action, state: state?.locations),
-            nearby_locations:NearbyLocationsReducer(action, state: state?.nearby_locations),
+            activeLocations:ActiveLocationsReducer(action, state: state?.activeLocations),
             cities:CitiesReducer(action, state: state?.cities),
             friends: FriendsReducer(action, state: state?.friends),
             friendRequestsIn: FriendRequestsInReducer(action, state: state?.friendRequestsIn),

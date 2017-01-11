@@ -173,13 +173,21 @@ class Location:NSObject, NSCoding {
         }
     }
     
-    
     func setDistance(distance:Double) {
         self.distance = distance
     }
     
     func getDistance() -> Double? {
         return distance
+    }
+    
+    func isActive() -> Bool {
+        if distance != nil {
+            if distance! < 0.05 {
+                return true
+            }
+        }
+        return false
     }
     
 }

@@ -238,10 +238,21 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     }
     
     @IBAction func sendButtonTapped(sender: UIButton) {
-        let controller = UIStoryboard(name: "Main", bundle: nil)
-            .instantiateViewControllerWithIdentifier("SendOffNavigationController")
         
-        self.presentViewController(controller, animated: false, completion: nil)
+        var upload = Upload()
+        if cameraState == .PhotoTaken {
+            upload.image = imageCaptureView.image!
+        } else if cameraState == .VideoTaken {
+            upload.videoURL = videoUrl
+        }
+        
+        
+        let nav = UIStoryboard(name: "Main", bundle: nil)
+            .instantiateViewControllerWithIdentifier("SendOffNavigationController") as! UINavigationController
+        let controller = nav.viewControllers[0] as! SendViewController
+        controller.upload = upload
+        
+        self.presentViewController(nav, animated: false, completion: nil)
         
         /*guard let coordinate = uploadCoordinate else { return }
         UIView.animateWithDuration(0.3, delay: 0, usingSpringWithDamping: 0.75, initialSpringVelocity: 0, options: [.CurveEaseInOut], animations: {

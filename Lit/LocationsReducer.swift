@@ -37,17 +37,15 @@ func LocationsReducer(action: Action, state:[Location]?) -> [Location] {
     return state
 }
 
-func NearbyLocationsReducer(action: Action, state:[String]?) -> [String] {
-    var state = state ?? [String]()
+func ActiveLocationsReducer(action: Action, state:[Int]?) -> [Int] {
+    var state = state ?? [Int]()
     
     switch action {
-    case _ as SetLocations:
-        let a = action as! SetLocations
-        state = a.locations
-        break
-    case _ as ClearLocations:
-        state = [String]()
-        break
+    case _ as SetActiveLocations:
+        let a = action as! SetActiveLocations
+        state = a.indexes
+    case _ as ClearActiveLocations:
+        state = [Int]()
     default:
         break
     }
