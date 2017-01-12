@@ -45,7 +45,28 @@ class UserStory {
         return postKeys
     }
     
-    func downloadItems(completionHandler:(()->())) {
+    
+    func determineState() {
+        if needsDownload() {
+            if items == nil {
+                state = .NotLoaded
+            } else {
+                state = .ItemInfoLoaded
+            }
+        } else {
+            state = .ContentLoaded
+        }
+    }
+    
+    /**
+     # downloadItems
+     Download the full data and create a Story Item for each post key.
+     
+     * Successful download results set state to ItemInfoLoaded
+     * If data already downloaded sets state to ContentLoaded
+
+    */
+    func downloadItems() {
         if state == .NotLoaded {
             state = .LoadingItemInfo
             FirebaseService.downloadStory(postKeys, completionHandler: { items in
@@ -54,17 +75,13 @@ class UserStory {
                 if !self.needsDownload() {
                     self.state = .ContentLoaded
                 }
-                completionHandler()
+
             })
         } else if items != nil {
             if !self.needsDownload() {
                 self.state = .ContentLoaded
             }
         }
-    }
-    
-    func downloadContent() {
-        
     }
     
     func needsDownload() -> Bool {

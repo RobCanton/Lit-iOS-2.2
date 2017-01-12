@@ -17,7 +17,7 @@ class ProgressIndicator: UIView {
         super.init(frame:frame)
         
         
-        backgroundColor = UIColor(white: 1.0, alpha: 0.20)
+        backgroundColor = UIColor(white: 1.0, alpha: 0.4)
         
         progress = UIView()
         resetProgress()

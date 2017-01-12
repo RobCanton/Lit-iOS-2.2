@@ -65,7 +65,6 @@ class UserStoryTableViewCell: UITableViewCell, StoryProtocol {
         self.userStory = story
         story.delegate = self
         stateChange(story.state)
-        //story.downloadItems({})
         
         FirebaseService.getUser(story.getUserId(), completionHandler: { user in
             if user != nil {
@@ -84,9 +83,10 @@ class UserStoryTableViewCell: UITableViewCell, StoryProtocol {
     
     
     func stateChange(state:UserStoryState) {
+        print("STATE CHANGE: \(state)")
         switch state {
         case .NotLoaded:
-            userStory?.downloadItems({})
+            userStory?.downloadItems()
             self.usernameLabel.textColor = UIColor.grayColor()
             break
         case .LoadingItemInfo:

@@ -35,12 +35,18 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        print("viewWillAppear")
         listenToUserUploads()
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(handleEnterForeground), name:
+            UIApplicationWillEnterForegroundNotification, object: nil)
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
+        print("viewWillDisappear")
         FirebaseService.ref.child("locations/uploads/\(location.getKey())").removeAllObservers()
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -96,7 +102,6 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
         let sortedNewPosts = tempCollection.sort()
         
         if sortedPosts == sortedNewPosts {
-            
         } else {
             postKeys = tempCollection
             
@@ -223,8 +228,18 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
             self.tableView?.reloadData()
         })
         
+        
     }
     
+    
+    
+    func handleEnterForeground() {
+        print("APP ENTERED FOREGROUND")
+        /*for story in self.userStories {
+            story.determineState()
+        }
+        tableView?.reloadData()*/
+    }
     
     
     func pushUserProfile(uid:String) {

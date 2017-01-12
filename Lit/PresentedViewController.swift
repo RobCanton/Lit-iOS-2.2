@@ -23,6 +23,8 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
         navigationController?.setNavigationBarHidden(true, animated: true)
         tabBarRef.setTabBarVisible(false, animated: true)
         
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(appMovedToBackground), name:UIApplicationDidEnterBackgroundNotification, object: nil)
+        
         UIView.animateWithDuration(0.15, animations: {
             self.statusBarShouldHide = true
             self.setNeedsStatusBarAppearanceUpdate()
@@ -52,6 +54,8 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(false, animated: true)
         
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+        
         for cell in collectionView.visibleCells() as! [StoryViewController] {
             cell.yo()
         }
@@ -70,8 +74,6 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(appMovedToBackground), name:UIApplicationDidEnterBackgroundNotification, object: nil)
         
         self.edgesForExtendedLayout = UIRectEdge.None
         self.extendedLayoutIncludesOpaqueBars = true
@@ -106,6 +108,7 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
         label.center = view.center
         label.textAlignment = .Center
     }
+    
     
     func appMovedToBackground() {
         print("App moved to background!")
@@ -187,7 +190,7 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
             let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
             
             let cancelActionButton: UIAlertAction = UIAlertAction(title: "Cancel", style: .Cancel) { action -> Void in
-                cell.setForPlay()
+                //cell.setForPlay()
             }
             actionSheet.addAction(cancelActionButton)
             
@@ -202,7 +205,7 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
             let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
             
             let cancelActionButton: UIAlertAction = UIAlertAction(title: "Cancel", style: .Cancel) { action -> Void in
-                cell.setForPlay()
+                //cell.setForPlay()
             }
             actionSheet.addAction(cancelActionButton)
             

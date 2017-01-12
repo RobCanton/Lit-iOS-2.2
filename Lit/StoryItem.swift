@@ -149,12 +149,10 @@ class StoryItem: NSObject, NSCoding {
             if self.contentType == .Video {
                 
                 if let _ = loadVideoFromCache(self.key) {
-                    print("Retrieved video from cache")
                     return completionHandler(success: true)
                 } else {
                     downloadVideoWithKey(self.key, completion: { data in
                         saveVideoInCache(self.key, data: data)
-                        print("Downloaded video and saved to cache")
                         return completionHandler(success: true)
                     })
                 }

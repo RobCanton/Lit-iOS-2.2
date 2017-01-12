@@ -15,6 +15,14 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
 
     var viewIndex = 0
     
+    func validIndex() -> Bool {
+        if let items = story.items {
+            return viewIndex >= 0 && viewIndex < items.count
+        } else {
+            return false
+        }
+    }
+    
     var item:StoryItem?
     var tap:UITapGestureRecognizer!
     
@@ -36,15 +44,21 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
     
     var progressBar:StoryProgressIndicator?
     
+    var shouldPlay = false
+    
     var story:UserStory!
         {
         didSet {
+            shouldPlay = false
             self.story.delegate = self
-            if story.items!.count == 0 { return }
-            enableTap()
-            viewIndex = 0
-            setupItem({})
+            story.determineState()
             
+//            enableTap()
+//            viewIndex = 0
+//            setupItem()
+//            
+//        
+//            
             let screenWidth: CGFloat = (UIScreen.mainScreen().bounds.size.width)
             
             let margin:CGFloat = 8.0
@@ -53,48 +67,80 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
             progressBar!.createProgressIndicator(story)
             contentView.addSubview(progressBar!)
             
+            
             for item in story.items! {
                 totalTime += item.getLength()
             }
+            
+            
         }
     }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        self.contentView.backgroundColor = UIColor(red: 0, green: 0, blue: 1.0, alpha: 0.0)
-        self.contentView.addSubview(self.content)
-        self.contentView.addSubview(self.videoContent)
-        self.contentView.addSubview(self.fadeCover)
-        self.contentView.addSubview(self.authorOverlay)
-        self.contentView.addSubview(self.statsView)
-        self.contentView.addSubview(self.moreButton)
-        
-        self.moreButton.addTarget(self, action: #selector(showOptions), forControlEvents: .TouchUpInside)
-        
-        self.fadeCover.alpha = 0.0
-        
-        tap = UITapGestureRecognizer(target: self, action: #selector(tapped))
-        
-        activityView = NVActivityIndicatorView(frame: CGRectMake(0,0,50,50), type: .BallScaleMultiple)
-        let centerX = (UIScreen.mainScreen().bounds.size.width) / 2
-        let centerY = (UIScreen.mainScreen().bounds.size.height) / 2
-        activityView.center = CGPointMake(centerX, centerY)
-        self.contentView.addSubview(activityView)
-    
+    func stateChange(state:UserStoryState) {
+        switch state {
+        case .NotLoaded:
+            disableTap()
+            self.activityView.stopAnimating()
+            break
+        case .LoadingItemInfo:
+            disableTap()
+            activityView.startAnimating()
+            break
+        case .ItemInfoLoaded:
+            disableTap()
+            itemsLoaded()
+            break
+        case .LoadingContent:
+            disableTap()
+            activityView.startAnimating()
+            break
+        case .ContentLoaded:
+
+            contentLoaded()
+            break
+        }
     }
     
-    func setupItem(completion:()->()) {
-        killTimer()
+    func itemsLoaded() {
+        
+        self.activityView.stopAnimating()
+        story.downloadStory()
+        
+        let screenWidth: CGFloat = (UIScreen.mainScreen().bounds.size.width)
+        
+        let margin:CGFloat = 8.0
+        progressBar?.removeFromSuperview()
+        progressBar = StoryProgressIndicator(frame: CGRectMake(margin,margin,screenWidth - margin * 2,1.0))
+        progressBar!.createProgressIndicator(story)
+        contentView.addSubview(progressBar!)
+        
+        
+        for item in story.items! {
+            totalTime += item.getLength()
+        }
+    }
+    
+    func contentLoaded() {
+        enableTap()
+        self.activityView.stopAnimating()
+        self.setupItem()
+    }
+    
+    func setupItem() {
+        print("SETUP ITEM: \(viewIndex)")
         pauseVideo()
-        if viewIndex < story.items!.count {
-            let item = story.items![viewIndex]
+        
+        guard let items = story.items else { return }
+        
+        if viewIndex < items.count {
+            
+            let item = items[viewIndex]
             self.item = item
             self.authorOverlay.setPostMetadata(item)
             if item.contentType == .Image {
                 loadImageContent(item)
-                completion()
             } else if item.contentType == .Video {
-                loadVideoContent(item, completion: completion)
+                loadVideoContent(item)
             }
             
         } else {
@@ -105,15 +151,22 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
     }
     
     func loadImageContent(item:StoryItem) {
+        
         if let image = item.image {
             content.image = image
+            if self.shouldPlay {
+                self.setForPlay()
+            }
+        } else {
+            story.downloadStory()
         }
     }
     
-    func loadVideoContent(item:StoryItem, completion:()->()) {
+    func loadVideoContent(item:StoryItem) {
         /* CURRENTLY ASSUMING THAT IMAGE IS LOAD */
         if let image = item.image {
             content.image = image
+            
         } else {
             content.loadImageUsingCacheWithURLString(item.downloadUrl.absoluteString, completion: { result in })
         }
@@ -131,42 +184,16 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
                 dispatch_async(dispatch_get_main_queue(), {
                     let item = AVPlayerItem(asset: asset)
                     self.playerLayer?.player?.replaceCurrentItemWithPlayerItem(item)
-                    completion()
+                    
+                    if self.shouldPlay {
+                        self.setForPlay()
+                    }
                 })
             })
         } else {
-            print("GOTTA LOAD CONTENT")
             content.hidden = false
             videoContent.hidden = true
-            loadContent()
-//            story.downloadStory({ complete in
-//                if complete {
-//                    
-//                    self.setupItem({
-//                        self.activityView.stopAnimating()
-//                        self.enableTap()
-//                        self.fadeCoverOut()
-//                        self.setForPlay()
-//                    })
-//                }
-//            })
-        }
-    }
-    
-    func stateChange(state:UserStoryState) {
-        print("STORY STATE: \(state)")
-        switch state {
-        case .NotLoaded:
-            break
-        case .LoadingItemInfo:
-            break
-        case .ItemInfoLoaded:
-            break
-        case .LoadingContent:
-            break
-        case .ContentLoaded:
-            contentLoaded()
-            break
+            story.downloadStory()
         }
     }
     
@@ -177,22 +204,19 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
         
     }
     
-    func contentLoaded() {
-        self.setupItem({
-            self.activityView.stopAnimating()
-            self.enableTap()
-            self.fadeCoverOut()
-            self.setForPlay()
-        })
-    }
-    
-
-    
     func setForPlay() {
-        guard let item = self.item else { return }
-        print("setForPlay")
-        guard !item.needsDownload() else { return }
-        print("Item ready")
+        print("VIEW INDEX: \(viewIndex) | SHOULD PLAY: \(shouldPlay)")
+        if story.state != .ContentLoaded {
+            shouldPlay = true
+            return
+        }
+        
+        guard let item = self.item else {
+            shouldPlay = true
+            return }
+        
+        shouldPlay = false
+        
         var itemLength = item.getLength()
         if item.contentType == .Image {
             videoContent.hidden = true
@@ -204,9 +228,18 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
                 itemLength -= currentItem.seconds
             }
         }
+        
         self.progressBar?.activateIndicator(viewIndex)
+        killTimer()
         timer = NSTimer.scheduledTimerWithTimeInterval(itemLength, target: self, selector: #selector(nextItem), userInfo: nil, repeats: false)
-        //FirebaseService.addView(item.getKey(), uid: mainStore.state.userState.uid)
+    }
+    
+    func nextItem() {
+        print("NEXT ITEM: \(viewIndex) +1")
+        viewIndex += 1
+        shouldPlay = true
+        
+        setupItem()
     }
     
     func createVideoPlayer() {
@@ -236,10 +269,7 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
         destroyVideoPlayer()
         killTimer()
         progressBar?.resetAllProgressBars()
-        guard let item = self.item else { return }
-        let postRef = FirebaseService.ref.child("uploads/\(item.getKey())/views").removeAllObservers()
     }
-    
     
     func playVideo() {
         self.playerLayer?.player?.play()
@@ -281,16 +311,12 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
     func prepareForTransition(isPresenting:Bool) {
         content.hidden = false
         videoContent.hidden = true
-        if isPresenting {
-            
-        } else {
-
-        }
     }
     
     func yo() {
         killTimer()
-        if item!.contentType == .Video {
+        guard let item = item else { return }
+        if item.contentType == .Video {
             
             guard let time = playerLayer?.player?.currentTime() else { return }
             self.pauseVideo()
@@ -309,12 +335,6 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
     func tapped(gesture:UITapGestureRecognizer) {
         nextItem()
     }
-    
-    func nextItem() {
-        viewIndex += 1
-        setupItem(self.setForPlay)
-    }
-    
 
     func fadeCoverIn() {
         UIView.animateWithDuration(0.25, animations: {
@@ -332,8 +352,29 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func handleMore() {
-        print("HANDLE MORE")
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.contentView.backgroundColor = UIColor(red: 0, green: 0, blue: 1.0, alpha: 0.0)
+        self.contentView.addSubview(self.content)
+        self.contentView.addSubview(self.videoContent)
+        self.contentView.addSubview(self.fadeCover)
+        self.contentView.addSubview(self.authorOverlay)
+        self.contentView.addSubview(self.statsView)
+        self.contentView.addSubview(self.moreButton)
+        
+        self.moreButton.addTarget(self, action: #selector(showOptions), forControlEvents: .TouchUpInside)
+        
+        self.fadeCover.alpha = 0.0
+        
+        tap = UITapGestureRecognizer(target: self, action: #selector(tapped))
+        
+        activityView = NVActivityIndicatorView(frame: CGRectMake(0,0,50,50), type: .BallScaleMultiple)
+        let centerX = (UIScreen.mainScreen().bounds.size.width) / 2
+        let centerY = (UIScreen.mainScreen().bounds.size.height) / 2
+        activityView.center = CGPointMake(centerX, centerY)
+        self.contentView.addSubview(activityView)
+        
     }
     
     public lazy var content: UIImageView = {
@@ -398,15 +439,4 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
         view.frame = CGRect(x: 0, y: height - view.frame.height, width: width, height: view.frame.height)
         return view
     }()
-//    
-//    lazy var progressBar: StoryProgressIndicator = {
-//        let screenWidth: CGFloat = (UIScreen.mainScreen().bounds.size.width)
-//        let screenHeight: CGFloat = (UIScreen.mainScreen().bounds.size.height)
-//        let width: CGFloat = screenWidth
-//        let height: CGFloat = 2.0
-//        
-//        let bar = StoryProgressIndicator(frame: CGRectMake(0,0,width,height))
-//        
-//        return bar
-//    }()
 }

@@ -25,7 +25,6 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
     let locationManager = CLLocationManager()
     
     func tracingLocation(currentLocation: CLLocation){
-        print("New Location:\n\(currentLocation)")
         
         let lat = currentLocation.coordinate.latitude
         let lon = currentLocation.coordinate.longitude
