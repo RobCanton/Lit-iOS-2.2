@@ -17,7 +17,7 @@ import CoreLocation
 
 
 enum CameraState {
-    case Initiating, Running, PhotoTaken, VideoTaken, Recording
+    case Off, Initiating, Running, DidPressTakePhoto, PhotoTaken, VideoTaken, Recording
 }
 
 enum CameraMode {
@@ -93,12 +93,14 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     
 
     
-    var cameraState:CameraState = .Initiating
+    var cameraState:CameraState = .Off
         {
         didSet {
             switch cameraState {
+            case .Off:
+                break
             case .Initiating:
-                
+                reloadCamera()
                 break
             case .Running:
                 imageCaptureView.image  = nil
@@ -112,13 +114,17 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
                 showCameraOptions()
                 hideEditOptions()
                 break
+            case .DidPressTakePhoto:
+                recordBtn.hidden        = true
+                hideCameraOptions()
+                break
             case .PhotoTaken:
                 resetProgress()
                 imageCaptureView.hidden = false
                 videoLayer.hidden       = true
-                recordBtn.hidden        = true
-                hideCameraOptions()
+                
                 showEditOptions()
+                //destroyCameraSession()
                 uploadCoordinate        = GPSService.sharedInstance.lastLocation
                 break
             case .Recording:
@@ -131,10 +137,18 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
                 
                 hideCameraOptions()
                 showEditOptions()
+                //destroyCameraSession()
                 uploadCoordinate        = GPSService.sharedInstance.lastLocation
                 break
             }
         }
+    }
+    
+    func destroyCameraSession() {
+        captureSession?.stopRunning()
+        previewLayer?.removeFromSuperlayer()
+        playerLayer?.player = nil
+        playerLayer = nil
     }
     
     func showCameraOptions() {
@@ -198,7 +212,12 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
         videoUrl = nil
         
         recordBtn.hidden = false
-        cameraState = .Running
+        
+        if captureSession != nil && captureSession!.running {
+            cameraState = .Running
+        } else {
+           cameraState = .Initiating
+        }
     }
     
     override func viewDidLoad() {
@@ -240,13 +259,14 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
         flashButton.addTarget(self, action: #selector(switchFlashMode), forControlEvents: .TouchUpInside)
         switchButton.addTarget(self, action: #selector(switchCamera), forControlEvents: .TouchUpInside)
         
-        reloadCamera()
 
         dismissBtn.applyShadow(1, opacity: 0.25, height: 1, shouldRasterize: false)
 
     
         pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(pinch))
         view.addGestureRecognizer(pinchGesture)
+        
+        cameraState = .Initiating
         
     }
 
@@ -258,6 +278,8 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
         })
     }
     
+
+    
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         tabBarDelegate?.returnToPreviousSelection()
@@ -268,18 +290,13 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
-        captureSession?.stopRunning()
-        previewLayer?.removeFromSuperlayer()
-        playerLayer?.player = nil
-        playerLayer = nil
+        destroyCameraSession()
         
     }
     
     
     func reloadCamera() {
-        captureSession?.stopRunning()
-        
-        previewLayer?.removeFromSuperlayer()
+        destroyCameraSession()
         
         captureSession = AVCaptureSession()
         captureSession!.sessionPreset = AVCaptureSessionPreset1280x720
@@ -339,6 +356,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
                     previewLayer?.frame = cameraView.bounds
                     cameraView.layer.addSublayer(previewLayer!)
                     captureSession?.startRunning()
+                    
                     cameraState = .Running
                 }
             }
@@ -462,6 +480,8 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     
     func didPressTakePhoto()
     {
+        cameraState = .DidPressTakePhoto
+        
         flashView.alpha = 0.0
         UIView.animateWithDuration(0.025, animations: {
             self.flashView.alpha = 0.75
@@ -489,8 +509,8 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
                     } else {
                         image = UIImage(CGImage: cgImageRef!, scale: 1.0, orientation: UIImageOrientation.Right)
                     }
-                    self.imageCaptureView.image = image
                     self.cameraState = .PhotoTaken
+                    self.imageCaptureView.image = image
                 }
             })
         }

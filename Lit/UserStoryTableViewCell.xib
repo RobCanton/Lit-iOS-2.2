@@ -18,7 +18,7 @@
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="replicode" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6qs-Y9-Iax">
                         <rect key="frame" x="81" y="17" width="153" height="25"/>
-                        <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="16"/>
+                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -56,7 +56,7 @@
                     <constraint firstItem="6qs-Y9-Iax" firstAttribute="top" secondItem="xDt-pD-Muz" secondAttribute="top" id="chQ-Wd-vCK"/>
                     <constraint firstItem="6qs-Y9-Iax" firstAttribute="top" secondItem="xDt-pD-Muz" secondAttribute="top" id="cw3-7m-26L"/>
                     <constraint firstItem="PkL-gL-0SR" firstAttribute="baseline" secondItem="6qs-Y9-Iax" secondAttribute="baseline" id="eXH-QX-aOM"/>
-                    <constraint firstItem="PkL-gL-0SR" firstAttribute="leading" secondItem="xDt-pD-Muz" secondAttribute="trailing" constant="8" id="ekW-sA-Z9D"/>
+                    <constraint firstItem="PkL-gL-0SR" firstAttribute="leading" secondItem="xDt-pD-Muz" secondAttribute="trailing" constant="10" id="ekW-sA-Z9D"/>
                     <constraint firstItem="6qs-Y9-Iax" firstAttribute="centerY" secondItem="xDt-pD-Muz" secondAttribute="centerY" id="gM9-XL-3eO"/>
                     <constraint firstItem="PkL-gL-0SR" firstAttribute="leading" secondItem="xDt-pD-Muz" secondAttribute="trailing" constant="16" id="nE0-nj-rza"/>
                     <constraint firstAttribute="leadingMargin" secondItem="xDt-pD-Muz" secondAttribute="leading" id="nsM-1B-Zhg"/>

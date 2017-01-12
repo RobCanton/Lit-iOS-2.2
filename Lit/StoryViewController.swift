@@ -9,21 +9,23 @@
 import UIKit
 import AVFoundation
 import NVActivityIndicatorView
+import SwiftMessages
 
-protocol StoryViewDelegate {
-    func storyComplete()
-}
-
-public class StoryViewController: UICollectionViewCell {
+public class StoryViewController: UICollectionViewCell, StoryProtocol {
 
     var viewIndex = 0
-    var delegate:StoryViewDelegate?
     
     var item:StoryItem?
     var tap:UITapGestureRecognizer!
     
     var authorTappedHandler:((user:User)->())?
+    var optionsTappedHandler:(()->())?
+    var storyCompleteHandler:(()->())?
     
+    func showOptions(){
+        pauseStory()
+        optionsTappedHandler?()
+    }
     
     var playerLayer:AVPlayerLayer?
     var activityView:NVActivityIndicatorView!
@@ -37,19 +39,17 @@ public class StoryViewController: UICollectionViewCell {
     var story:UserStory!
         {
         didSet {
-            
+            self.story.delegate = self
             if story.items!.count == 0 { return }
             enableTap()
             viewIndex = 0
             setupItem({})
+            
             let screenWidth: CGFloat = (UIScreen.mainScreen().bounds.size.width)
-            let screenHeight: CGFloat = (UIScreen.mainScreen().bounds.size.height)
-            let width: CGFloat = screenWidth
-            let height: CGFloat = 1.0
             
             let margin:CGFloat = 8.0
             progressBar?.removeFromSuperview()
-            progressBar = StoryProgressIndicator(frame: CGRectMake(margin,margin,width - margin * 2,1.0))
+            progressBar = StoryProgressIndicator(frame: CGRectMake(margin,margin,screenWidth - margin * 2,1.0))
             progressBar!.createProgressIndicator(story)
             contentView.addSubview(progressBar!)
             
@@ -67,6 +67,9 @@ public class StoryViewController: UICollectionViewCell {
         self.contentView.addSubview(self.fadeCover)
         self.contentView.addSubview(self.authorOverlay)
         self.contentView.addSubview(self.statsView)
+        self.contentView.addSubview(self.moreButton)
+        
+        self.moreButton.addTarget(self, action: #selector(showOptions), forControlEvents: .TouchUpInside)
         
         self.fadeCover.alpha = 0.0
         
@@ -96,7 +99,7 @@ public class StoryViewController: UICollectionViewCell {
             
         } else {
             self.removeGestureRecognizer(tap)
-            delegate?.storyComplete()
+            storyCompleteHandler?()
         }
         
     }
@@ -132,11 +135,10 @@ public class StoryViewController: UICollectionViewCell {
                 })
             })
         } else {
-//            content.hidden = false
-//            videoContent.hidden = true
-//            disableTap()
-//            self.fadeCoverIn()
-//            self.activityView.startAnimating()
+            print("GOTTA LOAD CONTENT")
+            content.hidden = false
+            videoContent.hidden = true
+            loadContent()
 //            story.downloadStory({ complete in
 //                if complete {
 //                    
@@ -149,6 +151,39 @@ public class StoryViewController: UICollectionViewCell {
 //                }
 //            })
         }
+    }
+    
+    func stateChange(state:UserStoryState) {
+        print("STORY STATE: \(state)")
+        switch state {
+        case .NotLoaded:
+            break
+        case .LoadingItemInfo:
+            break
+        case .ItemInfoLoaded:
+            break
+        case .LoadingContent:
+            break
+        case .ContentLoaded:
+            contentLoaded()
+            break
+        }
+    }
+    
+    func loadContent() {
+        self.fadeCoverIn()
+        self.activityView.startAnimating()
+        story.downloadStory()
+        
+    }
+    
+    func contentLoaded() {
+        self.setupItem({
+            self.activityView.stopAnimating()
+            self.enableTap()
+            self.fadeCoverOut()
+            self.setForPlay()
+        })
     }
     
 
@@ -194,19 +229,7 @@ public class StoryViewController: UICollectionViewCell {
     }
     
     func getViews() {
-//        guard let item = self.item else { return }
-//        let postRef = FirebaseService.ref.child("uploads/\(item.getKey())/views")
-//        postRef.observeEventType(.Value, withBlock: { snapshot in
-//            var viewers = [String]()
-//            for child in snapshot.children {
-//                viewers.append(child.key!!)
-//            }
-//            if viewers.count == 1 {
-//               self.statsView.viewsLabel.text = "\(viewers.count) view"
-//            } else {
-//                self.statsView.viewsLabel.text = "\(viewers.count) views"
-//            }
-//        })
+
     }
     
     func cleanUp() {
@@ -224,6 +247,22 @@ public class StoryViewController: UICollectionViewCell {
     
     func pauseVideo() {
         self.playerLayer?.player?.pause()
+    }
+    
+    func resetVideo() {
+        self.playerLayer?.player?.seekToTime(CMTimeMake(0, 1))
+        pauseVideo()
+    }
+    
+    func pauseStory() {
+        print("PAUSE STORY")
+        killTimer()
+        self.resetVideo()
+        progressBar?.resetActiveIndicator()
+    }
+    
+    func getCurrentItem() -> StoryItem? {
+        return story.items?[viewIndex]
     }
     
     func killTimer() {
@@ -293,6 +332,10 @@ public class StoryViewController: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func handleMore() {
+        print("HANDLE MORE")
+    }
+    
     public lazy var content: UIImageView = {
 
         let view: UIImageView = UIImageView(frame: self.contentView.bounds)
@@ -333,6 +376,18 @@ public class StoryViewController: UICollectionViewCell {
         authorView.authorTappedHandler = self.authorTappedHandler
         return authorView
     }()
+    
+    lazy var moreButton: UIButton = {
+        let width: CGFloat = (UIScreen.mainScreen().bounds.size.width)
+        let height: CGFloat = (UIScreen.mainScreen().bounds.size.height)
+        let button = UIButton(frame: CGRectMake(width - 34,height - 32,34,32))
+        button.setImage(UIImage(named: "more2"), forState: .Normal)
+        button.tintColor = UIColor.whiteColor()
+        button.alpha = 1.0
+        return button
+    }()
+    
+
     
     lazy var statsView: PostStatsView = {
 

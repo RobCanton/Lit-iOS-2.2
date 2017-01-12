@@ -18,7 +18,6 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
     var screenWidth: CGFloat!
     var screenHeight: CGFloat!
     
-    var stories = [Story]()
     var userStories = [UserStory]()
     var guests = [String]()
     
@@ -67,17 +66,6 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
             returningCell!.activate(true)
             returningCell = nil
         }
-    }
-
-    
-    func getStoryIndex(_story:Story) -> Int? {
-        for i in 0..<stories.count {
-            let story = stories[i]
-            if _story.getAuthorID() == story.getAuthorID() {
-                return i
-            }
-        }
-        return nil
     }
     
     func listenToUserUploads() {

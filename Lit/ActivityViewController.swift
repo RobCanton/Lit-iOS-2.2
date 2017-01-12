@@ -15,7 +15,6 @@ class ActivityViewController: UITableViewController, UISearchBarDelegate {
     
     var myStory:UserStory?
     var myStoryKeys = [String]()
-    var stories = [Story]()
     var userStories = [UserStory]()
     var postKeys = [String]()
     
@@ -142,8 +141,6 @@ class ActivityViewController: UITableViewController, UISearchBarDelegate {
         
         let nib = UINib(nibName: "UserStoryTableViewCell", bundle: nil)
         tableView.registerNib(nib, forCellReuseIdentifier: "UserStoryCell")
-        let nib2 = UINib(nibName: "MyStoryTableViewCell", bundle: nil)
-        tableView.registerNib(nib2, forCellReuseIdentifier: "MyStoryCell")
         tableView.delegate = self
         tableView.dataSource = self
         tableView.bounces = true

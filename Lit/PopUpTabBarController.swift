@@ -188,13 +188,26 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
             cameraButton.layer.borderWidth = cameraActiveWidth
             //menuButton.setImage(UIImage(named: "camera"), forState: UIControlState.Normal)
             cameraButton.tintColor = UIColor.whiteColor()
-            cameraButton.addTarget(self, action: #selector(presentCamera), forControlEvents: .TouchUpInside)
+            cameraButton.userInteractionEnabled = false
             
             self.tabBar.addSubview(cameraButton)
             
             cameraActivity = NVActivityIndicatorView(frame: cameraButton.bounds, type: .BallScale, color: UIColor.whiteColor(), padding: 1.0)
             self.cameraButton.addSubview(cameraActivity)
             cameraActivity.userInteractionEnabled = false
+            
+            
+            
+            var hitArea = UIButton(frame: CGRect(x: 0, y: 0, width: 70, height: 66))
+            hitArea.backgroundColor = UIColor(red: 1.0, green: 0, blue: 0, alpha: 0.0)
+            var hitAreaFrame = hitArea.frame
+            hitAreaFrame.origin.y = self.tabBar.bounds.height - hitAreaFrame.height - 2
+            hitAreaFrame.origin.x = self.tabBar.bounds.width/2 - hitAreaFrame.size.width/2
+            hitArea.frame = hitAreaFrame
+            self.tabBar.addSubview(hitArea)
+
+            hitArea.addTarget(self, action: #selector(presentCamera), forControlEvents: .TouchUpInside)
+            hitArea.userInteractionEnabled = true
             
             
 //            let purple = UIColor(red: 189/255, green: 106/255, blue: 252/255, alpha: 1.0)

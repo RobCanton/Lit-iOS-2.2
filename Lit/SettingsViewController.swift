@@ -70,6 +70,8 @@ class SettingsViewController: UITableViewController {
             default:
                 break
             }
+            
+            tableView.deselectRowAtIndexPath(indexPath, animated: true)
         }
     }
     
@@ -97,23 +99,19 @@ class SettingsViewController: UITableViewController {
     }
     
     func showLogoutView() {
-        logoutView = try! SwiftMessages.viewFromNib() as? LogoutView
-        logoutView!.configureDropShadow()
         
-        logoutView!.logoutHandler = {
-            self.logoutWrapper.hide()
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+        
+        let cancelActionButton: UIAlertAction = UIAlertAction(title: "Cancel", style: .Cancel) { action -> Void in
+        }
+        actionSheet.addAction(cancelActionButton)
+        
+        let saveActionButton: UIAlertAction = UIAlertAction(title: "Log Out", style: .Destructive)
+        { action -> Void in
             FirebaseService.logout()
         }
+        actionSheet.addAction(saveActionButton)
         
-        logoutView!.cancelHandler = {
-            self.logoutWrapper.hide()
-        }
-        
-        config = SwiftMessages.Config()
-        config!.presentationContext = .Window(windowLevel: UIWindowLevelStatusBar)
-        config!.duration = .Forever
-        config!.presentationStyle = .Bottom
-        config!.dimMode = .Gray(interactive: true)
-        logoutWrapper.show(config: config!, view: logoutView!)
+        self.presentViewController(actionSheet, animated: true, completion: nil)
     }
 }

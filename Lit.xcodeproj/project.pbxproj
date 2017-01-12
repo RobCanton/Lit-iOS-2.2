@@ -148,6 +148,8 @@
 		B06BC66F1E24EFCA0045D920 /* SendLocationViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B06BC66D1E24EFCA0045D920 /* SendLocationViewCell.xib */; };
 		B06BC6711E25965A0045D920 /* SendLocationHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B06BC6701E25965A0045D920 /* SendLocationHeaderView.xib */; };
 		B06BC6731E2596790045D920 /* SendLocationHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06BC6721E2596790045D920 /* SendLocationHeaderView.swift */; };
+		B06BC6751E26F9990045D920 /* PostOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06BC6741E26F9990045D920 /* PostOptionsView.swift */; };
+		B06BC6771E26F9A60045D920 /* PostOptionsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B06BC6761E26F9A60045D920 /* PostOptionsView.xib */; };
 		B06D54BF1D9ECB6D00F6A4A7 /* AkiraTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06D54B31D9ECB6D00F6A4A7 /* AkiraTextField.swift */; };
 		B06D54C01D9ECB6D00F6A4A7 /* HoshiTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06D54B41D9ECB6D00F6A4A7 /* HoshiTextField.swift */; };
 		B06D54C11D9ECB6D00F6A4A7 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B06D54B51D9ECB6D00F6A4A7 /* Info.plist */; };
@@ -396,6 +398,8 @@
 		B06BC66D1E24EFCA0045D920 /* SendLocationViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SendLocationViewCell.xib; sourceTree = "<group>"; };
 		B06BC6701E25965A0045D920 /* SendLocationHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SendLocationHeaderView.xib; sourceTree = "<group>"; };
 		B06BC6721E2596790045D920 /* SendLocationHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendLocationHeaderView.swift; sourceTree = "<group>"; };
+		B06BC6741E26F9990045D920 /* PostOptionsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostOptionsView.swift; sourceTree = "<group>"; };
+		B06BC6761E26F9A60045D920 /* PostOptionsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostOptionsView.xib; sourceTree = "<group>"; };
 		B06D54B31D9ECB6D00F6A4A7 /* AkiraTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AkiraTextField.swift; sourceTree = "<group>"; };
 		B06D54B41D9ECB6D00F6A4A7 /* HoshiTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HoshiTextField.swift; sourceTree = "<group>"; };
 		B06D54B51D9ECB6D00F6A4A7 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -638,6 +642,8 @@
 				B0E8E30B1DD7739B0077D1BC /* ContainerViewController.swift */,
 				B0E591581DD126C900C032D6 /* LogoutView.swift */,
 				B0E5915A1DD126D600C032D6 /* LogoutView.xib */,
+				B06BC6741E26F9990045D920 /* PostOptionsView.swift */,
+				B06BC6761E26F9A60045D920 /* PostOptionsView.xib */,
 				B0E8E3151DD989F30077D1BC /* ProfilePictureMessageView.swift */,
 				B0E8E3171DD98A060077D1BC /* ProfilePictureMessageView.xib */,
 				B07E54CB1E0B235B008C2D23 /* ProfileHeaderView.swift */,
@@ -1071,6 +1077,7 @@
 			files = (
 				B03DED101DAED40D0062357A /* UserProfileControlBarView.xib in Resources */,
 				B06D54D81D9EEFD700F6A4A7 /* intro4.mp4 in Resources */,
+				B06BC6771E26F9A60045D920 /* PostOptionsView.xib in Resources */,
 				B07E54E11E16FC20008C2D23 /* GoogleService-Info.plist in Resources */,
 				B011B35F1E02261600FA4633 /* LocationTableCell.xib in Resources */,
 				B0E8E33D1DDFC8D30077D1BC /* CompactPhotoCell.xib in Resources */,
@@ -1353,6 +1360,7 @@
 				B0351FB11DED0503000A4BF5 /* NVActivityIndicatorAnimationLineSpinFadeLoader.swift in Sources */,
 				B011B34F1E00EFE000FA4633 /* ExpandingCellTransition.swift in Sources */,
 				76FF2E6B1D566D6A00E04EE3 /* CameraViewController.swift in Sources */,
+				B06BC6751E26F9990045D920 /* PostOptionsView.swift in Sources */,
 				B01B349D1DC117A900B2B9CE /* UploadSelectorView.swift in Sources */,
 				B06D54C01D9ECB6D00F6A4A7 /* HoshiTextField.swift in Sources */,
 				B0351FB31DED0503000A4BF5 /* NVActivityIndicatorAnimationPacman.swift in Sources */,

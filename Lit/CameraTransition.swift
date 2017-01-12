@@ -133,13 +133,13 @@ class CameraUnwindTransition: UIStoryboardSegue {
         
         let definiteBounds = UIScreen.mainScreen().bounds
         
-        let recordButtonCenter = CGPoint(x: cameraButton.center.x, y: definiteBounds.height - 112)
+        let recordButtonCenter = CGPoint(x: cameraButton.center.x, y: definiteBounds.height - 100)
         
         
         
         let bb = UIScreen.mainScreen().bounds
         
-        let rbc = CGPoint(x: cameraButton.center.x, y: bb.height - 112)
+        let rbc = CGPoint(x: cameraButton.center.x, y: bb.height - 100)
         cameraButton.center = rbc
         
         let color:CABasicAnimation = CABasicAnimation(keyPath: "borderColor")

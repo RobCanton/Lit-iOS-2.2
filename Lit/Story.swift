@@ -9,35 +9,6 @@
 import Foundation
 import UIKit
 
-func findStoryByUserID(uid:String, stories:[Story]) -> Int? {
-    for i in 0 ..< stories.count {
-        if stories[i].author_uid == uid {
-            return i
-        }
-    }
-    return nil
-}
-
-func sortStoryItems(items:[StoryItem]) -> [Story] {
-    var stories = [Story]()
-    for item in items {
-        if let index = findStoryByUserID(item.getAuthorId(), stories: stories) {
-            stories[index].addItem(item)
-        } else {
-            let story = Story(author_uid: item.getAuthorId())
-            story.addItem(item)
-            stories.append(story)
-        }
-    }
-    
-    return stories
-}
-
-
-enum StoryState {
-    case NotLoaded, Loading, Loaded
-}
-
 enum UserStoryState {
     case NotLoaded, LoadingItemInfo, ItemInfoLoaded, LoadingContent, ContentLoaded
 }
@@ -110,7 +81,7 @@ class UserStory {
     
     
     func downloadStory() {
-        if state == .ItemInfoLoaded && items != nil {
+        if items != nil {
             state = .LoadingContent
             var count = 0
             for item in items! {
@@ -139,99 +110,38 @@ class UserStory {
     }
 }
 
-class Story: NSObject, Comparable {
-    
-    private var author_uid:String
-    
-    private var items = [StoryItem]()
-    
-    var state:StoryState = StoryState.NotLoaded
+//func findStoryByUserID(uid:String, stories:[Story]) -> Int? {
+//    for i in 0 ..< stories.count {
+//        if stories[i].author_uid == uid {
+//            return i
+//        }
+//    }
+//    return nil
+//}
+//
+//func sortStoryItems(items:[StoryItem]) -> [Story] {
+//    var stories = [Story]()
+//    for item in items {
+//        if let index = findStoryByUserID(item.getAuthorId(), stories: stories) {
+//            stories[index].addItem(item)
+//        } else {
+//            let story = Story(author_uid: item.getAuthorId())
+//            story.addItem(item)
+//            stories.append(story)
+//        }
+//    }
+//    
+//    return stories
+//}
 
-    init(author_uid:String)
-    {
-        self.author_uid = author_uid
-        
-        super.init()
-    }
-    
-    func getAuthorID() -> String {
-        return author_uid
-    }
-    
-    func addItem(item:StoryItem) {
-        items.append(item)
-        state = .NotLoaded
-        
-    }
-    
-    func setItems(items:[StoryItem]) {
-        self.items = items
-        state = .NotLoaded
-    }
-    
-    func getItems() -> [StoryItem] {
-        return items
-    }
-    
-    func getMostRecentItem() -> StoryItem? {
-        if items.count > 0 {
-            return items[items.count-1]
-        }
-        return nil
-    }
-    
-    func firstItem() -> StoryItem? {
-        if items.count > 0 {
-            return items[0]
-        }
-        return nil
-    }
-    
-    func needsDownload() -> Bool {
-        for item in items {
-            if item.needsDownload() {
-                return true
-            }
-        }
-        return false
-    }
-
-    
-    func downloadStory(completionHandler:(complete:Bool)->()) {
-        
-        
-        state = .Loading
-        var count = 0
-        for item in items {            
-            item.download({ success in
-                count += 1
-                if count >= self.items.count {
-                    dispatch_async(dispatch_get_main_queue(), {
-                        self.state = .Loaded
-                        completionHandler(complete: true)
-                    })
-                }
-            })
-        }
-    }
-    
-    func getTotalLength() -> Double {
-        var length:Double = 0.0
-        for item in items {
-            length += item.getLength()
-        }
-        return length
-    }
-}
-
-func < (lhs: Story, rhs: Story) -> Bool {
-    let lhs_item = lhs.getMostRecentItem()!
-    let rhs_item = rhs.getMostRecentItem()!
-    return lhs_item.dateCreated.compare(rhs_item.dateCreated) == .OrderedAscending
-}
-
-func == (lhs: Story, rhs: Story) -> Bool {
-    let lhs_item = lhs.getMostRecentItem()!
-    let rhs_item = rhs.getMostRecentItem()!
-    return lhs_item.dateCreated.compare(rhs_item.dateCreated) == .OrderedSame
-}
+//func < (lhs: Story, rhs: Story) -> Bool {
+//    let lhs_item = lhs.getMostRecentItem()!
+//    let rhs_item = rhs.getMostRecentItem()!
+//    return lhs_item.dateCreated.compare(rhs_item.dateCreated) == .OrderedAscending
+//}
+//
+//func == (lhs: Story, rhs: Story) -> Bool {
+//    let lhs_item = lhs.getMostRecentItem()!
+//    let rhs_item = rhs.getMostRecentItem()!
+//    return lhs_item.dateCreated.compare(rhs_item.dateCreated) == .OrderedSame
+//}

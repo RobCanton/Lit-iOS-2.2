@@ -28,7 +28,13 @@ class SendViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     func send() {
-        print("SEND")
+        let activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
+        activityIndicator.startAnimating()
+        activityIndicator.center = sendView.center
+        view.addSubview(activityIndicator)
+        
+        sendLabel.hidden = true
+        
         
         upload.toProfile = selected["profile"] as! Bool
         upload.toStory = selected["story"] as! Bool

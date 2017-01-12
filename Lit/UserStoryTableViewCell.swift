@@ -139,41 +139,4 @@ class UserStoryTableViewCell: UITableViewCell, StoryProtocol {
             timeLabel.text = "\(lastItem.getDateCreated()!.timeStringSinceNowWithAgo())"
         }
     }
-    
-    func setStory(story:Story) {
-        guard let item = story.getMostRecentItem() else { return }
-        let state = story.state
-        contentImageView.image = nil
-        contentImageView.loadImageUsingCacheWithURLString(item.getDownloadUrl().absoluteString, completion: { loaded in
-            if loaded {
-//                if state == .NotLoaded || state == .Loading {
-//                    let image = self.contentImageView.image!.grayScaleImage()
-//                    self.contentImageView.image = image
-//                }
-
-                UIView.animateWithDuration(0.3, animations: {
-                    //self.fadeCover.alpha = 0.0
-                })
-            }
-        })
-            
-        FirebaseService.getUser(item.getAuthorId(), completionHandler: { user in
-            if user != nil {
-                self.usernameLabel.text = user!.getDisplayName()
-            }
-        })
-            
-        
-        
-        if state == .Loaded {
-            usernameLabel.textColor = UIColor.whiteColor()
-            timeLabel.text = "\(item.getDateCreated()!.timeStringSinceNowWithAgo())"
-        } else if state == .Loading {
-            usernameLabel.textColor = UIColor.grayColor()
-            timeLabel.text = "Loading..."
-        } else if state == .NotLoaded {
-            usernameLabel.textColor = UIColor.grayColor()
-            timeLabel.text = "\(item.getDateCreated()!.timeStringSinceNowWithAgo())"
-        }
-    }
 }

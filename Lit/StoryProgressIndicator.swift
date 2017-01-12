@@ -77,6 +77,14 @@ class StoryProgressIndicator: UIView {
         }
     }
     
+    func resetActiveIndicator() {
+        if activeBarIndex >= 0 && activeBarIndex < progressBars.count {
+            let bar = progressBars[activeBarIndex]
+            bar.removeAnimation()
+            bar.resetProgress()
+        }
+    }
+    
     
     func resetAllProgressBars() {
         for bar in progressBars {
