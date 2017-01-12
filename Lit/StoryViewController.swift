@@ -11,6 +11,7 @@ import AVFoundation
 import NVActivityIndicatorView
 import SwiftMessages
 
+
 public class StoryViewController: UICollectionViewCell, StoryProtocol {
 
     var viewIndex = 0
@@ -421,7 +422,7 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
     lazy var moreButton: UIButton = {
         let width: CGFloat = (UIScreen.mainScreen().bounds.size.width)
         let height: CGFloat = (UIScreen.mainScreen().bounds.size.height)
-        let button = UIButton(frame: CGRectMake(width - 34,height - 32,34,32))
+        let button = UIButton(frame: CGRectMake(width - 40,height - 40,40,40))
         button.setImage(UIImage(named: "more2"), forState: .Normal)
         button.tintColor = UIColor.whiteColor()
         button.alpha = 1.0

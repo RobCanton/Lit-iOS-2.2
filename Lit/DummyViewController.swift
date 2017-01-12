@@ -13,9 +13,9 @@ class DummyViewController:UIViewController, UITabBarControllerDelegate, UINaviga
     
     func navigationController(navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool) {
 
-        if viewController.isKindOfClass(PresentedViewController) {
+        if viewController.isKindOfClass(StoriesViewController) {
             print("willShowViewController")
-            let vc = viewController as! PresentedViewController
+            let vc = viewController as! StoriesViewController
             self.view.setNeedsLayout()
             self.view.layoutIfNeeded()
 
@@ -23,9 +23,9 @@ class DummyViewController:UIViewController, UITabBarControllerDelegate, UINaviga
     }
     
     func navigationController(navigationController: UINavigationController, didShowViewController viewController: UIViewController, animated: Bool) {
-        if viewController.isKindOfClass(PresentedViewController) {
+        if viewController.isKindOfClass(StoriesViewController) {
             print("didShowViewController")
-            let vc = viewController as! PresentedViewController
+            let vc = viewController as! StoriesViewController
             self.view.setNeedsLayout()
             self.view.layoutIfNeeded()
         }

@@ -250,7 +250,7 @@ class ActivityViewController: UITableViewController, UISearchBarDelegate {
     func presentStory(indexPath:NSIndexPath) {
         self.selectedIndexPath = indexPath
         
-        let presentedViewController: PresentedViewController = PresentedViewController()
+        let presentedViewController: StoriesViewController = StoriesViewController()
         presentedViewController.tabBarRef = self.tabBarController! as! PopUpTabBarController
         if indexPath.section == 0 {
             presentedViewController.userStories = [myStory!]

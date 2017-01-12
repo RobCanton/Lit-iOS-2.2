@@ -8,15 +8,74 @@
 
 import UIKit
 
-class PresentedViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIGestureRecognizerDelegate, UINavigationControllerDelegate {
+
+class LocationStoriesViewController: StoriesViewController {
+    
+    var location:Location!
+    
+    override func showOptions() {
+        guard let cell = getCurrentCell() else { return }
+        if cell.story.getUserId() == mainStore.state.userState.uid {
+            
+            let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+            
+            let cancelActionButton: UIAlertAction = UIAlertAction(title: "Cancel", style: .Cancel) { action -> Void in
+                cell.setForPlay()
+            }
+            actionSheet.addAction(cancelActionButton)
+            
+            let saveActionButton: UIAlertAction = UIAlertAction(title: "Remove from \(location.getName())", style: .Destructive)
+            { action -> Void in
+                self.deleteCurrentItem()
+            }
+            actionSheet.addAction(saveActionButton)
+            
+            self.presentViewController(actionSheet, animated: true, completion: nil)
+        } else {
+            let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+            
+            let cancelActionButton: UIAlertAction = UIAlertAction(title: "Cancel", style: .Cancel) { action -> Void in
+                cell.setForPlay()
+            }
+            actionSheet.addAction(cancelActionButton)
+            
+            let saveActionButton: UIAlertAction = UIAlertAction(title: "Report", style: .Destructive)
+            { action -> Void in
+                print("Report")
+            }
+            actionSheet.addAction(saveActionButton)
+            
+            self.presentViewController(actionSheet, animated: true, completion: nil)
+        }
+        
+    }
+    
+    override func deleteCurrentItem() {
+        guard let cell = getCurrentCell() else { return }
+        if let item = cell.getCurrentItem() {
+            let uid = mainStore.state.userState.uid
+            let location = item.getLocationKey()
+            let key = item.getKey()
+            let ref = FirebaseService.ref.child("locations/uploads/\(location)/\(uid)/\(key)")
+            ref.removeValueWithCompletionBlock({ error, ref in
+                self.popStoryController()
+            })
+        }
+    }
+    
+    override func showLocation(location:Location) {
+        popStoryController()
+    }
+    
+}
+
+class StoriesViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIGestureRecognizerDelegate, UINavigationControllerDelegate {
     
     var label:UILabel!
     var tabBarRef:PopUpTabBarController!
     var userStories = [UserStory]()
     var currentIndex:NSIndexPath!
     var collectionView:UICollectionView!
-
-    var location:Location?
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -171,15 +230,11 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
     }
     
     func showLocation(location:Location) {
-        if self.location != nil {
-            popStoryController()
-        } else {
-            self.navigationController?.delegate = self
-            let controller = UIStoryboard(name: "Main", bundle: nil)
-                .instantiateViewControllerWithIdentifier("LocViewController") as! LocViewController
-            controller.location = location
-            self.navigationController?.pushViewController(controller, animated: true)
-        }
+        self.navigationController?.delegate = self
+        let controller = UIStoryboard(name: "Main", bundle: nil)
+            .instantiateViewControllerWithIdentifier("LocViewController") as! LocViewController
+        controller.location = location
+        self.navigationController?.pushViewController(controller, animated: true)
     }
     
     
@@ -190,11 +245,11 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
             let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
             
             let cancelActionButton: UIAlertAction = UIAlertAction(title: "Cancel", style: .Cancel) { action -> Void in
-                //cell.setForPlay()
+                cell.setForPlay()
             }
             actionSheet.addAction(cancelActionButton)
             
-            let saveActionButton: UIAlertAction = UIAlertAction(title: "Remove from Fiction", style: .Destructive)
+            let saveActionButton: UIAlertAction = UIAlertAction(title: "Remove from My Story", style: .Destructive)
             { action -> Void in
                 self.deleteCurrentItem()
             }
@@ -205,7 +260,7 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
             let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
             
             let cancelActionButton: UIAlertAction = UIAlertAction(title: "Cancel", style: .Cancel) { action -> Void in
-                //cell.setForPlay()
+                cell.setForPlay()
             }
             actionSheet.addAction(cancelActionButton)
             
@@ -231,9 +286,8 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
         guard let cell = getCurrentCell() else { return }
         if let item = cell.getCurrentItem() {
             let uid = mainStore.state.userState.uid
-            let location = item.getLocationKey()
             let key = item.getKey()
-            let ref = FirebaseService.ref.child("locations/uploads/\(location)/\(uid)/\(key)")
+            let ref = FirebaseService.ref.child("users/activity/\(uid)/\(key)")
             ref.removeValueWithCompletionBlock({ error, ref in
                 self.popStoryController()
             })
@@ -245,9 +299,6 @@ class PresentedViewController: UIViewController, UICollectionViewDelegate, UICol
             cell.pauseVideo()
         }
     }
-    
-    
-    // MARK: Gesture Delegate
     
     func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
         
@@ -304,7 +355,7 @@ extension UIView
 }
 
 
-extension PresentedViewController: View2ViewTransitionPresented {
+extension StoriesViewController: View2ViewTransitionPresented {
     
     func destinationFrame(userInfo: [String: AnyObject]?, isPresenting: Bool) -> CGRect {
         

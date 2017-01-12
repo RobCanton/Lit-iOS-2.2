@@ -235,10 +235,10 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
     
     func handleEnterForeground() {
         print("APP ENTERED FOREGROUND")
-        /*for story in self.userStories {
+        for story in self.userStories {
             story.determineState()
         }
-        tableView?.reloadData()*/
+        tableView?.reloadData()
     }
     
     
@@ -517,7 +517,7 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
     func presentStory(indexPath:NSIndexPath) {
         self.selectedIndexPath = indexPath
         
-        let presentedViewController: PresentedViewController = PresentedViewController()
+        let presentedViewController: LocationStoriesViewController = LocationStoriesViewController()
         presentedViewController.tabBarRef   = self.tabBarController! as! PopUpTabBarController
         presentedViewController.userStories = userStories
         presentedViewController.location    = location
