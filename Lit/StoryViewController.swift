@@ -237,6 +237,17 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
         setupItem()
     }
     
+    func prevItem() {
+        print("PREV ITEM: \(viewIndex) -1")
+        if viewIndex > 0 {
+            viewIndex -= 1
+        }
+        
+        shouldPlay = true
+        
+        setupItem()
+    }
+    
     func createVideoPlayer() {
         if playerLayer == nil {
             playerLayer = AVPlayerLayer(player: AVPlayer())
@@ -328,7 +339,17 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
     }
     
     func tapped(gesture:UITapGestureRecognizer) {
-        nextItem()
+        let tappedPoint = gesture.locationInView(self)
+        let width = self.bounds.width
+        if tappedPoint.x < width * 0.25 {
+            prevItem()
+            prevView.alpha = 1.0
+            UIView.animateWithDuration(0.25, animations: {
+                self.prevView.alpha = 0.0
+            })
+        } else {
+           nextItem()
+        }
     }
 
     func fadeCoverIn() {
@@ -354,6 +375,7 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
         self.contentView.addSubview(self.content)
         self.contentView.addSubview(self.videoContent)
         self.contentView.addSubview(self.fadeCover)
+        self.contentView.addSubview(self.prevView)
         self.contentView.addSubview(self.authorOverlay)
         self.contentView.addSubview(self.moreButton)
         
@@ -396,6 +418,21 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
         let view: UIImageView = UIImageView(frame: self.contentView.bounds)
         view.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
         view.backgroundColor = UIColor.blackColor()
+        return view
+    }()
+    
+    public lazy var prevView: UIView = {
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: self.bounds.width * 0.4, height: self.bounds.height))
+
+        let gradient = CAGradientLayer()
+        gradient.frame = view.bounds
+        gradient.startPoint = CGPoint(x: 0, y: 0)
+        gradient.endPoint = CGPoint(x: 1, y: 0)
+        let dark = UIColor(white: 0.0, alpha: 0.42)
+        gradient.colors = [dark.CGColor, UIColor.clearColor().CGColor]
+        view.layer.insertSublayer(gradient, atIndex: 0)
+        view.userInteractionEnabled = false
+        view.alpha = 0.0
         return view
     }()
     

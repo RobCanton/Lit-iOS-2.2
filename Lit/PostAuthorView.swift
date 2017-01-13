@@ -67,17 +67,26 @@ class PostAuthorView: UIView {
                 superView.addGestureRecognizer(self.authorTap)
                 
                 let locSuperview = self.locationLabel.superview!
-                locSuperview.userInteractionEnabled = true
                 locSuperview.removeGestureRecognizer(self.locationTap)
                 locSuperview.addGestureRecognizer(self.locationTap)
 
                 self.user = user
                 self.timeLabel.text = post.getDateCreated()!.timeStringSinceNow()
-                for location in mainStore.state.locations {
-                    if location.getKey() == post.getLocationKey() {
-                        self.location = location
-                        self.locationLabel.text = location.getName()
-                    }
+                
+                
+                
+                if post.toLocation {
+                    LocationService.getLocation(post.getLocationKey(), completionHandler: { location in
+                        if location != nil {
+                            self.location = location!
+                            self.locationLabel.text = location!.getName()
+                            locSuperview.userInteractionEnabled = true
+                        }
+                    })
+                } else {
+                    self.location = nil
+                    self.locationLabel.text = ""
+                    locSuperview.userInteractionEnabled = false
                 }
             }
         })

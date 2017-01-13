@@ -130,13 +130,13 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
         let initialPath = self.transitionController.userInfo!["initialIndexPath"] as! NSIndexPath
         self.transitionController.userInfo!["destinationIndexPath"] = indexPath
         self.transitionController.userInfo!["initialIndexPath"] = NSIndexPath(forItem: indexPath.item, inSection: initialPath.section)
-        if let navigationController = self.navigationController {
-            navigationController.popViewControllerAnimated(animated)
+        print("SHOULD POP!")
+        if let nav = navigationController {
+            print("DEF SHOULD POP")
         }
+        navigationController?.popViewControllerAnimated(animated)
     }
     
-
-
     
     lazy var backItem: UIBarButtonItem = {
         let item: UIBarButtonItem = UIBarButtonItem(title: " ", style: .Plain, target: self, action: #selector(onBackItemClicked(_:)))
@@ -145,6 +145,10 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     func showOptions() {
         guard let cell = getCurrentCell() else { return }
+        guard let item = cell.storyItem else {
+            cell.setForPlay()
+            return }
+        
         if uid == mainStore.state.userState.uid {
             
             let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
@@ -154,12 +158,36 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
             }
             actionSheet.addAction(cancelActionButton)
             
-            let saveActionButton: UIAlertAction = UIAlertAction(title: "Remove from my Profile", style: .Destructive)
-            { action -> Void in
-                self.deleteCurrentItem()
+            if item.toProfile {
+                let profileAction: UIAlertAction = UIAlertAction(title: "Remove from my Profile", style: .Destructive)
+                { action -> Void in
+                    FirebaseService.removeItemFromProfile(item, completionHandler: {
+                        self.popStoryController(true)
+                    })
+                }
+                actionSheet.addAction(profileAction)
             }
-            actionSheet.addAction(saveActionButton)
-            
+            if item.toStory {
+                let storyAction: UIAlertAction = UIAlertAction(title: "Remove from my Story", style: .Destructive)
+                { action -> Void in
+                    FirebaseService.removeItemFromStory(item, completionHandler: {
+                        self.popStoryController(true)
+                    })
+                }
+                actionSheet.addAction(storyAction)
+            }
+            if item.toLocation {
+//                if let location = cell. {
+//                    let storyAction: UIAlertAction = UIAlertAction(title: "Remove from \(location.getName())", style: .Destructive)
+//                    { action -> Void in
+//                        FirebaseService.removeItemFromLocation(item, completionHandler: {
+//                            self.popStoryController(true)
+//                        })
+//                    }
+//                    actionSheet.addAction(storyAction)
+//                }
+//                
+            }
             self.presentViewController(actionSheet, animated: true, completion: nil)
         } else {
             let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)

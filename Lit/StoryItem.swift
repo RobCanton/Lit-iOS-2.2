@@ -30,13 +30,18 @@ class StoryItem: NSObject, NSCoding {
     var dateCreated: NSDate
     var length: Double
     
+    var toProfile:Bool
+    var toStory:Bool
+    var toLocation:Bool
+    
     var delegate:ItemDelegate?
 
     dynamic var image: UIImage?
     dynamic var videoFilePath: NSURL?
     dynamic var videoData:NSData?
     
-    init(key: String, authorId: String, locationKey:String, downloadUrl: NSURL, videoURL:NSURL?, contentType: ContentType, dateCreated: Double, length: Double)
+    init(key: String, authorId: String, locationKey:String, downloadUrl: NSURL, videoURL:NSURL?, contentType: ContentType, dateCreated: Double, length: Double,
+         toProfile: Bool, toStory: Bool, toLocation:Bool)
     {
         
         self.key          = key
@@ -47,6 +52,9 @@ class StoryItem: NSObject, NSCoding {
         self.contentType  = contentType
         self.dateCreated  = NSDate(timeIntervalSince1970: dateCreated/1000)
         self.length       = length
+        self.toProfile    = toProfile
+        self.toStory      = toStory
+        self.toLocation   = toLocation
 
     }
     
@@ -60,6 +68,9 @@ class StoryItem: NSObject, NSCoding {
         let dateCreated = decoder.decodeObjectForKey("dateCreated") as! Double
         let length      = decoder.decodeObjectForKey("length") as! Double
         let videoURL    = decoder.decodeObjectForKey("videoURL") as? NSURL
+        let toProfile   = decoder.decodeBoolForKey("toProfile")
+        let toStory     = decoder.decodeBoolForKey("toStory")
+        let toLocation  = decoder.decodeBoolForKey("toLocation")
         
         var contentType:ContentType = .Invalid
         switch ctInt {
@@ -73,7 +84,7 @@ class StoryItem: NSObject, NSCoding {
             break
         }
         
-        self.init(key: key, authorId: authorId, locationKey:locationKey, downloadUrl: downloadUrl, videoURL: videoURL, contentType: contentType, dateCreated: dateCreated, length: length)
+        self.init(key: key, authorId: authorId, locationKey:locationKey, downloadUrl: downloadUrl, videoURL: videoURL, contentType: contentType, dateCreated: dateCreated, length: length, toProfile: toProfile, toStory: toStory, toLocation: toLocation)
     }
     
     
@@ -84,6 +95,9 @@ class StoryItem: NSObject, NSCoding {
         coder.encodeObject(contentType.rawValue, forKey: "contentType")
         coder.encodeObject(dateCreated, forKey: "dateCreated")
         coder.encodeObject(length, forKey: "length")
+        coder.encodeBool(toProfile, forKey: "toProfile")
+        coder.encodeBool(toStory, forKey: "toStory")
+        coder.encodeBool(toLocation, forKey: "toLocation")
         if videoURL != nil {
             coder.encodeObject(videoURL!, forKey: "videoURL")
         }

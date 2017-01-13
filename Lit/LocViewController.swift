@@ -77,45 +77,61 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
         let locRef = FirebaseService.ref.child("locations/uploads/\(location.getKey())")
         locRef.removeAllObservers()
         locRef.observeEventType(.Value, withBlock: { snapshot in
-            var stories = [UserStory]()
-            var tempKeyCollection = [String]()
+
+            var tempDictionary = [String:[String]]()
             for user in snapshot.children {
                 
                 let userSnap = user as! FIRDataSnapshot
                 var postKeys = [String]()
                 for post in userSnap.children {
                     postKeys.append(post.key!!)
-                    tempKeyCollection.append(post.key!!)
                 }
-                let userStory = UserStory(user_id: userSnap.key, postKeys: postKeys)
-                stories.append(userStory)
+                tempDictionary[userSnap.key] = postKeys
+
             }
             
-            self.processStories(stories, tempCollection: tempKeyCollection)
+            self.crossCheckStories(tempDictionary)
 
         })
     }
     
-    func processStories(stories:[UserStory], tempCollection:[String]) {
-        let sortedPosts = postKeys.sort()
-        let sortedNewPosts = tempCollection.sort()
+    var storiesDictionary = [String:[String]]()
+    
+    var shouldDisplayEmptyMyStoryCell = false
+    
+    func crossCheckStories(tempDictionary:[String:[String]]) {
+        let uid = mainStore.state.userState.uid
         
-        if sortedPosts == sortedNewPosts {
+        if storiesDictionary[uid] != nil && tempDictionary[uid] == nil {
+            shouldDisplayEmptyMyStoryCell = true
         } else {
-            postKeys = tempCollection
+            shouldDisplayEmptyMyStoryCell = false
+        }
+        
+        if NSDictionary(dictionary: storiesDictionary).isEqualToDictionary(tempDictionary) {
+            print("Stories unchanged. No download required")
+            print("Current: \(storiesDictionary) | Temp: \(tempDictionary)")
+        } else {
+            print("Stories updated. Download initiated")
+            storiesDictionary = tempDictionary
+            var stories = [UserStory]()
+            for (uid, itemKeys) in storiesDictionary {
+                let story = UserStory(user_id: uid, postKeys: itemKeys)
+                stories.append(story)
+            }
             
-            var sortedStories = stories
-            for i in 0..<sortedStories.count {
+            
+            for i in 0..<stories.count {
                 let story = stories[i]
                 if story.getUserId() == mainStore.state.userState.uid {
                     print("Place my story at top")
-                    sortedStories.removeAtIndex(i)
-                    sortedStories.insert(story, atIndex: 0)
+                    stories.removeAtIndex(i)
+                    stories.insert(story, atIndex: 0)
                 }
             }
-            
-            self.userStories = sortedStories
-            self.tableView?.reloadData()
+
+            self.userStories = stories
+            self.tableView!.reloadData()
         }
     }
     
@@ -226,8 +242,6 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
             }
             self.tableView?.reloadData()
         })
-        
-        
     }
     
     
@@ -294,7 +308,6 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
             let header = cell as! LocationHeaderView
             header.setLocationDetails(location)
             return cell
-            
         } else if section == 1 {
             let headerView = UINib(nibName: "ListHeaderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! ListHeaderView
             headerView.hidden = false
@@ -364,9 +377,11 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
             return cell
         } else if indexPath.section == 1 {
             let cell = tableView.dequeueReusableCellWithIdentifier("UserStoryCell", forIndexPath: indexPath) as! UserStoryTableViewCell
-            cell.setUserStory(userStories[indexPath.item])
+            cell.setUserStory(userStories[indexPath.item], useUsername: true)
             return cell
         } else if indexPath.section == 2 {
+            
+            
             let cell = tableView.dequeueReusableCellWithIdentifier("UserCell", forIndexPath: indexPath) as! UserViewCell
             cell.setupUser(guests[indexPath.item])
             return cell

@@ -12,7 +12,6 @@ import Firebase
 class SettingsViewController: UITableViewController {
 
     
-    @IBOutlet weak var addFacebookFriends: UITableViewCell!
     
     @IBOutlet weak var notificationsSwitch: UISwitch!
     
@@ -24,6 +23,12 @@ class SettingsViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.navigationController?.navigationBar.titleTextAttributes =
+            [NSFontAttributeName: UIFont(name: "AvenirNext-DemiBold", size: 16.0)!,
+             NSForegroundColorAttributeName: UIColor.whiteColor()]
+        self.automaticallyAdjustsScrollViewInsets = false
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Plain, target: nil, action: nil)
         
         let uid = mainStore.state.userState.uid
         
@@ -53,9 +58,9 @@ class SettingsViewController: UITableViewController {
         if let cell = self.tableView.cellForRowAtIndexPath(indexPath) {
         
             switch cell {
-            case addFacebookFriends:
-                showAddFacebookFriendsView()
-                break
+            //case addFacebookFriends:
+               // showAddFacebookFriendsView()
+                //break
             case privacyPolicy:
                 showPrivacyPolicy()
                 break
@@ -90,7 +95,7 @@ class SettingsViewController: UITableViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewControllerWithIdentifier("WebViewController") as! WebViewController
         controller.title = "Privacy Policy"
-        self.parentViewController?.navigationController?.pushViewController(controller, animated: true)
+        navigationController?.pushViewController(controller, animated: true)
     }
     
     func showLogoutView() {

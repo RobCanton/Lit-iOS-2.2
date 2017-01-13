@@ -13,51 +13,11 @@ class LocationStoriesViewController: StoriesViewController {
     
     var location:Location!
     
-    override func showOptions() {
-        guard let cell = getCurrentCell() else { return }
-        if cell.story.getUserId() == mainStore.state.userState.uid {
-            
-            let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
-            
-            let cancelActionButton: UIAlertAction = UIAlertAction(title: "Cancel", style: .Cancel) { action -> Void in
-                cell.setForPlay()
-            }
-            actionSheet.addAction(cancelActionButton)
-            
-            let saveActionButton: UIAlertAction = UIAlertAction(title: "Remove from \(location.getName())", style: .Destructive)
-            { action -> Void in
-                self.deleteCurrentItem()
-            }
-            actionSheet.addAction(saveActionButton)
-            
-            self.presentViewController(actionSheet, animated: true, completion: nil)
-        } else {
-            let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
-            
-            let cancelActionButton: UIAlertAction = UIAlertAction(title: "Cancel", style: .Cancel) { action -> Void in
-                cell.setForPlay()
-            }
-            actionSheet.addAction(cancelActionButton)
-            
-            let saveActionButton: UIAlertAction = UIAlertAction(title: "Report", style: .Destructive)
-            { action -> Void in
-                print("Report")
-            }
-            actionSheet.addAction(saveActionButton)
-            
-            self.presentViewController(actionSheet, animated: true, completion: nil)
-        }
-        
-    }
     
     override func deleteCurrentItem() {
         guard let cell = getCurrentCell() else { return }
         if let item = cell.getCurrentItem() {
-            let uid = mainStore.state.userState.uid
-            let location = item.getLocationKey()
-            let key = item.getKey()
-            let ref = FirebaseService.ref.child("locations/uploads/\(location)/\(uid)/\(key)")
-            ref.removeValueWithCompletionBlock({ error, ref in
+            FirebaseService.removeItemFromLocation(item, completionHandler: {
                 self.popStoryController(true)
             })
         }
@@ -238,6 +198,10 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     func showOptions() {
         guard let cell = getCurrentCell() else { return }
+        guard let item = cell.item else {
+            cell.setForPlay()
+            return }
+
         if cell.story.getUserId() == mainStore.state.userState.uid {
             
             let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
@@ -247,12 +211,36 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
             }
             actionSheet.addAction(cancelActionButton)
             
-            let saveActionButton: UIAlertAction = UIAlertAction(title: "Remove from my Story", style: .Destructive)
-            { action -> Void in
-                self.deleteCurrentItem()
+            if item.toProfile {
+                let profileAction: UIAlertAction = UIAlertAction(title: "Remove from my Profile", style: .Destructive)
+                { action -> Void in
+                    FirebaseService.removeItemFromProfile(item, completionHandler: {
+                        self.popStoryController(true)
+                    })
+                }
+                actionSheet.addAction(profileAction)
             }
-            actionSheet.addAction(saveActionButton)
-            
+            if item.toStory {
+                let storyAction: UIAlertAction = UIAlertAction(title: "Remove from my Story", style: .Destructive)
+                { action -> Void in
+                    FirebaseService.removeItemFromStory(item, completionHandler: {
+                        self.popStoryController(true)
+                    })
+                }
+                actionSheet.addAction(storyAction)
+            }
+            if item.toLocation {
+                if let location = cell.authorOverlay.location {
+                    let storyAction: UIAlertAction = UIAlertAction(title: "Remove from \(location.getName())", style: .Destructive)
+                    { action -> Void in
+                        FirebaseService.removeItemFromLocation(item, completionHandler: {
+                            self.popStoryController(true)
+                        })
+                    }
+                    actionSheet.addAction(storyAction)
+                }
+
+            }
             self.presentViewController(actionSheet, animated: true, completion: nil)
         } else {
             let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
@@ -270,7 +258,7 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
             
             self.presentViewController(actionSheet, animated: true, completion: nil)
         }
-
+        
     }
     
     func getCurrentCell() -> StoryViewController? {
@@ -283,12 +271,9 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
     func deleteCurrentItem() {
         guard let cell = getCurrentCell() else { return }
         if let item = cell.getCurrentItem() {
-            let uid = mainStore.state.userState.uid
-            let key = item.getKey()
-            let ref = FirebaseService.ref.child("users/activity/\(uid)/\(key)")
-            ref.removeValueWithCompletionBlock({ error, ref in
-                self.popStoryController(true)
-            })
+//            FirebaseService.removeItemFromLocation(item, completionHandler: {
+//                self.popStoryController(true)
+//            })
         }
     }
     

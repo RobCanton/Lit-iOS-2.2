@@ -17,11 +17,11 @@ class ProgressIndicator: UIView {
         super.init(frame:frame)
         
         
-        backgroundColor = UIColor(white: 1.0, alpha: 0.4)
+        backgroundColor = UIColor(white: 1.0, alpha: 0.25)
         
         progress = UIView()
         resetProgress()
-        progress.backgroundColor = UIColor(white: 1.0, alpha: 0.6)
+        progress.backgroundColor = UIColor(white: 1.0, alpha: 0.5)
         addSubview(progress)
     }
     

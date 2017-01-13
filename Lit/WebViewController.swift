@@ -13,10 +13,15 @@ class WebViewController: UIViewController, WKNavigationDelegate {
     
     var webView:WKWebView!
     
-    var statusBarBG:UIView!
     
     override func viewDidLoad() {
          super.viewDidLoad()
+        
+        self.navigationController?.navigationBar.titleTextAttributes =
+            [NSFontAttributeName: UIFont(name: "AvenirNext-DemiBold", size: 16.0)!,
+             NSForegroundColorAttributeName: UIColor.whiteColor()]
+        self.automaticallyAdjustsScrollViewInsets = false
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Plain, target: nil, action: nil)
 
         webView = WKWebView()
         webView.navigationDelegate = self
@@ -27,16 +32,6 @@ class WebViewController: UIViewController, WKNavigationDelegate {
         
         webView.frame = view.frame
         view.addSubview(webView)
-        
-        let navHeight = screenStatusBarHeight + navigationController!.navigationBar.frame.height
-        statusBarBG = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: navHeight))
-        statusBarBG.backgroundColor = UIColor.clearColor()
-        
-        let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .Dark))
-        blurView.frame = statusBarBG.bounds
-        statusBarBG.addSubview(blurView)
-        
-        view.addSubview(statusBarBG)
     }
     
     

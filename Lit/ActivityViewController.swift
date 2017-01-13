@@ -78,9 +78,13 @@ class ActivityViewController: UITableViewController, UISearchBarDelegate {
                 print("MyStory unchanged.")
             } else {
                 print("MyStory changed.")
-                self.myStoryKeys = itemKeys
-                let myStory = UserStory(user_id: uid, postKeys: self.myStoryKeys)
-                self.myStory = myStory
+                if itemKeys.count > 0 {
+                    self.myStoryKeys = itemKeys
+                    let myStory = UserStory(user_id: uid, postKeys: self.myStoryKeys)
+                    self.myStory = myStory
+                } else{
+                    self.myStory = nil
+                }
                 self.tableView.reloadData()
             }
         })
@@ -195,9 +199,7 @@ class ActivityViewController: UITableViewController, UISearchBarDelegate {
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
-            if myStory != nil {
-                return 1
-            } else { return 0 }
+            return 1
         case 1:
             return userStories.count
         default:
@@ -209,11 +211,15 @@ class ActivityViewController: UITableViewController, UISearchBarDelegate {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCellWithIdentifier("UserStoryCell", forIndexPath: indexPath) as! UserStoryTableViewCell
-            cell.setUserStory(myStory!)
+            if myStory != nil {
+               cell.setUserStory(myStory!, useUsername: false)
+            } else {
+                cell.setToEmptyMyStory()
+            }
             return cell
         } else {
             let cell = tableView.dequeueReusableCellWithIdentifier("UserStoryCell", forIndexPath: indexPath) as! UserStoryTableViewCell
-            cell.setUserStory(userStories[indexPath.item])
+            cell.setUserStory(userStories[indexPath.item], useUsername: true)
             return cell
         }
     }
@@ -229,10 +235,15 @@ class ActivityViewController: UITableViewController, UISearchBarDelegate {
 
         if indexPath.section == 0 {
             if let story = myStory {
+                
                 if story.state == .ContentLoaded {
                     presentStory(indexPath)
                 } else {
                     story.downloadStory()
+                }
+            } else {
+                if let tabBar = self.tabBarController as? PopUpTabBarController {
+                    tabBar.presentCamera()
                 }
             }
         } else if indexPath.section == 1 {

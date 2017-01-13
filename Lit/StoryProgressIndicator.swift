@@ -60,15 +60,22 @@ class StoryProgressIndicator: UIView {
     func activateIndicator(itemIndex:Int) {
         if itemIndex >= 0 && itemIndex < storyItems.count {
             activeBarIndex = itemIndex
-            let bar = progressBars[activeBarIndex]
-            let item = storyItems[activeBarIndex]
-            bar.startAnimating(item.getLength())
+            
             
             if activeBarIndex > 0 {
                 for i in 0..<activeBarIndex {
                     progressBars[i].completeAnimation()
                 }
+                
             }
+            for j in activeBarIndex..<progressBars.count {
+                progressBars[j].removeAnimation()
+                progressBars[j].resetProgress()
+            }
+            
+            let bar = progressBars[activeBarIndex]
+            let item = storyItems[activeBarIndex]
+            bar.startAnimating(item.getLength())
             
         }
     }

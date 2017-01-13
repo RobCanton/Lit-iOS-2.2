@@ -143,11 +143,12 @@ class FirebaseService {
                         "author": uid,
                         "toProfile": upload.toProfile,
                         "toStory": upload.toStory,
+                        "toLocation": upload.locationKey != "",
                         "location": upload.locationKey,
                         "url": downloadURL!.absoluteString,
                         "contentType": contentTypeStr,
                         "dateCreated": [".sv": "timestamp"],
-                         "length": 5
+                        "length": 5
                     ]
                     dataRef.child("meta").setValue(obj, withCompletionBlock: { error, _ in
                         if error == nil {
@@ -197,6 +198,7 @@ class FirebaseService {
                         "author": uid,
                         "toProfile": upload.toProfile,
                         "toStory": upload.toStory,
+                        "toLocation": upload.locationKey != "",
                         "location": upload.locationKey,
                         "videoURL": downloadURL!.absoluteString,
                         "url": thumbURL,
@@ -211,6 +213,66 @@ class FirebaseService {
                 }
             }
             return completionHander(success: true, uploadTask: uploadTask)
+        })
+    }
+    
+    internal static func removeItemFromLocation(item:StoryItem, completionHandler:(()->())) {
+        let locationRef = ref.child("locations/uploads/\(item.locationKey)/\(item.authorId)/\(item.key)")
+        locationRef.removeValueWithCompletionBlock({ error, _locationRef in
+            if error == nil {
+                let uploadRef = ref.child("uploads/\(item.key)/meta/toLocation")
+                uploadRef.setValue(false, withCompletionBlock: { error, _uploadRef in
+                    if error == nil {
+                        item.toLocation = false
+                        dataCache.setObject(item, forKey: "upload-\(item.key)")
+                        completionHandler()
+                    } else {
+                        completionHandler()
+                    }
+                })
+            } else {
+                completionHandler()
+            }
+        })
+    }
+    
+    internal static func removeItemFromStory(item:StoryItem, completionHandler:(()->())) {
+        let storyRef = ref.child("users/activity/\(item.authorId)/\(item.key)")
+        storyRef.removeValueWithCompletionBlock({ error, _locationRef in
+            if error == nil {
+                let uploadRef = ref.child("uploads/\(item.key)/meta/toStory")
+                uploadRef.setValue(false, withCompletionBlock: { error, _uploadRef in
+                    if error == nil {
+                        item.toStory = false
+                        dataCache.setObject(item, forKey: "upload-\(item.key)")
+                        completionHandler()
+                    } else {
+                        completionHandler()
+                    }
+                })
+            } else {
+                completionHandler()
+            }
+        })
+    }
+    
+    internal static func removeItemFromProfile(item:StoryItem, completionHandler:(()->())) {
+        let storyRef = ref.child("users/uploads/\(item.authorId)/\(item.key)")
+        storyRef.removeValueWithCompletionBlock({ error, _locationRef in
+            if error == nil {
+                let uploadRef = ref.child("uploads/\(item.key)/meta/toProfile")
+                uploadRef.setValue(false, withCompletionBlock: { error, _uploadRef in
+                    if error == nil {
+                        item.toProfile = false
+                        dataCache.setObject(item, forKey: "upload-\(item.key)")
+                        completionHandler()
+                    } else {
+                        completionHandler()
+                    }
+                })
+            } else {
+                completionHandler()
+            }
         })
     }
     
@@ -350,10 +412,14 @@ class FirebaseService {
                         }
                     }
                     
+                    let toProfile = snapshot.value!["toProfile"] as! Bool
+                    let toStory = snapshot.value!["toStory"] as! Bool
+                    let toLocation = snapshot.value!["toLocation"] as! Bool
+                    
                     let dateCreated = snapshot.value!["dateCreated"] as! Double
                     let length = snapshot.value!["length"] as! Double
 
-                    item = StoryItem(key: key, authorId: authorId,locationKey: locationKey, downloadUrl: downloadUrl,videoURL: videoURL, contentType: contentType, dateCreated: dateCreated, length: length)
+                    item = StoryItem(key: key, authorId: authorId,locationKey: locationKey, downloadUrl: downloadUrl,videoURL: videoURL, contentType: contentType, dateCreated: dateCreated, length: length, toProfile: toProfile, toStory: toStory, toLocation: toLocation)
                     dataCache.setObject(item!, forKey: "upload-\(key)")
                 }
             }

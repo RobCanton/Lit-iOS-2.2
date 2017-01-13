@@ -482,7 +482,6 @@
 		B026A8501DAD9D3800DD2CCD /* UserProfile */ = {
 			isa = PBXGroup;
 			children = (
-				B0305A511DBE6F15009B5F74 /* WebViewController.swift */,
 				B026A8481DAD76FB00DD2CCD /* UserProfileViewController.swift */,
 				B011B3471DFE7FAD00FA4633 /* GalleryViewController.swift */,
 				B079BE841DA557B00042B586 /* PhotoCell.swift */,
@@ -490,6 +489,7 @@
 				B09801AF1E1B6773006782E6 /* EditPostToolbar.swift */,
 				B09801B11E1B6784006782E6 /* EditPostToolbar.xib */,
 				B0E591561DD1218D00C032D6 /* SettingsViewController.swift */,
+				B0305A511DBE6F15009B5F74 /* WebViewController.swift */,
 				B0E8E30B1DD7739B0077D1BC /* ContainerViewController.swift */,
 				B0E8E3151DD989F30077D1BC /* ProfilePictureMessageView.swift */,
 				B0E8E3171DD98A060077D1BC /* ProfilePictureMessageView.xib */,

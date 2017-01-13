@@ -61,29 +61,45 @@ class UserStoryTableViewCell: UITableViewCell, StoryProtocol {
     }
     
     
-    func setUserStory(story:UserStory) {
+    func setUserStory(story:UserStory, useUsername:Bool) {
         self.userStory = story
         story.delegate = self
         stateChange(story.state)
-        
+
         FirebaseService.getUser(story.getUserId(), completionHandler: { user in
             if user != nil {
-                if user!.getUserId() == mainStore.state.userState.uid {
-                    self.usernameLabel.text = "My Activity"
+                if user!.getUserId() == mainStore.state.userState.uid && !useUsername {
+                    
+                    self.usernameLabel.text = "Your Story"
                 } else {
                     self.usernameLabel.text = user!.getDisplayName()
                 }
                 
                 
                 // Load in image to avoid blip in story view
-                loadImageUsingCacheWithURL(user!.getImageUrl(), completion: { image, fromCache in})
+                loadImageUsingCacheWithURL(user!.getImageUrl(), completion: { image, fromCache in
+                    self.contentImageView.image = image
+                })
             }
         })
     }
     
+
+    func setToEmptyMyStory() {
+        self.usernameLabel.text = "Your Story"
+        self.timeLabel.text = "+ Tap to add"
+        imageContainer.layer.borderColor = timeLabel.textColor.CGColor
+        if let user = mainStore.state.userState.user {
+            loadImageUsingCacheWithURL(user.getImageUrl(), completion: { image, fromCache in
+                self.contentImageView.image = image
+            })
+        }
+
+    }
+    
     
     func stateChange(state:UserStoryState) {
-        print("STATE CHANGE: \(state)")
+
         switch state {
         case .NotLoaded:
             userStory?.downloadItems()
@@ -113,7 +129,7 @@ class UserStoryTableViewCell: UITableViewCell, StoryProtocol {
             let lastItem = items[items.count - 1]
             self.timeLabel.text = "\(lastItem.getDateCreated()!.timeStringSinceNowWithAgo())"
             activate(false)
-            loadImageUsingCacheWithURL(lastItem.getDownloadUrl().absoluteString, completion: { image, fromCache in
+            /*loadImageUsingCacheWithURL(lastItem.getDownloadUrl().absoluteString, completion: { image, fromCache in
                 
                 if !fromCache {
                     self.contentImageView.alpha = 0.0
@@ -124,7 +140,7 @@ class UserStoryTableViewCell: UITableViewCell, StoryProtocol {
                     self.contentImageView.alpha = 1.0
                 }
                 self.contentImageView.image = image
-            })
+            })*/
         }
     }
     
