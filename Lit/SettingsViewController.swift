@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SwiftMessages
 import Firebase
 
 class SettingsViewController: UITableViewController {
@@ -20,10 +19,6 @@ class SettingsViewController: UITableViewController {
     @IBOutlet weak var privacyPolicy: UITableViewCell!
     @IBOutlet weak var logout: UITableViewCell!
     
-    
-    var logoutView:LogoutView?
-    var config: SwiftMessages.Config?
-    var logoutWrapper = SwiftMessages()
     
     var notificationsRef:FIRDatabaseReference?
 

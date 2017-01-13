@@ -58,13 +58,13 @@ class LocationStoriesViewController: StoriesViewController {
             let key = item.getKey()
             let ref = FirebaseService.ref.child("locations/uploads/\(location)/\(uid)/\(key)")
             ref.removeValueWithCompletionBlock({ error, ref in
-                self.popStoryController()
+                self.popStoryController(true)
             })
         }
     }
     
     override func showLocation(location:Location) {
-        popStoryController()
+        popStoryController(true)
     }
     
 }
@@ -171,9 +171,7 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     func appMovedToBackground() {
         print("App moved to background!")
-        if let navigationController = self.navigationController {
-            navigationController.popViewControllerAnimated(false)
-        }
+        popStoryController(false)
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
@@ -206,19 +204,19 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
         return cell
     }
     
-    func popStoryController() {
+    func popStoryController(animated:Bool) {
         let indexPath: NSIndexPath = self.collectionView.indexPathsForVisibleItems().first!
         let initialPath = self.transitionController.userInfo!["initialIndexPath"] as! NSIndexPath
         self.transitionController.userInfo!["destinationIndexPath"] = indexPath
         self.transitionController.userInfo!["initialIndexPath"] = NSIndexPath(forItem: indexPath.item, inSection: initialPath.section)
         if let navigationController = self.navigationController {
-            navigationController.popViewControllerAnimated(true)
+            navigationController.popViewControllerAnimated(animated)
         }
     }
     
     
     func storyComplete() {
-        popStoryController()
+        popStoryController(true)
     }
     
     func showAuthor(user:User) {
@@ -249,7 +247,7 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
             }
             actionSheet.addAction(cancelActionButton)
             
-            let saveActionButton: UIAlertAction = UIAlertAction(title: "Remove from My Story", style: .Destructive)
+            let saveActionButton: UIAlertAction = UIAlertAction(title: "Remove from my Story", style: .Destructive)
             { action -> Void in
                 self.deleteCurrentItem()
             }
@@ -289,7 +287,7 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
             let key = item.getKey()
             let ref = FirebaseService.ref.child("users/activity/\(uid)/\(key)")
             ref.removeValueWithCompletionBlock({ error, ref in
-                self.popStoryController()
+                self.popStoryController(true)
             })
         }
     }
@@ -358,9 +356,6 @@ extension UIView
 extension StoriesViewController: View2ViewTransitionPresented {
     
     func destinationFrame(userInfo: [String: AnyObject]?, isPresenting: Bool) -> CGRect {
-        
-        let indexPath: NSIndexPath = userInfo!["destinationIndexPath"] as! NSIndexPath
-        let cell: StoryViewController = self.collectionView.cellForItemAtIndexPath(indexPath) as! StoryViewController
         return view.frame
     }
     

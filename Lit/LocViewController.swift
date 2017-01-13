@@ -22,7 +22,6 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
     var guests = [String]()
     
     var tableView:UITableView?
-    var controlBar:UserProfileControlBar?
     var headerView:UIImageView!
     var footerView:LocationFooterView!
     
@@ -267,14 +266,6 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
         }
     }
     
-    func showEvents(gesture:UITapGestureRecognizer) {
-        if let _ = location {
-            let controller = UIStoryboard(name: "EventsViewController", bundle: nil)
-                .instantiateViewControllerWithIdentifier("EventsViewController") as! EventsViewController
-            controller._events = events
-            self.navigationController?.pushViewController(controller, animated: true)
-        }
-    }
  
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {

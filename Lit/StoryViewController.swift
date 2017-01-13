@@ -53,13 +53,7 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
             shouldPlay = false
             self.story.delegate = self
             story.determineState()
-            
-//            enableTap()
-//            viewIndex = 0
-//            setupItem()
-//            
-//        
-//            
+
             let screenWidth: CGFloat = (UIScreen.mainScreen().bounds.size.width)
             
             let margin:CGFloat = 8.0
@@ -361,7 +355,6 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
         self.contentView.addSubview(self.videoContent)
         self.contentView.addSubview(self.fadeCover)
         self.contentView.addSubview(self.authorOverlay)
-        self.contentView.addSubview(self.statsView)
         self.contentView.addSubview(self.moreButton)
         
         self.moreButton.addTarget(self, action: #selector(showOptions), forControlEvents: .TouchUpInside)
@@ -371,9 +364,7 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
         tap = UITapGestureRecognizer(target: self, action: #selector(tapped))
         
         activityView = NVActivityIndicatorView(frame: CGRectMake(0,0,50,50), type: .BallScaleMultiple)
-        let centerX = (UIScreen.mainScreen().bounds.size.width) / 2
-        let centerY = (UIScreen.mainScreen().bounds.size.height) / 2
-        activityView.center = CGPointMake(centerX, centerY)
+        activityView.center = self.center
         self.contentView.addSubview(activityView)
         
     }
@@ -391,7 +382,7 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
     public lazy var videoContent: UIView = {
         let width: CGFloat = (UIScreen.mainScreen().bounds.size.width)
         let height: CGFloat = (UIScreen.mainScreen().bounds.size.height)
-        let frame = CGRectMake(0,-6,width, height + 12)
+        let frame = CGRectMake(0,0,width, height + 0)
         let view: UIImageView = UIImageView(frame: frame)
         view.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
         view.backgroundColor = UIColor.clearColor()
@@ -414,7 +405,7 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
         let width: CGFloat = (UIScreen.mainScreen().bounds.size.width)
         let height: CGFloat = (UIScreen.mainScreen().bounds.size.height)
         
-        authorView.frame = CGRect(x: margin, y: margin + 8.0, width: width, height: authorView.frame.height)
+        authorView.frame = CGRect(x: margin, y: margin + 6.0, width: width, height: authorView.frame.height)
         authorView.authorTappedHandler = self.authorTappedHandler
         return authorView
     }()
@@ -427,17 +418,5 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
         button.tintColor = UIColor.whiteColor()
         button.alpha = 1.0
         return button
-    }()
-    
-
-    
-    lazy var statsView: PostStatsView = {
-
-        var view = UINib(nibName: "PostStatsView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! PostStatsView
-        let width: CGFloat = (UIScreen.mainScreen().bounds.size.width)
-        let height: CGFloat = (UIScreen.mainScreen().bounds.size.height)
-        
-        view.frame = CGRect(x: 0, y: height - view.frame.height, width: width, height: view.frame.height)
-        return view
     }()
 }

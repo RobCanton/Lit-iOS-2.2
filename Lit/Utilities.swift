@@ -191,6 +191,18 @@ func getDistanceString(distance:Double) -> String {
     
 }
 
+func createDirectory(dirName:String) {
+    let paths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
+    let documentsDirectory: AnyObject = paths[0]
+    let dataPath = documentsDirectory.stringByAppendingPathComponent(dirName)
+    
+    do {
+        try NSFileManager.defaultManager().createDirectoryAtPath(dataPath, withIntermediateDirectories: false, attributes: nil)
+    } catch let error as NSError {
+        print(error.localizedDescription);
+    }
+}
+
 func clearDirectory(name:String) {
     let fileManager = NSFileManager.defaultManager()
     let documentsURL = fileManager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]

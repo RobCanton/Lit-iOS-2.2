@@ -9,6 +9,7 @@
 
 import UIKit
 import AVFoundation
+import NVActivityIndicatorView
 
 class GalleryViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIGestureRecognizerDelegate, UINavigationControllerDelegate {
     
@@ -16,27 +17,21 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
     var photos = [StoryItem]()
     var uid:String!
     var tabBarRef:PopUpTabBarController!
-    
-//    lazy var editOverlay: EditPostToolbar = {
-//        let margin:CGFloat = 0.0
-//        var view = UINib(nibName: "EditPostToolbar", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! EditPostToolbar
-//        let width: CGFloat = (UIScreen.mainScreen().bounds.size.width)
-//        let height: CGFloat = 60
-//        
-//        view.frame = CGRect(x: margin, y: margin + 2.0, width: width, height: view.frame.height)
-//        return view
-//    }()
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.edgesForExtendedLayout = .None
         
+        
         self.navigationItem.leftBarButtonItem = self.backItem
         
         self.view.backgroundColor = UIColor.blackColor()
         
+        
+        collectionView.showsHorizontalScrollIndicator = false
         self.view.addSubview(self.collectionView)
-
+    
     }
     
     
@@ -45,6 +40,9 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
         super.viewWillAppear(animated)
         tabBarRef.setTabBarVisible(false, animated: true)
         navigationController?.setNavigationBarHidden(true, animated: true)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(appMovedToBackground), name:UIApplicationDidEnterBackgroundNotification, object: nil)
+        
         UIView.animateWithDuration(0.15, animations: {
             self.statusBarShouldHide = true
             self.setNeedsStatusBarAppearanceUpdate()
@@ -62,11 +60,6 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
             }
         }
         
-        if uid == mainStore.state.userState.uid {
-            currentUserEditMode()
-        }
-        
-        
         let indexPath: NSIndexPath = self.collectionView.indexPathsForVisibleItems().first!
         if let cell = collectionView.cellForItemAtIndexPath(indexPath) as? PresentedCollectionViewCell {
             print("WE EVER GET HERE?")
@@ -77,7 +70,8 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(false, animated: true)
-        toolbar?.removeFromSuperview()
+        
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -90,14 +84,6 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
         }
     }
     
-    var toolbar:EditPostToolbar?
-    func currentUserEditMode() {
-        //self.view.addSubview(editOverlay)
-        toolbar = UINib(nibName: "EditPostToolbar", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! EditPostToolbar
-        toolbar!.frame = CGRectMake(view.frame.width - toolbar!.frame.width - 8, 8, toolbar!.frame.width, toolbar!.frame.height)
-        toolbar!.deleteHandler = deleteCurrentPost
-        self.view.addSubview(toolbar!)
-    }
     
     func deleteCurrentPost() {
         let uid = mainStore.state.userState.uid
@@ -134,6 +120,21 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
         return collectionView
     }()
     
+    func appMovedToBackground() {
+        print("App moved to background!")
+        popStoryController(false)
+    }
+    
+    func popStoryController(animated:Bool) {
+        let indexPath: NSIndexPath = self.collectionView.indexPathsForVisibleItems().first!
+        let initialPath = self.transitionController.userInfo!["initialIndexPath"] as! NSIndexPath
+        self.transitionController.userInfo!["destinationIndexPath"] = indexPath
+        self.transitionController.userInfo!["initialIndexPath"] = NSIndexPath(forItem: indexPath.item, inSection: initialPath.section)
+        if let navigationController = self.navigationController {
+            navigationController.popViewControllerAnimated(animated)
+        }
+    }
+    
 
 
     
@@ -141,6 +142,62 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
         let item: UIBarButtonItem = UIBarButtonItem(title: " ", style: .Plain, target: self, action: #selector(onBackItemClicked(_:)))
         return item
     }()
+    
+    func showOptions() {
+        guard let cell = getCurrentCell() else { return }
+        if uid == mainStore.state.userState.uid {
+            
+            let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+            
+            let cancelActionButton: UIAlertAction = UIAlertAction(title: "Cancel", style: .Cancel) { action -> Void in
+                cell.setForPlay()
+            }
+            actionSheet.addAction(cancelActionButton)
+            
+            let saveActionButton: UIAlertAction = UIAlertAction(title: "Remove from my Profile", style: .Destructive)
+            { action -> Void in
+                self.deleteCurrentItem()
+            }
+            actionSheet.addAction(saveActionButton)
+            
+            self.presentViewController(actionSheet, animated: true, completion: nil)
+        } else {
+            let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+            
+            let cancelActionButton: UIAlertAction = UIAlertAction(title: "Cancel", style: .Cancel) { action -> Void in
+                cell.setForPlay()
+            }
+            actionSheet.addAction(cancelActionButton)
+            
+            let saveActionButton: UIAlertAction = UIAlertAction(title: "Report", style: .Destructive)
+            { action -> Void in
+                print("Report")
+            }
+            actionSheet.addAction(saveActionButton)
+            
+            self.presentViewController(actionSheet, animated: true, completion: nil)
+        }
+        
+    }
+    
+    func deleteCurrentItem() {
+        guard let cell = getCurrentCell() else { return }
+        let uid = mainStore.state.userState.uid
+        let key = cell.storyItem.getKey()
+        let ref = FirebaseService.ref.child("users/uploads/\(uid)/\(key)")
+        ref.removeValueWithCompletionBlock({ error, ref in
+            self.popStoryController(true)
+        })
+    
+    }
+    
+    func getCurrentCell() -> PresentedCollectionViewCell? {
+        if let cell = collectionView.visibleCells().first as? PresentedCollectionViewCell {
+            return cell
+        }
+        return nil
+    }
+    
     
 
     
@@ -161,7 +218,8 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
         cell.contentView.backgroundColor = UIColor.blackColor()
         
         let item = photos[indexPath.item]
-        cell.setItem(item)
+        cell.storyItem = item
+        cell.optionsTappedHandler = showOptions
         
         return cell
     }
@@ -210,6 +268,17 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
         return Double(abs(translate.y)/abs(translate.x)) > M_PI_4 && translate.y > 0
     }
     
+
+    
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        let xOffset = scrollView.contentOffset.x
+        
+        
+        if let cell = getCurrentCell() {
+            cell.setForPlay()
+        }
+    }
+    
     
     
     var statusBarShouldHide = false
@@ -230,18 +299,15 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
 extension GalleryViewController: View2ViewTransitionPresented {
     
     func destinationFrame(userInfo: [String: AnyObject]?, isPresenting: Bool) -> CGRect {
-        
-        let indexPath: NSIndexPath = userInfo!["destinationIndexPath"] as! NSIndexPath
-        print("DEST PATH: \(indexPath)")
-        let cell: PresentedCollectionViewCell = self.collectionView.cellForItemAtIndexPath(indexPath) as! PresentedCollectionViewCell
-        return cell.content.frame
+        return view.frame
     }
     
     func destinationView(userInfo: [String: AnyObject]?, isPresenting: Bool) -> UIView {
         
         let indexPath: NSIndexPath = userInfo!["destinationIndexPath"] as! NSIndexPath
         let cell: PresentedCollectionViewCell = self.collectionView.cellForItemAtIndexPath(indexPath) as! PresentedCollectionViewCell
-        return cell.content
+        cell.prepareForTransition(isPresenting)
+        return view
     }
     
     func prepareDestinationView(userInfo: [String: AnyObject]?, isPresenting: Bool) {
@@ -260,22 +326,114 @@ extension GalleryViewController: View2ViewTransitionPresented {
     
 }
 
-public class PresentedCollectionViewCell: UICollectionViewCell {
+public class PresentedCollectionViewCell: UICollectionViewCell, ItemDelegate {
     
     var playerLayer:AVPlayerLayer?
+    var activityView:NVActivityIndicatorView!
+    
+    var optionsTappedHandler:(()->())?
+    
+    func showOptions() {
+        pauseVideo()
+        optionsTappedHandler?()
+    }
+    
+    var shouldPlay = false
+    
+    var storyItem:StoryItem! {
+        didSet {
+            shouldPlay = false
+            storyItem.delegate = self
+            setItem()
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.contentView.addSubview(self.content)
         self.contentView.addSubview(self.videoContent)
+        self.contentView.addSubview(self.moreButton)
         videoContent.hidden = true
         
+        self.moreButton.addTarget(self, action: #selector(showOptions), forControlEvents: .TouchUpInside)
         
+        activityView = NVActivityIndicatorView(frame: CGRectMake(0,0,50,50), type: .BallScaleMultiple)
+        activityView.center = self.center
+        self.contentView.addSubview(activityView)
+    }
+
+    func setItem() {
+        if let image = storyItem.image {
+            self.content.image = image
+        } else {
+            NSNotificationCenter.defaultCenter().removeObserver(self)
+            activityView?.startAnimating()
+            storyItem.download()
+        }
+        
+        if storyItem.contentType == .Video {
+            
+            if let videoData = loadVideoFromCache(storyItem.key) {
+                createVideoPlayer()
+                
+                let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
+                let filePath = documentsURL.URLByAppendingPathComponent("temp/\(storyItem.key).mp4")
+                
+                try! videoData.writeToURL(filePath, options: NSDataWritingOptions.DataWritingAtomic)
+                
+                let asset = AVAsset(URL: filePath)
+                asset.loadValuesAsynchronouslyForKeys(["duration"], completionHandler: {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        let item = AVPlayerItem(asset: asset)
+                        self.playerLayer?.player?.replaceCurrentItemWithPlayerItem(item)
+                        
+                        if self.shouldPlay {
+                            self.setForPlay()
+                        }
+                    })
+                })
+                
+            } else {
+                 activityView?.startAnimating()
+                storyItem.download()
+            }
+        }
+
+    }
+
+    
+    func itemDownloaded() {
+        activityView?.stopAnimating()
+        setItem()
     }
     
-    func cleanUp() {
-        destroyVideoPlayer()
+    func setForPlay(){
+        
+        if storyItem.needsDownload() {
+            
+            shouldPlay = true
+            return
+        }
+        
+        shouldPlay = false
+        
+        if storyItem.contentType == .Image {
+            videoContent.hidden = true
+            
+        } else if storyItem.contentType == .Video {
+            videoContent.hidden = false
+            playVideo()
+            loopVideo()
+        }
     }
+    
+    func loopVideo() {
+        NSNotificationCenter.defaultCenter().addObserverForName(AVPlayerItemDidPlayToEndTimeNotification, object: nil, queue: nil) { notification in
+            self.playerLayer?.player?.seekToTime(kCMTimeZero)
+            self.playerLayer?.player?.play()
+        }
+    }
+    
     
     func createVideoPlayer() {
         if playerLayer == nil {
@@ -288,14 +446,6 @@ public class PresentedCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func destroyVideoPlayer() {
-        self.playerLayer?.removeFromSuperlayer()
-        self.playerLayer?.player = nil
-        self.playerLayer = nil
-        videoContent.hidden = true
-        
-    }
-    
     func playVideo() {
         self.playerLayer?.player?.play()
     }
@@ -304,48 +454,23 @@ public class PresentedCollectionViewCell: UICollectionViewCell {
         self.playerLayer?.player?.pause()
     }
     
-    func setItem(item:StoryItem) {
-        
-        loadImageUsingCacheWithURL(item.getDownloadUrl().absoluteString, completion: { image, fromCache in
-            self.content.image = image
-        })
-        
-        if item.contentType == .Image {
-            
-        } else if item.contentType == .Video {
-            if let videoData = loadVideoFromCache(item.key) {
-                createVideoPlayer()
-                print("VIDEO READY")
-                
-                let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
-                let filePath = documentsURL.URLByAppendingPathComponent("temp/\(item.key).mp4")
-                
-                try! videoData.writeToURL(filePath, options: NSDataWritingOptions.DataWritingAtomic)
-                
-                
-                let asset = AVAsset(URL: filePath)
-                asset.loadValuesAsynchronouslyForKeys(["duration"], completionHandler: {
-                    dispatch_async(dispatch_get_main_queue(), {
-                        let item = AVPlayerItem(asset: asset)
-                        self.playerLayer?.player?.replaceCurrentItemWithPlayerItem(item)
-                    })
-                })
-            } else {
-                print("VIDEO NOT READY")
-                item.download({ success in
-                    self.setItem(item)
-                })
-            }
-        }
+    func prepareForTransition(isPresenting:Bool) {
+        content.hidden = false
+        videoContent.hidden = true
     }
     
-    func setForPlay(){
-        print("PLAY VIDEO!")
-        videoContent.hidden = false
-        self.playVideo()
-        
+    func cleanUp() {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+        content.image = nil
+        destroyVideoPlayer()
     }
     
+    func destroyVideoPlayer() {
+        self.playerLayer?.removeFromSuperlayer()
+        self.playerLayer?.player = nil
+        self.playerLayer = nil
+        videoContent.hidden = true
+    }
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -366,13 +491,23 @@ public class PresentedCollectionViewCell: UICollectionViewCell {
     public lazy var videoContent: UIView = {
         let width: CGFloat = (UIScreen.mainScreen().bounds.size.width)
         let height: CGFloat = (UIScreen.mainScreen().bounds.size.height)
-        let frame = CGRectMake(0,-6,width, height + 12)
+        let frame = CGRectMake(0,0,width, height + 0)
         let view: UIImageView = UIImageView(frame: frame)
         view.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
         view.backgroundColor = UIColor.clearColor()
         view.clipsToBounds = true
         view.contentMode = .ScaleAspectFill
         return view
+    }()
+    
+    lazy var moreButton: UIButton = {
+        let width: CGFloat = (UIScreen.mainScreen().bounds.size.width)
+        let height: CGFloat = (UIScreen.mainScreen().bounds.size.height)
+        let button = UIButton(frame: CGRectMake(width - 40,height - 40,40,40))
+        button.setImage(UIImage(named: "more2"), forState: .Normal)
+        button.tintColor = UIColor.whiteColor()
+        button.alpha = 1.0
+        return button
     }()
     
     

@@ -11,7 +11,6 @@ import UIKit
 import ReSwift
 import Firebase
 import CoreLocation
-import SwiftMessages
 
 class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarControllerDelegate, GPSServiceDelegate, PopUpProtocolDelegate {
     
@@ -71,9 +70,7 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
             activateLocation(loc!)
         }
     }
-    
-    var messageView:ActiveLocationView?
-    var bannerWrapper = SwiftMessages()
+
     
     
     func activateLocation(location:Location) {
@@ -98,25 +95,13 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
 
         //array[2].alpha = 1.0
 //        print("ACTIVE LOCATION: \(activeLocation!.getKey())")
-//        
-//        messageView = try! SwiftMessages.viewFromNib() as? ActiveLocationView
-//        messageView!.configureDropShadow()
-//        
-//        
-//        var config = SwiftMessages.Config()
-//        config.presentationContext = .Window(windowLevel: UIWindowLevelAlert)
-//        config.duration = .Forever
-//        config.presentationStyle = .Top
-//        config.dimMode = .None
-        //SwiftMessages.show(config: config, view: messageView!)
+//
         
     }
     
     func deactivateLocation() {
         activeLocation = nil
         cameraButton.layer.borderColor = UIColor.whiteColor().CGColor
-        
-        SwiftMessages.hide()
     }
     
     
@@ -257,25 +242,10 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
     func close(uploadTask: FIRStorageUploadTask, outputUrl: NSURL?) {
     }
    
-    func addProgressView() {
-        var status = try! SwiftMessages.viewFromNib() as? ActiveLocationView
-        status!.configureDropShadow()
 
-        var config = SwiftMessages.Config()
-        config.presentationContext = .Window(windowLevel: UIWindowLevelAlert)
-        config.duration = .Forever
-        config.presentationStyle = .Top
-        config.dimMode = .None
-        
-        let wrapper = SwiftMessages()
-        wrapper.show(config: config, view: status!)
-    }
     
     func upload(uploadTask: FIRStorageUploadTask) {
-        addProgressView()
-        uploadTask.observeStatus(.Progress, handler: { snapshot in
-            print("PROGRESS: \(snapshot.progress)")
-        })
+
     }
     
     func returnToPreviousSelection() {
@@ -293,13 +263,13 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
         return segue
     }
     
-    func tabBarController(tabBarController: UITabBarController, shouldSelectViewController viewController: UIViewController) -> Bool {
-        if viewController.isKindOfClass(DummyViewController) {
-            return false
-        }
-        return true
-    }
-    
+//    func tabBarController(tabBarController: UITabBarController, shouldSelectViewController viewController: UIViewController) -> Bool {
+//        if viewController.isKindOfClass(DummyViewController) {
+//            return false
+//        }
+//        return true
+//    }
+//    
     
     func setTabBarVisible(_visible:Bool, animated:Bool) {
         

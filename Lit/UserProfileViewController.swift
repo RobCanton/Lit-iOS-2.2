@@ -140,6 +140,7 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        navigationController?.delegate = self
         if let nav = navigationController as? MasterNavigationController {
             nav.delegate = nav
         }

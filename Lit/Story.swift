@@ -17,7 +17,7 @@ protocol StoryProtocol {
     func stateChange(state: UserStoryState)
 }
 
-class UserStory {
+class UserStory: ItemDelegate {
     private var user_id:String
     private var postKeys:[String]
     
@@ -97,19 +97,18 @@ class UserStory {
     }
     
     
+    func itemDownloaded() {
+        if !needsDownload() {
+            self.state = .ContentLoaded
+        }
+    }
+    
     func downloadStory() {
         if items != nil {
             state = .LoadingContent
-            var count = 0
             for item in items! {
-                item.download({ success in
-                    count += 1
-                    if count >= self.items!.count {
-                        dispatch_async(dispatch_get_main_queue(), {
-                            self.state = .ContentLoaded
-                        })
-                    }
-                })
+                item.delegate = self
+                item.download()
             }
         }
     }

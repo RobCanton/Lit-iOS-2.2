@@ -10,8 +10,7 @@ import UIKit
 import AVFoundation
 
 protocol ItemDelegate {
-    func contentLoaded()
-    func authorLoaded()
+    func itemDownloaded()
 }
 
 enum ContentType:Int {
@@ -30,13 +29,12 @@ class StoryItem: NSObject, NSCoding {
     var contentType:ContentType
     var dateCreated: NSDate
     var length: Double
+    
+    var delegate:ItemDelegate?
 
     dynamic var image: UIImage?
     dynamic var videoFilePath: NSURL?
     dynamic var videoData:NSData?
-    
-    
-    var delegate:ItemDelegate?
     
     init(key: String, authorId: String, locationKey:String, downloadUrl: NSURL, videoURL:NSURL?, contentType: ContentType, dateCreated: Double, length: Double)
     {
@@ -140,22 +138,24 @@ class StoryItem: NSObject, NSCoding {
         return true
     }
     
-    func download(completionHandler:(success:Bool)->()) {
+    func download() {
             
         loadImageUsingCacheWithURL(downloadUrl.absoluteString, completion: { image, fromCache in
             self.image = image
-            if self.contentType == .Image { return completionHandler(success: true) }
-            
+
             if self.contentType == .Video {
                 
                 if let _ = loadVideoFromCache(self.key) {
-                    return completionHandler(success: true)
+                    self.delegate?.itemDownloaded()
                 } else {
                     downloadVideoWithKey(self.key, completion: { data in
                         saveVideoInCache(self.key, data: data)
-                        return completionHandler(success: true)
+                        self.delegate?.itemDownloaded()
                     })
                 }
+                
+            } else {
+                self.delegate?.itemDownloaded()
             }
         })
     }

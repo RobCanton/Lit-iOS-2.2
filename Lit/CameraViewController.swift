@@ -10,7 +10,6 @@ import UIKit
 import AVFoundation
 import RecordButton
 import Firebase
-import SwiftMessages
 import MapKit
 import CoreLocation
 

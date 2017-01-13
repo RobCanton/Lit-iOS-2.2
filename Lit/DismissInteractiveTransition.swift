@@ -40,7 +40,7 @@ public class DismissInteractiveTransition: UIPercentDrivenInteractiveTransition 
             case .Presenting:
                 self.transitionController.presentedViewController.dismissViewControllerAnimated(true, completion: nil)
             case .Pushing:
-                self.transitionController.presentedViewController.navigationController!.popViewControllerAnimated(true)
+                self.transitionController.presentedViewController.navigationController?.popViewControllerAnimated(true)
             }
             
             return
