@@ -185,6 +185,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     
     func sendButtonTapped(sender: UIButton) {
         
+        
         let upload = Upload()
         if cameraState == .PhotoTaken {
             upload.image = imageCaptureView.image!
@@ -204,11 +205,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     
     func cancelButtonTapped(sender: UIButton) {
         
-        playerLayer?.player?.seekToTime(CMTimeMake(0, 1))
-        playerLayer?.player?.pause()
-        
-        playerLayer?.removeFromSuperlayer()
-        videoUrl = nil
+        destroyVideoPreview()
         
         recordBtn.hidden = false
         
@@ -217,6 +214,15 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
         } else {
            cameraState = .Initiating
         }
+    }
+    
+    func destroyVideoPreview() {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+        playerLayer?.player?.seekToTime(CMTimeMake(0, 1))
+        playerLayer?.player?.pause()
+        
+        playerLayer?.removeFromSuperlayer()
+        videoUrl = nil
     }
     
     override func viewDidLoad() {
@@ -282,6 +288,8 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         tabBarDelegate?.returnToPreviousSelection()
+        destroyVideoPreview()
+        
         UIView.animateWithDuration(0.3, animations: {
             self.dismissBtn.alpha = 0.0
         })
@@ -290,6 +298,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         destroyCameraSession()
+        
         
     }
     
@@ -571,16 +580,18 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
         
         playerLayer!.player?.play()
         playerLayer!.player?.actionAtItemEnd = .None
-        loopVideo(playerLayer!.player!)
+        loopVideo()
         return
     }
     
-    func loopVideo(videoPlayer: AVPlayer) {
+    func loopVideo() {
         NSNotificationCenter.defaultCenter().addObserverForName(AVPlayerItemDidPlayToEndTimeNotification, object: nil, queue: nil) { notification in
-            videoPlayer.seekToTime(kCMTimeZero)
-            videoPlayer.play()
+            self.playerLayer?.player?.seekToTime(kCMTimeZero)
+            self.playerLayer?.player?.play()
         }
     }
+    
+    
     
     func endLoopVideo() {
         NSNotificationCenter.defaultCenter().removeObserver(AVPlayerItemDidPlayToEndTimeNotification, name: nil, object: nil)

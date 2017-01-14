@@ -10,8 +10,9 @@
 import UIKit
 import AVFoundation
 import NVActivityIndicatorView
+import BRYXBanner
 
-class GalleryViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIGestureRecognizerDelegate, UINavigationControllerDelegate {
+class GalleryViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIGestureRecognizerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate {
     
     
     var photos = [StoryItem]()
@@ -167,27 +168,7 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
                 }
                 actionSheet.addAction(profileAction)
             }
-            if item.toStory {
-                let storyAction: UIAlertAction = UIAlertAction(title: "Remove from my Story", style: .Destructive)
-                { action -> Void in
-                    FirebaseService.removeItemFromStory(item, completionHandler: {
-                        self.popStoryController(true)
-                    })
-                }
-                actionSheet.addAction(storyAction)
-            }
-            if item.toLocation {
-//                if let location = cell. {
-//                    let storyAction: UIAlertAction = UIAlertAction(title: "Remove from \(location.getName())", style: .Destructive)
-//                    { action -> Void in
-//                        FirebaseService.removeItemFromLocation(item, completionHandler: {
-//                            self.popStoryController(true)
-//                        })
-//                    }
-//                    actionSheet.addAction(storyAction)
-//                }
-//                
-            }
+
             self.presentViewController(actionSheet, animated: true, completion: nil)
         } else {
             let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
@@ -197,16 +178,41 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
             }
             actionSheet.addAction(cancelActionButton)
             
-            let saveActionButton: UIAlertAction = UIAlertAction(title: "Report", style: .Destructive)
-            { action -> Void in
-                print("Report")
+            let OKAction = UIAlertAction(title: "Report", style: .Destructive) { (action) in
+                let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+                
+                let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
+                    cell.setForPlay()
+                }
+                alertController.addAction(cancelAction)
+                
+                let OKAction = UIAlertAction(title: "It's Inappropriate", style: .Destructive) { (action) in
+                    FirebaseService.reportItem(item, type: ReportType.Inappropriate, showNotification: true, completionHandler: { success in
+
+                        cell.setForPlay()
+                    })
+                }
+                alertController.addAction(OKAction)
+                
+                let OKAction2 = UIAlertAction(title: "It's Spam", style: .Destructive) { (action) in
+                    FirebaseService.reportItem(item, type: ReportType.Spam, showNotification: true, completionHandler: { success in
+                        
+                        cell.setForPlay()
+                    })
+                }
+                alertController.addAction(OKAction2)
+                
+                self.presentViewController(alertController, animated: true) {
+                    cell.setForPlay()
+                }
             }
-            actionSheet.addAction(saveActionButton)
+            actionSheet.addAction(OKAction)
             
             self.presentViewController(actionSheet, animated: true, completion: nil)
         }
         
     }
+    
     
     func deleteCurrentItem() {
         guard let cell = getCurrentCell() else { return }

@@ -32,6 +32,7 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
     var storyCompleteHandler:(()->())?
     
     func showOptions(){
+        print("HOW ABOUT HERE?")
         pauseStory()
         optionsTappedHandler?()
     }
@@ -368,7 +369,7 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
+    var moreTapped:UITapGestureRecognizer!
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.contentView.backgroundColor = UIColor(red: 0, green: 0, blue: 1.0, alpha: 0.0)
@@ -379,15 +380,21 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
         self.contentView.addSubview(self.authorOverlay)
         self.contentView.addSubview(self.moreButton)
         
-        self.moreButton.addTarget(self, action: #selector(showOptions), forControlEvents: .TouchUpInside)
-        
+
         self.fadeCover.alpha = 0.0
         
         tap = UITapGestureRecognizer(target: self, action: #selector(tapped))
+        moreTapped = UITapGestureRecognizer(target: self, action: #selector(showOptions))
+        self.moreButton.addGestureRecognizer(moreTapped)
+        self.moreButton.userInteractionEnabled = true
         
         activityView = NVActivityIndicatorView(frame: CGRectMake(0,0,50,50), type: .BallScaleMultiple)
         activityView.center = self.center
         self.contentView.addSubview(activityView)
+        
+    }
+    
+    func enableMoreButton() {
         
     }
     

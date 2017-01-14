@@ -24,6 +24,8 @@ let accentColor:UIColor = UIColor(red: 0, green: 128/255, blue: 1, alpha: 1) // 
 let accentFadeColor:UIColor = UIColor(red: 0, green: 128/255, blue: 1, alpha: 0.5) // #FFAB00
 let errorColor:UIColor = UIColor(red: 1, green: 80/255, blue: 50/255, alpha: 1)
 
+let successColor:UIColor = UIColor(red: 0, green: 1, blue: 128/255, alpha: 1)
+
 let selectedColor:UIColor = UIColor(white: 0.15, alpha: 1.0)
 
 let apiURL = "https://getlit.site/api"

@@ -136,12 +136,19 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         mainStore.subscribe(self)
+        navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         navigationController?.delegate = self
+        
+        if let tabBar = self.tabBarController as? PopUpTabBarController {
+            tabBar.setTabBarVisible(true, animated: true)
+        }
+        
         if let nav = navigationController as? MasterNavigationController {
+            
             nav.delegate = nav
         }
     }
@@ -151,6 +158,7 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         mainStore.unsubscribe(self)
         SocialService.stopListeningToFollowers(uid)
         SocialService.stopListeningToFollowing(uid)
+        
     }
     
     func newState(state: AppState) {

@@ -47,6 +47,7 @@ class ActivityViewController: UITableViewController, UISearchBarDelegate {
         }
         
         if let nav = navigationController as? MasterNavigationController {
+            nav.setNavigationBarHidden(false, animated: true)
             nav.delegate = nav
         }
         
@@ -142,6 +143,8 @@ class ActivityViewController: UITableViewController, UISearchBarDelegate {
             [NSFontAttributeName: UIFont(name: "Avenir-Medium", size: 18.0)!,
              NSForegroundColorAttributeName: UIColor.whiteColor()]
         navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Plain, target: nil, action: nil)
+        self.automaticallyAdjustsScrollViewInsets = false
+        
         
         let nib = UINib(nibName: "UserStoryTableViewCell", bundle: nil)
         tableView.registerNib(nib, forCellReuseIdentifier: "UserStoryCell")
@@ -226,6 +229,10 @@ class ActivityViewController: UITableViewController, UISearchBarDelegate {
     
     override func prefersStatusBarHidden() -> Bool {
         return false
+    }
+    
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return .LightContent
     }
     
     let transitionController: TransitionController = TransitionController()

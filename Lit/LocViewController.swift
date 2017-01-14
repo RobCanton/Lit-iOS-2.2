@@ -56,6 +56,7 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
         }
         
         if let nav = navigationController as? MasterNavigationController {
+            nav.setNavigationBarHidden(false, animated: true)
            nav.delegate = nav
         }
         
@@ -523,6 +524,9 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
     func presentStory(indexPath:NSIndexPath) {
         self.selectedIndexPath = indexPath
         
+        if let tabBar = self.tabBarController as? PopUpTabBarController {
+            tabBar.setTabBarVisible(false, animated: true)
+        }
         let presentedViewController: LocationStoriesViewController = LocationStoriesViewController()
         presentedViewController.tabBarRef   = self.tabBarController! as! PopUpTabBarController
         presentedViewController.userStories = userStories

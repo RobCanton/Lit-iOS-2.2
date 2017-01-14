@@ -27,6 +27,75 @@ class LocationStoriesViewController: StoriesViewController {
         popStoryController(true)
     }
     
+    override func showOptions() {
+        print("DO WE GET HERE?")
+        guard let cell = getCurrentCell() else { return }
+        guard let item = cell.item else {
+            cell.setForPlay()
+            return
+        }
+        
+        if cell.story.getUserId() == mainStore.state.userState.uid {
+            
+            let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+            
+            
+            let cancelActionButton: UIAlertAction = UIAlertAction(title: "Cancel", style: .Cancel) { action -> Void in
+                cell.setForPlay()
+            }
+            actionSheet.addAction(cancelActionButton)
+            
+            if item.toLocation {
+                let storyAction: UIAlertAction = UIAlertAction(title: "Remove from \(location.getName())", style: .Destructive)
+                { action -> Void in
+                    FirebaseService.removeItemFromLocation(item, completionHandler: {
+                        self.popStoryController(true)
+                    })
+                }
+                actionSheet.addAction(storyAction)
+            }
+            self.presentViewController(actionSheet, animated: true, completion: nil)
+        } else {
+            let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+            
+            let cancelActionButton: UIAlertAction = UIAlertAction(title: "Cancel", style: .Cancel) { action -> Void in
+                cell.setForPlay()
+            }
+            actionSheet.addAction(cancelActionButton)
+            
+            let OKAction = UIAlertAction(title: "Report", style: .Destructive) { (action) in
+                let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+                
+                let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
+                    cell.setForPlay()
+                }
+                alertController.addAction(cancelAction)
+                
+                let OKAction = UIAlertAction(title: "It's Inappropriate", style: .Destructive) { (action) in
+                    FirebaseService.reportItem(item, type: ReportType.Inappropriate, showNotification: true, completionHandler: { success in
+                        
+                        cell.setForPlay()
+                    })
+                }
+                alertController.addAction(OKAction)
+                
+                let OKAction2 = UIAlertAction(title: "It's Spam", style: .Destructive) { (action) in
+                    FirebaseService.reportItem(item, type: ReportType.Spam, showNotification: true, completionHandler: { success in
+                        
+                        cell.setForPlay()
+                    })
+                }
+                alertController.addAction(OKAction2)
+                
+                self.presentViewController(alertController, animated: true) {
+                    cell.setForPlay()
+                }
+            }
+            actionSheet.addAction(OKAction)
+            
+            self.presentViewController(actionSheet, animated: true, completion: nil)
+        }
+    }
 }
 
 class StoriesViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIGestureRecognizerDelegate, UINavigationControllerDelegate {
@@ -52,11 +121,15 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        
+        automaticallyAdjustsScrollViewInsets = false
+        tabBarRef.setTabBarVisible(false, animated: false)
+        navigationController?.setNavigationBarHidden(true, animated: false)
         self.navigationController?.delegate = transitionController
         
         if let cell = getCurrentCell() {
             cell.setForPlay()
+            cell.enableMoreButton()
+            cell.optionsTappedHandler = showOptions
         }
         
         if let gestureRecognizers = self.view.gestureRecognizers {
@@ -71,8 +144,8 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: true)
         
+
         NSNotificationCenter.defaultCenter().removeObserver(self)
         
         for cell in collectionView.visibleCells() as! [StoryViewController] {
@@ -82,6 +155,7 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
+        
         tabBarRef.setTabBarVisible(true, animated: true)
         clearDirectory("temp")
 
@@ -121,11 +195,13 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.decelerationRate = UIScrollViewDecelerationRateFast
         self.view.addSubview(collectionView)
+        
 
         label = UILabel(frame: CGRectMake(0,0,self.view.frame.width,100))
         label.textColor = UIColor.whiteColor()
         label.center = view.center
         label.textAlignment = .Center
+
     }
     
     
@@ -197,6 +273,7 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     
     func showOptions() {
+        print("DO WE GET HERE?")
         guard let cell = getCurrentCell() else { return }
         guard let item = cell.item else {
             cell.setForPlay()
@@ -206,20 +283,12 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
             
             let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
             
+            
             let cancelActionButton: UIAlertAction = UIAlertAction(title: "Cancel", style: .Cancel) { action -> Void in
                 cell.setForPlay()
             }
             actionSheet.addAction(cancelActionButton)
             
-            if item.toProfile {
-                let profileAction: UIAlertAction = UIAlertAction(title: "Remove from my Profile", style: .Destructive)
-                { action -> Void in
-                    FirebaseService.removeItemFromProfile(item, completionHandler: {
-                        self.popStoryController(true)
-                    })
-                }
-                actionSheet.addAction(profileAction)
-            }
             if item.toStory {
                 let storyAction: UIAlertAction = UIAlertAction(title: "Remove from my Story", style: .Destructive)
                 { action -> Void in
@@ -228,18 +297,6 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
                     })
                 }
                 actionSheet.addAction(storyAction)
-            }
-            if item.toLocation {
-                if let location = cell.authorOverlay.location {
-                    let storyAction: UIAlertAction = UIAlertAction(title: "Remove from \(location.getName())", style: .Destructive)
-                    { action -> Void in
-                        FirebaseService.removeItemFromLocation(item, completionHandler: {
-                            self.popStoryController(true)
-                        })
-                    }
-                    actionSheet.addAction(storyAction)
-                }
-
             }
             self.presentViewController(actionSheet, animated: true, completion: nil)
         } else {
@@ -250,11 +307,35 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
             }
             actionSheet.addAction(cancelActionButton)
             
-            let saveActionButton: UIAlertAction = UIAlertAction(title: "Report", style: .Destructive)
-            { action -> Void in
-                print("Report")
+            let OKAction = UIAlertAction(title: "Report", style: .Destructive) { (action) in
+                let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+                
+                let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
+                    cell.setForPlay()
+                }
+                alertController.addAction(cancelAction)
+                
+                let OKAction = UIAlertAction(title: "It's Inappropriate", style: .Destructive) { (action) in
+                    FirebaseService.reportItem(item, type: ReportType.Inappropriate, showNotification: true, completionHandler: { success in
+                        
+                        cell.setForPlay()
+                    })
+                }
+                alertController.addAction(OKAction)
+                
+                let OKAction2 = UIAlertAction(title: "It's Spam", style: .Destructive) { (action) in
+                    FirebaseService.reportItem(item, type: ReportType.Spam, showNotification: true, completionHandler: { success in
+                        
+                        cell.setForPlay()
+                    })
+                }
+                alertController.addAction(OKAction2)
+                
+                self.presentViewController(alertController, animated: true) {
+                    cell.setForPlay()
+                }
             }
-            actionSheet.addAction(saveActionButton)
+            actionSheet.addAction(OKAction)
             
             self.presentViewController(actionSheet, animated: true, completion: nil)
         }
@@ -262,7 +343,7 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     func getCurrentCell() -> StoryViewController? {
-        if let cell = collectionView.cellForItemAtIndexPath(currentIndex) as? StoryViewController {
+        if let cell = collectionView.visibleCells().first as? StoryViewController {
             return cell
         }
         return nil

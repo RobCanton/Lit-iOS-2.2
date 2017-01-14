@@ -60,19 +60,16 @@ class SendViewController: UIViewController, UITableViewDataSource, UITableViewDe
                  T0D0 - HANDLE COMPRESSION ERRORS
                  */
                 dispatch_async(dispatch_get_main_queue(), {
-                    FirebaseService.uploadVideo(self.upload, completionHander: { success, task in
-                        if task != nil {
+                    FirebaseService.uploadVideo(self.upload, completionHandler: { success in
                             self.sent()
-                        }
                     })
                     
                 })
             })
         } else if upload.image != nil {
-            if let uploadTask = FirebaseService.sendImage(upload)
-            {
+            FirebaseService.sendImage(upload, completionHandler: { success in
                 self.sent()
-            }
+            })
         }
         
         

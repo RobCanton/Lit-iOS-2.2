@@ -279,19 +279,36 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
         visible = _visible
 
         dispatch_async(dispatch_get_main_queue(), {
+            
+            let frame = self.tabBar.frame
+            let height = frame.size.height
+            let offsetY = (self.visible ? -height : height)
+            
             if self.visible {
-
-    
+                
+                
+                self.tabBar.userInteractionEnabled = true
+                self.tabBar.frame = CGRectOffset(frame, 0, offsetY)
+                self.view.frame = CGRectMake(0, 0, self.view.frame.width, self.view.frame.height + offsetY)
+                self.view.setNeedsDisplay()
+                self.view.layoutIfNeeded()
             UIView.animateWithDuration(0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [], animations: {
                 self.tabBar.alpha = 1.0
-
                 
-                }, completion: { result in })
+                
+                }, completion: { result in
+
+            })
         } else {
             UIView.animateWithDuration(0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [], animations: {
                 self.tabBar.alpha = 0.0
-
+                
                 }, completion: { result in
+                    self.tabBar.userInteractionEnabled = false
+                    self.tabBar.frame = CGRectOffset(frame, 0, offsetY)
+                    self.view.frame = CGRectMake(0, 0, self.view.frame.width, self.view.frame.height + offsetY)
+                    self.view.setNeedsDisplay()
+                    self.view.layoutIfNeeded()
 
             })
         }

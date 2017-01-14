@@ -12,6 +12,8 @@ import IngeoSDK
 import AVFoundation
 import FBSDKCoreKit
 import FBSDKLoginKit
+import BRYXBanner
+import Whisper
 
 
 
@@ -112,12 +114,12 @@ class FirebaseService {
     }
     
 
-    internal static func sendImage(upload:Upload) -> FIRStorageUploadTask? {
+    internal static func sendImage(upload:Upload, completionHandler:(()->())) {
         
         //If upload has no destination do not upload it
-        if !upload.toProfile && !upload.toStory && upload.locationKey == "" { return nil }
+        if !upload.toProfile && !upload.toStory && upload.locationKey == "" { return }
         
-        if upload.image == nil { return nil }
+        if upload.image == nil { return }
         
         let uid = mainStore.state.userState.uid
 
@@ -132,10 +134,21 @@ class FirebaseService {
             let metadata = FIRStorageMetadata()
             metadata.contentType = contentTypeStr
             
+            var uploadingMurmer = Murmur(title: "Uploading...")
+            uploadingMurmer.backgroundColor = UIColor(white: 0.04, alpha: 1.0)
+            uploadingMurmer.titleColor = UIColor.lightGrayColor()
+            show(whistle: uploadingMurmer, action: .Show(60.0))
+            
             // Upload file and metadata to the object
             let uploadTask = storageRef.child("user_uploads/\(postKey))").putData(data, metadata: metadata) { metadata, error in
+                
                 if (error != nil) {
                     // HANDLE ERROR
+                    hide()
+                    var murmur = Murmur(title: "Unable to upload.")
+                    murmur.backgroundColor = errorColor
+                    murmur.titleColor = UIColor.whiteColor()
+                    show(whistle: murmur, action: .Show(5.0))
                 } else {
                     // Metadata contains file metadata such as size, content-type, and download URL.
                     let downloadURL = metadata!.downloadURL()
@@ -151,21 +164,30 @@ class FirebaseService {
                         "length": 5
                     ]
                     dataRef.child("meta").setValue(obj, withCompletionBlock: { error, _ in
+                        hide()
                         if error == nil {
+                            var murmur = Murmur(title: "Image uploaded!")
+                            murmur.backgroundColor = accentColor
+                            murmur.titleColor = UIColor.whiteColor()
+                            show(whistle: murmur, action: .Show(3.0))
+                        } else {
+                            var murmur = Murmur(title: "Unable to upload.")
+                            murmur.backgroundColor = errorColor
+                            murmur.titleColor = UIColor.whiteColor()
+                            show(whistle: murmur, action: .Show(5.0))
                         }
                     })
 
                 }
             }
-            return uploadTask
+            completionHandler()
         }
         
-        return nil
     }
     
     
     
-    internal static func uploadVideo(upload:Upload, completionHander:(success:Bool, uploadTask:FIRStorageUploadTask?)->()){
+    internal static func uploadVideo(upload:Upload, completionHandler:(success:Bool)->()){
         
         //If upload has no destination do not upload it
         if !upload.toProfile && !upload.toStory && upload.locationKey == "" { return }
@@ -178,7 +200,14 @@ class FirebaseService {
         let dataRef = ref.child("uploads").childByAutoId()
         let postKey = dataRef.key
         
+        var uploadingMurmer = Murmur(title: "Uploading...")
+        uploadingMurmer.backgroundColor = UIColor(white: 0.04, alpha: 1.0)
+        uploadingMurmer.titleColor = UIColor.lightGrayColor()
+        show(whistle: uploadingMurmer, action: .Show(60.0))
+        completionHandler(success: true)
+        
         uploadVideoStill(url, postKey: postKey, completionHandler: { thumbURL in
+            
             
             let data = NSData(contentsOfURL: url)
             
@@ -191,6 +220,11 @@ class FirebaseService {
             let uploadTask = storageRef.child("user_uploads/videos/\(postKey)").putData(data!, metadata: metadata) { metadata, error in
                 if (error != nil) {
                     // HANDLE ERROR
+                    hide()
+                    var murmur = Murmur(title: "Unable to upload.")
+                    murmur.backgroundColor = errorColor
+                    murmur.titleColor = UIColor.whiteColor()
+                    show(whistle: murmur, action: .Show(5.0))
                 } else {
                     // Metadata contains file metadata such as size, content-type, and download URL.
                     let downloadURL = metadata!.downloadURL()
@@ -207,12 +241,23 @@ class FirebaseService {
                         "length": length
                     ]
                     dataRef.child("meta").setValue(obj, withCompletionBlock: { error, _ in
+                        hide()
                         if error == nil {
+                            
+                            var murmur = Murmur(title: "Video uploaded!")
+                            murmur.backgroundColor = accentColor
+                            murmur.titleColor = UIColor.whiteColor()
+                            show(whistle: murmur, action: .Show(3.0))
+                        } else {
+                            var murmur = Murmur(title: "Unable to upload.")
+                            murmur.backgroundColor = errorColor
+                            murmur.titleColor = UIColor.whiteColor()
+                            show(whistle: murmur, action: .Show(5.0))
                         }
                     })
                 }
             }
-            return completionHander(success: true, uploadTask: uploadTask)
+            
         })
     }
     
@@ -578,9 +623,43 @@ class FirebaseService {
         })
         
     }
+    
+    
+    static func reportItem(item:StoryItem, type:ReportType, showNotification:Bool, completionHandler:((success:Bool)->())) {
+        let uid = mainStore.state.userState.uid
+        let reportRef = ref.child("reports/\(uid)/\(item.getKey())")
+        let value: [String: AnyObject] = [
+        "type": type.rawValue,
+        "timeStamp": [".sv": "timestamp"]
+        ]
+        reportRef.setValue(value, withCompletionBlock: { error, ref in
+            if error == nil {
+                if showNotification {
+                    var murmur = Murmur(title: "Report Sent!")
+                    murmur.backgroundColor = accentColor
+                    murmur.titleColor = UIColor.whiteColor()
+                    show(whistle: murmur, action: .Show(3.0))
+
+                }
+            } else {
+                if showNotification {
+                    var murmur = Murmur(title: "Report failed to send.")
+                    murmur.backgroundColor = errorColor
+                    murmur.titleColor = UIColor.whiteColor()
+                    show(whistle: murmur, action: .Show(3.0))
+                }
+                completionHandler(success: false)
+            }
+        })
+    }
 
     
 
+}
+
+enum ReportType:String {
+    case Inappropriate = "Inappropriate"
+    case Spam          = "Spam"
 }
 
 func deleteFileAtPath(url:NSURL) {

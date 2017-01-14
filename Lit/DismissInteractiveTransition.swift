@@ -85,7 +85,7 @@ public class DismissInteractiveTransition: UIPercentDrivenInteractiveTransition 
             self.interactionInProgress = false
             panGestureRecognizer.setTranslation(CGPoint.zero, inView: panGestureRecognizer.view)
             
-            if progress < 0.35 {
+            if progress < 0.42 {
                 
                 cancelInteractiveTransition()
                 
