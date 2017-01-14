@@ -99,7 +99,7 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         
         
         getFullUser()
-        getKeys()
+        
         
     }
     
@@ -108,7 +108,8 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         FirebaseService.getUser(uid, completionHandler: { _user in
             if _user != nil {
                 FirebaseService.getUserFullProfile(_user!, completionHandler: { fullUser in
-                        
+                    
+                        self.getKeys()
                         self.user = fullUser
                         if self.user!.getUserId() == mainStore.state.userState.uid {
                             mainStore.dispatch(UpdateUser(user: self.user!))
@@ -220,9 +221,19 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     }
     
     var presentConversation:Conversation?
+    var partnerImage:UIImage?
     func presentConversation(conversation:Conversation) {
-        presentConversation = conversation
-        self.performSegueWithIdentifier("toMessage", sender: self)
+        FirebaseService.getUser(conversation.getPartnerId(), completionHandler: { user in
+            if user != nil {
+                
+                loadImageUsingCacheWithURL(user!.getImageUrl(), completion: { image, fromCache in
+                    self.presentConversation = conversation
+                    self.partnerImage = image
+                    self.performSegueWithIdentifier("toMessage", sender: self)
+                })
+            }
+        })
+        
     }
     
     
@@ -232,6 +243,7 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
             let controller = segue.destinationViewController as! ContainerViewController
             controller.hidesBottomBarWhenPushed = true
             controller.conversation = conversation
+            controller.partnerImage = partnerImage
         }
     }
     

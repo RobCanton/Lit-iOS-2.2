@@ -17,12 +17,14 @@ class ContainerViewController:UIViewController {
     }
     
     var conversation:Conversation?
+    var partnerImage:UIImage?
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
         if segue.identifier == "toMessage" {
             guard let c = conversation else { return }
             let controller = segue.destinationViewController as! ChatViewController
+            controller.partnerImage = partnerImage
             controller.conversation = c
             controller.containerDelegate = self
         }
