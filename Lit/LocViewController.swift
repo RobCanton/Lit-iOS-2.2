@@ -248,7 +248,6 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
     
     
     func handleEnterForeground() {
-        print("APP ENTERED FOREGROUND")
         for story in self.userStories {
             story.determineState()
         }

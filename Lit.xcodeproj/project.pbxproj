@@ -141,6 +141,7 @@
 		B09801B21E1B6784006782E6 /* EditPostToolbar.xib in Resources */ = {isa = PBXBuildFile; fileRef = B09801B11E1B6784006782E6 /* EditPostToolbar.xib */; };
 		B09801F51E1C7869006782E6 /* mapStyle.json in Resources */ = {isa = PBXBuildFile; fileRef = B09801F41E1C7869006782E6 /* mapStyle.json */; };
 		B09C68DB1E28416200201C5C /* MasterNavigationControllerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09C68DA1E28416200201C5C /* MasterNavigationControllerViewController.swift */; };
+		B09D26F51E2A29B7009433EC /* ChatTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B09D26F41E2A29B7009433EC /* ChatTitleView.xib */; };
 		B0B35DF61E1DB6E400E4546D /* UserSearchViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B0B35DF51E1DB6E400E4546D /* UserSearchViewController.storyboard */; };
 		B0B35DF81E1DB72B00E4546D /* UserSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B35DF71E1DB72B00E4546D /* UserSearchViewController.swift */; };
 		B0B35DFA1E1F715D00E4546D /* LocationHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B35DF91E1F715D00E4546D /* LocationHeaderView.swift */; };
@@ -323,6 +324,7 @@
 		B09801B11E1B6784006782E6 /* EditPostToolbar.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditPostToolbar.xib; sourceTree = "<group>"; };
 		B09801F41E1C7869006782E6 /* mapStyle.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = mapStyle.json; sourceTree = "<group>"; };
 		B09C68DA1E28416200201C5C /* MasterNavigationControllerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterNavigationControllerViewController.swift; sourceTree = "<group>"; };
+		B09D26F41E2A29B7009433EC /* ChatTitleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatTitleView.xib; sourceTree = "<group>"; };
 		B0B35DF51E1DB6E400E4546D /* UserSearchViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = UserSearchViewController.storyboard; sourceTree = "<group>"; };
 		B0B35DF71E1DB72B00E4546D /* UserSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSearchViewController.swift; sourceTree = "<group>"; };
 		B0B35DF91E1F715D00E4546D /* LocationHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationHeaderView.swift; sourceTree = "<group>"; };
@@ -475,6 +477,7 @@
 				76A516661D60C69D005E2815 /* ChatViewController.swift */,
 				B0254F6F1DAFE00C0082D898 /* MessagesViewController.swift */,
 				B0254F711DAFEF4A0082D898 /* ConversationViewCell.swift */,
+				B09D26F41E2A29B7009433EC /* ChatTitleView.xib */,
 			);
 			name = Messages;
 			sourceTree = "<group>";
@@ -869,6 +872,7 @@
 				B0E8E3511DE23A630077D1BC /* UserViewCell.xib in Resources */,
 				B0E8E32F1DDBC44C0077D1BC /* PostAuthorView.xib in Resources */,
 				B0351FB71DED0503000A4BF5 /* Info.plist in Resources */,
+				B09D26F51E2A29B7009433EC /* ChatTitleView.xib in Resources */,
 				B0B35DFC1E1F716800E4546D /* LocationHeaderView.xib in Resources */,
 				B0E8E3181DD98A060077D1BC /* ProfilePictureMessageView.xib in Resources */,
 				B079BE871DA557B00042B586 /* PhotoCell.xib in Resources */,

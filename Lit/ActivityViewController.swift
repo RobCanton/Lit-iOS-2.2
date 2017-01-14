@@ -31,12 +31,26 @@ class ActivityViewController: UITableViewController, UISearchBarDelegate {
         listenToMyStory()
         listenToActivityResponse()
         
+        NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(handleEnterForeground), name:
+            UIApplicationWillEnterForegroundNotification, object: nil)
+        
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         myStoryRef?.removeAllObservers()
         responseRef?.removeAllObservers()
+        
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    
+    func handleEnterForeground() {
+        print("APP ENTERED FOREGROUND")
+        myStory?.determineState()
+        for story in self.userStories {
+            story.determineState()
+        }
+        tableView?.reloadData()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -83,6 +97,7 @@ class ActivityViewController: UITableViewController, UISearchBarDelegate {
                     self.myStoryKeys = itemKeys
                     let myStory = UserStory(user_id: uid, postKeys: self.myStoryKeys)
                     self.myStory = myStory
+                    
                 } else{
                     self.myStory = nil
                 }
@@ -342,9 +357,9 @@ extension ActivityViewController: View2ViewTransitionPresenting {
     func prepareInitialView(userInfo: [String : AnyObject]?, isPresenting: Bool) {
         
         let indexPath: NSIndexPath = userInfo!["initialIndexPath"] as! NSIndexPath
-        let i = NSIndexPath(forRow: indexPath.item, inSection: 1)
+
         if !isPresenting {
-            if let cell = tableView?.cellForRowAtIndexPath(i) as? UserStoryTableViewCell {
+            if let cell = tableView?.cellForRowAtIndexPath(indexPath) as? UserStoryTableViewCell {
                 returningCell?.activate(false)
                 returningCell = cell
                 returningCell!.deactivate()

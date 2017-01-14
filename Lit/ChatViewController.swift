@@ -13,7 +13,27 @@ import ReSwift
 import Firebase
 
 
-class ChatViewController: JSQMessagesViewController, GetUserProtocol, StoreSubscriber {
+class ChatTitleView: UIView {
+    
+    @IBOutlet weak var profileImage: UIImageView!
+    
+    @IBOutlet weak var usernameLabel: UILabel!
+    func setUser(uid:String) {
+        self.profileImage.layer.cornerRadius = self.profileImage.frame.width / 2
+        self.profileImage.clipsToBounds = true
+        FirebaseService.getUser(uid, completionHandler: { user in
+            if user != nil {
+                self.usernameLabel.text = user!.getDisplayName()
+                loadImageUsingCacheWithURL(user!.getImageUrl(), completion: { image, fromCache in
+                    self.profileImage.image = image
+                })
+            }
+        })
+        
+    }
+}
+
+class ChatViewController: JSQMessagesViewController, GetUserProtocol {
     
 
 
@@ -31,13 +51,13 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol, StoreSubsc
             if containerDelegate != nil {
                 containerDelegate?.title = partner.getDisplayName()
             }
-            partnerImageView = UIImageView()
-            partnerImageView!.loadImageUsingCacheWithURLString(partner.getImageUrl(), completion: { result in
-            })
+
         }
     }
     
-    var partnerImageView:UIImageView?
+    var partnerImage:UIImage?
+    
+
     func userLoaded(user: User) {
         partner = user
        
@@ -59,9 +79,13 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol, StoreSubsc
         self.inputToolbar.contentView.textView.layer.borderColor = UIColor(white: 0.10, alpha: 1.0).CGColor
         self.inputToolbar.contentView.textView.layer.borderWidth = 1.0
         collectionView?.collectionViewLayout.outgoingAvatarViewSize = .zero
-        collectionView?.collectionViewLayout.springinessEnabled = false
+        collectionView?.collectionViewLayout.springinessEnabled = true
         
         
+//        let titleView = UINib(nibName: "ChatTitleView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! ChatTitleView
+//        
+//        self.navigationItem.titleView = titleView
+//        titleView.setUser(conversation.getPartnerId())
         
         conversation.delegate = self
         if let user = conversation.getPartner() {
@@ -81,19 +105,12 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol, StoreSubsc
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
-        //mainStore.subscribe(self)
-        //profileBtn.enabled = true
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        //mainStore.unsubscribe(self)
+        NSNotificationCenter.defaultCenter().removeObserver(self)
         downloadRef?.removeAllObservers()
-        //conversation.listenToConversation()
-    }
-    
-    func newState(state: AppState) {
     }
     
     
@@ -103,7 +120,7 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol, StoreSubsc
     
     func reloadMessagesView() {
         self.collectionView?.reloadData()
-        // set seen timestamp
+        //set seen timestamp
         let uid = mainStore.state.userState.uid
         let ref = FirebaseService.ref.child("conversations/\(conversation.getKey())/\(uid)")
         ref.updateChildValues(["seen": [".sv":"timestamp"]])
@@ -136,19 +153,18 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol, StoreSubsc
     
     override func collectionView(collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageAvatarImageDataSource! {
         let data = messages[indexPath.row]
-        
         switch(data.senderId) {
         case self.senderId:
             return nil
         default:
-            if partnerImageView != nil {
-                
-                let image = JSQMessagesAvatarImageFactory.avatarImageWithImage(partnerImageView!.image, diameter: 48)
+            if partnerImage != nil {
+                let image = JSQMessagesAvatarImageFactory.avatarImageWithImage(partnerImage!, diameter: 48)
                 return image
             }
-
+            
             return nil
         }
+
     }
     
     override func collectionView(collectionView: JSQMessagesCollectionView, attributedTextForCellTopLabelAtIndexPath indexPath: NSIndexPath) -> NSAttributedString? {
@@ -195,19 +211,11 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol, StoreSubsc
         return 0.0
     }
     
-//    @IBAction func viewUserProfile(sender: UIBarButtonItem) {
-//        sender.enabled = false
-//        mainStore.dispatch(ViewUser(uid: partner!.getUserId()))
-//    }
-//    
-//    @IBOutlet weak var profileBtn: UIBarButtonItem!
-    
     var limit:UInt = 10
     var loadingNextBatch = false
     var downloadRef:FIRDatabaseReference?
+
 }
-
-
 
 //MARK - Setup
 extension ChatViewController {
@@ -242,7 +250,9 @@ extension ChatViewController {
         
     }
     
+
     func downloadMessages() {
+        
         self.messages = []
 
         downloadRef?.observeEventType(.ChildAdded, withBlock: { snapshot in
@@ -252,8 +262,6 @@ extension ChatViewController {
                 
                 let date = NSDate(timeIntervalSince1970: timestamp/1000)
                 let message = JSQMessage(senderId: senderId, senderDisplayName: "Rob", date: date, text: text)
-            
-            
                 self.messages.append(message)
                 self.reloadMessagesView()
                 self.finishReceivingMessageAnimated(true)

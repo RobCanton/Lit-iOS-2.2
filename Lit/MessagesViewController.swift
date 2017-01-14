@@ -78,17 +78,26 @@ class MessagesViewController: UITableViewController, StoreSubscriber {
     
 
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)   
         presentConversation(conversations[indexPath.item])
+        
     }
     
     
     func presentConversation(conversation:Conversation) {
-        let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("ChatViewController") as! ChatViewController
-        controller.conversation = conversation
-        navigationController?.navigationBar.tintColor = UIColor.whiteColor()
-        navigationController?.pushViewController(controller, animated: true)
+        FirebaseService.getUser(conversation.getPartnerId(), completionHandler: { user in
+            if user != nil {
+                
+                loadImageUsingCacheWithURL(user!.getImageUrl(), completion: { image, fromCache in
+                    let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("ChatViewController") as! ChatViewController
+                    controller.conversation = conversation
+                    controller.partnerImage = image
+                    self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
+                    self.navigationController?.pushViewController(controller, animated: true)
+                })
+            }
+        })
+        
         
     }
     
