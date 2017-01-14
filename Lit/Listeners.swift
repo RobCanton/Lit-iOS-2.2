@@ -78,13 +78,13 @@ class Listeners {
                 let locationRef = ref.child("locations")
                 
                 locationRef.child("visitors/\(location.getKey())").observeEventType(.Value, withBlock: { snapshot in
+                    var visitors = [String]()
                     if snapshot.exists() {
-                        var visitors = [String]()
                         for visitor in snapshot.children {
                             visitors.append(visitor.key!!)
                         }
-                        mainStore.dispatch(SetVisitorsForLocation(locationIndex: i, visitors: visitors))
                     }
+                    mainStore.dispatch(SetVisitorsForLocation(locationIndex: i, visitors: visitors))
                 })
             }
         }
