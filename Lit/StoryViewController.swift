@@ -54,19 +54,6 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
             shouldPlay = false
             self.story.delegate = self
             story.determineState()
-
-            let screenWidth: CGFloat = (UIScreen.mainScreen().bounds.size.width)
-            
-            let margin:CGFloat = 8.0
-            progressBar?.removeFromSuperview()
-            progressBar = StoryProgressIndicator(frame: CGRectMake(margin,margin,screenWidth - margin * 2,1.0))
-            progressBar!.createProgressIndicator(story)
-            contentView.addSubview(progressBar!)
-            
-            
-            for item in story.items! {
-                totalTime += item.getLength()
-            }
             
             
         }
@@ -102,6 +89,13 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
         self.activityView.stopAnimating()
         story.downloadStory()
         
+        
+    }
+    
+    func contentLoaded() {
+        enableTap()
+        self.activityView.stopAnimating()
+        
         let screenWidth: CGFloat = (UIScreen.mainScreen().bounds.size.width)
         
         let margin:CGFloat = 8.0
@@ -114,12 +108,10 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
         for item in story.items! {
             totalTime += item.getLength()
         }
-    }
-    
-    func contentLoaded() {
-        enableTap()
-        self.activityView.stopAnimating()
+        
         self.setupItem()
+        
+        
     }
     
     func setupItem() {

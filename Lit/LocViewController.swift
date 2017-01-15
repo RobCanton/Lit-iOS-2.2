@@ -352,7 +352,7 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
         case 2:
             return 70
         case 3:
-            if indexPath.row == 0 && location.full_address != nil {
+            if indexPath.row == 0 {
                 return 42
             } else if indexPath.row == 1 && location.phone != nil {
                 return 42
@@ -389,7 +389,7 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
             let cell = tableView.dequeueReusableCellWithIdentifier("InfoCell", forIndexPath: indexPath) as! InfoTableViewCell
             if indexPath.row == 0 {
                 cell.type = .FullAddress
-                cell.label.text = location.full_address
+                cell.label.text = location.getAddress()
             } else if indexPath.row == 1 {
                 cell.type = .Phone
                 cell.label.text = location.phone

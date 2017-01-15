@@ -119,7 +119,7 @@ class LocationService {
                 let address     = snapshot.value!["address"] as! String
                 
                 location = Location(key: key, name: name, latitude: lat, longitude: lon, imageURL: imageURL, address: address,
-                    full_address: nil, phone: nil, email: nil, website: nil, desc: nil)
+                     phone: nil, email: nil, website: nil, desc: nil)
                 locationsCache.setObject(location!, forKey: key)
             }
             completionHandler(location: location)
@@ -127,14 +127,12 @@ class LocationService {
     }
     
     static func getLocationDetails(location:Location, completionHandler: (location:Location)->()) {
-        if location.full_address != nil && location.phone != nil
-            && location.website != nil {
+        if location.phone != nil && location.website != nil {
             completionHandler(location: location)
         }
         let ref = FirebaseService.ref.child("locations/info/details/\(location.getKey())")
         ref.observeSingleEventOfType(.Value, withBlock: { (snapshot) in
             if snapshot.exists() {
-                location.full_address = snapshot.value!["full_address"] as? String
                 location.phone        = snapshot.value!["phone"] as? String
                 location.email        = snapshot.value!["email"] as? String
                 location.website      = snapshot.value!["website"] as? String
