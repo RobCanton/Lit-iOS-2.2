@@ -20,6 +20,7 @@ protocol StoryProtocol {
 class UserStory: ItemDelegate {
     private var user_id:String
     private var postKeys:[String]
+    private var date:NSDate
     
     
     var delegate:StoryProtocol?
@@ -32,9 +33,10 @@ class UserStory: ItemDelegate {
         }
     }
     
-    init(user_id:String, postKeys:[String]) {
+    init(user_id:String, postKeys:[String], timestamp:Double) {
         self.user_id = user_id
         self.postKeys = postKeys
+        self.date  = NSDate(timeIntervalSince1970: timestamp/1000)
     }
     
     func getUserId() -> String {
@@ -43,6 +45,10 @@ class UserStory: ItemDelegate {
     
     func getPostKeys() -> [String] {
         return postKeys
+    }
+    
+    func getDate() -> NSDate {
+        return date
     }
     
     
@@ -124,6 +130,18 @@ class UserStory: ItemDelegate {
         
         print("\n")
     }
+}
+
+func < (lhs: UserStory, rhs: UserStory) -> Bool {
+    return lhs.date.compare(rhs.date) == .OrderedAscending
+}
+
+func > (lhs: UserStory, rhs: UserStory) -> Bool {
+    return lhs.date.compare(rhs.date) == .OrderedDescending
+}
+
+func == (lhs: UserStory, rhs: UserStory) -> Bool {
+    return lhs.date.compare(rhs.date) == .OrderedSame
 }
 
 //func findStoryByUserID(uid:String, stories:[Story]) -> Int? {

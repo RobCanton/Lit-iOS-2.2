@@ -85,8 +85,11 @@ class ActivityViewController: UITableViewController, UISearchBarDelegate {
         myStoryRef?.removeAllObservers()
         myStoryRef?.observeEventType(.Value, withBlock: { snapshot in
             var itemKeys = [String]()
+            var timestamp:Double!
             for upload in snapshot.children {
-                itemKeys.append(upload.key)
+                let uploadSnap = upload as! FIRDataSnapshot
+                itemKeys.append(uploadSnap.key)
+                timestamp = uploadSnap.value! as! Double
             }
 
             if self.myStoryKeys == itemKeys {
@@ -95,7 +98,7 @@ class ActivityViewController: UITableViewController, UISearchBarDelegate {
                 print("MyStory changed.")
                 if itemKeys.count > 0 {
                     self.myStoryKeys = itemKeys
-                    let myStory = UserStory(user_id: uid, postKeys: self.myStoryKeys)
+                    let myStory = UserStory(user_id: uid, postKeys: self.myStoryKeys, timestamp: timestamp)
                     self.myStory = myStory
                     
                 } else{
@@ -118,36 +121,60 @@ class ActivityViewController: UITableViewController, UISearchBarDelegate {
         responseRef = FirebaseService.ref.child("api/responses/activity/\(uid)")
         responseRef?.removeAllObservers()
         responseRef?.observeEventType(.Value, withBlock: { snapshot in
-            print("ACTIVITY RECIEVED: \(snapshot.value!)")
             var tempDictionary = [String:[String]]()
-            for story in snapshot.children {
-                let s = story as! FIRDataSnapshot
-                var storyItemKeys = [String]()
-                for itemKey in s.children {
-                    storyItemKeys.append(itemKey.key)
+            var timestamps = [String:Double]()
+            for user in snapshot.children {
+                
+                let userSnap = user as! FIRDataSnapshot
+                var postKeys = [String]()
+                var timestamp:Double!
+                
+                for post in userSnap.children {
+                    let postSnap = post as! FIRDataSnapshot
+                    postKeys.append(postSnap.key)
+                    timestamp = postSnap.value! as! Double
                 }
-                tempDictionary[s.key] = storyItemKeys
+                
+                tempDictionary[userSnap.key] = postKeys
+                timestamps[userSnap.key] = timestamp
+                
             }
-            self.crossCheckStories(tempDictionary)
+            
+            self.crossCheckStories(tempDictionary, timestamps: timestamps)
 
         })
     }
     
-    func crossCheckStories(tempDictionary:[String:[String]]) {
+    
+    func crossCheckStories(tempDictionary:[String:[String]], timestamps:[String:Double]) {
+        
         if NSDictionary(dictionary: storiesDictionary).isEqualToDictionary(tempDictionary) {
-            print("Stories unchanged. No download required")
-            print("Current: \(storiesDictionary) | Temp: \(tempDictionary)")
+            //print("Stories unchanged. No download required")
+            //print("Current: \(storiesDictionary) | Temp: \(tempDictionary)")
         } else {
             print("Stories updated. Download initiated")
             storiesDictionary = tempDictionary
             var stories = [UserStory]()
             for (uid, itemKeys) in storiesDictionary {
-                let story = UserStory(user_id: uid, postKeys: itemKeys)
+                let story = UserStory(user_id: uid, postKeys: itemKeys, timestamp: timestamps[uid]!)
                 stories.append(story)
             }
             
+            stories.sortInPlace({
+                return $0 > $1
+            })
+            
+            
+            for i in 0..<stories.count {
+                let story = stories[i]
+                if story.getUserId() == mainStore.state.userState.uid {
+                    stories.removeAtIndex(i)
+                    stories.insert(story, atIndex: 0)
+                }
+            }
+            
             self.userStories = stories
-            self.tableView.reloadData()
+            self.tableView!.reloadData()
         }
     }
     

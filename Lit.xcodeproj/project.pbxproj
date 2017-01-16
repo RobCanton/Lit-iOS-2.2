@@ -115,7 +115,6 @@
 		B06D54C81D9ECB6D00F6A4A7 /* YokoTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06D54BD1D9ECB6D00F6A4A7 /* YokoTextField.swift */; };
 		B06D54C91D9ECB6D00F6A4A7 /* YoshikoTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06D54BE1D9ECB6D00F6A4A7 /* YoshikoTextField.swift */; };
 		B06D54CD1D9ED55A00F6A4A7 /* UserReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06D54CC1D9ED55A00F6A4A7 /* UserReducer.swift */; };
-		B06D54D81D9EEFD700F6A4A7 /* intro4.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = B06D54D71D9EEFD400F6A4A7 /* intro4.mp4 */; };
 		B079BE861DA557B00042B586 /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079BE841DA557B00042B586 /* PhotoCell.swift */; };
 		B079BE871DA557B00042B586 /* PhotoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B079BE851DA557B00042B586 /* PhotoCell.xib */; };
 		B07E54CD1E0B235B008C2D23 /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07E54CB1E0B235B008C2D23 /* ProfileHeaderView.swift */; };
@@ -854,7 +853,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B06D54D81D9EEFD700F6A4A7 /* intro4.mp4 in Resources */,
 				B07E54E11E16FC20008C2D23 /* GoogleService-Info.plist in Resources */,
 				B011B35F1E02261600FA4633 /* LocationTableCell.xib in Resources */,
 				B09801B21E1B6784006782E6 /* EditPostToolbar.xib in Resources */,

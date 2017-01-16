@@ -124,6 +124,7 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol {
         let uid = mainStore.state.userState.uid
         let ref = FirebaseService.ref.child("conversations/\(conversation.getKey())/\(uid)")
         ref.updateChildValues(["seen": [".sv":"timestamp"]])
+        
     }
     
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -175,6 +176,7 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol {
             return JSQMessagesTimestampFormatter.sharedFormatter().attributedTimestampForDate(currentItem.date)
         }
         
+        
         if indexPath.item > 0 {
             let prevItem    = self.messages[indexPath.item-1]
             
@@ -183,6 +185,8 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol {
             if gap > 3600 {
                 return JSQMessagesTimestampFormatter.sharedFormatter().attributedTimestampForDate(currentItem.date)
             }
+        } else {
+            return JSQMessagesTimestampFormatter.sharedFormatter().attributedTimestampForDate(currentItem.date)
         }
 
         
@@ -206,6 +210,12 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol {
             if gap > 3600 {
                 return kJSQMessagesCollectionViewCellLabelHeightDefault
             }
+            
+            if prevItem.senderId != currentItem.senderId {
+                return 1.0
+            }
+        }  else {
+            return kJSQMessagesCollectionViewCellLabelHeightDefault
         }
         
         return 0.0

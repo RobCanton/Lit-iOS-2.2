@@ -174,3 +174,11 @@ class StoryItem: NSObject, NSCoding {
         })
     }
 }
+
+func < (lhs: StoryItem, rhs: StoryItem) -> Bool {
+    return lhs.dateCreated.compare(rhs.dateCreated) == .OrderedAscending
+}
+
+func == (lhs: StoryItem, rhs: StoryItem) -> Bool {
+    return lhs.dateCreated.compare(rhs.dateCreated) == .OrderedSame
+}

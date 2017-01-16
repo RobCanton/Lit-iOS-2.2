@@ -208,19 +208,19 @@ class LoginViewController: UIViewController, StoreSubscriber {
     var videoPlayer: AVPlayer = AVPlayer()
     var playerLayer: AVPlayerLayer?
     func setupVideoBackground() {
-        let videoLayer = UIView(frame: self.view.bounds)
-        self.view.insertSubview(videoLayer, atIndex: 0)
-        let filePath = NSURL.fileURLWithPath(NSBundle.mainBundle().pathForResource("intro4", ofType: "mp4")!)
-        videoPlayer = AVPlayer()
-        playerLayer = AVPlayerLayer(player: videoPlayer)
-        playerLayer!.videoGravity = AVLayerVideoGravityResizeAspectFill;
-        
-        playerLayer!.frame = self.view.bounds
-        videoLayer.layer.addSublayer(playerLayer!)
-        let item = AVPlayerItem(URL: filePath)
-        videoPlayer.replaceCurrentItemWithPlayerItem(item)
-        videoPlayer.play()
-        loopVideo(videoPlayer)
+//        let videoLayer = UIView(frame: self.view.bounds)
+//        self.view.insertSubview(videoLayer, atIndex: 0)
+//        let filePath = NSURL.fileURLWithPath(NSBundle.mainBundle().pathForResource("intro4", ofType: "mp4")!)
+//        videoPlayer = AVPlayer()
+//        playerLayer = AVPlayerLayer(player: videoPlayer)
+//        playerLayer!.videoGravity = AVLayerVideoGravityResizeAspectFill;
+//        
+//        playerLayer!.frame = self.view.bounds
+//        videoLayer.layer.addSublayer(playerLayer!)
+//        let item = AVPlayerItem(URL: filePath)
+//        videoPlayer.replaceCurrentItemWithPlayerItem(item)
+//        videoPlayer.play()
+//        loopVideo(videoPlayer)
         
     }
     

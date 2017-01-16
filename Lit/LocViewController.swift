@@ -80,18 +80,25 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
         locRef.observeEventType(.Value, withBlock: { snapshot in
 
             var tempDictionary = [String:[String]]()
+            var timestamps = [String:Double]()
             for user in snapshot.children {
                 
                 let userSnap = user as! FIRDataSnapshot
                 var postKeys = [String]()
+                var timestamp:Double!
+                
                 for post in userSnap.children {
-                    postKeys.append(post.key!!)
+                    let postSnap = post as! FIRDataSnapshot
+                    postKeys.append(postSnap.key)
+                    timestamp = postSnap.value! as! Double
                 }
+
                 tempDictionary[userSnap.key] = postKeys
+                timestamps[userSnap.key] = timestamp
 
             }
             
-            self.crossCheckStories(tempDictionary)
+            self.crossCheckStories(tempDictionary, timestamps: timestamps)
 
         })
     }
@@ -100,7 +107,7 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
     
     var shouldDisplayEmptyMyStoryCell = false
     
-    func crossCheckStories(tempDictionary:[String:[String]]) {
+    func crossCheckStories(tempDictionary:[String:[String]], timestamps:[String:Double]) {
         let uid = mainStore.state.userState.uid
         
         if storiesDictionary[uid] != nil && tempDictionary[uid] == nil {
@@ -110,22 +117,25 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
         }
         
         if NSDictionary(dictionary: storiesDictionary).isEqualToDictionary(tempDictionary) {
-            print("Stories unchanged. No download required")
-            print("Current: \(storiesDictionary) | Temp: \(tempDictionary)")
+            //print("Stories unchanged. No download required")
+            //print("Current: \(storiesDictionary) | Temp: \(tempDictionary)")
         } else {
             print("Stories updated. Download initiated")
             storiesDictionary = tempDictionary
             var stories = [UserStory]()
             for (uid, itemKeys) in storiesDictionary {
-                let story = UserStory(user_id: uid, postKeys: itemKeys)
+                let story = UserStory(user_id: uid, postKeys: itemKeys, timestamp: timestamps[uid]!)
                 stories.append(story)
             }
+            
+            stories.sortInPlace({
+                return $0 > $1
+            })
             
             
             for i in 0..<stories.count {
                 let story = stories[i]
                 if story.getUserId() == mainStore.state.userState.uid {
-                    print("Place my story at top")
                     stories.removeAtIndex(i)
                     stories.insert(story, atIndex: 0)
                 }
@@ -377,7 +387,7 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
             return cell
         } else if indexPath.section == 1 {
             let cell = tableView.dequeueReusableCellWithIdentifier("UserStoryCell", forIndexPath: indexPath) as! UserStoryTableViewCell
-            cell.setUserStory(userStories[indexPath.item], useUsername: true)
+            cell.setUserStory(userStories[indexPath.item], useUsername: false)
             return cell
         } else if indexPath.section == 2 {
             

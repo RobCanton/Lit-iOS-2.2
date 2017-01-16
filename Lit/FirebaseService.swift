@@ -65,7 +65,6 @@ class FirebaseService {
             completionHandler(user: cachedUser)
             
         } else {
-            print("DO FB FETCH")
             ref.child("users/profile/basic/\(uid)").observeSingleEventOfType(.Value, withBlock: { (snapshot) in
                 var user:User?
                 if snapshot.exists() {
@@ -75,8 +74,28 @@ class FirebaseService {
                     user = User(uid: uid, displayName: displayName, name: name, imageURL: imageURL, largeImageURL: nil, bio: nil)
                     dataCache.setObject(user!, forKey: "user-\(uid)")
                 }
-                print("FIREBASE RESULT: \(user)")
                 completionHandler(user: user)
+                
+            })
+        }
+    }
+    
+    static func getUserWithCheck(uid:String, check:Int, completionHandler: (user:User?, check:Int)->()) {
+        
+        if let cachedUser = dataCache.objectForKey("user-\(uid)") as? User {
+            completionHandler(user: cachedUser, check: check)
+            
+        } else {
+            ref.child("users/profile/basic/\(uid)").observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+                var user:User?
+                if snapshot.exists() {
+                    let name             = snapshot.value!["name"] as? String
+                    let displayName      = snapshot.value!["username"] as! String
+                    let imageURL         = snapshot.value!["profileImageURL"] as! String
+                    user = User(uid: uid, displayName: displayName, name: name, imageURL: imageURL, largeImageURL: nil, bio: nil)
+                    dataCache.setObject(user!, forKey: "user-\(uid)")
+                }
+                completionHandler(user: user, check: check)
                 
             })
         }

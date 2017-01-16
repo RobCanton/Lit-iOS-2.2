@@ -68,6 +68,7 @@ class UserStoryTableViewCell: UITableViewCell, StoryProtocol {
 
         FirebaseService.getUser(story.getUserId(), completionHandler: { user in
             if user != nil {
+                
                 if user!.getUserId() == mainStore.state.userState.uid && !useUsername {
                     
                     self.usernameLabel.text = "Your Story"
@@ -80,6 +81,7 @@ class UserStoryTableViewCell: UITableViewCell, StoryProtocol {
                 loadImageUsingCacheWithURL(user!.getImageUrl(), completion: { image, fromCache in
                     self.contentImageView.image = image
                 })
+                self.timeLabel.text = "\(story.getDate().timeStringSinceNowWithAgo())"
             }
         })
     }
@@ -126,8 +128,7 @@ class UserStoryTableViewCell: UITableViewCell, StoryProtocol {
     func itemsLoaded() {
         guard let items = userStory?.items else { return }
         if items.count > 0 {
-            let lastItem = items[items.count - 1]
-            self.timeLabel.text = "\(lastItem.getDateCreated()!.timeStringSinceNowWithAgo())"
+
             activate(false)
             /*loadImageUsingCacheWithURL(lastItem.getDownloadUrl().absoluteString, completion: { image, fromCache in
                 
@@ -149,10 +150,8 @@ class UserStoryTableViewCell: UITableViewCell, StoryProtocol {
     }
     
     func contentLoaded() {
-        guard let items = userStory?.items else { return }
-        if items.count > 0 {
-            let lastItem = items[items.count - 1]
-            timeLabel.text = "\(lastItem.getDateCreated()!.timeStringSinceNowWithAgo())"
-        }
+        guard let story = userStory else { return }
+        timeLabel.text = "\(story.getDate().timeStringSinceNowWithAgo())"
+        
     }
 }

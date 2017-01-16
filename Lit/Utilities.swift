@@ -116,12 +116,51 @@ func downloadImageWithURLString(_url:String, completion: (image:UIImage?, fromCa
     }).resume()
 }
 
+func downloadImageWithURLStringWithCheck(_url:String, check:Int, completion: (image:UIImage?, fromCache:Bool, check:Int)->()) {
+    
+    let url = NSURL(string: _url)
+
+    
+    NSURLSession.sharedSession().dataTaskWithURL(url!, completionHandler:
+        { (data, response, error) in
+            
+            //error
+            if error != nil {
+                if error?.code == -999 {
+                    return
+                }
+                print(error?.code)
+                return completion(image: nil, fromCache: false, check: check)
+            }
+            
+            dispatch_async(dispatch_get_main_queue(), {
+                
+                if let downloadedImage = UIImage(data: data!) {
+                    imageCache.setObject(downloadedImage, forKey: _url)
+                }
+                
+                let image = UIImage(data: data!)
+                return completion(image: image!, fromCache: false, check: check)
+            })
+            
+    }).resume()
+}
+
 func loadImageUsingCacheWithURL(_url:String, completion: (image:UIImage?, fromCache:Bool)->()) {
     // Check for cached image
     if let cachedImage = imageCache.objectForKey(_url) as? UIImage {
         return completion(image: cachedImage, fromCache: true)
     } else {
         downloadImageWithURLString(_url, completion: completion)
+    }
+}
+
+func loadImageUsingCacheWithURLWithCheck(_url:String, check:Int, completion: (image:UIImage?, fromCache:Bool, check:Int)->()) {
+    // Check for cached image
+    if let cachedImage = imageCache.objectForKey(_url) as? UIImage {
+        return completion(image: cachedImage, fromCache: true, check:  check)
+    } else {
+        downloadImageWithURLStringWithCheck(_url, check: check, completion: completion)
     }
 }
 
@@ -179,7 +218,7 @@ func generateVideoStill(asset:AVAsset, time:CMTime) -> UIImage?{
 }
 
 func getDistanceString(distance:Double) -> String {
-    if distance < 1 {
+    if distance < 0.5 {
         // meters
 
         let meters = Double(round(distance * 1000)/1)
@@ -216,3 +255,5 @@ func clearDirectory(name:String) {
         print("Could not clear temp folder: \(error)")
     }
 }
+
+

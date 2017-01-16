@@ -71,6 +71,8 @@ class PostAuthorView: UIView {
                 locSuperview.addGestureRecognizer(self.locationTap)
 
                 self.user = user
+                
+                print("DATE: \(post.getDateCreated()!.description)")
                 self.timeLabel.text = post.getDateCreated()!.timeStringSinceNow()
                 
                 

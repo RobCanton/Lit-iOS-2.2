@@ -134,8 +134,21 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
         }
     }
     
+    var _center:CGPoint!
+    var _hiddenCenter:CGPoint!
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        _center = tabBar.center
+        _hiddenCenter = CGPoint(x: _center.x, y: _center.y * 2)
+        
+
+        visibleFrame = tabBar.frame
+        hiddenFrame = CGRect(x: visibleFrame.origin.x, y: visibleFrame.origin.y, width: visibleFrame.width, height: 0)
+        
+        visibleViewFrame = CGRectMake(0, 0, self.view.frame.width, self.view.frame.height )
+        
+        //self.view.frame = CGRectMake(0, 0, self.view.frame.width, self.view.frame.height + offsetY)
         
         delegate = self
         tabBarController?.delegate = self
@@ -263,13 +276,13 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
         return segue
     }
     
-//    func tabBarController(tabBarController: UITabBarController, shouldSelectViewController viewController: UIViewController) -> Bool {
-//        if viewController.isKindOfClass(DummyViewController) {
-//            return false
-//        }
-//        return true
-//    }
-//    
+    
+    
+    var visibleFrame:CGRect!
+    var hiddenFrame:CGRect!
+    
+    var visibleViewFrame:CGRect!
+    var hiddenViewFrame:CGRect!
     
     func setTabBarVisible(_visible:Bool, animated:Bool) {
         
@@ -279,25 +292,17 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
         visible = _visible
 
         dispatch_async(dispatch_get_main_queue(), {
-            
-            let frame = self.tabBar.frame
-            let height = frame.size.height
-            let offsetY = (self.visible ? -height : height)
-            
+ 
             if self.visible {
                 
-                
+                self.tabBar.center = self._center
                 self.tabBar.userInteractionEnabled = true
-                self.tabBar.frame = CGRectOffset(frame, 0, offsetY)
-                self.view.frame = CGRectMake(0, 0, self.view.frame.width, self.view.frame.height + offsetY)
-                self.view.setNeedsDisplay()
-                self.view.layoutIfNeeded()
+                self.tabBar.frame = self.visibleFrame
+
             UIView.animateWithDuration(0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [], animations: {
                 self.tabBar.alpha = 1.0
-                
-                
-                }, completion: { result in
 
+                }, completion: { result in
             })
         } else {
             UIView.animateWithDuration(0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [], animations: {
@@ -305,10 +310,8 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
                 
                 }, completion: { result in
                     self.tabBar.userInteractionEnabled = false
-                    self.tabBar.frame = CGRectOffset(frame, 0, offsetY)
-                    self.view.frame = CGRectMake(0, 0, self.view.frame.width, self.view.frame.height + offsetY)
-                    self.view.setNeedsDisplay()
-                    self.view.layoutIfNeeded()
+                    self.tabBar.frame = self.hiddenFrame
+                    self.tabBar.center = self._hiddenCenter
 
             })
         }
