@@ -12,11 +12,9 @@ import UIKit
 import FBSDKCoreKit
 import MXParallaxHeader
 import AudioToolbox
-import SwiftMessages
 
-class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class CreateProfileViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
-    let usernameLengthLimit = 16
 //    @IBOutlet weak var editorArea: UIView!
 //    @IBOutlet weak var imageView: UIImageView!
 //    
@@ -37,27 +35,10 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
     
     var tap: UITapGestureRecognizer!
     
-    var profilePhotoMessageView:ProfilePictureMessageView?
-    var config: SwiftMessages.Config?
-    var profilePhotoMessageWrapper = SwiftMessages()
     
     var userInfo:[String : String] = [
         "displayName": ""
     ]
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        mainStore.subscribe(self)
-    }
-    
-    override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
-        mainStore.unsubscribe(self)
-    }
-    
-    func newState(state:AppState) {
-    
-    }
     
     func cancel() {
         FirebaseService.logout()
@@ -80,9 +61,6 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
         self.automaticallyAdjustsScrollViewInsets = false
         
         headerView = UINib(nibName: "CreateProfileHeaderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! CreateProfileHeaderView
-        headerView.locationIcon.hidden = true
-        headerView.locationLabel.hidden = true
-        headerView.bioTextView.hidden = true
         scrollView = MXScrollView()
         scrollView.parallaxHeader.view = headerView
         scrollView.parallaxHeader.height = 300
@@ -101,7 +79,8 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
         usernameField.placeholderColor = .whiteColor()
         usernameField.borderColor = .whiteColor()
         usernameField.textColor = .whiteColor()
-        usernameField.placeholder = "User name"
+        usernameField.placeholder = "Username"
+        
         usernameField.delegate = self
         usernameField.font = UIFont(name: "Avenir-Medium", size: 20.0)
         usernameField.textAlignment = .Center
@@ -142,31 +121,28 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
     }
     
     func showProfilePhotoMessagesView() {
-        profilePhotoMessageView = try! SwiftMessages.viewFromNib() as? ProfilePictureMessageView
-        profilePhotoMessageView!.configureDropShadow()
         
-        profilePhotoMessageView!.facebookHandler = {
-            self.profilePhotoMessageWrapper.hide()
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+        
+        let cancelActionButton: UIAlertAction = UIAlertAction(title: "Cancel", style: .Cancel) { action -> Void in
+        }
+        actionSheet.addAction(cancelActionButton)
+        
+        let facebookActionButton: UIAlertAction = UIAlertAction(title: "Import from Facebook", style: .Destructive)
+        { action -> Void in
             self.setFacebookProfilePicture()
         }
+        actionSheet.addAction(facebookActionButton)
         
-        profilePhotoMessageView!.libraryHandler = {
-            self.profilePhotoMessageWrapper.hide()
+        let libraryActionButton: UIAlertAction = UIAlertAction(title: "Choose from Library", style: .Destructive)
+        { action -> Void in
             self.imagePicker.allowsEditing = false
             self.imagePicker.sourceType = .PhotoLibrary
             self.presentViewController(self.imagePicker, animated: true, completion: nil)
         }
+        actionSheet.addAction(libraryActionButton)
         
-        profilePhotoMessageView!.cancelHandler = {
-            self.profilePhotoMessageWrapper.hide()
-        }
-        
-        config = SwiftMessages.Config()
-        config!.presentationContext = .Window(windowLevel: UIWindowLevelStatusBar)
-        config!.duration = .Forever
-        config!.presentationStyle = .Bottom
-        config!.dimMode = .Gray(interactive: true)
-        profilePhotoMessageWrapper.show(config: config!, view: profilePhotoMessageView!)
+        self.presentViewController(actionSheet, animated: true, completion: nil)
     }
     
     
@@ -176,6 +152,7 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
             
             self.headerView.imageView.image = nil
             self.smallProfileImageView.image = nil
+            headerView.errorLabel.hidden = true
             headerView.imageView.image = resizeImage(pickedImage, newWidth: 720)
             smallProfileImageView.image = resizeImage(pickedImage, newWidth: 150)
         }
@@ -216,12 +193,14 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
     func setFacebookProfilePicture() {
         FacebookGraph.getProfilePicture({ imageURL in
             if imageURL != nil {
-                print("LIKE WE HERE \(imageURL!)")
+                self.headerView.errorLabel.hidden = true
                 self.headerView.imageView.image = nil
                 self.headerView.imageView.loadImageUsingCacheWithURLString(imageURL!, completion: {result in
                     self.smallProfileImageView.image = nil
                     self.smallProfileImageView.image = resizeImage( self.headerView.imageView.image!, newWidth: 150)
                 })
+            } else {
+                self.headerView.errorLabel.hidden = false
             }
         })
     }
@@ -234,8 +213,7 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
             FirebaseService.getUser(user.uid, completionHandler: { _user in
                 if _user != nil {
                     FirebaseService.login(_user!)
-                    self.performSegueWithIdentifier("showLit", sender: self)
-                    /*FacebookGraph.getFacebookFriends({ _userIds in
+                    FacebookGraph.getFacebookFriends({ _userIds in
                         FirebaseService.login(_user!)
                         if _userIds.count == 0 {
                             self.performSegueWithIdentifier("showLit", sender: self)
@@ -246,7 +224,7 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
                                 self.performSegueWithIdentifier("toAddFriends", sender: self)
                             })
                         }
-                    })*/
+                    })
                 }
             })
         }
@@ -275,10 +253,12 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
         self.navigationItem.setRightBarButtonItem(barButton, animated: true)
         activityIndicator.startAnimating()
         
+        
         deactivateCreateProfileButton()
         fullnameField.enabled = false
         usernameField.enabled = false
         cancelButton.enabled  = false
+        cancelButton.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.grayColor()], forState: .Normal)
         
         usernameField.resignFirstResponder()
         fullnameField.resignFirstResponder()
@@ -326,23 +306,31 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
     }
     
     func checkUsernameAvailability() {
-        print("checkUsernameAvailability")
         
-        let ref = FIRDatabase.database().reference().child("users/profile/basic")
-        ref.queryOrderedByChild("username").queryEqualToValue(usernameField.text!).observeSingleEventOfType(.Value, withBlock: { snapshot in
-            if snapshot.exists() {
-                self.usernameTaken()
-            } else {
-                self.usernameAvailable()
-            }
-        })
+        guard let text = usernameField.text else { return }
+        
+        if text.characters.count >= 5 {
+            let ref = FIRDatabase.database().reference().child("users/profile/basic")
+            ref.queryOrderedByChild("username").queryEqualToValue(usernameField.text!).observeSingleEventOfType(.Value, withBlock: { snapshot in
+                if snapshot.exists() {
+                    self.usernameUnavailable("Username unavailable")
+                } else {
+                    self.usernameAvailable()
+                }
+            })
+        } else {
+            self.usernameUnavailable("Username must be at least 5 characters")
+        }
+        
+        
     }
     
-    func usernameTaken() {
+    func usernameUnavailable(reason:String) {
         deactivateCreateProfileButton()
         AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         usernameField.borderColor = errorColor
         usernameField.placeholderColor = errorColor
+        usernameField.placeholder = reason
         usernameField.shake()
     }
     
@@ -350,7 +338,7 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
         activateCreateProfileButton()
         usernameField.borderColor = accentColor
         usernameField.placeholderColor = accentColor
-        
+        usernameField.placeholder = "Username available"
     }
     
 
@@ -366,51 +354,81 @@ class CreateProfileViewController: UIViewController, StoreSubscriber, UITextFiel
     }
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-        
-        guard let text = textField.text else { return true }
-        let newLength = text.characters.count + string.characters.count - range.length
-        //return newLength <= usernameLengthLimit
-        if newLength > usernameLengthLimit { return false }
-        
-        // Create an `NSCharacterSet` set which includes everything *but* the digits
-        let inverseSet = NSCharacterSet(charactersInString:"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ").invertedSet
-        
-        // At every character in this "inverseSet" contained in the string,
-        // split the string up into components which exclude the characters
-        // in this inverse set
-        let components = string.componentsSeparatedByCharactersInSet(inverseSet)
-        
-        // Rejoin these components
-        let filtered = components.joinWithSeparator("")  // use join("", components) if you are using Swift 1.2
-        
-        // If the original string is equal to the filtered string, i.e. if no
-        // inverse characters were present to be eliminated, the input is valid
-        // and the statement returns true; else it returns false
-        return string == filtered
+        if textField === usernameField {
+            guard let text = textField.text else { return true }
+            let newLength = text.characters.count + string.characters.count - range.length
+            //return newLength <= usernameLengthLimit
+            if newLength > usernameLengthLimit { return false }
+            
+            // Create an `NSCharacterSet` set 
+            let inverseSet = NSCharacterSet(charactersInString:".0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ").invertedSet
+            
+            // At every character in this "inverseSet" contained in the string,
+            // split the string up into components which exclude the characters
+            // in this inverse set
+            let components = string.componentsSeparatedByCharactersInSet(inverseSet)
+            
+            // Rejoin these components
+            let filtered = components.joinWithSeparator("")  // use join("", components) if you are using Swift 1.2
+            
+            // If the original string is equal to the filtered string, i.e. if no
+            // inverse characters were present to be eliminated, the input is valid
+            // and the statement returns true; else it returns false
+            return string == filtered
+        } else if textField === fullnameField {
+            guard let text = textField.text else { return true }
+            let newLength = text.characters.count + string.characters.count - range.length
+            //return newLength <= usernameLengthLimit
+            if newLength > 50 { return false }
+            
+            // Create an `NSCharacterSet` set
+            let inverseSet = NSCharacterSet(charactersInString:" .0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ").invertedSet
+            
+            // At every character in this "inverseSet" contained in the string,
+            // split the string up into components which exclude the characters
+            // in this inverse set
+            let components = string.componentsSeparatedByCharactersInSet(inverseSet)
+            
+            // Rejoin these components
+            let filtered = components.joinWithSeparator("")  // use join("", components) if you are using Swift 1.2
+            
+            // If the original string is equal to the filtered string, i.e. if no
+            // inverse characters were present to be eliminated, the input is valid
+            // and the statement returns true; else it returns false
+            return string == filtered
+        }
+        return true
     }
     
     func textFieldDidBeginEditing(textField: UITextField) {
-        //[scroll setContentOffset:CGPointMake(0, (textField.superview.frame.origin.y + (textField.frame.origin.y))) animated:YES]    }
-        let point = CGPointMake(0, (textField.superview!.frame.origin.y + (textField.frame.origin.y) - scrollView.parallaxHeader.view!.frame.height))
-        scrollView.setContentOffset(point, animated: true)
-        
-        usernameField.borderColor = UIColor.whiteColor()
-        usernameField.placeholderColor = UIColor.whiteColor()
-        usernameField.placeholderLabel.text = "User name"
+        if textField === usernameField {
+            //[scroll setContentOffset:CGPointMake(0, (textField.superview.frame.origin.y + (textField.frame.origin.y))) animated:YES]    }
+            let point = CGPointMake(0, (textField.superview!.frame.origin.y + (textField.frame.origin.y) - scrollView.parallaxHeader.view!.frame.height))
+            scrollView.setContentOffset(point, animated: true)
+            
+            usernameField.borderColor = UIColor.whiteColor()
+            usernameField.placeholderColor = UIColor.whiteColor()
+            usernameField.placeholder = "Username"
+            
+        }
     }
     
     func textFieldDidEndEditing(textField: UITextField) {
-        if usernameField.text?.characters.count > 0 {
-            checkUsernameAvailability()
+        if textField === usernameField {
+            if textField.text?.characters.count > 0 {
+                checkUsernameAvailability()
+            }
         }
     }
     
     func deactivateCreateProfileButton() {
         doneButton.enabled = false
+        doneButton.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.grayColor()], forState: .Normal)
     }
     
     func activateCreateProfileButton() {
         doneButton.enabled = true
+        doneButton.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.whiteColor()], forState: .Normal)
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {

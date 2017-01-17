@@ -28,6 +28,8 @@ let successColor:UIColor = UIColor(red: 0, green: 1, blue: 128/255, alpha: 1)
 
 let selectedColor:UIColor = UIColor(white: 0.15, alpha: 1.0)
 
+let usernameLengthLimit = 16
+
 let apiURL = "https://getlit.site/api"
 
 var screenStatusBarHeight: CGFloat {

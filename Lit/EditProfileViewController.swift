@@ -7,13 +7,6 @@
 //
 
 import UIKit
-import SwiftMessages
-
-class BioTableViewCell: UITableViewCell {
-    
-    
-    
-}
 
 protocol EditProfileProtocol {
     func getFullUser()
@@ -44,9 +37,6 @@ class EditProfileViewController: UITableViewController {
     var largeImageURL:String?
     
     let imagePicker = UIImagePickerController()
-    var profilePhotoMessageView:ProfilePictureMessageView?
-    var config: SwiftMessages.Config?
-    var profilePhotoMessageWrapper = SwiftMessages()
     
     var delegate:EditProfileProtocol?
     
@@ -66,11 +56,11 @@ class EditProfileViewController: UITableViewController {
         super.viewDidLoad()
         
         headerView = UINib(nibName: "EditProfilePictureView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! EditProfilePictureView
-        headerView.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: 300)
+        headerView.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: 275)
         headerView.userInteractionEnabled = true
         
         tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.estimatedRowHeight = 240 // Something reasonable to help ios render your cells
+        tableView.estimatedRowHeight = 275 // Something reasonable to help ios render your cells
         
         
         
@@ -126,6 +116,7 @@ class EditProfileViewController: UITableViewController {
     @IBAction func handleSave(sender: AnyObject) {
         
         cancelButton.enabled = false
+        cancelButton.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.grayColor()], forState: .Normal)
         headerView.userInteractionEnabled = false
         nameTextField.enabled = false
         bioTextView.userInteractionEnabled = false
@@ -264,31 +255,27 @@ extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigati
         usernameTextField.resignFirstResponder()
         bioTextView.resignFirstResponder()
         
-        profilePhotoMessageView = try! SwiftMessages.viewFromNib() as? ProfilePictureMessageView
-        profilePhotoMessageView!.configureDropShadow()
+     let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
         
-        profilePhotoMessageView!.facebookHandler = {
-            self.profilePhotoMessageWrapper.hide()
+        let cancelActionButton: UIAlertAction = UIAlertAction(title: "Cancel", style: .Cancel) { action -> Void in
+        }
+        actionSheet.addAction(cancelActionButton)
+        
+        let facebookActionButton: UIAlertAction = UIAlertAction(title: "Import from Facebook", style: .Destructive)
+        { action -> Void in
             self.setFacebookProfilePicture()
         }
+        actionSheet.addAction(facebookActionButton)
         
-        profilePhotoMessageView!.libraryHandler = {
-            self.profilePhotoMessageWrapper.hide()
+        let libraryActionButton: UIAlertAction = UIAlertAction(title: "Choose from Library", style: .Destructive)
+        { action -> Void in
             self.imagePicker.allowsEditing = false
             self.imagePicker.sourceType = .PhotoLibrary
             self.presentViewController(self.imagePicker, animated: true, completion: nil)
         }
+        actionSheet.addAction(libraryActionButton)
         
-        profilePhotoMessageView!.cancelHandler = {
-            self.profilePhotoMessageWrapper.hide()
-        }
-        
-        config = SwiftMessages.Config()
-        config!.presentationContext = .Window(windowLevel: UIWindowLevelStatusBar)
-        config!.duration = .Forever
-        config!.presentationStyle = .Bottom
-        config!.dimMode = .Gray(interactive: true)
-        profilePhotoMessageWrapper.show(config: config!, view: profilePhotoMessageView!)
+        self.presentViewController(actionSheet, animated: true, completion: nil)
     }
     
 }
@@ -327,11 +314,32 @@ extension EditProfileViewController: UITextFieldDelegate {
         if textField == usernameTextField {
             guard let text = textField.text else { return true }
             let newLength = text.characters.count + string.characters.count - range.length
-            //return newLength <= usernameLengthLimit
-            if newLength > 16 { return false }
+
+            if newLength > usernameLengthLimit { return false }
             
-            // Create an `NSCharacterSet` set which includes everything *but* the digits
+            // Create an `NSCharacterSet` set
             let inverseSet = NSCharacterSet(charactersInString:"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ").invertedSet
+            
+            // At every character in this "inverseSet" contained in the string,
+            // split the string up into components which exclude the characters
+            // in this inverse set
+            let components = string.componentsSeparatedByCharactersInSet(inverseSet)
+            
+            // Rejoin these components
+            let filtered = components.joinWithSeparator("")  // use join("", components) if you are using Swift 1.2
+            
+            // If the original string is equal to the filtered string, i.e. if no
+            // inverse characters were present to be eliminated, the input is valid
+            // and the statement returns true; else it returns false
+            return string == filtered
+        } else if textField === nameTextField {
+            guard let text = textField.text else { return true }
+            let newLength = text.characters.count + string.characters.count - range.length
+            //return newLength <= usernameLengthLimit
+            if newLength > 50 { return false }
+            
+            // Create an `NSCharacterSet`
+            let inverseSet = NSCharacterSet(charactersInString:" .0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ").invertedSet
             
             // At every character in this "inverseSet" contained in the string,
             // split the string up into components which exclude the characters

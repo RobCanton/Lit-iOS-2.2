@@ -74,6 +74,7 @@ class LoginViewController: UIViewController, StoreSubscriber {
     override func viewWillDisappear(animated: Bool) {
         mainStore.unsubscribe(self)
         print("Unsubscribed")
+        activityIndicator.stopAnimating()
     }
     
     func newState(state:AppState) {
@@ -94,19 +95,22 @@ class LoginViewController: UIViewController, StoreSubscriber {
 
     @IBOutlet weak var loginButton: UIView!
 
+    
+    var activityIndicator:UIActivityIndicatorView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         createDirectory("location_images")
         createDirectory("temp")
-//        self.navigationController?.navigationBar.titleTextAttributes =
-//            [NSFontAttributeName: UIFont(name: "Avenir-Medium", size: 18.0)!]
-//        navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Plain, target: nil, action: nil)
-//        
 
         loginButton.layer.borderColor = UIColor.whiteColor().CGColor
         loginButton.layer.borderWidth = 2.0
         tap = UITapGestureRecognizer(target: self, action: #selector(initiateFBLogin))
+        
+        activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
+        activityIndicator.center = CGPoint(x: view.center.x, y: loginButton.center.y)
+        self.view.addSubview(activityIndicator)
         
         
         //setupVideoBackground()
@@ -143,7 +147,6 @@ class LoginViewController: UIViewController, StoreSubscriber {
             } else {
                 //Success
                 
-                print("FACEBOOK LOGIN STUFF")
                 if result.grantedPermissions.contains("user_photos") && result.grantedPermissions.contains("public_profile") {
                     //Do work
                     self.fetchFacebookProfile()
@@ -183,23 +186,32 @@ class LoginViewController: UIViewController, StoreSubscriber {
                     
                     let credential = FIRFacebookAuthProvider.credentialWithAccessToken(accessToken)
                     
-                    
-                    FIRAuth.auth()?.signInWithCredential(credential) { (user, error) in
-                        if let error = error {
-                            print(error.localizedDescription)
-                            return
-                        }
-                        
-                        FirebaseService.getUser(user!.uid, completionHandler: { _user in
-                            if _user != nil {
-                                let ref = FirebaseService.ref.child("users/facebook/\(facebook_id)")
-                                ref.setValue(_user!.getUserId())
-                                FirebaseService.login(_user!)
-                            } else {
-                                self.createProfile()
-                            }
-                        })
-                    }
+                    self.FirebaseSignInWithCredential(credential, facebook_id: facebook_id)
+                }
+            })
+        }
+    }
+    
+    
+    func FirebaseSignInWithCredential( credential: FIRAuthCredential, facebook_id: String) {
+        
+        deactivateLoginButton()
+    
+        activityIndicator.startAnimating()
+        
+        FIRAuth.auth()?.signInWithCredential(credential) { (user, error) in
+            if let error = error {
+                print(error.localizedDescription)
+                return
+            }
+            
+            FirebaseService.getUser(user!.uid, completionHandler: { _user in
+                if _user != nil {
+                    let ref = FirebaseService.ref.child("users/facebook/\(facebook_id)")
+                    ref.setValue(_user!.getUserId())
+                    FirebaseService.login(_user!)
+                } else {
+                    self.createProfile()
                 }
             })
         }

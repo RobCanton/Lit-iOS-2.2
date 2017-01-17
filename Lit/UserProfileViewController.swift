@@ -107,6 +107,8 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         self.getHeaderView()?.fetched = false
         FirebaseService.getUser(uid, completionHandler: { _user in
             if _user != nil {
+
+                self.navigationItem.title = _user!.getDisplayName()
                 FirebaseService.getUserFullProfile(_user!, completionHandler: { fullUser in
                     
                         self.getKeys()
@@ -115,7 +117,7 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
                             mainStore.dispatch(UpdateUser(user: self.user!))
                         }
                         
-                        self.navigationItem.title = self.user!.getDisplayName()
+                    
                         
                         self.collectionView?.reloadData()
                         SocialService.listenToFollowers(self.user!.getUserId(), completionHandler: { followers in
@@ -292,7 +294,6 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
                     postKeys.append(child.key!!)
                 }
             }
-            print("KEYS: \(postKeys)")
             self.postKeys = postKeys
             self.downloadStory(postKeys)
         })

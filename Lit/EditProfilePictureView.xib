@@ -9,11 +9,11 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clipsSubviews="YES" contentMode="scaleToFill" id="iN0-l3-epB" customClass="EditProfilePictureView" customModule="Lit" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="444" height="314"/>
+            <rect key="frame" x="0.0" y="0.0" width="444" height="275"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Fnu-HC-ETr">
-                    <rect key="frame" x="0.0" y="0.0" width="444" height="314"/>
+                    <rect key="frame" x="0.0" y="0.0" width="444" height="275"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="Fnu-HC-ETr" secondAttribute="height" multiplier="1:1" id="HbA-c0-NEP"/>
                     </constraints>

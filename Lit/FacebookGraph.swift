@@ -43,7 +43,6 @@ class FacebookGraph {
             for id in fb_ids {
                 
                 let ref = FirebaseService.ref.child("users/facebook/\(id)")
-                print(ref)
                 ref.observeSingleEventOfType(.Value, withBlock: { snapshot in
                     if snapshot.exists()
                     {
@@ -61,7 +60,8 @@ class FacebookGraph {
     }
     
     static func getProfilePicture(completionHandler:(imageURL:String?)->()) {
-        let pictureRequest = FBSDKGraphRequest(graphPath: "me/picture??width=720&height=720&redirect=false", parameters: nil)
+        let params: [NSObject : AnyObject] = ["redirect": false, "height": 720, "width": 720, "type": "large"]
+        let pictureRequest = FBSDKGraphRequest(graphPath: "me/picture", parameters: params)
         pictureRequest.startWithCompletionHandler({
             (connection, result, error: NSError!) -> Void in
             var imageUrl:String?

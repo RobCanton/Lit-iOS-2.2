@@ -279,17 +279,6 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
             navigationController?.pushViewController(mapController, animated: true)
         }
     }
-    
-    func showGuests() {
-        if let _ = location {
-            let controller = UIStoryboard(name: "Main", bundle: nil)
-                .instantiateViewControllerWithIdentifier("UsersListViewController") as! UsersListViewController
-            controller.title = "guests"
-            controller.setTypeToGuests(location!)
-            self.navigationController?.pushViewController(controller, animated: true)
-        }
-    }
-    
  
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {

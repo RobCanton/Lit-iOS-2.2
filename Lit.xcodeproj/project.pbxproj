@@ -155,8 +155,6 @@
 		B0E8E30C1DD7739B0077D1BC /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E8E30B1DD7739B0077D1BC /* ContainerViewController.swift */; };
 		B0E8E3121DD7B2A50077D1BC /* SocialService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E8E3111DD7B2A50077D1BC /* SocialService.swift */; };
 		B0E8E3141DD7B64D0077D1BC /* SocialReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E8E3131DD7B64D0077D1BC /* SocialReducer.swift */; };
-		B0E8E3161DD989F30077D1BC /* ProfilePictureMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E8E3151DD989F30077D1BC /* ProfilePictureMessageView.swift */; };
-		B0E8E3181DD98A060077D1BC /* ProfilePictureMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0E8E3171DD98A060077D1BC /* ProfilePictureMessageView.xib */; };
 		B0E8E31A1DDACE490077D1BC /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E8E3191DDACE480077D1BC /* UserService.swift */; };
 		B0E8E3221DDB817B0077D1BC /* DismissAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E8E31C1DDB817B0077D1BC /* DismissAnimationController.swift */; };
 		B0E8E3231DDB817B0077D1BC /* DismissInteractiveTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E8E31D1DDB817B0077D1BC /* DismissInteractiveTransition.swift */; };
@@ -337,8 +335,6 @@
 		B0E8E30B1DD7739B0077D1BC /* ContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		B0E8E3111DD7B2A50077D1BC /* SocialService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialService.swift; sourceTree = "<group>"; };
 		B0E8E3131DD7B64D0077D1BC /* SocialReducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialReducer.swift; sourceTree = "<group>"; };
-		B0E8E3151DD989F30077D1BC /* ProfilePictureMessageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilePictureMessageView.swift; sourceTree = "<group>"; };
-		B0E8E3171DD98A060077D1BC /* ProfilePictureMessageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfilePictureMessageView.xib; sourceTree = "<group>"; };
 		B0E8E3191DDACE480077D1BC /* UserService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		B0E8E31C1DDB817B0077D1BC /* DismissAnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissAnimationController.swift; sourceTree = "<group>"; };
 		B0E8E31D1DDB817B0077D1BC /* DismissInteractiveTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissInteractiveTransition.swift; sourceTree = "<group>"; };
@@ -493,8 +489,6 @@
 				B0E591561DD1218D00C032D6 /* SettingsViewController.swift */,
 				B0305A511DBE6F15009B5F74 /* WebViewController.swift */,
 				B0E8E30B1DD7739B0077D1BC /* ContainerViewController.swift */,
-				B0E8E3151DD989F30077D1BC /* ProfilePictureMessageView.swift */,
-				B0E8E3171DD98A060077D1BC /* ProfilePictureMessageView.xib */,
 				B07E54CB1E0B235B008C2D23 /* ProfileHeaderView.swift */,
 				B07E54CC1E0B235B008C2D23 /* ProfileHeaderView.xib */,
 				B07E54D11E0C8ADE008C2D23 /* EditProfileViewController.swift */,
@@ -872,7 +866,6 @@
 				B0351FB71DED0503000A4BF5 /* Info.plist in Resources */,
 				B09D26F51E2A29B7009433EC /* ChatTitleView.xib in Resources */,
 				B0B35DFC1E1F716800E4546D /* LocationHeaderView.xib in Resources */,
-				B0E8E3181DD98A060077D1BC /* ProfilePictureMessageView.xib in Resources */,
 				B079BE871DA557B00042B586 /* PhotoCell.xib in Resources */,
 				B0FF114C1D3EB32100D709CE /* Assets.xcassets in Resources */,
 				B06BC6711E25965A0045D920 /* SendLocationHeaderView.xib in Resources */,
@@ -1036,7 +1029,6 @@
 				B05ABCFD1D41185200364322 /* Reducer.swift in Sources */,
 				B0B35DFA1E1F715D00E4546D /* LocationHeaderView.swift in Sources */,
 				B02D4C3A1DC85A0F004E2673 /* Event.swift in Sources */,
-				B0E8E3161DD989F30077D1BC /* ProfilePictureMessageView.swift in Sources */,
 				767729841D5116930052CA17 /* CWStatusBarNotificationUtils.swift in Sources */,
 				B0254F781DB01FAE0082D898 /* JSQMessagesService.swift in Sources */,
 				B0E8E3471DE2167A0077D1BC /* ListHeaderView.swift in Sources */,

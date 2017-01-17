@@ -159,6 +159,7 @@ class ProfileHeaderView: UICollectionReusableView {
     
     
     func setUserStatus(status:FollowingStatus) {
+        if self.status == status { return }
         self.status = status
         print("UPDATE USER STATUS")
         switch status {

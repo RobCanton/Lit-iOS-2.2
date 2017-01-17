@@ -69,10 +69,7 @@ class UsersListViewController: UIViewController, UITableViewDelegate, UITableVie
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Plain, target: nil, action: nil)
-        
-        let navHeight = screenStatusBarHeight + navigationController!.navigationBar.frame.height
         
         tableView = UITableView(frame:  CGRectMake(0, 0, view.frame.width, view.frame.height))
         
@@ -95,71 +92,13 @@ class UsersListViewController: UIViewController, UITableViewDelegate, UITableVie
         tableView.backgroundColor = UIColor.blackColor()
         view.backgroundColor = UIColor.blackColor()
         
-        switch type {
-        case .Visitors:
-            userIds = location!.getVisitors()
-            break
-        case .Friends:
-            getUserFriends()
-            break
-        case .Likes:
-            getLikers()
-            break
-        case .FacebookFriends:
-            FacebookGraph.getFacebookFriends({ _userIds in
-                self.userIds = _userIds
-            })
-            break
-        default:
+        if tempIds.count > 0 {
             userIds = tempIds
-            break
         }
+//        FacebookGraph.getFacebookFriends({ _userIds in
+//            self.userIds = _userIds
+//        })
     }
-    
-    func getUserFriends() {
-        
-        let ref = FirebaseService.ref.child("users/social/friends/\(uid!)")
-        ref.observeSingleEventOfType(.Value, withBlock: { snapshot in
-            var _users = [String]()
-            if snapshot.exists() {
-                for user in snapshot.children {
-                    let uid = user.key!!
-                    _users.append(uid)
-                }
-                self.userIds = _users
-            }
-        })
-    }
-    
-    func getLikers() {
-        let ref = FirebaseService.ref.child("uploads/\(postKey!)/likes")
-        ref.observeSingleEventOfType(.Value, withBlock: { snapshot in
-            var _users = [String]()
-            if snapshot.exists() {
-                for user in snapshot.children {
-                    let uid = user.key!!
-                    _users.append(uid)
-                }
-                self.userIds = _users
-            }
-        })
-    }
-    
-    func setTypeToGuests(location:Location) {
-        self.location = location
-        self.type = .Visitors
-    }
-    
-    func setTypeToFriends(uid:String) {
-        self.uid = uid
-        self.type = .Friends
-    }
-    
-    func setTypeToLikes(postKey:String) {
-        self.postKey = postKey
-        self.type = .Likes
-    }
-    
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return users.count
