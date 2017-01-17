@@ -9,7 +9,6 @@
 import UIKit
 import AVFoundation
 import NVActivityIndicatorView
-import SwiftMessages
 
 
 public class StoryViewController: UICollectionViewCell, StoryProtocol {
@@ -32,7 +31,6 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
     var storyCompleteHandler:(()->())?
     
     func showOptions(){
-        print("HOW ABOUT HERE?")
         pauseStory()
         optionsTappedHandler?()
     }
@@ -115,7 +113,6 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
     }
     
     func setupItem() {
-        print("SETUP ITEM: \(viewIndex)")
         pauseVideo()
         
         guard let items = story.items else { return }
@@ -193,7 +190,6 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
     }
     
     func setForPlay() {
-        print("VIEW INDEX: \(viewIndex) | SHOULD PLAY: \(shouldPlay)")
         if story.state != .ContentLoaded {
             shouldPlay = true
             return
@@ -223,7 +219,6 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
     }
     
     func nextItem() {
-        print("NEXT ITEM: \(viewIndex) +1")
         viewIndex += 1
         shouldPlay = true
         
@@ -231,7 +226,6 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
     }
     
     func prevItem() {
-        print("PREV ITEM: \(viewIndex) -1")
         if viewIndex > 0 {
             viewIndex -= 1
         }
@@ -284,7 +278,6 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
     }
     
     func pauseStory() {
-        print("PAUSE STORY")
         killTimer()
         self.resetVideo()
         progressBar?.resetActiveIndicator()

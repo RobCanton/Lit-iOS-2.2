@@ -10,7 +10,6 @@ import UIKit
 import Firebase
 import ReSwift
 
-var dataSaveMode = false
 
 class LocViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, UINavigationControllerDelegate {
     
@@ -34,7 +33,6 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        print("viewWillAppear")
         listenToUserUploads()
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(handleEnterForeground), name:
@@ -43,7 +41,6 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        print("viewWillDisappear")
         FirebaseService.ref.child("locations/uploads/\(location.getKey())").removeAllObservers()
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
@@ -120,7 +117,6 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
             //print("Stories unchanged. No download required")
             //print("Current: \(storiesDictionary) | Temp: \(tempDictionary)")
         } else {
-            print("Stories updated. Download initiated")
             storiesDictionary = tempDictionary
             var stories = [UserStory]()
             for (uid, itemKeys) in storiesDictionary {

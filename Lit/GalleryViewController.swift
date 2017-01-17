@@ -10,7 +10,7 @@
 import UIKit
 import AVFoundation
 import NVActivityIndicatorView
-import BRYXBanner
+
 
 class GalleryViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIGestureRecognizerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate {
     
@@ -63,7 +63,6 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
         
         let indexPath: NSIndexPath = self.collectionView.indexPathsForVisibleItems().first!
         if let cell = collectionView.cellForItemAtIndexPath(indexPath) as? PresentedCollectionViewCell {
-            print("WE EVER GET HERE?")
             cell.setForPlay()
         }
     }
@@ -77,7 +76,6 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
-        print("viewDidDisappear")
         tabBarRef.setTabBarVisible(true, animated: true)
         
         for cell in collectionView.visibleCells() as! [PresentedCollectionViewCell] {
@@ -122,7 +120,7 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
     }()
     
     func appMovedToBackground() {
-        print("App moved to background!")
+
         popStoryController(false)
     }
     
@@ -131,10 +129,7 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
         let initialPath = self.transitionController.userInfo!["initialIndexPath"] as! NSIndexPath
         self.transitionController.userInfo!["destinationIndexPath"] = indexPath
         self.transitionController.userInfo!["initialIndexPath"] = NSIndexPath(forItem: indexPath.item, inSection: initialPath.section)
-        print("SHOULD POP!")
-        if let nav = navigationController {
-            print("DEF SHOULD POP")
-        }
+
         navigationController?.popViewControllerAnimated(animated)
     }
     

@@ -8,13 +8,6 @@
 
 import ReSwift
 
-struct AddFriend: Action {
-    let uid: String
-}
-
-struct RemoveFriend: Action {
-    let uid: String
-}
 
 struct AddFriendRequestIn: Action {
     let uid: String
@@ -41,7 +34,6 @@ struct RemoveFriendRequestOut: Action {
 }
 
 /* Destructive Actions */
-struct ClearFriends: Action {}
 struct ClearFriendRequestsIn: Action {}
 struct ClearFriendRequestsOut: Action {}
 

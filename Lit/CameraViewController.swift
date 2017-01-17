@@ -10,7 +10,6 @@ import UIKit
 import AVFoundation
 import RecordButton
 import Firebase
-import MapKit
 import CoreLocation
 
 
@@ -39,9 +38,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     @IBOutlet weak var videoLayer: UIView!
     @IBOutlet weak var cameraView: UIView!
     @IBOutlet weak var dismissBtn: UIButton!
-    
-
-
+ 
     
     var captureSession: AVCaptureSession?
     var stillImageOutput: AVCaptureStillImageOutput?

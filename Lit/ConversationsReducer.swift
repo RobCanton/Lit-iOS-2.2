@@ -20,7 +20,6 @@ func getNonEmptyConversations() -> [Conversation] {
 }
 
 func checkForExistingConversation(partner_uid:String) -> Conversation? {
-    print("Looking for conversation")
     for conversation in mainStore.state.conversations {
         print(conversation.getPartnerId())
         if conversation.getPartnerId() == partner_uid {
@@ -57,7 +56,6 @@ func ConversationsReducer(action: Action, state:[Conversation]?) -> [Conversatio
     switch action {
     case _ as ConversationAdded:
         let a = action as! ConversationAdded
-        print("CONVERSATION ADDED")
         state.append(a.conversation)
         break
     case _ as NewMessageInConversation:

@@ -161,7 +161,6 @@ class ProfileHeaderView: UICollectionReusableView {
     func setUserStatus(status:FollowingStatus) {
         if self.status == status { return }
         self.status = status
-        print("UPDATE USER STATUS")
         switch status {
         case .CurrentUser:
             followButton.backgroundColor = UIColor.clearColor()
@@ -207,17 +206,14 @@ class ProfileHeaderView: UICollectionReusableView {
     
 
     func handleFollowersTap(sender:UITapGestureRecognizer) {
-        print("handleFollowersTap")
         followersHandler?()
     }
     
     func handleFollowingTap(sender:UITapGestureRecognizer) {
-        print("handleFollowingTap")
         followingHandler?()
     }
     
     func handleMessageTap(sender:UITapGestureRecognizer) {
-        print("handleMessageTap")
         messageHandler?()
     }
 }

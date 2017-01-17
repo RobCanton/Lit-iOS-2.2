@@ -92,9 +92,7 @@ class ActivityViewController: UITableViewController, UISearchBarDelegate {
             }
 
             if self.myStoryKeys == itemKeys {
-                print("MyStory unchanged.")
             } else {
-                print("MyStory changed.")
                 if itemKeys.count > 0 {
                     self.myStoryKeys = itemKeys
                     let myStory = UserStory(user_id: uid, postKeys: self.myStoryKeys, timestamp: timestamp)
@@ -148,10 +146,8 @@ class ActivityViewController: UITableViewController, UISearchBarDelegate {
     func crossCheckStories(tempDictionary:[String:[String]], timestamps:[String:Double]) {
         
         if NSDictionary(dictionary: storiesDictionary).isEqualToDictionary(tempDictionary) {
-            //print("Stories unchanged. No download required")
-            //print("Current: \(storiesDictionary) | Temp: \(tempDictionary)")
+
         } else {
-            print("Stories updated. Download initiated")
             storiesDictionary = tempDictionary
             var stories = [UserStory]()
             for (uid, itemKeys) in storiesDictionary {

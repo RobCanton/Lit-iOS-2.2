@@ -8,11 +8,9 @@
 
 import Firebase
 import ReSwift
-import IngeoSDK
 import AVFoundation
 import FBSDKCoreKit
 import FBSDKLoginKit
-import BRYXBanner
 import Whisper
 
 
@@ -42,14 +40,12 @@ class FirebaseService {
         mainStore.dispatch(ClearLocations())
         mainStore.dispatch(ClearFriendRequestsIn())
         mainStore.dispatch(ClearFriendRequestsOut())
-        mainStore.dispatch(ClearFriends())
         mainStore.dispatch(ClearSocialState())
         mainStore.dispatch(UserIsUnauthenticated())
     }
     
     static func login(user:User) {
         mainStore.dispatch(UserIsAuthenticated(user: user))
-        Listeners.startListeningToFriends()
         Listeners.startListeningToFriendRequests()
         Listeners.startListeningToConversations()
         Listeners.startListeningToFollowers()
@@ -546,70 +542,7 @@ class FirebaseService {
             }
         }
     }
-    
-    static func handleFriendAction(uid:String, status:FriendStatus) {
-        switch status {
-        case .FRIENDS:
-            break
-        case .NOT_FRIENDS:
-            FirebaseService.sendFriendRequest(uid)
-            break
-        case .PENDING_INCOMING:
-            FirebaseService.acceptFriendRequest(uid)
-            break
-        case .PENDING_INCOMING_SEEN:
-            FirebaseService.acceptFriendRequest(uid)
-            break
-        case .PENDING_OUTGOING:
-            break
-        default:
-            break
-        }
-    }
-    
-    
-    static func sendFriendRequest(friend_uid:String) {
-        
-        let uid = mainStore.state.userState.uid
-        print("FRIEND UID \(friend_uid)")
-        let userRef = FirebaseService.ref.child("users/social/requestsOut/\(uid)/\(friend_uid)")
-        userRef.setValue(false)
-        print("USERREF: \(userRef)")
-        let friendRef = FirebaseService.ref.child("users/social/requestsIn/\(friend_uid)/\(uid)")
-        friendRef.setValue(false, withCompletionBlock: {
-            error, ref in
-        })
-    }
-    
-    static func acceptFriendRequest(friend_uid:String) {
-        print("ACCEPT FRIEND REQUEST: \(friend_uid)")
-        let uid = mainStore.state.userState.uid
-        ref.child("users/social/friends/\(uid)/\(friend_uid)").setValue(true)
-        ref.child("users/social/friends/\(friend_uid)/\(uid)").setValue(true)
-        ref.child("users/social/requestsOut/\(friend_uid)/\(uid)").removeValue()
-        ref.child("users/social/requestsIn/\(uid)/\(friend_uid)").removeValue()
-        incrementUserFriends(uid)
-        incrementUserFriends(friend_uid)
-    }
-    
-    static func incrementUserFriends(uid:String) {
-        let userRef = ref.child("users/profile/\(uid)")
-        userRef.child("numFriends").runTransactionBlock({ (currentData: FIRMutableData) -> FIRTransactionResult in
-            if var numFriends = currentData.value as? Int {
-                
-                numFriends += 1
-                currentData.value = numFriends
-                
-                return FIRTransactionResult.successWithValue(currentData)
-            }
-            return FIRTransactionResult.successWithValue(currentData)
-        }) { (error, committed, snapshot) in
-            if let error = error {
-                print(error.localizedDescription)
-            }
-        }
-    }
-    
+
     static func addView(postKey:String, uid:String) {
         
         let postRef = ref.child("uploads/\(postKey)")

@@ -28,7 +28,6 @@ class LocationStoriesViewController: StoriesViewController {
     }
     
     override func showOptions() {
-        print("DO WE GET HERE?")
         guard let cell = getCurrentCell() else { return }
         guard let item = cell.item else {
             cell.setForPlay()
@@ -206,7 +205,6 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     
     func appMovedToBackground() {
-        print("App moved to background!")
         popStoryController(false)
     }
     
@@ -273,7 +271,6 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     
     func showOptions() {
-        print("DO WE GET HERE?")
         guard let cell = getCurrentCell() else { return }
         guard let item = cell.item else {
             cell.setForPlay()

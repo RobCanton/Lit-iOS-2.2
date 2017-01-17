@@ -12,7 +12,6 @@ import ReSwift
 class SocialService {
     
 
-    
     static let ref = FIRDatabase.database().reference()
 
     static func followUser(uid:String) {

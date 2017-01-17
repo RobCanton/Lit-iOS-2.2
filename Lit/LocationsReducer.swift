@@ -51,20 +51,3 @@ func ActiveLocationsReducer(action: Action, state:[Int]?) -> [Int] {
     }
     return state
 }
-
-func CitiesReducer(action: Action, state:[City]?) -> [City] {
-    var state = state ?? [City]()
-    
-    switch action {
-    case _ as CitiesRetrieved:
-        let a = action as! CitiesRetrieved
-        state = a.cities
-        break
-    case _ as ClearCities:
-        state = [City]()
-        break
-    default:
-        break
-    }
-    return state
-}

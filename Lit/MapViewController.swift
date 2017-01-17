@@ -42,15 +42,6 @@ class MapViewController: UIViewController {
         let a = MapPin(coordinate: coordinate, title: location.getName(), subtitle: location.getAddress())
         mapView.addAnnotation(a)
         
-//        let navHeight = screenStatusBarHeight + navigationController!.navigationBar.frame.height
-//        
-//        statusBarBG = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: navHeight))
-//        statusBarBG.backgroundColor = UIColor.clearColor()
-//        let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .Dark))
-//        blurView.frame = statusBarBG.bounds
-//        statusBarBG.addSubview(blurView)
-//        view.addSubview(statusBarBG)
-        
     }
     
     func setMapLocation(_location:Location) {

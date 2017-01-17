@@ -668,7 +668,7 @@
             </objects>
             <point key="canvasLocation" x="4802" y="301"/>
         </scene>
-        <!--Activity-->
+        <!--Stories-->
         <scene sceneID="UB6-YX-cdM">
             <objects>
                 <tableViewController restorationIdentifier="ActivityViewController" storyboardIdentifier="ActivityViewController" id="t2W-A8-Ssg" customClass="ActivityViewController" customModule="Lit" customModuleProvider="target" sceneMemberID="viewController">
@@ -691,7 +691,7 @@
                             <outlet property="delegate" destination="t2W-A8-Ssg" id="7pt-Ey-GNe"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Activity" id="hTe-4Q-KLM">
+                    <navigationItem key="navigationItem" title="Stories" id="hTe-4Q-KLM">
                         <barButtonItem key="rightBarButtonItem" image="find_user" id="VB8-ws-qo0">
                             <connections>
                                 <action selector="showUserSearch:" destination="t2W-A8-Ssg" id="9oR-fo-Dsk"/>

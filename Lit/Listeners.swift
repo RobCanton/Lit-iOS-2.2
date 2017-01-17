@@ -24,7 +24,6 @@ class Listeners {
     
     
     static func stopListeningToAll() {
-        stopListeningToFriends()
         stopListeningToLocations()
         stopListeningToConversatons()
         stopListeningToFriendRequests()
@@ -33,39 +32,6 @@ class Listeners {
         stopListeningToResponses()
     }
     
-    static func startListeningToFriends() {
-        if !listeningToFriends {
-            listeningToFriends = true
-            let uid = mainStore.state.userState.uid
-            let friendsRef = ref.child("users/social/friends/\(uid)")
-            
-            /**
-             Listen for a Friend Added
-             */
-            friendsRef.observeEventType(.ChildAdded, withBlock: { snapshot in
-                if snapshot.exists() {
-                    mainStore.dispatch(AddFriend(uid: snapshot.key))
-                }
-            })
-            
-            /**
-             Listen for a Friend Removed
-             */
-            friendsRef.observeEventType(.ChildRemoved, withBlock: { snapshot in
-                if snapshot.exists() {
-                    mainStore.dispatch(RemoveFriend(uid: snapshot.key))
-                }
-            })
-        }
-    }
-    
-    static func stopListeningToFriends() {
-        let uid = mainStore.state.userState.uid
-        let friendsRef = ref.child("users/social/friends/\(uid)")
-        friendsRef.removeAllObservers()
-        
-        listeningToFriends = false
-    }
     
     static func startListeningToLocations() {
         if !listeningToLocations {
@@ -114,7 +80,6 @@ class Listeners {
             requestsInRef.observeEventType(.ChildAdded, withBlock: { snapshot in
                 if snapshot.exists() {
                     if let seen = snapshot.value! as? Bool {
-                        print("Friend request in!")
                         mainStore.dispatch(AddFriendRequestIn(uid: snapshot.key, seen: seen))
                     }
 
@@ -187,15 +152,12 @@ class Listeners {
             listeningToConversations = true
             let uid = mainStore.state.userState.uid
             let conversationsRef = ref.child("users/conversations/\(uid)")
-            print(conversationsRef)
             conversationsRef.observeEventType(.ChildAdded, withBlock: { snapshot in
-                print("walk")
                 if snapshot.exists() {
                     let partner = snapshot.key
                     let conversationKey = snapshot.value! as! String
                     let conversation = Conversation(key: conversationKey, partner_uid: partner)
                     
-                    print("\(partner) - key \(conversationKey)")
                     mainStore.dispatch(ConversationAdded(conversation: conversation))
                 }
             })
@@ -221,7 +183,6 @@ class Listeners {
             followersRef.observeEventType(.ChildAdded, withBlock: { snapshot in
                 if snapshot.exists() {
                     if let seen = snapshot.value! as? Bool {
-                        print("Friend request in!")
                         mainStore.dispatch(AddFollower(uid: snapshot.key))
                     }
                     
@@ -256,7 +217,6 @@ class Listeners {
             followingRef.observeEventType(.ChildAdded, withBlock: { snapshot in
                 if snapshot.exists() {
                     if let seen = snapshot.value! as? Bool {
-                        print("Friend request in!")
                         mainStore.dispatch(AddFollowing(uid: snapshot.key))
                     }
                     

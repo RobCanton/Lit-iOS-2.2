@@ -230,7 +230,6 @@ extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigati
     func previewNewImage(image:UIImage) {
         
         dispatch_async(dispatch_get_main_queue(), {
-            print("Previewing new image")
             self.didEdit = true
             self.profileImageChanged = true
             self.headerView.imageView.image = image

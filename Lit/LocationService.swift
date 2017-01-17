@@ -33,16 +33,11 @@ class LocationService {
     }
     
     static func handleLocationsResponse(locationKeys:[String:Double]) {
-//        if compareLocationsList(locationKeys) {
-//            print("Locations are equal. No action required")
-//        } else {
-//            print("Locations changed. Dispatch required")
-            getLocations(locationKeys, completionHandler:  { locations in
-                Listeners.stopListeningToLocations()
-                mainStore.dispatch(LocationsRetrieved(locations: locations))
-                Listeners.startListeningToLocations()
-            })
-//        }
+        getLocations(locationKeys, completionHandler:  { locations in
+            Listeners.stopListeningToLocations()
+            mainStore.dispatch(LocationsRetrieved(locations: locations))
+            Listeners.startListeningToLocations()
+        })
     }
     
 
@@ -54,10 +49,6 @@ class LocationService {
         
         if activeLocationKey != currentLocationKey {
             let uid = mainStore.state.userState.uid
-//            let locationRef = ref.child("visitors/\(activeLocationKey)/\(uid)")
-//            locationRef.setValue([".sv": "timestamp"])
-//            let userRef = FirebaseService.ref.child("users/visits/\(uid)/\(activeLocationKey)")
-//            userRef.setValue([".sv": "timestamp"])
             mainStore.dispatch(SetActiveLocation(locationKey: activeLocationKey))
         }
         
@@ -165,26 +156,4 @@ class LocationService {
                 completionHandler(cities: cities)
             })
     }
-    
-    static func calculateNearbyArea(latitude:Double, longitude:Double){
-        shouldCalculateNearbyArea = false
-        let coord = CLLocation(latitude: latitude, longitude: longitude)
-        var minDistance = Double(MAXFLOAT)
-        var nearestCity:City!
-        let cities = mainStore.state.cities
-        for city in cities {
-            let cityCoords = city.getCoordinates()
-            let distance = cityCoords.distanceFromLocation(coord)
-            if distance < minDistance {
-                minDistance = distance
-                nearestCity = city
-            }
-        }
-
-        let lastLocationString = nearestCity.getKey()
-        let ref = FIRDatabase.database().reference().child("users/lastLocation/\(mainStore.state.userState.uid)")
-        ref.setValue(lastLocationString)
-    }
-
-    
 }

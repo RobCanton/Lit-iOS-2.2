@@ -21,18 +21,6 @@ struct UpdateUser: Action {
     let user: User
 }
 
-struct UpdateFriendRequestsIn: Action {
-    let requests:[String:FriendRequest]
-    let unseen: Int
-}
-struct UpdateFriendRequestsOut: Action {
-    let requests:[String:FriendRequest]
-}
-
-
-struct UpdateFriends: Action {
-    let friends:[String:Friend]
-}
 
 struct UpdateProfileImageURL: Action {
     let largeImageURL: String

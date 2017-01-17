@@ -6,18 +6,13 @@
 //  Copyright © 2016 Robert Canton. All rights reserved.
 //
 
-import Foundation
 import ReSwift
-import CoreLocation
-import IngeoSDK
 
 
 struct AppState: StateType {
     var userState: UserState
     var locations: [Location]
     var activeLocations:[Int]
-    var cities: [City]
-    var friends = Tree<String>()
     var friendRequestsIn = [String:Bool]()
     var friendRequestsOut = [String:Bool]()
     var conversations = [Conversation]()

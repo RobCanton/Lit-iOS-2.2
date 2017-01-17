@@ -43,12 +43,10 @@ class GPSService: NSObject, CLLocationManagerDelegate {
     }
     
     func startUpdatingLocation() {
-        print("Starting Location Updates")
         self.locationManager?.startUpdatingLocation()
     }
     
     func stopUpdatingLocation() {
-        print("Stop Location Updates")
         self.locationManager?.stopUpdatingLocation()
     }
     

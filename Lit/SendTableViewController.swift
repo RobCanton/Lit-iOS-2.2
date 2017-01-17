@@ -55,7 +55,6 @@ class SendViewController: UIViewController, UITableViewDataSource, UITableViewDe
             }
             upload.videoURL = outputUrl
             FirebaseService.compressVideo(videoURL, outputURL: outputUrl, handler: { session in
-                print("here: \(session.status)")
                 /*
                  T0D0 - HANDLE COMPRESSION ERRORS
                  */
@@ -86,8 +85,6 @@ class SendViewController: UIViewController, UITableViewDataSource, UITableViewDe
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        print("UPLOAD: \(upload.image) | \(upload.videoURL)")
         sendTap = UITapGestureRecognizer(target: self, action: #selector(send))
         toggleSendView()
         

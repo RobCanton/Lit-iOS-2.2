@@ -166,14 +166,6 @@ class Location:NSObject, NSCoding {
         return postKeys
     }
     
-    func collectInfo() {
-        friendsCount = 0
-        for visitor in visitors {
-            if mainStore.state.friends.contains(visitor) {
-                friendsCount += 1
-            }
-        }
-    }
     
     func setDistance(distance:Double) {
         self.distance = distance
