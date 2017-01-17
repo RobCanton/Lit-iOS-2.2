@@ -11,10 +11,8 @@ import Firebase
 
 class SettingsViewController: UITableViewController {
 
-    
-    
+    @IBOutlet weak var addFacebookFriends: UITableViewCell!
     @IBOutlet weak var notificationsSwitch: UISwitch!
-    
     @IBOutlet weak var privacyPolicy: UITableViewCell!
     @IBOutlet weak var logout: UITableViewCell!
     
@@ -58,9 +56,9 @@ class SettingsViewController: UITableViewController {
         if let cell = self.tableView.cellForRowAtIndexPath(indexPath) {
         
             switch cell {
-            //case addFacebookFriends:
-               // showAddFacebookFriendsView()
-                //break
+            case addFacebookFriends:
+                self.performSegueWithIdentifier("toAddFacebookFriends", sender: self)
+                break
             case privacyPolicy:
                 showPrivacyPolicy()
                 break
@@ -75,13 +73,6 @@ class SettingsViewController: UITableViewController {
         }
     }
     
-    func showAddFacebookFriendsView(){
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let controller = storyboard.instantiateViewControllerWithIdentifier("UsersListViewController") as! UsersListViewController
-        controller.title = "Add Friends"
-        controller.type = UsersListType.FacebookFriends
-        self.parentViewController?.navigationController?.pushViewController(controller, animated: true)
-    }
     
     @IBAction func toggleNotificationsSwitch(sender: UISwitch) {
         if sender.on {

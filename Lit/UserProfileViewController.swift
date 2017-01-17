@@ -275,7 +275,9 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
             view.followersHandler = followersBlockTapped
             view.followingHandler = followingBlockTapped
             view.messageHandler = messageBlockTapped
+            
             view.editProfileHandler = editProfileTapped
+            view.unfollowHandler = unfollowHandler
             view.setPostsCount(postKeys.count)
             view.setFollowersCount(followers.count)
             view.setFollowingCount(following.count)
@@ -309,6 +311,24 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
             self.posts = [StoryItem]()
             self.collectionView!.reloadData()
         }
+    
+    }
+    
+    func unfollowHandler(user:User) {
+        let actionSheet = UIAlertController(title: nil, message: "Unfollow \(user.getDisplayName())?", preferredStyle: .ActionSheet)
+        
+        let cancelActionButton: UIAlertAction = UIAlertAction(title: "Cancel", style: .Cancel) { action -> Void in
+        }
+        actionSheet.addAction(cancelActionButton)
+        
+        let saveActionButton: UIAlertAction = UIAlertAction(title: "Unfollow", style: .Destructive)
+        { action -> Void in
+            
+            SocialService.unfollowUser(user.getUserId())
+        }
+        actionSheet.addAction(saveActionButton)
+        
+        self.presentViewController(actionSheet, animated: true, completion: nil)
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

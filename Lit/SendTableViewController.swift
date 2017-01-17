@@ -155,6 +155,11 @@ class SendViewController: UIViewController, UITableViewDataSource, UITableViewDe
         if section == 1 {
             let headerView = UINib(nibName: "SendLocationHeaderView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! SendLocationHeaderView
             headerView.hidden = false
+            if activeLocations.count == 0 {
+                headerView.label.text = "No nearby locations."
+            } else {
+                headerView.label.text = "Select a nearby location."
+            }
             return headerView
         }
         return nil

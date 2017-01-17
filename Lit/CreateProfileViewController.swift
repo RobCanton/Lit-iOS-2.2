@@ -75,7 +75,7 @@ class CreateProfileViewController: UIViewController, UITextFieldDelegate, UIImag
         scrollView.addSubview(bodyView)
         view.addSubview(scrollView)
         
-        usernameField = MadokaTextField(frame: CGRect(x: 0, y: 0, width: self.view.frame.width * 0.80, height: 64))
+        usernameField = MadokaTextField(frame: CGRect(x: 0, y: 0, width: self.view.frame.width * 0.86, height: 64))
         usernameField.placeholderColor = .whiteColor()
         usernameField.borderColor = .whiteColor()
         usernameField.textColor = .whiteColor()
@@ -89,7 +89,7 @@ class CreateProfileViewController: UIViewController, UITextFieldDelegate, UIImag
         usernameField.keyboardAppearance = .Dark
 
         
-        fullnameField = MadokaTextField(frame: CGRect(x: 0, y: 0, width: self.view.frame.width * 0.80, height: 64))
+        fullnameField = MadokaTextField(frame: CGRect(x: 0, y: 0, width: self.view.frame.width * 0.86, height: 64))
         fullnameField.placeholderColor = .whiteColor()
         fullnameField.borderColor = .whiteColor()
         fullnameField.textColor = .whiteColor()
@@ -212,16 +212,15 @@ class CreateProfileViewController: UIViewController, UITextFieldDelegate, UIImag
             
             FirebaseService.getUser(user.uid, completionHandler: { _user in
                 if _user != nil {
-                    FirebaseService.login(_user!)
+
                     FacebookGraph.getFacebookFriends({ _userIds in
                         FirebaseService.login(_user!)
                         if _userIds.count == 0 {
                             self.performSegueWithIdentifier("showLit", sender: self)
                         } else {
                             dispatch_async(dispatch_get_main_queue(), {
-                                self.user = _user
                                 self.fbFriend_uids = _userIds
-                                self.performSegueWithIdentifier("toAddFriends", sender: self)
+                                self.performSegueWithIdentifier("toAddFacebookFriends", sender: self)
                             })
                         }
                     })
@@ -234,12 +233,9 @@ class CreateProfileViewController: UIViewController, UITextFieldDelegate, UIImag
     var user: User?
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "toAddFriends" {
-            let controller = segue.destinationViewController as! UsersListViewController
-            controller.title = "Add Friends"
-            controller.addDoneButton()
-            controller.userIds = fbFriend_uids!
-            controller.user = user!
+        if segue.identifier == "toAddFacebookFriends" {
+            let controller = segue.destinationViewController as! FacebookFriendsListViewController
+            controller.fbIds = fbFriend_uids
         }
     }
     

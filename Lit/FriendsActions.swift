@@ -60,3 +60,5 @@ struct AddFollowing: Action {
 struct RemoveFollowing: Action {
     let uid: String
 }
+
+struct ClearSocialState: Action {}

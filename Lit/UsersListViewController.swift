@@ -10,13 +10,64 @@ import ReSwift
 import UIKit
 import FBSDKCoreKit
 
-enum UsersListType {
-    case Friends, Likes, Visitors, FacebookFriends, None
+class FacebookFriendsListViewController: UsersListViewController {
+    
+    var fbIds:[String]?
+    
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.title = "Facebook Friends"
+        
+        
+        if fbIds != nil {
+            let done = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: #selector(handleDone))
+            self.navigationItem.rightBarButtonItem = done
+            
+            self.navigationItem.setHidesBackButton(true, animated: false)
+            
+            setFacebookFriends()
+        } else {
+            
+
+
+            FacebookGraph.getFacebookFriends({ _userIds in
+                if _userIds.count == 0 {
+                    self.performSegueWithIdentifier("showLit", sender: self)
+                } else {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.fbIds = _userIds
+                        self.setFacebookFriends()
+                    })
+                }
+            })
+        }
+    }
+    
+    func setFacebookFriends() {
+        
+        var newFriendsList = [String]()
+        let following = mainStore.state.socialState.following
+        for id in fbIds! {
+            if !following.contains(id) {
+                newFriendsList.append(id)
+            }
+        }
+        self.userIds = newFriendsList
+    }
+    
+    func handleDone() {
+        self.performSegueWithIdentifier("showLit", sender: self)
+    }
+    
+    
+    override  func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
 }
 
 class UsersListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, StoreSubscriber {
-    
-    var type = UsersListType.None
     
     var location:Location?
     var uid:String?
@@ -95,9 +146,23 @@ class UsersListViewController: UIViewController, UITableViewDelegate, UITableVie
         if tempIds.count > 0 {
             userIds = tempIds
         }
-//        FacebookGraph.getFacebookFriends({ _userIds in
-//            self.userIds = _userIds
-//        })
+    }
+    
+    func unfollowHandler(user:User) {
+        let actionSheet = UIAlertController(title: nil, message: "Unfollow \(user.getDisplayName())?", preferredStyle: .ActionSheet)
+        
+        let cancelActionButton: UIAlertAction = UIAlertAction(title: "Cancel", style: .Cancel) { action -> Void in
+        }
+        actionSheet.addAction(cancelActionButton)
+        
+        let saveActionButton: UIAlertAction = UIAlertAction(title: "Unfollow", style: .Destructive)
+        { action -> Void in
+            
+            SocialService.unfollowUser(user.getUserId())
+        }
+        actionSheet.addAction(saveActionButton)
+        
+        self.presentViewController(actionSheet, animated: true, completion: nil)
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -115,6 +180,7 @@ class UsersListViewController: UIViewController, UITableViewDelegate, UITableVie
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! UserViewCell
         cell.setupUser(users[indexPath.item].getUserId())
+        cell.unfollowHandler = unfollowHandler
         let labelX = cell.usernameLabel.frame.origin.x
         cell.separatorInset = UIEdgeInsetsMake(0, labelX, 0, 0)
         return cell

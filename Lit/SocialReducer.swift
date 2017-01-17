@@ -55,6 +55,9 @@ func SocialReducer(action: Action, state:SocialState?) -> SocialState {
         state.following.remove(a.uid)
         print("Following Removed - \(a.uid)")
         break
+    case _ as ClearSocialState:
+        state = SocialState()
+        break
     default:
         break
     }

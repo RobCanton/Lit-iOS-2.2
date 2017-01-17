@@ -32,6 +32,9 @@ class UserStoryTableViewCell: UITableViewCell, StoryProtocol {
     }
     
     func activate(animated:Bool) {
+        guard let story = userStory else { return }
+        guard let items = story.items else { return }
+        if items.count == 0 { return }
         if animated {
             let color:CABasicAnimation = CABasicAnimation(keyPath: "borderColor")
             color.fromValue = UIColor.blackColor().CGColor

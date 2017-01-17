@@ -10,6 +10,7 @@ import UIKit
 
 class SendLocationHeaderView: UIView {
 
+    @IBOutlet weak var label: UILabel!
     /*
     // Only override drawRect: if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.

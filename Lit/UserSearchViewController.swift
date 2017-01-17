@@ -149,6 +149,8 @@ class UserSearchViewController: UITableViewController, UISearchBarDelegate {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("UserCell", forIndexPath: indexPath) as! UserViewCell
+        cell.followButton.enabled = false
+        cell.followButton.alpha = 0.0
         cell.setupUser(userIds[indexPath.item]) 
         return cell
     }

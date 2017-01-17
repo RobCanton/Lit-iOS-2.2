@@ -157,7 +157,7 @@ class ProfileHeaderView: UICollectionReusableView {
         followingLabel.styleProfileBlockText(count, text: "following", color: subColor, color2: UIColor.whiteColor())
     }
     
-    
+    var unfollowHandler:((user:User)->())?
     func setUserStatus(status:FollowingStatus) {
         if self.status == status { return }
         self.status = status
@@ -194,7 +194,7 @@ class ProfileHeaderView: UICollectionReusableView {
             editProfileHandler?()
             break
         case .Following:
-            SocialService.unfollowUser(user.getUserId())
+            unfollowHandler?(user: user)
             break
         case .None:
             setUserStatus(.Requested)

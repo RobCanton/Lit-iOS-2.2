@@ -43,6 +43,7 @@ class FirebaseService {
         mainStore.dispatch(ClearFriendRequestsIn())
         mainStore.dispatch(ClearFriendRequestsOut())
         mainStore.dispatch(ClearFriends())
+        mainStore.dispatch(ClearSocialState())
         mainStore.dispatch(UserIsUnauthenticated())
     }
     

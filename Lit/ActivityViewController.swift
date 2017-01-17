@@ -45,7 +45,6 @@ class ActivityViewController: UITableViewController, UISearchBarDelegate {
     }
     
     func handleEnterForeground() {
-        print("APP ENTERED FOREGROUND")
         myStory?.determineState()
         for story in self.userStories {
             story.determineState()
