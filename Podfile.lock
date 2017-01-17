@@ -1,15 +1,10 @@
 PODS:
-  - ARNTransitionAnimator (1.1.0)
   - Bolts (1.8.4):
     - Bolts/AppLinks (= 1.8.4)
     - Bolts/Tasks (= 1.8.4)
   - Bolts/AppLinks (1.8.4):
     - Bolts/Tasks
   - Bolts/Tasks (1.8.4)
-  - BRYXBanner (0.5.2):
-    - BRYXBanner/Core (= 0.5.2)
-  - BRYXBanner/Core (0.5.2)
-  - DataCache (1.1)
   - Firebase (3.4.0):
     - Firebase/Core (= 3.4.0)
   - Firebase/Analytics (3.4.0):
@@ -55,27 +50,18 @@ PODS:
   - GoogleIPhoneUtilities (1.2.1):
     - GoogleSymbolUtilities (~> 1.0)
     - GoogleUtilities (~> 1.0)
-  - GoogleMaps (2.1.1):
-    - GoogleMaps/Maps (= 2.1.1)
-  - GoogleMaps/Base (2.1.1)
-  - GoogleMaps/Maps (2.1.1):
-    - GoogleMaps/Base
   - GoogleNetworkingUtilities (1.2.1):
     - GoogleSymbolUtilities (~> 1.0)
   - GoogleParsingUtilities (1.1.1):
     - GoogleNetworkingUtilities (~> 1.0)
     - GoogleSymbolUtilities (~> 1.0)
-  - GooglePlaces (2.1.1):
-    - GoogleMaps/Base (= 2.1.1)
   - GoogleSymbolUtilities (1.1.1)
   - GoogleUtilities (1.3.1):
     - GoogleSymbolUtilities (~> 1.0)
   - HMSegmentedControl (1.5.2)
-  - IngeoSDK (1.3.5)
   - JSQMessagesViewController (7.3.4):
     - JSQSystemSoundPlayer (~> 2.0.1)
   - JSQSystemSoundPlayer (2.0.1)
-  - KTCenterFlowLayout (1.3.1)
   - MXPagerView (0.1.3)
   - MXParallaxHeader (0.5.1)
   - MXSegmentedPager (3.0.5):
@@ -83,50 +69,24 @@ PODS:
     - MXPagerView (~> 0.1.3)
     - MXParallaxHeader (~> 0.5.1)
   - NVActivityIndicatorView (2.0)
-  - PageControls/FilledPageControl (0.1.2)
-  - PageControls/PillPageControl (0.1.2)
-  - PageControls/ScrollingPageControl (0.1.2)
-  - PageControls/SnakePageControl (0.1.2)
-  - RecordButton (1.0.0)
   - ReSwift (2.0.0)
-  - SwiftLocation (1.0.5)
-  - SwiftMessages (1.1.4)
-  - SwiftyJSON (2.4.0)
   - Whisper (3.1.1)
 
 DEPENDENCIES:
-  - ARNTransitionAnimator
   - Bolts (= 1.8.4)
-  - BRYXBanner
-  - DataCache (= 1.1)
   - Firebase
   - Firebase/Auth
   - Firebase/Database
   - Firebase/Messaging
   - Firebase/Storage
-  - GoogleMaps
-  - GooglePlaces
-  - IngeoSDK
   - JSQMessagesViewController
-  - KTCenterFlowLayout
   - MXSegmentedPager
   - NVActivityIndicatorView (= 2.0)
-  - PageControls/FilledPageControl (= 0.1.2)
-  - PageControls/PillPageControl (= 0.1.2)
-  - PageControls/ScrollingPageControl (= 0.1.2)
-  - PageControls/SnakePageControl (= 0.1.2)
-  - RecordButton
   - ReSwift (= 2.0.0)
-  - SwiftLocation (= 1.0.5)
-  - SwiftMessages (~> 1.1.4)
-  - SwiftyJSON (= 2.4.0)
   - Whisper
 
 SPEC CHECKSUMS:
-  ARNTransitionAnimator: b8b35ce733d08f137eadb0e0c6e53011ea3fb28d
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
-  BRYXBanner: 5f0911d52e0a77e088f7ea7ddcdebd02afb7828a
-  DataCache: 0acf603ad1865736507f3ab8dc09302f7a774d45
   Firebase: 754562547af419cc2f4b15247fee419081924bc2
   FirebaseAnalytics: 228be2991cb28efb96cdafc4d62f64680e615c69
   FirebaseAuth: 26fd291c3b552fc9658420b867520d5ae080421c
@@ -136,29 +96,20 @@ SPEC CHECKSUMS:
   FirebaseStorage: fa2a87dee81f682f553af6839daa37a750e65f6a
   GoogleInterchangeUtilities: def8415a862effc67d549d5b5b0b9c7a2f97d4de
   GoogleIPhoneUtilities: 63f25e93a3ddcb66884d182aab3a660d98f1479b
-  GoogleMaps: a5b5bbe47734e2443bde781a6aa64e69fdb6d785
   GoogleNetworkingUtilities: 3e83269048cfb498dc7ec83ab36813360965c74f
   GoogleParsingUtilities: 30b3896f9ee167dc78747f013d3de157ced1cadf
-  GooglePlaces: 35636d86e5020cba3856eb988c09a5491de0a65a
   GoogleSymbolUtilities: 33117db1b5f290c6fbf259585e4885b4c84b98d7
   GoogleUtilities: 56c5ac05b7aa5dc417a1bb85221a9516e04d7032
   HMSegmentedControl: 83b9686022d2176fb6457d2bdb61e5d6393fed7d
-  IngeoSDK: c225d4de8998f733c072d5d82828f7178521c509
   JSQMessagesViewController: 39fed975e3c9f8eba7292071e29eeb541d105e66
   JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
-  KTCenterFlowLayout: 6e02b50ab2bd865025ae82fe266ed13b6d9eaf97
   MXPagerView: db0c020aeada6a0c704f18f8053468560e346982
   MXParallaxHeader: b40fabd42d1bb76f6d1a713ceae5628f69241bd6
   MXSegmentedPager: 0f8ef591d510dc8b5531219d6f3bbaaacf3eb305
   NVActivityIndicatorView: cf985d36b502d01e4670d3026fb8e30494a6fd6a
-  PageControls: 9665bec4e94c43c7e2b145b7387ffa67748e855b
-  RecordButton: 53e5cea9112aa2f09dccf83e55d3c4645197b58a
   ReSwift: 7abc536a87955c34bf60de3fd32ce9a02ee3ad87
-  SwiftLocation: 310142ddfcfc1df770b05ee762592f6ee9896cee
-  SwiftMessages: c7678758945a9123613cd77da98c2a89fa38eba3
-  SwiftyJSON: 96918c1bf505efa50c4f72957018dd3452090c9c
   Whisper: 74decae53daf8caff5acf8628e24b92d3f05a453
 
-PODFILE CHECKSUM: 8a36fed92fe131239203153b6caea2b0437c434a
+PODFILE CHECKSUM: 09cd1c262ee0b3564221423973fef676b7ce165d
 
 COCOAPODS: 1.2.0.beta.1

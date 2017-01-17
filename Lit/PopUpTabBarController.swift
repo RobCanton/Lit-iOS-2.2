@@ -12,7 +12,7 @@ import ReSwift
 import Firebase
 import CoreLocation
 
-class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarControllerDelegate, GPSServiceDelegate, PopUpProtocolDelegate {
+class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarControllerDelegate, GPSServiceDelegate, PopUpProtocolDelegate, CLLocationManagerDelegate {
     
     var activeLocation:Location?
     
@@ -165,6 +165,9 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
         GPSService.sharedInstance.startUpdatingLocation()
         
         self.setupMiddleButton()
+    }
+    
+    func authorizationChange() {
     }
     
     var cameraButton:UIButton!

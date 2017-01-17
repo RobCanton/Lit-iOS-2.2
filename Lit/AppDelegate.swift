@@ -12,7 +12,6 @@ import FBSDKCoreKit
 import FBSDKLoginKit
 import ReSwift
 import AVFoundation
-import GoogleMaps
 
 let mainStore = Store<AppState>(
     reducer: AppReducer(),
@@ -51,7 +50,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FIRApp.configure()
     
         
-        GMSServices.provideAPIKey("AIzaSyD5keC5NA5IXYLp_hX6qscQwNyhy1QFecU")
         UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.LightContent
         
         do {
@@ -101,12 +99,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
-        
+        FIRInstanceID.instanceID().setAPNSToken(deviceToken, type: FIRInstanceIDAPNSTokenType.Prod)
     }
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
-        print("MessageID: \(userInfo["gcm_message_id"])")
-        print(userInfo)
+
     }
 
     func applicationWillResignActive(application: UIApplication) {

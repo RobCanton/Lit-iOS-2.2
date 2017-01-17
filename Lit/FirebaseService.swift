@@ -177,7 +177,7 @@ class FirebaseService {
                         "url": downloadURL!.absoluteString,
                         "contentType": contentTypeStr,
                         "dateCreated": [".sv": "timestamp"],
-                        "length": 5
+                        "length": 4.0
                     ]
                     dataRef.child("meta").setValue(obj, withCompletionBlock: { error, _ in
                         hide()

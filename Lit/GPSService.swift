@@ -4,6 +4,7 @@ import CoreLocation
 protocol GPSServiceDelegate {
     func tracingLocation(currentLocation: CLLocation)
     func tracingLocationDidFailWithError(error: NSError)
+    func authorizationChange()
 }
 
 class GPSService: NSObject, CLLocationManagerDelegate {
@@ -31,7 +32,22 @@ class GPSService: NSObject, CLLocationManagerDelegate {
         guard let locationManager = self.locationManager else {
             return
         }
-        
+        if CLLocationManager.locationServicesEnabled() {
+            switch(CLLocationManager.authorizationStatus()) {
+            case .NotDetermined:
+                print("No access")
+                locationManager.requestWhenInUseAuthorization()
+                break
+            case .Restricted, .Denied:
+                break
+            case .AuthorizedAlways, .AuthorizedWhenInUse:
+                print("Access")
+                break
+            }
+        } else {
+            print("Location services are not enabled")
+            locationManager.requestWhenInUseAuthorization()
+        }
         if CLLocationManager.authorizationStatus() == .NotDetermined {
             // requestWhenInUseAuthorization
             locationManager.requestWhenInUseAuthorization()
@@ -40,6 +56,24 @@ class GPSService: NSObject, CLLocationManagerDelegate {
         locationManager.desiredAccuracy = kCLLocationAccuracyBest // The accuracy of the location data
         locationManager.distanceFilter = 25 // The minimum distance (measured in meters) a device must move horizontally before an update event is generated.
         locationManager.delegate = self
+    }
+    
+    
+    func isAuthorized() -> Bool {
+        if CLLocationManager.locationServicesEnabled() {
+            switch(CLLocationManager.authorizationStatus()) {
+            case .NotDetermined:
+                self.locationManager?.requestWhenInUseAuthorization()
+                return true
+            case .Restricted, .Denied:
+                return false
+            case .AuthorizedAlways, .AuthorizedWhenInUse:
+                print("Access")
+                return true
+            }
+        } else {
+            return false
+        }
     }
     
     func startUpdatingLocation() {
@@ -68,6 +102,10 @@ class GPSService: NSObject, CLLocationManagerDelegate {
         
         // do on error
         updateLocationDidFailWithError(error)
+    }
+    
+    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        delegate?.authorizationChange()
     }
     
     // Private function

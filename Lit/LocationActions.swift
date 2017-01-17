@@ -9,7 +9,6 @@
 import CoreLocation
 import Foundation
 import ReSwift
-import IngeoSDK
 
 struct CitiesRetrieved: Action {
     let cities: [City]

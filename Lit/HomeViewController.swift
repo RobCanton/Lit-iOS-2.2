@@ -9,6 +9,7 @@
 import UIKit
 import ReSwift
 
+
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, StoreSubscriber, UIScrollViewDelegate, UISearchBarDelegate {
     
     @IBOutlet weak var tableView: UITableView!
@@ -52,6 +53,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.navigationItem.titleView = searchBar
         
     }
+    
+    
+    
     
     // MARK: Search
     func filterContentForSearchText(searchText:String){
@@ -113,6 +117,22 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         mainStore.subscribe(self)
+        
+        if !GPSService.sharedInstance.isAuthorized() {
+            let actionSheet = UIAlertController(title: "Location Services Disabled", message: "Lit requires your location to search for nearby activity. Please enable location services.", preferredStyle: .Alert)
+            
+            let cancelActionButton: UIAlertAction = UIAlertAction(title: "No", style: .Destructive) { action -> Void in
+            }
+            actionSheet.addAction(cancelActionButton)
+            
+            let saveActionButton: UIAlertAction = UIAlertAction(title: "Open Settings", style: .Default)
+            { action -> Void in
+                UIApplication.sharedApplication().openURL(NSURL(string:UIApplicationOpenSettingsURLString)!)
+            }
+            actionSheet.addAction(saveActionButton)
+            
+            self.presentViewController(actionSheet, animated: true, completion: nil)
+        }
     }
     
     override func viewWillDisappear(animated: Bool) {

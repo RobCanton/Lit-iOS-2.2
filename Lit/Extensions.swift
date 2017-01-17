@@ -8,7 +8,6 @@
 
 import Foundation
 import UIKit
-import RecordButton
 
 let imageCache = NSCache()
 

@@ -8,7 +8,6 @@
 
 import UIKit
 import AVFoundation
-import RecordButton
 import Firebase
 import CoreLocation
 
@@ -442,15 +441,15 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
         reloadCamera()
     }
     
+    let maxDuration = CGFloat(10)
+    
     func updateProgress() {
-        
-        let maxDuration = CGFloat(10) // Max duration of the recordButton
-        
-        progress = progress + (CGFloat(0.05) / maxDuration)
-        recordBtn.updateProgress(progress)
-        
-        if progress >= 1 {
+        if progress > 0.99 {
             progressTimer.invalidate()
+            videoFileOutput?.stopRecording()
+        } else {
+            progress = progress + (CGFloat(0.025) / maxDuration)
+            recordBtn.updateProgress(progress)
         }
         
     }
@@ -550,7 +549,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, A
     var videoFileOutput: AVCaptureMovieFileOutput?
     func recordVideo() {
         cameraState = .Recording
-        progressTimer = NSTimer.scheduledTimerWithTimeInterval(0.05, target: self, selector: #selector(updateProgress), userInfo: nil, repeats: true)
+        progressTimer = NSTimer.scheduledTimerWithTimeInterval(0.025, target: self, selector: #selector(updateProgress), userInfo: nil, repeats: true)
         
         let recordingDelegate:AVCaptureFileOutputRecordingDelegate? = self
     

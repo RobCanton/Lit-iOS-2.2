@@ -123,7 +123,6 @@
 		B07E54DB1E16596E008C2D23 /* AngleGradientLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = B07E54DA1E16596E008C2D23 /* AngleGradientLayer.m */; };
 		B07E54DD1E165A12008C2D23 /* AngleGradientBorderLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07E54DC1E165A12008C2D23 /* AngleGradientBorderLayer.swift */; };
 		B07E54DF1E165A4D008C2D23 /* AngleGradientBorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07E54DE1E165A4D008C2D23 /* AngleGradientBorderView.swift */; };
-		B07E54E11E16FC20008C2D23 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B07E54E01E16FC20008C2D23 /* GoogleService-Info.plist */; };
 		B0873AC81D3EB8CC00862960 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0873AC51D3EB8CC00862960 /* FBSDKCoreKit.framework */; };
 		B0873AC91D3EB8CC00862960 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0873AC61D3EB8CC00862960 /* FBSDKLoginKit.framework */; };
 		B0873ACA1D3EB8CC00862960 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0873AC71D3EB8CC00862960 /* FBSDKShareKit.framework */; };
@@ -136,6 +135,7 @@
 		B09801F51E1C7869006782E6 /* mapStyle.json in Resources */ = {isa = PBXBuildFile; fileRef = B09801F41E1C7869006782E6 /* mapStyle.json */; };
 		B09C68DB1E28416200201C5C /* MasterNavigationControllerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09C68DA1E28416200201C5C /* MasterNavigationControllerViewController.swift */; };
 		B09D26F51E2A29B7009433EC /* ChatTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B09D26F41E2A29B7009433EC /* ChatTitleView.xib */; };
+		B09D26F61E2E0033009433EC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B07E54E01E16FC20008C2D23 /* GoogleService-Info.plist */; };
 		B0B35DF61E1DB6E400E4546D /* UserSearchViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B0B35DF51E1DB6E400E4546D /* UserSearchViewController.storyboard */; };
 		B0B35DF81E1DB72B00E4546D /* UserSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B35DF71E1DB72B00E4546D /* UserSearchViewController.swift */; };
 		B0B35DFA1E1F715D00E4546D /* LocationHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B35DF91E1F715D00E4546D /* LocationHeaderView.swift */; };
@@ -816,7 +816,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B07E54E11E16FC20008C2D23 /* GoogleService-Info.plist in Resources */,
+				B09D26F61E2E0033009433EC /* GoogleService-Info.plist in Resources */,
 				B011B35F1E02261600FA4633 /* LocationTableCell.xib in Resources */,
 				B011B34C1DFFB2BD00FA4633 /* InfoTableViewCell.xib in Resources */,
 				B00BA9271D9E4E1D00F5EA30 /* CreateProfileViewController.xib in Resources */,

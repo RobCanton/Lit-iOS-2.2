@@ -585,6 +585,55 @@
             </objects>
             <point key="canvasLocation" x="2218" y="-441"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="p90-fb-RnK">
+            <objects>
+                <viewController storyboardIdentifier="LocationServicesDisabled" id="BCJ-OI-biT" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ZFK-kp-Apt"/>
+                        <viewControllerLayoutGuide type="bottom" id="yH0-f4-4fj"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="LWd-Tu-Nhd">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Location Services Disabled" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wm1-3b-bxG">
+                                <rect key="frame" x="150" y="120" width="301" height="25"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="20"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S3c-hQ-cx6">
+                                <rect key="frame" x="20" y="153" width="560" height="52"/>
+                                <string key="text">Lit requires foreground location services to show you nearby locations and activity. Please allow Lit to use your location information.</string>
+                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="To enable Location Services:" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dzf-ey-udh">
+                                <rect key="frame" x="20" y="213" width="560" height="36"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="16"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <constraints>
+                            <constraint firstItem="Wm1-3b-bxG" firstAttribute="centerX" secondItem="LWd-Tu-Nhd" secondAttribute="centerX" id="DGW-bi-d4o"/>
+                            <constraint firstItem="Dzf-ey-udh" firstAttribute="top" secondItem="S3c-hQ-cx6" secondAttribute="bottom" constant="8" id="H9T-5o-R7R"/>
+                            <constraint firstItem="S3c-hQ-cx6" firstAttribute="top" secondItem="Wm1-3b-bxG" secondAttribute="bottom" constant="8" id="aAw-si-KHW"/>
+                            <constraint firstItem="Dzf-ey-udh" firstAttribute="centerX" secondItem="LWd-Tu-Nhd" secondAttribute="centerX" id="ezR-bI-MiU"/>
+                            <constraint firstItem="Wm1-3b-bxG" firstAttribute="top" secondItem="ZFK-kp-Apt" secondAttribute="bottom" constant="100" id="oFp-JH-nSV"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="S3c-hQ-cx6" secondAttribute="leading" id="rj0-bY-qMp"/>
+                            <constraint firstItem="S3c-hQ-cx6" firstAttribute="centerX" secondItem="LWd-Tu-Nhd" secondAttribute="centerX" id="zgX-z6-IBI"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="S3c-hQ-cx6" secondAttribute="trailing" id="zlz-tc-WyI"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DIx-H8-WQn" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="370" y="108"/>
+        </scene>
         <!--Pop Up Tab Bar Controller-->
         <scene sceneID="5o8-sR-ap6">
             <objects>
@@ -609,6 +658,7 @@
                         <segue destination="geg-Nk-tJH" kind="relationship" relationship="viewControllers" id="Erj-qK-U7r"/>
                         <segue destination="Kb5-7f-64C" kind="custom" identifier="toCamera" customClass="CameraTransition" customModule="Lit" customModuleProvider="target" id="Prn-vU-9ef"/>
                         <segue destination="BYZ-38-t0r" kind="show" identifier="logout" animates="NO" id="ftG-0B-dAp"/>
+                        <segue destination="BCJ-OI-biT" kind="presentation" identifier="noLocationAccess" id="r4R-4q-F1J"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Sx-mp-9Zd" userLabel="First Responder" sceneMemberID="firstResponder"/>
