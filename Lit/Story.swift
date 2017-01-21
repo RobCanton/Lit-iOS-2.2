@@ -51,6 +51,19 @@ class UserStory: ItemDelegate {
         return date
     }
     
+    func hasViewedAll() -> Bool {
+        guard let _items = self.items else { return false }
+        for item in _items {
+            if !item.hasViewed() {
+                return false
+            }
+        }
+        
+        return true
+    }
+    
+    
+    
     
     func determineState() {
         if needsDownload() {

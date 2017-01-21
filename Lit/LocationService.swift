@@ -40,9 +40,6 @@ class LocationService {
         })
     }
     
-
-    
-    
     static func checkActiveLocation(activeLocationKey:String) {
 
         let currentLocationKey = mainStore.state.userState.activeLocationKey

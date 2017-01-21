@@ -125,7 +125,7 @@ class ProfileHeaderView: UICollectionReusableView {
         controlBarContainer.userInteractionEnabled = true
         let messageView = messageButton.superview!
         if user.uid == mainStore.state.userState.uid {
-            messageView.alpha = 0.5
+            messageView.alpha = 0.35
         } else {
             messageView.alpha = 1.0
             messageView.userInteractionEnabled = true

@@ -70,6 +70,7 @@ PODS:
     - MXParallaxHeader (~> 0.5.1)
   - NVActivityIndicatorView (2.0)
   - ReSwift (2.0.0)
+  - WDImagePicker (0.2.2)
   - Whisper (3.1.1)
 
 DEPENDENCIES:
@@ -83,7 +84,18 @@ DEPENDENCIES:
   - MXSegmentedPager
   - NVActivityIndicatorView (= 2.0)
   - ReSwift (= 2.0.0)
+  - WDImagePicker (from `https://github.com/justwudi/WDImagePicker.git`, tag `0.2.2`)
   - Whisper
+
+EXTERNAL SOURCES:
+  WDImagePicker:
+    :git: https://github.com/justwudi/WDImagePicker.git
+    :tag: 0.2.2
+
+CHECKOUT OPTIONS:
+  WDImagePicker:
+    :git: https://github.com/justwudi/WDImagePicker.git
+    :tag: 0.2.2
 
 SPEC CHECKSUMS:
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
@@ -108,8 +120,9 @@ SPEC CHECKSUMS:
   MXSegmentedPager: 0f8ef591d510dc8b5531219d6f3bbaaacf3eb305
   NVActivityIndicatorView: cf985d36b502d01e4670d3026fb8e30494a6fd6a
   ReSwift: 7abc536a87955c34bf60de3fd32ce9a02ee3ad87
+  WDImagePicker: 0014e231d67a63db9a97db74332a8a16723809bc
   Whisper: 74decae53daf8caff5acf8628e24b92d3f05a453
 
-PODFILE CHECKSUM: 09cd1c262ee0b3564221423973fef676b7ce165d
+PODFILE CHECKSUM: 96df42e73149631d58e8a235a9e0cb10fb364491
 
 COCOAPODS: 1.2.0.beta.1

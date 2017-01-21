@@ -11,8 +11,10 @@ import UIKit
 import ReSwift
 import Firebase
 import CoreLocation
+import Whisper
 
-class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarControllerDelegate, GPSServiceDelegate, PopUpProtocolDelegate, CLLocationManagerDelegate {
+
+class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarControllerDelegate, GPSServiceDelegate, PopUpProtocolDelegate, CLLocationManagerDelegate, NotificationDelegate {
     
     var activeLocation:Location?
     
@@ -34,6 +36,32 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
         
     }
     
+    func messageRecieved(senderId: String, message: String) {
+        
+        FirebaseService.getUser(senderId, completionHandler: { user in
+            if user != nil {
+                loadImageUsingCacheWithURL(user!.getImageUrl() , completion: { _image, fromCache in
+                    guard let image = _image else { return }
+                    guard let controller = self.selectedViewController as? MasterNavigationController else { return }
+                    let announcement = Announcement(title: user!.getDisplayName(), subtitle: message, image: image, duration: 4, action: {
+                        print("Tapped announcement")
+                    })
+                    show(shout: announcement, to: controller, completion: {
+                        print("The shout was silent.")
+                    })
+                })
+            }
+        })
+    }
+    
+    func newFollower(uid: String) {
+        
+        let murmur = Murmur(title: uid)
+        
+        // Show and hide a message after delay
+        show(whistle: murmur, action: .Show(3.0))
+    }
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         mainStore.subscribe(self)
@@ -52,56 +80,48 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
         messageNotifications()
         socialNotifications()
         
-        let currentKey = state.userState.activeLocationKey
-
-        if let _ = activeLocation {
-            if currentKey == activeLocation?.getKey() { return }
-        }
-        var loc:Location?
-        for location in state.locations {
-            if location.getKey() == currentKey {
-                loc = location
+        var activeLocations = [Location]()
+        for location in mainStore.state.locations {
+            if location.isActive() {
+                activeLocations.append(location)
             }
         }
         
-        if loc == nil {
-            deactivateLocation()
+        if activeLocations.count > 0 {
+            activateLocation()
+            var title:String!
+            if activeLocations.count == 1 {
+                title = "You are near \(activeLocations[0].getName())"
+            } else {
+                title = "You are near \(activeLocations.count) locations"
+            }
+            let whisper = Murmur(title: title, backgroundColor: accentColor, titleColor: UIColor.whiteColor(), font: UIFont(name: "AvenirNext-Medium", size: 12.0)!)
+            
+            //show(whistle: whisper, action: .Present)
+            
         } else {
-            activateLocation(loc!)
+            deactivateLocation()
+            hide()
         }
+        
     }
 
     
+    var isActive = false
     
-    func activateLocation(location:Location) {
-        activeLocation = location
-//        let color:CABasicAnimation = CABasicAnimation(keyPath: "borderColor")
-//        color.fromValue = cameraButton.layer.borderColor
-//        color.toValue = accentColor.CGColor
-//        cameraButton.layer.borderColor = accentColor.CGColor
-//        
-//        let Width:CABasicAnimation = CABasicAnimation(keyPath: "borderWidth")
-//        Width.fromValue = cameraButton.layer.borderWidth
-//        Width.toValue = cameraActiveWidth
-//
-//        cameraButton.layer.borderWidth = cameraActiveWidth
-//        
-//        let both:CAAnimationGroup = CAAnimationGroup()
-//        both.duration = 1.0
-//        both.animations = [color,Width]
-//        both.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-//        
-//        cameraButton.layer.addAnimation(both, forKey: "color and Width")
-
-        //array[2].alpha = 1.0
-//        print("ACTIVE LOCATION: \(activeLocation!.getKey())")
-//
+    func activateLocation() {
+        if isActive { return }
+        isActive = true
+        
+        cameraActivity?.startAnimating()
         
     }
     
     func deactivateLocation() {
-        activeLocation = nil
+        if !isActive { return }
+        isActive = false
         cameraButton.layer.borderColor = UIColor.whiteColor().CGColor
+        cameraActivity?.stopAnimating()
     }
     
     
@@ -164,6 +184,8 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
         GPSService.sharedInstance.delegate = self
         GPSService.sharedInstance.startUpdatingLocation()
         
+        NotificationService.sharedInstance.delegate = self
+        
         self.setupMiddleButton()
     }
     
@@ -192,7 +214,7 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
             
             self.tabBar.addSubview(cameraButton)
             
-            cameraActivity = NVActivityIndicatorView(frame: cameraButton.bounds, type: .BallScale, color: UIColor.whiteColor(), padding: 1.0)
+            cameraActivity = NVActivityIndicatorView(frame: cameraButton.bounds, type: .BallScaleRipple, color: UIColor.whiteColor(), padding: 1.0)
             self.cameraButton.addSubview(cameraActivity)
             cameraActivity.userInteractionEnabled = false
             
@@ -230,6 +252,7 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
     }
     
     func presentCamera() {
+        deactivateLocation()
         self.performSegueWithIdentifier("toCamera", sender: self)
     }
     

@@ -2,22 +2,25 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "target@1x.png",
+      "filename" : "eye32.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "target@2x.png",
+      "filename" : "eye32-1.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "target@3x.png",
+      "filename" : "eye32-2.png",
       "scale" : "3x"
     }
   ],
   "info" : {
     "version" : 1,
     "author" : "xcode"
+  },
+  "properties" : {
+    "template-rendering-intent" : "template"
   }
 }

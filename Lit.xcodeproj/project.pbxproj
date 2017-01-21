@@ -34,6 +34,7 @@
 		B011B35B1E02249900FA4633 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B011B35A1E02249900FA4633 /* HomeViewController.swift */; };
 		B011B35E1E02261600FA4633 /* LocationTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B011B35C1E02261600FA4633 /* LocationTableCell.swift */; };
 		B011B35F1E02261600FA4633 /* LocationTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B011B35D1E02261600FA4633 /* LocationTableCell.xib */; };
+		B01B20D71E321CD90074EE09 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01B20D61E321CD90074EE09 /* NotificationService.swift */; };
 		B01B34A61DC17B5C00B2B9CE /* Upload.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01B34A51DC17B5C00B2B9CE /* Upload.swift */; };
 		B0254F701DAFE00C0082D898 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0254F6F1DAFE00C0082D898 /* MessagesViewController.swift */; };
 		B0254F721DAFEF4A0082D898 /* ConversationViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0254F711DAFEF4A0082D898 /* ConversationViewCell.swift */; };
@@ -136,6 +137,8 @@
 		B09C68DB1E28416200201C5C /* MasterNavigationControllerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09C68DA1E28416200201C5C /* MasterNavigationControllerViewController.swift */; };
 		B09D26F51E2A29B7009433EC /* ChatTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B09D26F41E2A29B7009433EC /* ChatTitleView.xib */; };
 		B09D26F61E2E0033009433EC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B07E54E01E16FC20008C2D23 /* GoogleService-Info.plist */; };
+		B09D26F81E2F6DBD009433EC /* SocialView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B09D26F71E2F6DBA009433EC /* SocialView.xib */; };
+		B09D26FA1E2F6DF6009433EC /* SocialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09D26F91E2F6DF6009433EC /* SocialView.swift */; };
 		B0B35DF61E1DB6E400E4546D /* UserSearchViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B0B35DF51E1DB6E400E4546D /* UserSearchViewController.storyboard */; };
 		B0B35DF81E1DB72B00E4546D /* UserSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B35DF71E1DB72B00E4546D /* UserSearchViewController.swift */; };
 		B0B35DFA1E1F715D00E4546D /* LocationHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B35DF91E1F715D00E4546D /* LocationHeaderView.swift */; };
@@ -204,6 +207,7 @@
 		B011B35A1E02249900FA4633 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		B011B35C1E02261600FA4633 /* LocationTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationTableCell.swift; sourceTree = "<group>"; };
 		B011B35D1E02261600FA4633 /* LocationTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LocationTableCell.xib; sourceTree = "<group>"; };
+		B01B20D61E321CD90074EE09 /* NotificationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		B01B34A51DC17B5C00B2B9CE /* Upload.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Upload.swift; sourceTree = "<group>"; };
 		B0254F6F1DAFE00C0082D898 /* MessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
 		B0254F711DAFEF4A0082D898 /* ConversationViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationViewCell.swift; sourceTree = "<group>"; };
@@ -312,6 +316,8 @@
 		B09801F41E1C7869006782E6 /* mapStyle.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = mapStyle.json; sourceTree = "<group>"; };
 		B09C68DA1E28416200201C5C /* MasterNavigationControllerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterNavigationControllerViewController.swift; sourceTree = "<group>"; };
 		B09D26F41E2A29B7009433EC /* ChatTitleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatTitleView.xib; sourceTree = "<group>"; };
+		B09D26F71E2F6DBA009433EC /* SocialView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SocialView.xib; sourceTree = "<group>"; };
+		B09D26F91E2F6DF6009433EC /* SocialView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialView.swift; sourceTree = "<group>"; };
 		B0B35DF51E1DB6E400E4546D /* UserSearchViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = UserSearchViewController.storyboard; sourceTree = "<group>"; };
 		B0B35DF71E1DB72B00E4546D /* UserSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSearchViewController.swift; sourceTree = "<group>"; };
 		B0B35DF91E1F715D00E4546D /* LocationHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationHeaderView.swift; sourceTree = "<group>"; };
@@ -415,6 +421,7 @@
 				B0E8E3191DDACE480077D1BC /* UserService.swift */,
 				B0E591601DD3831600C032D6 /* FacebookGraph.swift */,
 				76B361D61D6519ED0024CDC7 /* GPSService.swift */,
+				B01B20D61E321CD90074EE09 /* NotificationService.swift */,
 				B03504BE1DD017BB00C9C83F /* LocationService.swift */,
 				B087E9C11D9B4D760079E2BF /* Listeners.swift */,
 			);
@@ -647,6 +654,8 @@
 				B0DAFBCF1DF947E8004EB03D /* ProgressIndicator.swift */,
 				B0E8E3301DDBC4640077D1BC /* PostAuthorView.swift */,
 				B0E8E32E1DDBC44C0077D1BC /* PostAuthorView.xib */,
+				B09D26F71E2F6DBA009433EC /* SocialView.xib */,
+				B09D26F91E2F6DF6009433EC /* SocialView.swift */,
 				B03095E41DB7D65C008A4DFA /* MapViewController.swift */,
 				B0E8E3461DE2167A0077D1BC /* ListHeaderView.swift */,
 				B0351F6A1DE8BC27000A4BF5 /* ListHeaderView.xib */,
@@ -821,6 +830,7 @@
 				B011B34C1DFFB2BD00FA4633 /* InfoTableViewCell.xib in Resources */,
 				B00BA9271D9E4E1D00F5EA30 /* CreateProfileViewController.xib in Resources */,
 				B06BC66F1E24EFCA0045D920 /* SendLocationViewCell.xib in Resources */,
+				B09D26F81E2F6DBD009433EC /* SocialView.xib in Resources */,
 				B0E8E3451DE203720077D1BC /* UserStoryTableViewCell.xib in Resources */,
 				B03504C31DD0663100C9C83F /* LocationFooterView.xib in Resources */,
 				B0B35DF61E1DB6E400E4546D /* UserSearchViewController.storyboard in Resources */,
@@ -958,6 +968,7 @@
 				B0351FAD1DED0503000A4BF5 /* NVActivityIndicatorAnimationLineScale.swift in Sources */,
 				B0351F9B1DED0503000A4BF5 /* NVActivityIndicatorAnimationBallClipRotatePulse.swift in Sources */,
 				B0E2BDC21E086B1800D195A5 /* CameraTransition.swift in Sources */,
+				B01B20D71E321CD90074EE09 /* NotificationService.swift in Sources */,
 				B0321ECC1DB568BA00AD4C53 /* LocViewController.swift in Sources */,
 				76A516691D60C721005E2815 /* Message.swift in Sources */,
 				B0351FBC1DED0503000A4BF5 /* NVActivityIndicatorViewable.swift in Sources */,
@@ -995,6 +1006,7 @@
 				B05ABCFD1D41185200364322 /* Reducer.swift in Sources */,
 				B0B35DFA1E1F715D00E4546D /* LocationHeaderView.swift in Sources */,
 				B02D4C3A1DC85A0F004E2673 /* Event.swift in Sources */,
+				B09D26FA1E2F6DF6009433EC /* SocialView.swift in Sources */,
 				767729841D5116930052CA17 /* CWStatusBarNotificationUtils.swift in Sources */,
 				B0E8E3471DE2167A0077D1BC /* ListHeaderView.swift in Sources */,
 				B0305A521DBE6F15009B5F74 /* WebViewController.swift in Sources */,
@@ -1076,7 +1088,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1121,7 +1134,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Robert Canton (6BES3VUFCX)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Robert Canton (6BES3VUFCX)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -1147,7 +1161,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Robert Canton (WDQ99T7CA8)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Robert Canton (WDQ99T7CA8)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1157,6 +1172,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.robcanton.lit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "05320f9a-c1f7-4e87-aa6a-62e9f59660ec";
 				SWIFT_OBJC_BRIDGING_HEADER = "Lit/Lit-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1169,7 +1185,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Robert Canton (6BES3VUFCX)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Robert Canton (6BES3VUFCX)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1179,6 +1196,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.robcanton.lit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "f0449567-69bf-45c4-9bf2-a0cedcbc943e";
 				SWIFT_OBJC_BRIDGING_HEADER = "Lit/Lit-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 1;
 			};

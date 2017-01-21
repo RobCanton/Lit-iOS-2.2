@@ -114,6 +114,12 @@ class CreateProfileViewController: UIViewController, UITextFieldDelegate, UIImag
         headerView.imageView.userInteractionEnabled = true
 
         imagePicker.delegate = self
+        imagePicker.navigationBar.translucent = false
+        imagePicker.navigationBar.barTintColor = .blackColor()
+        imagePicker.navigationBar.tintColor = .whiteColor() // Cancel button ~ any UITabBarButton items
+        imagePicker.navigationBar.titleTextAttributes = [
+            NSForegroundColorAttributeName : UIColor.whiteColor()
+        ] // Title colorr
         
         
         doSet()
@@ -128,13 +134,13 @@ class CreateProfileViewController: UIViewController, UITextFieldDelegate, UIImag
         }
         actionSheet.addAction(cancelActionButton)
         
-        let facebookActionButton: UIAlertAction = UIAlertAction(title: "Import from Facebook", style: .Destructive)
+        let facebookActionButton: UIAlertAction = UIAlertAction(title: "Import from Facebook", style: .Default)
         { action -> Void in
             self.setFacebookProfilePicture()
         }
         actionSheet.addAction(facebookActionButton)
         
-        let libraryActionButton: UIAlertAction = UIAlertAction(title: "Choose from Library", style: .Destructive)
+        let libraryActionButton: UIAlertAction = UIAlertAction(title: "Choose from Library", style: .Default)
         { action -> Void in
             self.imagePicker.allowsEditing = false
             self.imagePicker.sourceType = .PhotoLibrary
@@ -149,7 +155,7 @@ class CreateProfileViewController: UIViewController, UITextFieldDelegate, UIImag
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
-            
+
             self.headerView.imageView.image = nil
             self.smallProfileImageView.image = nil
             headerView.errorLabel.hidden = true

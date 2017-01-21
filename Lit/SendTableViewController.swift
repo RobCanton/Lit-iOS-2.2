@@ -105,7 +105,7 @@ class SendViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         for location in mainStore.state.locations {
             let distance = location.getCoordinates().distanceFromLocation(upload.coordinates!) / 1000
-            if distance < 0.05 {
+            if distance < inRangeDistance {
                 _activeLocations.append(location)
             }
         }

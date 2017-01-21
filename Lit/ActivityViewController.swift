@@ -169,8 +169,12 @@ class ActivityViewController: UITableViewController, UISearchBarDelegate {
             }
             
             self.userStories = stories
-            self.tableView!.reloadData()
         }
+        
+        for story in self.userStories {
+            story.determineState()
+        }
+        tableView?.reloadData()
     }
     
     override func viewDidLoad() {

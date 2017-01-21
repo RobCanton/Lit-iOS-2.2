@@ -11,6 +11,7 @@ import Firebase
 import ReSwift
 
 
+
 class LocViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, UINavigationControllerDelegate {
     
     var screenSize: CGRect!
@@ -31,22 +32,35 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
     var events = [Event]()
     var postKeys = [String]()
     
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         listenToUserUploads()
+        tableView?.userInteractionEnabled = false
+        
+        if statusBarShouldHide {
+            UIView.animateWithDuration(0.3, animations: {
+                self.statusBarShouldHide = false
+                self.setNeedsStatusBarAppearanceUpdate()
+            })
+        }
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(handleEnterForeground), name:
             UIApplicationWillEnterForegroundNotification, object: nil)
     }
     
+    var statusBarShouldHide = false
+    
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         FirebaseService.ref.child("locations/uploads/\(location.getKey())").removeAllObservers()
         NSNotificationCenter.defaultCenter().removeObserver(self)
+        
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        tableView?.userInteractionEnabled = true
         
         if let tabBar = self.tabBarController as? PopUpTabBarController {
             tabBar.setTabBarVisible(true, animated: true)
@@ -69,6 +83,12 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
             returningCell!.activate(true)
             returningCell = nil
         }
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        statusBarShouldHide = true
+        self.setNeedsStatusBarAppearanceUpdate()
     }
     
     func listenToUserUploads() {
@@ -138,8 +158,12 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
             }
 
             self.userStories = stories
-            self.tableView!.reloadData()
         }
+        
+        for story in self.userStories {
+            story.determineState()
+        }
+        tableView?.reloadData()
     }
     
     override func viewDidLayoutSubviews() {
@@ -541,7 +565,7 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
     }
  
     override func prefersStatusBarHidden() -> Bool {
-        return false
+        return statusBarShouldHide
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {

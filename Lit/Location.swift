@@ -177,7 +177,7 @@ class Location:NSObject, NSCoding {
     
     func isActive() -> Bool {
         if distance != nil {
-            if distance! < 0.05 {
+            if distance! < inRangeDistance {
                 return true
             }
         }

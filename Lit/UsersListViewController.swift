@@ -96,6 +96,7 @@ class UsersListViewController: UIViewController, UITableViewDelegate, UITableVie
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         mainStore.subscribe(self)
+        navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -114,6 +115,11 @@ class UsersListViewController: UIViewController, UITableViewDelegate, UITableVie
         super.viewDidAppear(animated)
         if let tabBar = self.tabBarController as? PopUpTabBarController {
             tabBar.setTabBarVisible(true, animated: true)
+        }
+        
+        if let nav = navigationController as? MasterNavigationController {
+            
+            nav.delegate = nav
         }
     }
     

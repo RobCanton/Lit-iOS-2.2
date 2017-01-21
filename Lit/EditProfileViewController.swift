@@ -87,6 +87,13 @@ class EditProfileViewController: UITableViewController {
         bioPlaceholder.hidden = !bioTextView.text.isEmpty
         
         imagePicker.delegate = self
+        imagePicker.navigationBar.translucent = false
+        imagePicker.navigationBar.barTintColor = .blackColor()
+        imagePicker.navigationBar.tintColor = .whiteColor() // Cancel button ~ any UITabBarButton items
+        imagePicker.navigationBar.titleTextAttributes = [
+            NSForegroundColorAttributeName : UIColor.whiteColor()
+        ] // Title colorr
+
     }
     
     
@@ -260,13 +267,13 @@ extension EditProfileViewController: UIImagePickerControllerDelegate, UINavigati
         }
         actionSheet.addAction(cancelActionButton)
         
-        let facebookActionButton: UIAlertAction = UIAlertAction(title: "Import from Facebook", style: .Destructive)
+        let facebookActionButton: UIAlertAction = UIAlertAction(title: "Import from Facebook", style: .Default)
         { action -> Void in
             self.setFacebookProfilePicture()
         }
         actionSheet.addAction(facebookActionButton)
         
-        let libraryActionButton: UIAlertAction = UIAlertAction(title: "Choose from Library", style: .Destructive)
+        let libraryActionButton: UIAlertAction = UIAlertAction(title: "Choose from Library", style: .Default)
         { action -> Void in
             self.imagePicker.allowsEditing = false
             self.imagePicker.sourceType = .PhotoLibrary

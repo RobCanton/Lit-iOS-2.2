@@ -143,6 +143,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     func newState(state: AppState) {
         locations = state.locations
         locations.sortInPlace({
+
             
             if $0.getVisitorsCount() == $1.getVisitorsCount() {
                 return $0.getDistance() < $1.getDistance()
@@ -153,12 +154,13 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         for i in 0 ..< locations.count {
             let location = locations[i]
-            if location.getKey() == state.userState.activeLocationKey {
+            if location.isActive() {
                 locations.removeAtIndex(i)
                 locations.insert(location, atIndex: 0)
             }
             
         }
+        
         tableView?.reloadData()
     }
     
@@ -190,19 +192,40 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         return cell
     }
     
+    var selectedLocationPath:NSIndexPath?
+    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let controller = storyboard.instantiateViewControllerWithIdentifier("LocViewController") as! LocViewController
-        var location:Location
-        if (searchBarActive) {
-            location = filteredLocations[indexPath.item]
-            cancelSearching()
-        } else {
-            location = locations[indexPath.item]
+        selectedLocationPath = indexPath
+        self.performSegueWithIdentifier("toLocation", sender: self)
+//        let controller = storyboard.instantiateViewControllerWithIdentifier("LocViewController") as! LocViewController
+//        var location:Location
+//        if (searchBarActive) {
+//            location = filteredLocations[indexPath.item]
+//            cancelSearching()
+//        } else {
+//            location = locations[indexPath.item]
+//        }
+//
+//        controller.location = location
+//        navigationController?.pushViewController(controller, animated: true)
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "toLocation" {
+            guard let indexPath = selectedLocationPath else {return}
+            let controller = segue.destinationViewController as! LocViewController
+            
+            var location:Location
+            if (searchBarActive) {
+                location = filteredLocations[indexPath.item]
+                cancelSearching()
+            } else {
+                location = locations[indexPath.item]
+            }
+            
+            controller.location = location
         }
-
-        controller.location = location
-        navigationController?.pushViewController(controller, animated: true)
     }
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath:

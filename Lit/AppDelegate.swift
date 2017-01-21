@@ -13,6 +13,8 @@ import FBSDKLoginKit
 import ReSwift
 import AVFoundation
 
+
+
 let mainStore = Store<AppState>(
     reducer: AppReducer(),
     state: nil
@@ -30,6 +32,9 @@ let selectedColor:UIColor = UIColor(white: 0.15, alpha: 1.0)
 let usernameLengthLimit = 16
 
 let apiURL = "https://getlit.site/api"
+
+
+let inRangeDistance = 0.15
 
 var screenStatusBarHeight: CGFloat {
     return UIApplication.sharedApplication().statusBarFrame.height
@@ -68,12 +73,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let colorView = UIView()
         colorView.backgroundColor = selectedColor
         
+
         
-        
-        let notificationsTypes : UIUserNotificationType = [UIUserNotificationType.Alert, UIUserNotificationType.Badge, UIUserNotificationType.Sound]
-        let notificationSettings = UIUserNotificationSettings(forTypes: notificationsTypes, categories: nil)
+        let settings: UIUserNotificationSettings =
+            UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
+        application.registerUserNotificationSettings(settings)
         application.registerForRemoteNotifications()
-        application.registerUserNotificationSettings(notificationSettings)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self,
+                                                         selector: #selector(tokenRefreshNotification),
+                                                         name: kFIRInstanceIDTokenRefreshNotification,
+                                                         object: nil)
         
         
         /* APP APPEARANCE */
@@ -87,6 +97,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
+    func tokenRefreshNotification(notification: NSNotification) {
+
+    }
+    
+
+    
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
         //Even though the Facebook SDK can make this determinitaion on its own,
         //let's make sure that the facebook SDK only sees urls intended for it,
@@ -95,7 +111,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
-        
+
     }
     
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
@@ -103,6 +119,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
+        print("MessageID: \(userInfo["gcm.message_id"]!)")
+        print(userInfo)
+        let type = userInfo["type"]! as! String
+        let aps = userInfo["aps"]!
+        let alert = aps["alert"]!!
+
+        if type == "FOLLOW" {
+            let message = alert as! String
+            NotificationService.sharedInstance.newFollower(message)
+        } else if type == "MESSAGE" {
+            
+            guard let message = alert["body"]! as? String else { return }
+            print(message)
+            guard let senderId = userInfo["senderId"]! as? String else { return }
+            print(senderId)
+            NotificationService.sharedInstance.messageReceived(senderId, message: message)
+        }
+
 
     }
 

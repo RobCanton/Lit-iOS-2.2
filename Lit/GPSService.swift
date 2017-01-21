@@ -68,7 +68,6 @@ class GPSService: NSObject, CLLocationManagerDelegate {
             case .Restricted, .Denied:
                 return false
             case .AuthorizedAlways, .AuthorizedWhenInUse:
-                print("Access")
                 return true
             }
         } else {

@@ -105,6 +105,7 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
     var currentIndex:NSIndexPath!
     var collectionView:UICollectionView!
     
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
@@ -127,7 +128,6 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
         
         if let cell = getCurrentCell() {
             cell.setForPlay()
-            cell.enableMoreButton()
             cell.optionsTappedHandler = showOptions
         }
         
@@ -143,7 +143,6 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        
 
         NSNotificationCenter.defaultCenter().removeObserver(self)
         
@@ -235,6 +234,7 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
         cell.authorOverlay.locationTappedHandler = showLocation
         cell.optionsTappedHandler = showOptions
         cell.storyCompleteHandler = storyComplete
+        cell.viewsTappedHandler = showViewers
         return cell
     }
     
@@ -269,6 +269,28 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
         self.navigationController?.pushViewController(controller, animated: true)
     }
     
+    func showViewers() {
+        guard let cell = getCurrentCell() else { return }
+        guard let item = cell.item else { return }
+        var users = [String]()
+        for (uid, _) in item.viewers {
+            users.append(uid)
+        }
+        
+        if users.count == 0 { return }
+        self.navigationController?.delegate = self
+        let controller = UIStoryboard(name: "Main", bundle: nil)
+            .instantiateViewControllerWithIdentifier("UsersListViewController") as! UsersListViewController
+        
+        if users.count == 1 {
+            controller.title = "1 view"
+        } else {
+            controller.title = "\(users.count) views"
+        }
+        
+        controller.tempIds = users
+        self.navigationController?.pushViewController(controller, animated: true)
+    }
     
     func showOptions() {
         guard let cell = getCurrentCell() else { return }

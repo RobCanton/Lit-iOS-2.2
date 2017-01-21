@@ -34,6 +34,8 @@ class StoryItem: NSObject, NSCoding {
     var toStory:Bool
     var toLocation:Bool
     
+    var viewers:[String:Double]
+    
     var delegate:ItemDelegate?
 
     dynamic var image: UIImage?
@@ -41,7 +43,7 @@ class StoryItem: NSObject, NSCoding {
     dynamic var videoData:NSData?
     
     init(key: String, authorId: String, locationKey:String, downloadUrl: NSURL, videoURL:NSURL?, contentType: ContentType, dateCreated: Double, length: Double,
-         toProfile: Bool, toStory: Bool, toLocation:Bool)
+         toProfile: Bool, toStory: Bool, toLocation:Bool, viewers:[String:Double])
     {
         
         self.key          = key
@@ -55,6 +57,7 @@ class StoryItem: NSObject, NSCoding {
         self.toProfile    = toProfile
         self.toStory      = toStory
         self.toLocation   = toLocation
+        self.viewers      = viewers
 
     }
     
@@ -72,6 +75,11 @@ class StoryItem: NSObject, NSCoding {
         let toStory     = decoder.decodeBoolForKey("toStory")
         let toLocation  = decoder.decodeBoolForKey("toLocation")
         
+        var viewers = [String:Double]()
+        if let _viewers = decoder.decodeObjectForKey("viewers") as? [String:Double] {
+            viewers = _viewers
+        }
+        
         var contentType:ContentType = .Invalid
         switch ctInt {
         case 1:
@@ -84,7 +92,7 @@ class StoryItem: NSObject, NSCoding {
             break
         }
         
-        self.init(key: key, authorId: authorId, locationKey:locationKey, downloadUrl: downloadUrl, videoURL: videoURL, contentType: contentType, dateCreated: dateCreated, length: length, toProfile: toProfile, toStory: toStory, toLocation: toLocation)
+        self.init(key: key, authorId: authorId, locationKey:locationKey, downloadUrl: downloadUrl, videoURL: videoURL, contentType: contentType, dateCreated: dateCreated, length: length, toProfile: toProfile, toStory: toStory, toLocation: toLocation, viewers: viewers)
     }
     
     
@@ -98,6 +106,7 @@ class StoryItem: NSObject, NSCoding {
         coder.encodeBool(toProfile, forKey: "toProfile")
         coder.encodeBool(toStory, forKey: "toStory")
         coder.encodeBool(toLocation, forKey: "toLocation")
+        coder.encodeObject(viewers, forKey: "viewers")
         if videoURL != nil {
             coder.encodeObject(videoURL!, forKey: "videoURL")
         }
@@ -172,6 +181,10 @@ class StoryItem: NSObject, NSCoding {
                 self.delegate?.itemDownloaded()
             }
         })
+    }
+    
+    func hasViewed() -> Bool{
+        return viewers[mainStore.state.userState.uid] != nil
     }
 }
 

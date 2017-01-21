@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="SocialView" customModule="Lit" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="599" height="50"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3Hc-Z7-sYr">
+                    <rect key="frame" x="0.0" y="0.0" width="128" height="50"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="eye" translatesAutoresizingMaskIntoConstraints="NO" id="cde-bG-MM6">
+                            <rect key="frame" x="8" y="6" width="20" height="20"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="20" id="a0P-Fe-bZE"/>
+                                <constraint firstAttribute="width" secondItem="cde-bG-MM6" secondAttribute="height" multiplier="1:1" id="o1E-DB-uTR"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="5" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8w6-18-s4E">
+                            <rect key="frame" x="50" y="14" width="70" height="21"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="8w6-18-s4E" firstAttribute="leading" secondItem="cde-bG-MM6" secondAttribute="trailing" constant="8" id="9rq-wY-1Zb"/>
+                        <constraint firstItem="8w6-18-s4E" firstAttribute="centerY" secondItem="3Hc-Z7-sYr" secondAttribute="centerY" id="YTI-1c-GCe"/>
+                        <constraint firstItem="cde-bG-MM6" firstAttribute="top" secondItem="3Hc-Z7-sYr" secondAttribute="top" constant="6" id="ZOO-Ak-XC4"/>
+                        <constraint firstItem="cde-bG-MM6" firstAttribute="centerY" secondItem="3Hc-Z7-sYr" secondAttribute="centerY" id="agA-yI-SH7"/>
+                        <constraint firstAttribute="trailing" secondItem="8w6-18-s4E" secondAttribute="trailing" constant="8" id="iPf-he-XgU"/>
+                        <constraint firstAttribute="bottom" secondItem="cde-bG-MM6" secondAttribute="bottom" constant="6" id="pd1-jx-Rjo"/>
+                        <constraint firstItem="cde-bG-MM6" firstAttribute="leading" secondItem="3Hc-Z7-sYr" secondAttribute="leading" constant="8" id="src-4t-G2k"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <constraints>
+                <constraint firstItem="3Hc-Z7-sYr" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="cFG-e8-BnT"/>
+                <constraint firstAttribute="bottom" secondItem="3Hc-Z7-sYr" secondAttribute="bottom" id="iYT-40-DML"/>
+                <constraint firstItem="3Hc-Z7-sYr" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="uNy-f6-lmN"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="488.5" y="103"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="eye" width="32" height="32"/>
+    </resources>
+</document>

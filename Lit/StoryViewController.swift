@@ -25,10 +25,13 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
     
     var item:StoryItem?
     var tap:UITapGestureRecognizer!
+    var longTap:UILongPressGestureRecognizer!
     
     var authorTappedHandler:((user:User)->())?
     var optionsTappedHandler:(()->())?
     var storyCompleteHandler:(()->())?
+    
+    var viewsTappedHandler:(()->())?
     
     func showOptions(){
         pauseStory()
@@ -49,6 +52,8 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
     var story:UserStory!
         {
         didSet {
+            
+            
             shouldPlay = false
             self.story.delegate = self
             story.determineState()
@@ -102,10 +107,21 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
         progressBar!.createProgressIndicator(story)
         contentView.addSubview(progressBar!)
         
+        viewIndex = 0
         
         for item in story.items! {
+        
             totalTime += item.getLength()
+            
+            if item.hasViewed() {
+                viewIndex += 1
+            }
         }
+        
+        if viewIndex >= story.items!.count{
+            viewIndex = 0
+        }
+        
         
         self.setupItem()
         
@@ -127,6 +143,20 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
             } else if item.contentType == .Video {
                 loadVideoContent(item)
             }
+            
+            let viewers = item.viewers
+            if viewers.count == 1 {
+                viewsButton.setTitle("1 view", forState: .Normal)
+                viewsButton.hidden = false
+            } else if viewers.count > 1 {
+                viewsButton.setTitle("\(viewers.count) views", forState: .Normal)
+                viewsButton.hidden = false
+            } else {
+                viewsButton.hidden = true
+            }
+            
+            viewsButton.titleLabel?.sizeToFit()
+            viewsButton.sizeToFit()
             
         } else {
             self.removeGestureRecognizer(tap)
@@ -216,6 +246,12 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
         self.progressBar?.activateIndicator(viewIndex)
         killTimer()
         timer = NSTimer.scheduledTimerWithTimeInterval(itemLength, target: self, selector: #selector(nextItem), userInfo: nil, repeats: false)
+        
+        let uid = mainStore.state.userState.uid
+        if !item.hasViewed() && item.authorId != uid{
+            item.viewers[uid] = 1
+            FirebaseService.addView(item.getKey())
+        }
     }
     
     func nextItem() {
@@ -363,15 +399,23 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
         self.contentView.addSubview(self.fadeCover)
         self.contentView.addSubview(self.prevView)
         self.contentView.addSubview(self.authorOverlay)
+        self.contentView.addSubview(self.viewsButton)
         self.contentView.addSubview(self.moreButton)
         
 
         self.fadeCover.alpha = 0.0
         
         tap = UITapGestureRecognizer(target: self, action: #selector(tapped))
+//        longTap = UILongPressGestureRecognizer(target: self, action: #selector(longTapped))
+//        longTap.minimumPressDuration = 0.5
+//        longTap.numberOfTapsRequired = 1
+        
         moreTapped = UITapGestureRecognizer(target: self, action: #selector(showOptions))
         self.moreButton.addGestureRecognizer(moreTapped)
         self.moreButton.userInteractionEnabled = true
+        
+        self.viewsButton.userInteractionEnabled = true
+        self.viewsButton.addTarget(self, action: #selector(viewsTapped), forControlEvents: .TouchUpInside)
         
         activityView = NVActivityIndicatorView(frame: CGRectMake(0,0,50,50), type: .BallScaleMultiple)
         activityView.center = self.center
@@ -379,9 +423,20 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
         
     }
     
-    func enableMoreButton() {
-        
+    func viewsTapped() {
+        print("Views tapped")
+        viewsTappedHandler?()
     }
+    
+    func longTapped(recognizer:UILongPressGestureRecognizer) {
+        print("Long tapped")
+        if recognizer.state == .Began {
+            pauseStory()
+        } else {
+            setForPlay()
+        }
+    }
+    
     
     public lazy var content: UIImageView = {
 
@@ -438,6 +493,25 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
         authorView.authorTappedHandler = self.authorTappedHandler
         return authorView
     }()
+    
+//    lazy var socialView: SocialView = {
+//        var socialView = UINib(nibName: "SocialView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! SocialView
+//        let width: CGFloat = (UIScreen.mainScreen().bounds.size.width)
+//        let height: CGFloat = (UIScreen.mainScreen().bounds.size.height)
+//        
+//        socialView.frame = CGRect(x: 0, y:height - socialView.frame.height, width: width, height: socialView.frame.height)
+//        return socialView
+//    }()
+    
+    lazy var viewsButton: UIButton = {
+        let height: CGFloat = (UIScreen.mainScreen().bounds.size.height)
+        let button = UIButton(frame: CGRectMake(12,height - 36,40,40))
+        button.titleLabel!.font = UIFont.init(name: "AvenirNext-Medium", size: 16)
+        button.tintColor = UIColor.whiteColor()
+        button.alpha = 0.70
+        return button
+    }()
+
     
     lazy var moreButton: UIButton = {
         let width: CGFloat = (UIScreen.mainScreen().bounds.size.width)

@@ -11,9 +11,7 @@ import UIKit
 class LocationHeaderView: UITableViewHeaderFooterView {
 
     @IBOutlet weak var imageView: UIImageView!
-    
     @IBOutlet weak var descriptionLabel: UILabel!
-    
     
     
     override func awakeFromNib() {
@@ -22,12 +20,16 @@ class LocationHeaderView: UITableViewHeaderFooterView {
     }
     
     func setLocationDetails(location:Location) {
-        loadImageUsingCacheWithURL(location.getImageURL(), completion: { image, fromCache in
-            self.imageView.image = image
-        })
+        
+        let documentsURL = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
+        let fileURL = documentsURL.URLByAppendingPathComponent("location_images").URLByAppendingPathComponent("\(location.getKey()).jpg")
+        
+        if let imageFile = UIImage(contentsOfFile: fileURL.path!) {
+            self.imageView.image = imageFile
+        } else {
+            loadImageUsingCacheWithURL(location.getImageURL(), completion: { image, fromCache in
+                self.imageView.image = image
+            })
+        }
     }
-    
-    
-    
-
 }

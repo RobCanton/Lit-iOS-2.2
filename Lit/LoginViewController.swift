@@ -135,7 +135,7 @@ class LoginViewController: UIViewController, StoreSubscriber {
         loginButton.removeGestureRecognizer(tap)
         let loginManager = FBSDKLoginManager()
         
-        loginManager.logInWithReadPermissions(["public_profile", "email", "user_friends", "user_photos"], fromViewController: self, handler: {(result:FBSDKLoginManagerLoginResult!, error:NSError!) -> Void in
+        loginManager.logInWithReadPermissions(["public_profile", "email", "user_friends"], fromViewController: self, handler: {(result:FBSDKLoginManagerLoginResult!, error:NSError!) -> Void in
             if (error != nil) {
                 // Process error
                 self.removeFbData()
@@ -147,7 +147,7 @@ class LoginViewController: UIViewController, StoreSubscriber {
             } else {
                 //Success
                 
-                if result.grantedPermissions.contains("user_photos") && result.grantedPermissions.contains("public_profile") {
+                if result.grantedPermissions.contains("public_profile") {
                     //Do work
                     self.fetchFacebookProfile()
                 } else {

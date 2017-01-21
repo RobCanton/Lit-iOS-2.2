@@ -135,7 +135,7 @@
                         <viewControllerLayoutGuide type="bottom" id="wxg-xG-OOh"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="BUK-de-FH9">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -182,7 +182,7 @@
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QE5-ZG-Ird">
                                             <rect key="frame" x="496" y="24" width="68" height="21"/>
                                             <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="14"/>
-                                            <color key="textColor" white="0.69999999999999996" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="textColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView userInteractionEnabled="NO" alpha="0.69999999999999996" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Send" translatesAutoresizingMaskIntoConstraints="NO" id="asB-y7-5eK">
@@ -553,6 +553,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="Dto-u2-iP4" id="rSL-qL-qHX"/>
+                        <segue destination="dlJ-sy-uEB" kind="show" identifier="toLocation" id="Y5s-Ra-zED"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xox-EF-vdb" userLabel="First Responder" sceneMemberID="firstResponder"/>

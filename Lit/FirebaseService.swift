@@ -47,7 +47,7 @@ class FirebaseService {
     static func login(user:User) {
         mainStore.dispatch(UserIsAuthenticated(user: user))
         Listeners.startListeningToFriendRequests()
-        Listeners.startListeningToConversations()
+        //Listeners.startListeningToConversations()
         Listeners.startListeningToFollowers()
         Listeners.startListeningToFollowing()
         Listeners.startListeningToResponses()
@@ -452,35 +452,44 @@ class FirebaseService {
             return completionHandler(item: cachedUpload)
         }
         
-        let postRef = ref.child("uploads/\(key)/meta")
+        let postRef = ref.child("uploads/\(key)")
         postRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
             var item:StoryItem?
             if snapshot.exists() {
-                if !snapshot.hasChild("delete") {
+                
+                let meta = snapshot.value!["meta"] as! [String:AnyObject]
+                
+                if meta["delete"] == nil {
+                    
                     let key = key
-                    let authorId = snapshot.value!["author"] as! String
-                    let locationKey = snapshot.value!["location"] as! String
-                    let downloadUrl = NSURL(string: snapshot.value!["url"] as! String)!
-                    let contentTypeStr = snapshot.value!["contentType"] as! String
+                    let authorId = meta["author"] as! String
+                    let locationKey = meta["location"] as! String
+                    let downloadUrl = NSURL(string: meta["url"] as! String)!
+                    let contentTypeStr = meta["contentType"] as! String
                     var contentType = ContentType.Invalid
                     var videoURL:NSURL?
                     if contentTypeStr == "image/jpg" {
                         contentType = .Image
                     } else if contentTypeStr == "video/mp4" {
                         contentType = .Video
-                        if snapshot.hasChild("videoURL") {
-                            videoURL = NSURL(string: snapshot.value!["videoURL"] as! String)!
+                        if meta["videoURL"] != nil {
+                            videoURL = NSURL(string: meta["videoURL"] as! String)!
                         }
                     }
                     
-                    let toProfile = snapshot.value!["toProfile"] as! Bool
-                    let toStory = snapshot.value!["toStory"] as! Bool
-                    let toLocation = snapshot.value!["toLocation"] as! Bool
+                    let toProfile = meta["toProfile"] as! Bool
+                    let toStory = meta["toStory"] as! Bool
+                    let toLocation = meta["toLocation"] as! Bool
                     
-                    let dateCreated = snapshot.value!["dateCreated"] as! Double
-                    let length = snapshot.value!["length"] as! Double
+                    let dateCreated = meta["dateCreated"] as! Double
+                    let length = meta["length"] as! Double
+                    
+                    var viewers = [String:Double]()
+                    if snapshot.hasChild("views") {
+                        viewers = snapshot.value!["views"] as! [String:Double]
+                    }
 
-                    item = StoryItem(key: key, authorId: authorId,locationKey: locationKey, downloadUrl: downloadUrl,videoURL: videoURL, contentType: contentType, dateCreated: dateCreated, length: length, toProfile: toProfile, toStory: toStory, toLocation: toLocation)
+                    item = StoryItem(key: key, authorId: authorId,locationKey: locationKey, downloadUrl: downloadUrl,videoURL: videoURL, contentType: contentType, dateCreated: dateCreated, length: length, toProfile: toProfile, toStory: toStory, toLocation: toLocation, viewers: viewers)
                     dataCache.setObject(item!, forKey: "upload-\(key)")
                 }
             }
@@ -543,37 +552,11 @@ class FirebaseService {
         }
     }
 
-    static func addView(postKey:String, uid:String) {
+    static func addView(postKey:String) {
+        let uid = mainStore.state.userState.uid
         
-        let postRef = ref.child("uploads/\(postKey)")
-        postRef.child("views/\(uid)").observeEventType(.Value, withBlock: { snapshot in
-            if !snapshot.exists() {
-                print("ADDING VIEW")
-                postRef.child("views/\(uid)").setValue(true, withCompletionBlock: { error, ref in
-                    if error == nil {
-                        postRef.child("meta/views").runTransactionBlock({ (currentData: FIRMutableData) -> FIRTransactionResult in
-                            if var numViews = currentData.value as? Int {
-                                
-                                numViews += 1
-                                currentData.value = numViews
-                                
-                                return FIRTransactionResult.successWithValue(currentData)
-                            }
-                            else {
-                                currentData.value = 1
-                                return FIRTransactionResult.successWithValue(currentData)
-                            }
-                        }) { (error, committed, snapshot) in
-                            if let error = error {
-                                print(error.localizedDescription)
-                            }
-                        }
-                    }
-                })
-            } else {
-                print("View already exists")
-            }
-        })
+        let postRef = ref.child("uploads/\(postKey)/views/\(uid)")
+        postRef.setValue([".sv":"timestamp"])
         
     }
     

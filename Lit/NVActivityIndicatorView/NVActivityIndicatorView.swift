@@ -409,7 +409,7 @@ public class NVActivityIndicatorView: UIView {
     public func startAnimating() {
         self.hidden = false
         self._animating = true
-        self.layer.speed = 1
+        self.layer.speed = 0.75
         setUpAnimation()
     }
     

@@ -34,12 +34,17 @@ class UserStoryTableViewCell: UITableViewCell, StoryProtocol {
     func activate(animated:Bool) {
         guard let story = userStory else { return }
         guard let items = story.items else { return }
+        
+        var borderColor = accentColor.CGColor
+        if story.hasViewedAll() {
+            borderColor = UIColor.darkGrayColor().CGColor
+        }
         if items.count == 0 { return }
         if animated {
             let color:CABasicAnimation = CABasicAnimation(keyPath: "borderColor")
             color.fromValue = UIColor.blackColor().CGColor
-            color.toValue = accentColor.CGColor
-            imageContainer.layer.borderColor = accentColor.CGColor
+            color.toValue = borderColor
+            imageContainer.layer.borderColor = borderColor
             
             
             let both:CAAnimationGroup = CAAnimationGroup()
@@ -49,7 +54,7 @@ class UserStoryTableViewCell: UITableViewCell, StoryProtocol {
             
             imageContainer.layer.addAnimation(both, forKey: "color and Width")
         } else {
-            imageContainer.layer.borderColor = accentColor.CGColor
+            imageContainer.layer.borderColor = borderColor
         }
     }
     
@@ -93,7 +98,7 @@ class UserStoryTableViewCell: UITableViewCell, StoryProtocol {
     func setToEmptyMyStory() {
         self.usernameLabel.text = "Your Story"
         self.timeLabel.text = "+ Tap to add"
-        imageContainer.layer.borderColor = timeLabel.textColor.CGColor
+        imageContainer.layer.borderColor = UIColor.darkGrayColor().CGColor
         if let user = mainStore.state.userState.user {
             loadImageUsingCacheWithURL(user.getImageUrl(), completion: { image, fromCache in
                 self.contentImageView.image = image
