@@ -83,18 +83,10 @@ class MessagesViewController: UITableViewController, StoreSubscriber {
     
     
     func presentConversation(conversation:Conversation) {
-        FirebaseService.getUser(conversation.getPartnerId(), completionHandler: { user in
-            if user != nil {
-                
-                loadImageUsingCacheWithURL(user!.getImageUrl(), completion: { image, fromCache in
-                    let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("ChatViewController") as! ChatViewController
-                    controller.conversation = conversation
-                    controller.partnerImage = image
-                    self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
-                    self.navigationController?.pushViewController(controller, animated: true)
-                })
-            }
-        })
+        let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("ChatViewController") as! ChatViewController
+        controller.conversation = conversation
+        self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
+        self.navigationController?.pushViewController(controller, animated: true)
         
         
     }

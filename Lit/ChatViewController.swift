@@ -80,13 +80,9 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol {
         self.inputToolbar.contentView.textView.layer.borderColor = UIColor(white: 0.10, alpha: 1.0).CGColor
         self.inputToolbar.contentView.textView.layer.borderWidth = 1.0
         collectionView?.collectionViewLayout.outgoingAvatarViewSize = .zero
+        
         collectionView?.collectionViewLayout.springinessEnabled = true
-        
-        
-//        let titleView = UINib(nibName: "ChatTitleView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! ChatTitleView
-//        
-//        self.navigationItem.titleView = titleView
-//        titleView.setUser(conversation.getPartnerId())
+        //collectionView?.collectionViewLayout.
         
         conversation.delegate = self
         if let user = conversation.getPartner() {
@@ -94,8 +90,7 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol {
         }
         
         downloadRef = FirebaseService.ref.child("conversations/\(conversation.getKey())/messages")
-        self.setup()
-        self.downloadMessages()
+        
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(appMovedToBackground), name:UIApplicationDidEnterBackgroundNotification, object: nil)
         
@@ -103,6 +98,19 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol {
         refreshControl.tintColor = UIColor.whiteColor()
         refreshControl.addTarget(self, action: #selector(handleRefresh), forControlEvents: .ValueChanged)
         collectionView?.addSubview(refreshControl)
+        
+        FirebaseService.getUser(conversation.getPartnerId(), completionHandler: { user in
+            if user != nil {
+                self.partner = user!
+                
+                loadImageUsingCacheWithURL(user!.getImageUrl(), completion: { image, fromCache in
+                    self.partnerImage = image
+                    self.setup()
+                    self.downloadMessages()
+                })
+            }
+        })
+       
     }
     
     func handleRefresh() {
@@ -184,6 +192,7 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol {
         
     }
     
+    
     override func collectionView(collectionView: JSQMessagesCollectionView!, didDeleteMessageAtIndexPath indexPath: NSIndexPath!) {
         self.messages.removeAtIndex(indexPath.row)
     }
@@ -212,6 +221,12 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol {
             return nil
         }
 
+    }
+    
+    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let cell = super.collectionView(collectionView, cellForItemAtIndexPath: indexPath) as! JSQMessagesCollectionViewCell
+        cell.textView.textColor = UIColor.whiteColor()
+        return cell
     }
     
     override func collectionView(collectionView: JSQMessagesCollectionView, attributedTextForCellTopLabelAtIndexPath indexPath: NSIndexPath) -> NSAttributedString? {
