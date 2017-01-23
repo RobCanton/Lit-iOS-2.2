@@ -178,8 +178,8 @@ func saveVideoInCache(key:String, data:NSData) {
     videoCache.setObject(data, forKey: key)
 }
 
-func downloadVideoWithKey(key:String, completion: (data:NSData)->()) {
-    let videoRef = FirebaseService.storageRef.child("user_uploads/videos/\(key)")
+func downloadVideoWithKey(key:String, author:String, completion: (data:NSData)->()) {
+    let videoRef = FirebaseService.storageRef.child("user_uploads/videos/\(author)/\(key)")
     
     // Download in memory with a maximum allowed size of 2MB (2 * 1024 * 1024 bytes)
     videoRef.dataWithMaxSize(2 * 1024 * 1024) { (data, error) -> Void in

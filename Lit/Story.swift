@@ -89,7 +89,10 @@ class UserStory: ItemDelegate {
         if state == .NotLoaded {
             state = .LoadingItemInfo
             FirebaseService.downloadStory(postKeys, completionHandler: { items in
-                self.items = items
+                
+                self.items = items.sort({
+                    return $0 < $1
+                })
                 self.state = .ItemInfoLoaded
                 if !self.needsDownload() {
                     self.state = .ContentLoaded

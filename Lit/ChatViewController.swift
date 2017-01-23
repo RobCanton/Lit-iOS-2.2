@@ -36,6 +36,7 @@ class ChatTitleView: UIView {
 class ChatViewController: JSQMessagesViewController, GetUserProtocol {
     
 
+    var refreshControl: UIRefreshControl!
 
     var containerDelegate:ContainerViewController?
     let incomingBubble = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor.darkGrayColor())
@@ -97,6 +98,51 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol {
         self.downloadMessages()
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(appMovedToBackground), name:UIApplicationDidEnterBackgroundNotification, object: nil)
+        
+        refreshControl = UIRefreshControl()
+        refreshControl.tintColor = UIColor.whiteColor()
+        refreshControl.addTarget(self, action: #selector(handleRefresh), forControlEvents: .ValueChanged)
+        collectionView?.addSubview(refreshControl)
+    }
+    
+    func handleRefresh() {
+        let oldestLoadedMessage = messages[0]
+        let date = oldestLoadedMessage.date
+        let endTimestamp = date.timeIntervalSince1970 * 1000
+        
+        limit += 16
+        downloadRef?.queryOrderedByChild("timestamp").queryLimitedToLast(limit).queryEndingAtValue(endTimestamp).observeSingleEventOfType(.Value, withBlock: { snapshot in
+            if snapshot.exists() {
+                var messageBatch = [JSQMessage]()
+                for message in snapshot.children {
+                    let messageSnap = message as! FIRDataSnapshot
+                    let senderId = messageSnap.value!["senderId"] as! String
+                    let text     = messageSnap.value!["text"] as! String
+                    let timestamp     = messageSnap.value!["timestamp"] as! Double
+                    
+                    if timestamp != endTimestamp {
+                        let date = NSDate(timeIntervalSince1970: timestamp/1000)
+                        let message = JSQMessage(senderId: senderId, senderDisplayName: "", date: date, text: text)
+                        messageBatch.append(message)
+                        
+                    }
+                    
+                }
+                if messageBatch.count > 0 {
+                    self.messages.insertContentsOf(messageBatch, at: 0)
+                    self.reloadMessagesView()
+                    self.refreshControl.endRefreshing()
+                } else {
+                    self.refreshControl.endRefreshing()
+                    self.refreshControl.enabled = false
+                    self.refreshControl.removeFromSuperview()
+                }
+            } else {
+                self.refreshControl.endRefreshing()
+                self.refreshControl.enabled = false
+                self.refreshControl.removeFromSuperview()
+            }
+        })
     }
     
     func appMovedToBackground() {
@@ -182,7 +228,7 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol {
             
             let gap = currentItem.date.timeIntervalSinceDate(prevItem.date)
             
-            if gap > 3600 {
+            if gap > 1800 {
                 return JSQMessagesTimestampFormatter.sharedFormatter().attributedTimestampForDate(currentItem.date)
             }
         } else {
@@ -207,7 +253,7 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol {
             
             let gap = currentItem.date.timeIntervalSinceDate(prevItem.date)
             
-            if gap > 3600 {
+            if gap > 1800 {
                 return kJSQMessagesCollectionViewCellLabelHeightDefault
             }
             
@@ -221,9 +267,11 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol {
         return 0.0
     }
     
-    var limit:UInt = 10
     var loadingNextBatch = false
     var downloadRef:FIRDatabaseReference?
+    
+    var lastTimeStamp:Double?
+    var limit:UInt = 16
 
 }
 
@@ -260,18 +308,20 @@ extension ChatViewController {
         
     }
     
+    
+    
 
     func downloadMessages() {
         
         self.messages = []
 
-        downloadRef?.observeEventType(.ChildAdded, withBlock: { snapshot in
+        downloadRef?.queryOrderedByChild("timestamp").queryLimitedToLast(limit).observeEventType(.ChildAdded, withBlock: { snapshot in
                 let senderId = snapshot.value!["senderId"] as! String
                 let text     = snapshot.value!["text"] as! String
                 let timestamp     = snapshot.value!["timestamp"] as! Double
                 
                 let date = NSDate(timeIntervalSince1970: timestamp/1000)
-                let message = JSQMessage(senderId: senderId, senderDisplayName: "Rob", date: date, text: text)
+                let message = JSQMessage(senderId: senderId, senderDisplayName: "", date: date, text: text)
                 self.messages.append(message)
                 self.reloadMessagesView()
                 self.finishReceivingMessageAnimated(true)

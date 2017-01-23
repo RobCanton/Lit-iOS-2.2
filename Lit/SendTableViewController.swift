@@ -24,7 +24,12 @@ class SendViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     
     func sent() {
-        self.presentingViewController?.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+        
+        let camera = self.presentingViewController as! CameraViewController
+        camera.cameraState = .Initiating
+        camera.recordBtn.hidden = false
+        self.dismissViewControllerAnimated(true, completion: nil)
+        //self.presentingViewController?.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
     }
     
     func send() {

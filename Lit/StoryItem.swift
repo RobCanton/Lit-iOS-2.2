@@ -171,7 +171,7 @@ class StoryItem: NSObject, NSCoding {
                 if let _ = loadVideoFromCache(self.key) {
                     self.delegate?.itemDownloaded()
                 } else {
-                    downloadVideoWithKey(self.key, completion: { data in
+                    downloadVideoWithKey(self.key, author: self.authorId, completion: { data in
                         saveVideoInCache(self.key, data: data)
                         self.delegate?.itemDownloaded()
                     })
@@ -186,10 +186,23 @@ class StoryItem: NSObject, NSCoding {
     func hasViewed() -> Bool{
         return viewers[mainStore.state.userState.uid] != nil
     }
+    
+    func postPoints() -> Int {
+        var count = 0
+        if toProfile { count += 1 }
+        if toStory { count += 1 }
+        if toLocation { count += 1 }
+        return count
+    }
+    
 }
 
 func < (lhs: StoryItem, rhs: StoryItem) -> Bool {
     return lhs.dateCreated.compare(rhs.dateCreated) == .OrderedAscending
+}
+
+func > (lhs: StoryItem, rhs: StoryItem) -> Bool {
+    return lhs.dateCreated.compare(rhs.dateCreated) == .OrderedDescending
 }
 
 func == (lhs: StoryItem, rhs: StoryItem) -> Bool {

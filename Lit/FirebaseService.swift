@@ -47,7 +47,7 @@ class FirebaseService {
     static func login(user:User) {
         mainStore.dispatch(UserIsAuthenticated(user: user))
         Listeners.startListeningToFriendRequests()
-        //Listeners.startListeningToConversations()
+        Listeners.startListeningToConversations()
         Listeners.startListeningToFollowers()
         Listeners.startListeningToFollowing()
         Listeners.startListeningToResponses()
@@ -125,8 +125,6 @@ class FirebaseService {
                 fcmRef.setValue(token)
             }
         }
-        
-        
     }
     
 
@@ -156,7 +154,7 @@ class FirebaseService {
             show(whistle: uploadingMurmer, action: .Show(60.0))
             
             // Upload file and metadata to the object
-            let uploadTask = storageRef.child("user_uploads/\(postKey))").putData(data, metadata: metadata) { metadata, error in
+            let uploadTask = storageRef.child("user_uploads/images/\(uid)/\(postKey)").putData(data, metadata: metadata) { metadata, error in
                 
                 if (error != nil) {
                     // HANDLE ERROR
@@ -233,7 +231,7 @@ class FirebaseService {
             let length = CMTimeGetSeconds(playerItem.duration)
             metadata.contentType = contentTypeStr
             
-            let uploadTask = storageRef.child("user_uploads/videos/\(postKey)").putData(data!, metadata: metadata) { metadata, error in
+            let uploadTask = storageRef.child("user_uploads/videos/\(uid)/\(postKey)").putData(data!, metadata: metadata) { metadata, error in
                 if (error != nil) {
                     // HANDLE ERROR
                     hide()
@@ -259,7 +257,6 @@ class FirebaseService {
                     dataRef.child("meta").setValue(obj, withCompletionBlock: { error, _ in
                         hide()
                         if error == nil {
-                            
                             var murmur = Murmur(title: "Video uploaded!")
                             murmur.backgroundColor = accentColor
                             murmur.titleColor = UIColor.whiteColor()
@@ -337,12 +334,21 @@ class FirebaseService {
         })
     }
     
+    internal static func deleteItem(item:StoryItem, completionHandler:(()->())){
+        removeItemFromLocation(item, completionHandler: {
+            removeItemFromStory(item, completionHandler: {
+                removeItemFromProfile(item, completionHandler: completionHandler)
+            })
+        })
+    }
+    
     private static func uploadVideoStill(url:NSURL, postKey:String, completionHandler:(thumb_url:String)->()) {
         if let videoStill = generateVideoStill(url) {
             if let data = UIImageJPEGRepresentation(videoStill, 0.5) {
                 let stillMetaData = FIRStorageMetadata()
                 stillMetaData.contentType = "image/jpg"
-                let uploadTask = storageRef.child("user_uploads/\(postKey)").putData(data, metadata: stillMetaData) { metadata, error in
+                let uid = mainStore.state.userState.uid
+                let uploadTask = storageRef.child("user_uploads/images/\(uid)/\(postKey)").putData(data, metadata: stillMetaData) { metadata, error in
                     if (error != nil) {
                         
                     } else {

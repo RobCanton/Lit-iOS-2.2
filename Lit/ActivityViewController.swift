@@ -31,10 +31,19 @@ class ActivityViewController: UITableViewController, UISearchBarDelegate {
         listenToMyStory()
         listenToActivityResponse()
         
+        if statusBarShouldHide {
+            UIView.animateWithDuration(0.3, animations: {
+                self.statusBarShouldHide = false
+                self.setNeedsStatusBarAppearanceUpdate()
+            })
+        }
+        
         NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(handleEnterForeground), name:
             UIApplicationWillEnterForegroundNotification, object: nil)
         
     }
+    
+    var statusBarShouldHide = false
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
@@ -68,6 +77,11 @@ class ActivityViewController: UITableViewController, UISearchBarDelegate {
             returningCell!.activate(true)
             returningCell = nil
         }
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        self.setNeedsStatusBarAppearanceUpdate()
     }
     
     @IBAction func showUserSearch(sender: AnyObject) {
@@ -269,7 +283,7 @@ class ActivityViewController: UITableViewController, UISearchBarDelegate {
     }
     
     override func prefersStatusBarHidden() -> Bool {
-        return false
+        return statusBarShouldHide
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -321,7 +335,7 @@ class ActivityViewController: UITableViewController, UISearchBarDelegate {
         self.transitionController.userInfo = ["destinationIndexPath": i, "initialIndexPath": indexPath]
 
         if let navigationController = self.navigationController {
-            
+            statusBarShouldHide = true
             // Set transitionController as a navigation controller delegate and push.
             navigationController.delegate = transitionController
             transitionController.push(viewController: presentedViewController, on: self, attached: presentedViewController)

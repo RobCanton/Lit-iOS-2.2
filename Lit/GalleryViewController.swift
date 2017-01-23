@@ -149,21 +149,45 @@ class GalleryViewController: UIViewController, UICollectionViewDelegate, UIColle
             
             let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
             
+            
             let cancelActionButton: UIAlertAction = UIAlertAction(title: "Cancel", style: .Cancel) { action -> Void in
                 cell.setForPlay()
             }
             actionSheet.addAction(cancelActionButton)
             
-            if item.toProfile {
-                let profileAction: UIAlertAction = UIAlertAction(title: "Remove from my Profile", style: .Destructive)
-                { action -> Void in
-                    FirebaseService.removeItemFromProfile(item, completionHandler: {
+            let deleteActionButton: UIAlertAction = UIAlertAction(title: "Delete", style: .Destructive) { action -> Void in
+                
+                if item.postPoints() > 1 {
+                    let deleteController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+                    
+                    let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
+                        cell.setForPlay()
+                    }
+                    deleteController.addAction(cancelAction)
+                    let storyAction: UIAlertAction = UIAlertAction(title: "Remove from my profile", style: .Destructive)
+                    { action -> Void in
+                        FirebaseService.removeItemFromProfile(item, completionHandler: {
+                            self.popStoryController(true)
+                        })
+                    }
+                    deleteController.addAction(storyAction)
+                    
+                    let deleteAction = UIAlertAction(title: "Delete", style: .Destructive) { (action) in
+                        FirebaseService.deleteItem(item, completionHandler: {
+                            self.popStoryController(true)
+                        })
+                    }
+                    deleteController.addAction(deleteAction)
+                    
+                    self.presentViewController(deleteController, animated: true, completion: nil)
+                } else {
+                    FirebaseService.deleteItem(item, completionHandler: {
                         self.popStoryController(true)
                     })
                 }
-                actionSheet.addAction(profileAction)
             }
-
+            actionSheet.addAction(deleteActionButton)
+            
             self.presentViewController(actionSheet, animated: true, completion: nil)
         } else {
             let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)

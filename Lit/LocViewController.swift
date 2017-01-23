@@ -87,14 +87,14 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
-        statusBarShouldHide = true
+        
         self.setNeedsStatusBarAppearanceUpdate()
     }
     
     func listenToUserUploads() {
         let locRef = FirebaseService.ref.child("locations/uploads/\(location.getKey())")
         locRef.removeAllObservers()
-        locRef.observeEventType(.Value, withBlock: { snapshot in
+        locRef.queryOrderedByKey().observeEventType(.Value, withBlock: { snapshot in
 
             var tempDictionary = [String:[String]]()
             var timestamps = [String:Double]()
@@ -557,6 +557,7 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
         // Otherwise, present another view controller
         if let navigationController = self.navigationController {
             
+            statusBarShouldHide = true
             // Set transitionController as a navigation controller delegate and push.
             navigationController.delegate = transitionController
             transitionController.push(viewController: presentedViewController, on: self, attached: presentedViewController)

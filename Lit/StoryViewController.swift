@@ -25,6 +25,7 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
     
     var item:StoryItem?
     var tap:UITapGestureRecognizer!
+    
     var longTap:UILongPressGestureRecognizer!
     
     var authorTappedHandler:((user:User)->())?

@@ -13,16 +13,6 @@ class LocationStoriesViewController: StoriesViewController {
     
     var location:Location!
     
-    
-    override func deleteCurrentItem() {
-        guard let cell = getCurrentCell() else { return }
-        if let item = cell.getCurrentItem() {
-            FirebaseService.removeItemFromLocation(item, completionHandler: {
-                self.popStoryController(true)
-            })
-        }
-    }
-    
     override func showLocation(location:Location) {
         popStoryController(true)
     }
@@ -44,15 +34,44 @@ class LocationStoriesViewController: StoriesViewController {
             }
             actionSheet.addAction(cancelActionButton)
             
-            if item.toLocation {
-                let storyAction: UIAlertAction = UIAlertAction(title: "Remove from \(location.getName())", style: .Destructive)
-                { action -> Void in
-                    FirebaseService.removeItemFromLocation(item, completionHandler: {
+            let deleteActionButton: UIAlertAction = UIAlertAction(title: "Delete", style: .Destructive) { action -> Void in
+                
+                if item.postPoints() > 1 {
+                    let deleteController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+                    
+                    let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
+                        cell.setForPlay()
+                    }
+                    deleteController.addAction(cancelAction)
+                    
+                    
+                    
+                    if item.toLocation {
+                        let storyAction: UIAlertAction = UIAlertAction(title: "Remove from \(self.location.getName())", style: .Destructive)
+                        { action -> Void in
+                            FirebaseService.removeItemFromLocation(item, completionHandler: {
+                                self.popStoryController(true)
+                            })
+                        }
+                        deleteController.addAction(storyAction)
+                    }
+                    
+                    let deleteAction = UIAlertAction(title: "Delete", style: .Destructive) { (action) in
+                        FirebaseService.deleteItem(item, completionHandler: {
+                            self.popStoryController(true)
+                        })
+                    }
+                    deleteController.addAction(deleteAction)
+                    
+                    self.presentViewController(deleteController, animated: true, completion: nil)
+                } else {
+                    FirebaseService.deleteItem(item, completionHandler: {
                         self.popStoryController(true)
                     })
                 }
-                actionSheet.addAction(storyAction)
             }
+            actionSheet.addAction(deleteActionButton)
+
             self.presentViewController(actionSheet, animated: true, completion: nil)
         } else {
             let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
@@ -86,9 +105,7 @@ class LocationStoriesViewController: StoriesViewController {
                 }
                 alertController.addAction(OKAction2)
                 
-                self.presentViewController(alertController, animated: true) {
-                    cell.setForPlay()
-                }
+                self.presentViewController(alertController, animated: true, completion: nil)
             }
             actionSheet.addAction(OKAction)
             
@@ -112,6 +129,11 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
         tabBarRef.setTabBarVisible(false, animated: true)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(appMovedToBackground), name:UIApplicationDidEnterBackgroundNotification, object: nil)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self,
+                                                         selector: #selector(keyboardWasShown),
+                                                         name: UIKeyboardWillChangeFrameNotification,
+                                                         object: nil)
         
         UIView.animateWithDuration(0.15, animations: {
             self.statusBarShouldHide = true
@@ -162,6 +184,7 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
         }
     }
 
+    var textField:UITextView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -200,8 +223,24 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
         label.center = view.center
         label.textAlignment = .Center
 
+        textField = UITextView(frame: CGRectMake(0,self.view.frame.height - 40 ,self.view.frame.width, 40))
+        
+        self.view.addSubview(textField)
+        textField.font = UIFont(name: "AvenirNext-Medium", size: 18.0)
+        textField.textColor = UIColor.whiteColor()
+        textField.backgroundColor = UIColor(white: 0.0, alpha: 0.70)
+        textField.hidden = true
+        textField.keyboardAppearance = .Dark
+        textField.returnKeyType = .Send
+        textField.userInteractionEnabled = false
+        textField.scrollEnabled = false
+        textField.textContainerInset = UIEdgeInsets(top: 10, left: 8, bottom: 10, right: 8)
+        textField.text = "Send a message"
+        textField.fitHeightToContent()
+        textField.text = ""
+        textField.delegate = self
+        self.textField.center = CGPoint(x: self.view.center.x, y: self.view.frame.height - self.textField.frame.height / 2)
     }
-    
     
     func appMovedToBackground() {
         popStoryController(false)
@@ -212,7 +251,6 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
         return UIScreen.mainScreen().bounds.size
     }
 
-    
     
     weak var transitionController: TransitionController!
     
@@ -243,9 +281,7 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
         let initialPath = self.transitionController.userInfo!["initialIndexPath"] as! NSIndexPath
         self.transitionController.userInfo!["destinationIndexPath"] = indexPath
         self.transitionController.userInfo!["initialIndexPath"] = NSIndexPath(forItem: indexPath.item, inSection: initialPath.section)
-        if let navigationController = self.navigationController {
-            navigationController.popViewControllerAnimated(animated)
-        }
+        navigationController?.popViewControllerAnimated(animated)
     }
     
     
@@ -308,15 +344,39 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
             }
             actionSheet.addAction(cancelActionButton)
             
-            if item.toStory {
-                let storyAction: UIAlertAction = UIAlertAction(title: "Remove from my Story", style: .Destructive)
-                { action -> Void in
-                    FirebaseService.removeItemFromStory(item, completionHandler: {
+            let deleteActionButton: UIAlertAction = UIAlertAction(title: "Delete", style: .Destructive) { action -> Void in
+                
+                if item.postPoints() > 1 {
+                    let deleteController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+                    
+                    let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
+                        cell.setForPlay()
+                    }
+                    deleteController.addAction(cancelAction)
+                    let storyAction: UIAlertAction = UIAlertAction(title: "Remove from my story", style: .Destructive)
+                    { action -> Void in
+                        FirebaseService.removeItemFromStory(item, completionHandler: {
+                            self.popStoryController(true)
+                        })
+                    }
+                    deleteController.addAction(storyAction)
+                    
+                    let deleteAction = UIAlertAction(title: "Delete", style: .Destructive) { (action) in
+                        FirebaseService.deleteItem(item, completionHandler: {
+                            self.popStoryController(true)
+                        })
+                    }
+                    deleteController.addAction(deleteAction)
+                    
+                    self.presentViewController(deleteController, animated: true, completion: nil)
+                } else {
+                    FirebaseService.deleteItem(item, completionHandler: {
                         self.popStoryController(true)
                     })
                 }
-                actionSheet.addAction(storyAction)
             }
+            actionSheet.addAction(deleteActionButton)
+            
             self.presentViewController(actionSheet, animated: true, completion: nil)
         } else {
             let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
@@ -368,15 +428,6 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
         return nil
     }
     
-    func deleteCurrentItem() {
-        guard let cell = getCurrentCell() else { return }
-        if let item = cell.getCurrentItem() {
-//            FirebaseService.removeItemFromLocation(item, completionHandler: {
-//                self.popStoryController(true)
-//            })
-        }
-    }
-    
     func stopPreviousItem() {
         if let cell = getCurrentCell() {
             cell.pauseVideo()
@@ -385,6 +436,16 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
         
+        if keyboardUp {
+            let panGestureRecognizer: UIPanGestureRecognizer = gestureRecognizer as! UIPanGestureRecognizer
+            let translate: CGPoint = panGestureRecognizer.translationInView(self.view)
+            
+            if translate.y > 0 {
+                dismissKeyboard()
+            }
+            return false
+        }
+        
         let indexPath: NSIndexPath = self.collectionView.indexPathsForVisibleItems().first!
         let initialPath = self.transitionController.userInfo!["initialIndexPath"] as! NSIndexPath
         self.transitionController.userInfo!["destinationIndexPath"] = indexPath
@@ -392,8 +453,62 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
         
         let panGestureRecognizer: UIPanGestureRecognizer = gestureRecognizer as! UIPanGestureRecognizer
         let translate: CGPoint = panGestureRecognizer.translationInView(self.view)
+        
+        if translate.y < 0 {
+            showTextfield()
+            return false
+        }
+        
         return Double(abs(translate.y)/abs(translate.x)) > M_PI_4 && translate.y > 0
     }
+    
+    
+    func showTextfield() {
+        keyboardUp = true
+        textField.hidden = false
+        textField.userInteractionEnabled = true
+        textField.becomeFirstResponder()
+        guard let cell = getCurrentCell() else { return }
+        UIView.animateWithDuration(0.1, animations: {
+            cell.authorOverlay.alpha = 0.0
+            cell.progressBar?.alpha = 0.0
+        })
+    }
+    
+    var keyboardTap:UITapGestureRecognizer!
+    var keyboardUp = false
+    func keyboardWasShown(notification: NSNotification) {
+        if keyboardUp {
+            guard let cell = getCurrentCell() else { return }
+            cell.pauseStory()
+            cell.userInteractionEnabled = false
+            
+            let info = notification.userInfo!
+            let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+            
+            UIView.animateWithDuration(0.1, animations: { () -> Void in
+                self.textField.center = CGPoint(x: self.view.center.x, y: self.view.frame.height - keyboardFrame.height - self.textField.frame.height / 2)
+            })
+        }
+    }
+    
+    func dismissKeyboard() {
+        keyboardUp = false
+        textField.resignFirstResponder()
+        textField.hidden = true
+        textField.userInteractionEnabled = false
+        guard let cell = getCurrentCell() else { return }
+        
+        UIView.animateWithDuration(0.1, animations: { () -> Void in
+            self.textField.center = CGPoint(x: self.view.center.x, y: self.view.frame.height - self.textField.frame.height / 2)
+            cell.authorOverlay.alpha = 1.0
+            cell.progressBar?.alpha = 1.0
+        })
+        
+        cell.setForPlay()
+        cell.userInteractionEnabled = true
+    }
+    
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
     }
@@ -469,3 +584,28 @@ extension StoriesViewController: View2ViewTransitionPresented {
     }
 }
 
+extension StoriesViewController: UITextViewDelegate {
+    func textViewDidChange(textView: UITextView) {
+        let oldHeight = textView.frame.size.height
+        textView.fitHeightToContent()
+        let change = textView.frame.height - oldHeight
+
+        textView.center = CGPoint(x: textView.center.x, y: textView.center.y - change)
+    }
+    
+    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        return textView.text.characters.count + (text.characters.count - range.length) <= 140
+    }
+}
+
+extension UITextView {
+
+    func fitHeightToContent() {
+        let fixedWidth = self.frame.size.width
+        self.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.max))
+        let newSize = self.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.max))
+        var newFrame = self.frame
+        newFrame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
+        self.frame = newFrame;
+    }
+}

@@ -309,7 +309,7 @@ extension EditProfileViewController: UITextViewDelegate {
             textView.resignFirstResponder()
             return false
         }
-        return true
+        return textView.text.characters.count + (text.characters.count - range.length) <= 240
     }
 
 }

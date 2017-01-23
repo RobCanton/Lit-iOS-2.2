@@ -304,7 +304,8 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
     func downloadStory(postKeys:[String]) {
         if postKeys.count > 0 {
             FirebaseService.downloadStory(postKeys, completionHandler: { story in
-                self.posts = story.reverse()
+                
+                self.posts = story.sort({ return $0 > $1 })
                 self.collectionView!.reloadData()
             })
         } else {

@@ -111,9 +111,7 @@ class LoginViewController: UIViewController, StoreSubscriber {
         activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
         activityIndicator.center = CGPoint(x: view.center.x, y: loginButton.center.y)
         self.view.addSubview(activityIndicator)
-        
-        
-        //setupVideoBackground()
+
         
     }
     
@@ -220,19 +218,19 @@ class LoginViewController: UIViewController, StoreSubscriber {
     var videoPlayer: AVPlayer = AVPlayer()
     var playerLayer: AVPlayerLayer?
     func setupVideoBackground() {
-//        let videoLayer = UIView(frame: self.view.bounds)
-//        self.view.insertSubview(videoLayer, atIndex: 0)
-//        let filePath = NSURL.fileURLWithPath(NSBundle.mainBundle().pathForResource("intro4", ofType: "mp4")!)
-//        videoPlayer = AVPlayer()
-//        playerLayer = AVPlayerLayer(player: videoPlayer)
-//        playerLayer!.videoGravity = AVLayerVideoGravityResizeAspectFill;
-//        
-//        playerLayer!.frame = self.view.bounds
-//        videoLayer.layer.addSublayer(playerLayer!)
-//        let item = AVPlayerItem(URL: filePath)
-//        videoPlayer.replaceCurrentItemWithPlayerItem(item)
-//        videoPlayer.play()
-//        loopVideo(videoPlayer)
+        let videoLayer = UIView(frame: self.view.bounds)
+        self.view.insertSubview(videoLayer, atIndex: 0)
+        let filePath = NSURL.fileURLWithPath(NSBundle.mainBundle().pathForResource("intro4", ofType: "mp4")!)
+        videoPlayer = AVPlayer()
+        playerLayer = AVPlayerLayer(player: videoPlayer)
+        playerLayer!.videoGravity = AVLayerVideoGravityResizeAspectFill;
+        
+        playerLayer!.frame = self.view.bounds
+        videoLayer.layer.addSublayer(playerLayer!)
+        let item = AVPlayerItem(URL: filePath)
+        videoPlayer.replaceCurrentItemWithPlayerItem(item)
+        videoPlayer.play()
+        loopVideo(videoPlayer)
         
     }
     
