@@ -16,7 +16,6 @@ class PostAuthorView: UIView {
     
     @IBOutlet weak var authorImageView: UIImageView!
     @IBOutlet weak var authorUsernameLabel: UILabel!
-    @IBOutlet weak var timeLabel: UILabel!
     
     var user:User?
     var authorTap:UITapGestureRecognizer!
@@ -72,7 +71,7 @@ class PostAuthorView: UIView {
 
                 self.user = user
                 
-                self.timeLabel.text = post.getDateCreated()!.timeStringSinceNow()
+                //self.timeLabel.text = post.getDateCreated()!.timeStringSinceNow()
                 
                 
                 

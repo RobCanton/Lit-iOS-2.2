@@ -501,7 +501,7 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
         let width: CGFloat = (UIScreen.mainScreen().bounds.size.width)
         let height: CGFloat = (UIScreen.mainScreen().bounds.size.height)
         
-        authorView.frame = CGRect(x: margin, y: margin + 10.0, width: width, height: authorView.frame.height)
+        authorView.frame = CGRect(x: margin, y: margin + 8.0, width: width, height: authorView.frame.height)
         authorView.authorTappedHandler = self.authorTappedHandler
         return authorView
     }()

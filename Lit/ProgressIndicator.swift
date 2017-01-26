@@ -16,6 +16,9 @@ class ProgressIndicator: UIView {
     override init(frame:CGRect) {
         super.init(frame:frame)
         
+        self.layer.cornerRadius = frame.height / 2
+        self.clipsToBounds = true
+        
         
         backgroundColor = UIColor(white: 1.0, alpha: 0.25)
         

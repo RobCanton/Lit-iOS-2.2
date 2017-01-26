@@ -19,8 +19,6 @@ class BottomVC: UIViewController, StoryPullUpProtocol {
     
     @IBOutlet weak var topView: UIView!
     
-    @IBOutlet weak var handleBar: ISHPullUpHandleView!
-    
     var bottomHeight:CGFloat = 0.0
     
     var author:User?
@@ -34,8 +32,6 @@ class BottomVC: UIViewController, StoryPullUpProtocol {
         super.viewDidLoad()
         view.backgroundColor = UIColor(white: 0.0, alpha: 0.75)
         pullUpController.snapThreshold = 0.35
-        handleBar.strokeWidth = 1
-        handleBar.alpha = 0.25
 
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture))
@@ -57,22 +53,26 @@ class BottomVC: UIViewController, StoryPullUpProtocol {
         "A lotta of things to say here but i just eventually got this job but i have to tell you the weirdest thign!"
     ]
     
+    var item:StoryItem?
+    
     func setCurrentItem(item:StoryItem) {
-        let number = randomInt(0, max: descriptions.count - 1)
-        let description = descriptions[number]
-        descriptionLabel.text = description
-        descriptionLabel.sizeToFit()
-//        bottomHeight = topView.frame.height
-        pullUpController.invalidateLayout()
-//        pullUpController.setState(.Expanded, animated: false)
-          pullUpController.setState(.Collapsed, animated: true)
-        //pullUpController.setBottomHeight(topView.frame.height, animated: true)
         
-        FirebaseService.getUser(item.authorId, completionHandler: { user in
-            if user != nil {
-                self.setAuthorInfo(user!)
-            }
-        })
+        if self.item == nil || item.getKey() != self.item!.getKey() {
+            self.item = item
+            let number = randomInt(0, max: descriptions.count - 1)
+            let description = descriptions[number]
+            descriptionLabel.text = description
+            descriptionLabel.sizeToFit()
+            pullUpController.invalidateLayout()
+            pullUpController.setState(.Collapsed, animated: false)
+            
+            FirebaseService.getUser(item.authorId, completionHandler: { user in
+                if user != nil {
+                    self.setAuthorInfo(user!)
+                }
+            })
+        }
+        
         
     }
     
@@ -97,8 +97,8 @@ extension BottomVC: ISHPullUpSizingDelegate, ISHPullUpStateDelegate {
     }
     
     func pullUpViewController(pullUpViewController: ISHPullUpViewController, maximumHeightForBottomViewController bottomVC: UIViewController, maximumAvailableHeight: CGFloat) -> CGFloat {
-        halfWayPoint = maximumAvailableHeight * 0.95 / 2.0
-        return maximumAvailableHeight * 0.95
+        halfWayPoint = maximumAvailableHeight * 0.92 / 2.0
+        return maximumAvailableHeight * 0.92
     }
     
     func pullUpViewController(pullUpViewController: ISHPullUpViewController, targetHeightForBottomViewController bottomVC: UIViewController, fromCurrentHeight height: CGFloat) -> CGFloat {
@@ -130,7 +130,6 @@ extension BottomVC: ISHPullUpSizingDelegate, ISHPullUpStateDelegate {
             pauseStory()
             break
         }
-        handleBar.setState(ISHPullUpHandleView.handleStateForPullUpState(state), animated: true)
     }
     
     private func textForState(state: ISHPullUpState) -> String {
