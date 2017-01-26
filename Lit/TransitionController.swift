@@ -46,10 +46,12 @@ public final class TransitionController: NSObject {
     
     private(set) var presentedViewController: UIViewController!
     
+    var pan:UIPanGestureRecognizer!
+    
     /// Type Safe Present for Swift
     public func present<T: View2ViewTransitionPresented, U: View2ViewTransitionPresenting where T: UIViewController, U: UIViewController>(viewController presentedViewController: T, on presentingViewController: U, attached: UIViewController, completion: (() -> Void)?) {
         
-        let pan = UIPanGestureRecognizer(target: dismissInteractiveTransition, action: #selector(dismissInteractiveTransition.handlePanGesture(_:)))
+        pan = UIPanGestureRecognizer(target: dismissInteractiveTransition, action: #selector(dismissInteractiveTransition.handlePanGesture(_:)))
         attached.view.addGestureRecognizer(pan)
         
         self.presentingViewController = presentingViewController

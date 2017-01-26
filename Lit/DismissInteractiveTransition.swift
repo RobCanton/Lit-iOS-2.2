@@ -92,8 +92,10 @@ public class DismissInteractiveTransition: UIPercentDrivenInteractiveTransition 
                 let duration: Double = Double(self.duration)*Double(progress)
                 UIView.animateWithDuration(duration, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.0, options: .CurveEaseInOut, animations: {
                     
-                    self.animationController.destinationTransitionView.frame = self.animationController.destinationFrame
-                    self.animationController.initialTransitionView.frame = self.animationController.destinationFrame
+                    if self.animationController.destinationFrame != nil{
+                        self.animationController.destinationTransitionView.frame = self.animationController.destinationFrame
+                        self.animationController.initialTransitionView.frame = self.animationController.destinationFrame
+                    }
                     
                     }, completion: { _ in
                         

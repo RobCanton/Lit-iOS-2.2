@@ -196,23 +196,29 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         let partner_uid = user!.getUserId()
         if uid == partner_uid { return }
         if let conversation = checkForExistingConversation(partner_uid) {
+            self.presentingEmptyConversation = false
             presentConversation(conversation)
         } else {
-            let ref = FirebaseService.ref.child("conversations").childByAutoId()
-            let conversationKey = ref.key
+            
+            let pairKey = createUserIdPairKey(uid, uid2: partner_uid)
+            let ref = FirebaseService.ref.child("conversations/\(pairKey)")
             ref.child(uid).setValue(["seen": [".sv":"timestamp"]], withCompletionBlock: { error, ref in
 
                 let recipientUserRef = FirebaseService.ref.child("users/conversations/\(partner_uid)")
-                recipientUserRef.child(uid).setValue(conversationKey)
+                recipientUserRef.child(uid).setValue(true)
                 
                 let currentUserRef = FirebaseService.ref.child("users/conversations/\(uid)")
-                currentUserRef.child(partner_uid).setValue(conversationKey, withCompletionBlock: { error, ref in
-                    let conversation = Conversation(key: conversationKey, partner_uid: partner_uid)
+                currentUserRef.child(partner_uid).setValue(true, withCompletionBlock: { error, ref in
+                    let conversation = Conversation(key: pairKey, partner_uid: partner_uid)
+                    self.presentingEmptyConversation = true
                     self.presentConversation(conversation)
                 })
             })
         }
     }
+    
+    var presentingEmptyConversation = false
+    
     
     func editProfileTapped() {
         let controller = UIStoryboard(name: "EditProfileViewController", bundle: nil)
@@ -243,6 +249,7 @@ class UserProfileViewController: UIViewController, StoreSubscriber, UICollection
         if segue.identifier == "toMessage" {
             guard let conversation = presentConversation else { return }
             let controller = segue.destinationViewController as! ContainerViewController
+            controller.isEmpty = presentingEmptyConversation
             controller.hidesBottomBarWhenPushed = true
             controller.conversation = conversation
             controller.partnerImage = partnerImage

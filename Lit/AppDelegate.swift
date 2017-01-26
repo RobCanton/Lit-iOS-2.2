@@ -111,7 +111,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
-
+        if UIApplication.sharedApplication().applicationState == .Inactive
+        {
+            let type = userInfo["type"]! as! String
+            let aps = userInfo["aps"]!
+            let alert = aps["alert"]!!
+            if type == "FOLLOW" {
+                NotificationService.sharedInstance.changeTab(4)
+            } else if type == "MESSAGE" {
+                
+                guard let message = alert["body"]! as? String else { return }
+                guard let senderId = userInfo["senderId"]! as? String else { return }
+                NotificationService.sharedInstance.changeTab(3)
+            }
+        }
+        else
+        {
+            print("uuser opened app from app icon")
+        }
     }
     
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
@@ -119,8 +136,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
-        print("MessageID: \(userInfo["gcm.message_id"]!)")
-        print(userInfo)
+        
+        //print("MessageID: \(userInfo["gcm.message_id"]!)")
+        //print(userInfo)
         let type = userInfo["type"]! as! String
         let aps = userInfo["aps"]!
         let alert = aps["alert"]!!
@@ -131,9 +149,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } else if type == "MESSAGE" {
             
             guard let message = alert["body"]! as? String else { return }
-            print(message)
             guard let senderId = userInfo["senderId"]! as? String else { return }
-            print(senderId)
             NotificationService.sharedInstance.messageReceived(senderId, message: message)
         }
 

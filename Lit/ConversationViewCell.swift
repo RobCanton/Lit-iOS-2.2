@@ -20,6 +20,8 @@ class ConversationViewCell: UITableViewCell, GetUserProtocol {
     
     @IBOutlet weak var timeLabel: UILabel!
     
+    @IBOutlet weak var unread_dot: UIImageView!
+    
     
     var conversation:Conversation? {
         didSet{
@@ -35,15 +37,12 @@ class ConversationViewCell: UITableViewCell, GetUserProtocol {
             }
             
             if !conversation!.seen {
-                userImageView.layer.borderColor = accentColor.CGColor
-                userImageView.layer.borderWidth = 2.0
-                messageLabel.font = UIFont(name: "AvenirNext-DemiBold", size: 16.0)
-                messageLabel.textColor = UIColor.whiteColor()
+                usernameLabel.font = UIFont(name: "AvenirNext-DemiBold", size: 16.0)
+                unread_dot.hidden = false
             } else {
-                userImageView.layer.borderColor = UIColor.clearColor().CGColor
-                userImageView.layer.borderWidth = 0
-                messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 16.0)
-                messageLabel.textColor = UIColor(white: 0.7, alpha: 1.0)
+
+                usernameLabel.font = UIFont(name: "AvenirNext-Regular", size: 16.0)
+                unread_dot.hidden = true
             }
             
             

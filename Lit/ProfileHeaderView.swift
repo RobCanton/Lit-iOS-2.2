@@ -41,7 +41,7 @@ class ProfileHeaderView: UICollectionReusableView {
     
     var followersTap: UITapGestureRecognizer!
     var followingTap: UITapGestureRecognizer!
-    var messageTap: UITapGestureRecognizer!
+    var messageTap: UILongPressGestureRecognizer!
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -81,10 +81,10 @@ class ProfileHeaderView: UICollectionReusableView {
             bioLabel.text = bio
         }
         
-        postsLabel.styleProfileBlockText(0, text: "posts", color: subColor, color2: UIColor.whiteColor())
+        postsLabel.styleProfileBlockText(0, text: "posts", color: subColor, color2: UIColor.blackColor())
         
-        followersLabel.styleProfileBlockText(0, text: "followers", color: subColor, color2: UIColor.whiteColor())
-        followingLabel.styleProfileBlockText(0, text: "following", color: subColor, color2: UIColor.whiteColor())
+        followersLabel.styleProfileBlockText(0, text: "followers", color: subColor, color2: UIColor.blackColor())
+        followingLabel.styleProfileBlockText(0, text: "following", color: subColor, color2: UIColor.blackColor())
         messageLabel.styleProfileBlockText(0, text: "Message", color: UIColor.whiteColor(), color2: UIColor.clearColor())
 
         
@@ -110,7 +110,12 @@ class ProfileHeaderView: UICollectionReusableView {
         
         followersTap = UITapGestureRecognizer(target: self, action: #selector(handleFollowersTap))
         followingTap = UITapGestureRecognizer(target: self, action: #selector(handleFollowingTap))
-        messageTap = UITapGestureRecognizer(target: self, action: #selector(handleMessageTap))
+        
+        messageTap = UILongPressGestureRecognizer(target: self, action: #selector(handleMessageLongTap))
+        messageTap.minimumPressDuration = 0.0
+        messageTap.numberOfTouchesRequired = 1
+        messageTap.allowableMovement = 30.0
+    
         
         
         let followersView = followersLabel.superview!
@@ -215,5 +220,19 @@ class ProfileHeaderView: UICollectionReusableView {
     
     func handleMessageTap(sender:UITapGestureRecognizer) {
         messageHandler?()
+    }
+    
+    func handleMessageLongTap(recognizer:UILongPressGestureRecognizer) {
+        let state = recognizer.state
+        let messageView = messageButton.superview!
+        if state == .Began {
+            messageView.alpha = 0.5
+        } else if state == .Ended || state == .Failed || state == .Cancelled {
+            messageView.alpha = 1.0
+        }
+        
+        if recognizer.state == .Ended {
+            messageHandler?()
+        }
     }
 }

@@ -62,6 +62,10 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
         show(whistle: murmur, action: .Show(3.0))
     }
     
+    func changeTab(index:Int) {
+        self.selectedIndex = index
+    }
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         mainStore.subscribe(self)

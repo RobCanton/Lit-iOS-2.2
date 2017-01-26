@@ -91,4 +91,37 @@ class SocialService {
             FirebaseService.ref.child("users/social/following/\(uid)").removeAllObservers()
         }
     }
+    
+    
+    static func sendMessage(conversation:Conversation, message:String, uploadKey:String?, completionHandler:((success:Bool)->())?) {
+        let messageRef = FirebaseService.ref.child("conversations/\(conversation.getKey())/messages").childByAutoId()
+        let uid = mainStore.state.userState.uid
+        
+        var payload:[String:AnyObject] = [
+            "senderId": uid,
+            "recipientId": conversation.getPartnerId(),
+            "text": message,
+            "timestamp": [".sv":"timestamp"]
+        ]
+        
+        if uploadKey != nil {
+            payload["upload"] = uploadKey!
+        }
+ 
+        messageRef.setValue(payload, withCompletionBlock: { error, ref in
+                completionHandler?(success: error == nil)
+        })
+        
+        let ref = FirebaseService.ref.child("api/requests/message").childByAutoId()
+        ref.setValue([
+            "sender": uid,
+            "conversation": conversation.getKey(),
+            "messageID": messageRef.key,
+            ])
+    }
+    
+    static func deleteMessage(conversation:Conversation, messageKey:String) {
+        let messageRef = FirebaseService.ref.child("conversations/\(conversation.getKey())/messages/\(messageKey)")
+        messageRef.removeValue()
+    }
 }

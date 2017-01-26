@@ -7,7 +7,8 @@
 //
 
 import UIKit
-
+import Whisper
+import ISHPullUp
 
 class LocationStoriesViewController: StoriesViewController {
     
@@ -114,7 +115,7 @@ class LocationStoriesViewController: StoriesViewController {
     }
 }
 
-class StoriesViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIGestureRecognizerDelegate, UINavigationControllerDelegate {
+class StoriesViewController: ISHPullUpViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIGestureRecognizerDelegate, UINavigationControllerDelegate {
     
     var label:UILabel!
     var tabBarRef:PopUpTabBarController!
@@ -140,6 +141,8 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
             self.setNeedsStatusBarAppearanceUpdate()
         })
     }
+    
+    
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
@@ -454,10 +457,10 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
         let panGestureRecognizer: UIPanGestureRecognizer = gestureRecognizer as! UIPanGestureRecognizer
         let translate: CGPoint = panGestureRecognizer.translationInView(self.view)
         
-        if translate.y < 0 {
-            showTextfield()
-            return false
-        }
+//        if translate.y < -2 {
+//            showTextfield()
+//            return false
+//        }
         
         return Double(abs(translate.y)/abs(translate.x)) > M_PI_4 && translate.y > 0
     }
@@ -542,6 +545,33 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
         return UIStatusBarAnimation.Fade
     }
     
+    func sendMessage(message:String) {
+        print("Send: \(message)")
+        guard let cell = getCurrentCell() else { return }
+        guard let item = cell.item else { return }
+        
+        let partner_uid = item.authorId
+        let uid = mainStore.state.userState.uid
+        
+        if let conversation = checkForExistingConversation(partner_uid) {
+            SocialService.sendMessage(conversation, message: message, uploadKey: item.getDownloadUrl().absoluteString, completionHandler: { success in
+                if success {
+                    var murmur = Murmur(title: "Message sent.")
+                    murmur.backgroundColor = accentColor
+                    murmur.titleColor = UIColor.whiteColor()
+                    show(whistle: murmur, action: .Show(3.0))
+                } else {
+                    var murmur = Murmur(title: "Message failed to send.")
+                    murmur.backgroundColor = errorColor
+                    murmur.titleColor = UIColor.whiteColor()
+                    show(whistle: murmur, action: .Show(3.0))
+                }
+            })
+        } else {
+            print("No existing conversation")
+        }
+    }
+    
 }
 
 extension UIView
@@ -582,6 +612,10 @@ extension StoriesViewController: View2ViewTransitionPresented {
             self.collectionView.layoutIfNeeded()
         }
     }
+    
+    
+    
+    
 }
 
 extension StoriesViewController: UITextViewDelegate {
@@ -594,6 +628,15 @@ extension StoriesViewController: UITextViewDelegate {
     }
     
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        
+        if(text == "\n") {
+            print("Length: \(textView.text.characters.count)")
+            if textView.text.characters.count > 0 {
+                sendMessage(textView.text)
+            }
+            dismissKeyboard()
+            return false
+        }
         return textView.text.characters.count + (text.characters.count - range.length) <= 140
     }
 }

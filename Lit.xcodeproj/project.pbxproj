@@ -150,6 +150,7 @@
 		B0E2BDC21E086B1800D195A5 /* CameraTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E2BDC11E086B1800D195A5 /* CameraTransition.swift */; };
 		B0E591571DD1218D00C032D6 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E591561DD1218D00C032D6 /* SettingsViewController.swift */; };
 		B0E591611DD3831600C032D6 /* FacebookGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E591601DD3831600C032D6 /* FacebookGraph.swift */; };
+		B0E7A3701E396521006B20DA /* PullUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E7A36F1E396521006B20DA /* PullUpController.swift */; };
 		B0E8E30C1DD7739B0077D1BC /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E8E30B1DD7739B0077D1BC /* ContainerViewController.swift */; };
 		B0E8E3121DD7B2A50077D1BC /* SocialService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E8E3111DD7B2A50077D1BC /* SocialService.swift */; };
 		B0E8E3141DD7B64D0077D1BC /* SocialReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E8E3131DD7B64D0077D1BC /* SocialReducer.swift */; };
@@ -169,6 +170,7 @@
 		B0E8E3501DE23A630077D1BC /* UserViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E8E34E1DE23A630077D1BC /* UserViewCell.swift */; };
 		B0E8E3511DE23A630077D1BC /* UserViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0E8E34F1DE23A630077D1BC /* UserViewCell.xib */; };
 		B0E8E3531DE265D50077D1BC /* Story.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E8E3521DE265D40077D1BC /* Story.swift */; };
+		B0FA96B61E39AFBB00C9BD57 /* StoriesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FA96B51E39AFBB00C9BD57 /* StoriesController.swift */; };
 		B0FF11451D3EB32100D709CE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FF11441D3EB32100D709CE /* AppDelegate.swift */; };
 		B0FF11471D3EB32100D709CE /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FF11461D3EB32100D709CE /* LoginViewController.swift */; };
 		B0FF114C1D3EB32100D709CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B0FF114B1D3EB32100D709CE /* Assets.xcassets */; };
@@ -328,6 +330,8 @@
 		B0E2BDC11E086B1800D195A5 /* CameraTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraTransition.swift; sourceTree = "<group>"; };
 		B0E591561DD1218D00C032D6 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		B0E591601DD3831600C032D6 /* FacebookGraph.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookGraph.swift; sourceTree = "<group>"; };
+		B0E7A36E1E396291006B20DA /* ISHPullUpSample-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ISHPullUpSample-Bridging-Header.h"; sourceTree = "<group>"; };
+		B0E7A36F1E396521006B20DA /* PullUpController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PullUpController.swift; sourceTree = "<group>"; };
 		B0E8E30B1DD7739B0077D1BC /* ContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		B0E8E3111DD7B2A50077D1BC /* SocialService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialService.swift; sourceTree = "<group>"; };
 		B0E8E3131DD7B64D0077D1BC /* SocialReducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialReducer.swift; sourceTree = "<group>"; };
@@ -347,6 +351,7 @@
 		B0E8E34E1DE23A630077D1BC /* UserViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserViewCell.swift; sourceTree = "<group>"; };
 		B0E8E34F1DE23A630077D1BC /* UserViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserViewCell.xib; sourceTree = "<group>"; };
 		B0E8E3521DE265D40077D1BC /* Story.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Story.swift; sourceTree = "<group>"; };
+		B0FA96B51E39AFBB00C9BD57 /* StoriesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoriesController.swift; sourceTree = "<group>"; };
 		B0FC99D11DE7983A00683155 /* StoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryViewController.swift; sourceTree = "<group>"; };
 		B0FF11411D3EB32000D709CE /* Lit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0FF11441D3EB32100D709CE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -399,6 +404,7 @@
 		763566CE1D4A834A000BAA08 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				B0E7A36E1E396291006B20DA /* ISHPullUpSample-Bridging-Header.h */,
 				B07E54D71E165952008C2D23 /* AngleGradient */,
 				B0E8E31B1DDB81120077D1BC /* ImageTransition */,
 				B06D54B21D9ECB6D00F6A4A7 /* TextFieldEffects */,
@@ -649,8 +655,8 @@
 				B011B3491DFFB2BD00FA4633 /* InfoTableViewCell.swift */,
 				B011B34A1DFFB2BD00FA4633 /* InfoTableViewCell.xib */,
 				B0E8E3281DDB82830077D1BC /* StoriesViewController.swift */,
-				B0FC99D11DE7983A00683155 /* StoryViewController.swift */,
 				76B7212A1D5E377D002B4491 /* StoryProgressIndicator.swift */,
+				B0FC99D11DE7983A00683155 /* StoryViewController.swift */,
 				B0DAFBCF1DF947E8004EB03D /* ProgressIndicator.swift */,
 				B0E8E3301DDBC4640077D1BC /* PostAuthorView.swift */,
 				B0E8E32E1DDBC44C0077D1BC /* PostAuthorView.xib */,
@@ -671,6 +677,8 @@
 			isa = PBXGroup;
 			children = (
 				76173B791D5784AC0093A137 /* Main.storyboard */,
+				B0E7A36F1E396521006B20DA /* PullUpController.swift */,
+				B0FA96B51E39AFBB00C9BD57 /* StoriesController.swift */,
 				B09C68DA1E28416200201C5C /* MasterNavigationControllerViewController.swift */,
 				76B361D41D6517A50024CDC7 /* PopUpTabBarController.swift */,
 				B00BA91F1D9E3B5700F5EA30 /* Login */,
@@ -945,6 +953,7 @@
 				B0254F741DAFFC130082D898 /* Conversation.swift in Sources */,
 				B0351FAE1DED0503000A4BF5 /* NVActivityIndicatorAnimationLineScaleParty.swift in Sources */,
 				B0351FA41DED0503000A4BF5 /* NVActivityIndicatorAnimationBallScaleMultiple.swift in Sources */,
+				B0FA96B61E39AFBB00C9BD57 /* StoriesController.swift in Sources */,
 				B09C68DB1E28416200201C5C /* MasterNavigationControllerViewController.swift in Sources */,
 				B0E8E31A1DDACE490077D1BC /* UserService.swift in Sources */,
 				B0351F971DED0502000A4BF5 /* NVActivityIndicatorAnimationAudioEqualizer.swift in Sources */,
@@ -1045,6 +1054,7 @@
 				B0351F9A1DED0503000A4BF5 /* NVActivityIndicatorAnimationBallClipRotateMultiple.swift in Sources */,
 				B0351F9F1DED0503000A4BF5 /* NVActivityIndicatorAnimationBallPulseRise.swift in Sources */,
 				B07E54CD1E0B235B008C2D23 /* ProfileHeaderView.swift in Sources */,
+				B0E7A3701E396521006B20DA /* PullUpController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1171,7 +1181,7 @@
 				INFOPLIST_FILE = Lit/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.robcanton.lit;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Lit;
 				PROVISIONING_PROFILE = "05320f9a-c1f7-4e87-aa6a-62e9f59660ec";
 				SWIFT_OBJC_BRIDGING_HEADER = "Lit/Lit-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1195,7 +1205,7 @@
 				INFOPLIST_FILE = Lit/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.robcanton.lit;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Lit;
 				PROVISIONING_PROFILE = "f0449567-69bf-45c4-9bf2-a0cedcbc943e";
 				SWIFT_OBJC_BRIDGING_HEADER = "Lit/Lit-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 1;

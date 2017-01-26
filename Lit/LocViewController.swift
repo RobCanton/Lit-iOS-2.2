@@ -545,11 +545,15 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
         if let tabBar = self.tabBarController as? PopUpTabBarController {
             tabBar.setTabBarVisible(false, animated: true)
         }
-        let presentedViewController: LocationStoriesViewController = LocationStoriesViewController()
-        presentedViewController.tabBarRef   = self.tabBarController! as! PopUpTabBarController
-        presentedViewController.userStories = userStories
-        presentedViewController.location    = location
-        presentedViewController.transitionController = self.transitionController
+        let pullUpController = WrapperController()
+        pullUpController.transitionController = self.transitionController
+        pullUpController.tabBarRef   = self.tabBarController! as! PopUpTabBarController
+        pullUpController.stories = userStories
+//        let presentedViewController: LocationStoriesViewController = LocationStoriesViewController()
+//        presentedViewController.tabBarRef   = self.tabBarController! as! PopUpTabBarController
+//        presentedViewController.userStories = userStories
+//        presentedViewController.location    = location
+//        presentedViewController.transitionController = self.transitionController
         let i = NSIndexPath(forItem: indexPath.row, inSection: 0)
         self.transitionController.userInfo = ["destinationIndexPath": i, "initialIndexPath": i]
         
@@ -559,8 +563,10 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
             
             statusBarShouldHide = true
             // Set transitionController as a navigation controller delegate and push.
+            
+
             navigationController.delegate = transitionController
-            transitionController.push(viewController: presentedViewController, on: self, attached: presentedViewController)
+            transitionController.push(viewController: pullUpController, on: self, attached: pullUpController)
             
         }
     }

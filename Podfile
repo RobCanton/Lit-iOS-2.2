@@ -17,6 +17,7 @@ pod 'MXSegmentedPager'
 pod 'Whisper'
 pod 'NVActivityIndicatorView', '2.0'
 pod 'WDImagePicker', :git => 'https://github.com/justwudi/WDImagePicker.git', :tag => '0.2.2'
+pod 'ISHPullUp'
 
 
 end

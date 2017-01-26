@@ -21,7 +21,6 @@ func getNonEmptyConversations() -> [Conversation] {
 
 func checkForExistingConversation(partner_uid:String) -> Conversation? {
     for conversation in mainStore.state.conversations {
-        print(conversation.getPartnerId())
         if conversation.getPartnerId() == partner_uid {
             return conversation
         }
@@ -40,8 +39,11 @@ func findConversation(key:String) -> Conversation? {
 
 func userHasSeenMessage(seen:NSDate?, message:JSQMessage?) -> Bool{
     if seen != nil && message != nil {
-        let diff = seen!.timeIntervalSinceDate(message!.date)
-        if diff < 0 {
+        if message!.senderId == mainStore.state.userState.uid {
+            return true
+        }
+        let diff = seen!.compare(message!.date)
+        if diff == .OrderedAscending {
             return false
         }
     }
@@ -49,6 +51,12 @@ func userHasSeenMessage(seen:NSDate?, message:JSQMessage?) -> Bool{
         return false
     }
     return true
+}
+
+func createUserIdPairKey(uid1:String, uid2:String) -> String {
+    var uids = [uid1, uid2]
+    uids.sortInPlace()
+    return "\(uids[0]):\(uids[1])"
 }
 
 func ConversationsReducer(action: Action, state:[Conversation]?) -> [Conversation] {
@@ -72,6 +80,9 @@ func ConversationsReducer(action: Action, state:[Conversation]?) -> [Conversatio
             conversation.seen = userHasSeenMessage(conversation.seenDate, message: conversation.lastMessage)
         }
         break
+    case _ as RemoveConversation:
+        let a = action as! RemoveConversation
+        state.removeAtIndex(a.index)
     case _ as ClearConversations:
         state = [Conversation]()
         break
@@ -101,6 +112,10 @@ struct NewMessageInConversation: Action {
 struct SeenConversation: Action {
     let seenDate:NSDate
     let conversationKey:String
+}
+
+struct RemoveConversation: Action {
+    let index:Int
 }
 
 /* Destructive Actions */

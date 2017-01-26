@@ -17,16 +17,33 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="lit." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ADd-96-j1c">
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="lit." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ADd-96-j1c">
                                 <rect key="frame" x="241" y="257" width="118" height="86"/>
                                 <fontDescription key="fontDescription" name="AvenirNextCondensed-BoldItalic" family="Avenir Next Condensed" pointSize="45"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="lit_alpha" translatesAutoresizingMaskIntoConstraints="NO" id="A9c-q1-npc">
+                                <rect key="frame" x="263" y="262" width="75" height="75"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="75" id="dlb-E6-hRP"/>
+                                    <constraint firstAttribute="width" constant="75" id="hhD-i1-E1s"/>
+                                    <constraint firstAttribute="width" constant="90" id="o3j-xd-oKZ"/>
+                                    <constraint firstAttribute="height" constant="90" id="oMQ-MV-hA1"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="o3j-xd-oKZ"/>
+                                        <exclude reference="oMQ-MV-hA1"/>
+                                    </mask>
+                                </variation>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="ADd-96-j1c" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="JUJ-uC-qNj"/>
+                            <constraint firstItem="A9c-q1-npc" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="Kaw-7c-RAm"/>
+                            <constraint firstItem="A9c-q1-npc" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="iJW-q1-aHq"/>
                             <constraint firstItem="ADd-96-j1c" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="vss-aA-ejp"/>
                         </constraints>
                     </view>
@@ -36,4 +53,7 @@
             <point key="canvasLocation" x="53" y="375"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="lit_alpha" width="125" height="125"/>
+    </resources>
 </document>

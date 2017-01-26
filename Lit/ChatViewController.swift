@@ -36,12 +36,15 @@ class ChatTitleView: UIView {
 class ChatViewController: JSQMessagesViewController, GetUserProtocol {
     
 
+    var isEmpty = false
     var refreshControl: UIRefreshControl!
 
     var containerDelegate:ContainerViewController?
-    let incomingBubble = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor.darkGrayColor())
+    let incomingBubble = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImageWithColor(UIColor(white: 0.3, alpha: 1.0))
     let outgoingBubble = JSQMessagesBubbleImageFactory().outgoingMessagesBubbleImageWithColor(accentColor)
     var messages:[JSQMessage]!
+    
+    var settingUp = true
     
     var conversation:Conversation!
     var partner:User!
@@ -64,7 +67,7 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol {
        
     }
 
-    
+    var activityIndicator:UIActivityIndicatorView!
     override func viewDidLoad() {
         super.viewDidLoad()
         messages = [JSQMessage]()
@@ -82,8 +85,14 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol {
         collectionView?.collectionViewLayout.outgoingAvatarViewSize = .zero
         
         collectionView?.collectionViewLayout.springinessEnabled = true
-        //collectionView?.collectionViewLayout.
         
+        activityIndicator = UIActivityIndicatorView(frame: CGRectMake(0,0,50,50))
+        activityIndicator.activityIndicatorViewStyle = .White
+        activityIndicator.center = CGPointMake(UIScreen.mainScreen().bounds.size.width / 2, UIScreen.mainScreen().bounds.size.height / 2 - 50)
+        view.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
+
+
         conversation.delegate = self
         if let user = conversation.getPartner() {
             partner = user
@@ -91,26 +100,41 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol {
         
         downloadRef = FirebaseService.ref.child("conversations/\(conversation.getKey())/messages")
         
-        
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(appMovedToBackground), name:UIApplicationDidEnterBackgroundNotification, object: nil)
-        
-        refreshControl = UIRefreshControl()
-        refreshControl.tintColor = UIColor.whiteColor()
-        refreshControl.addTarget(self, action: #selector(handleRefresh), forControlEvents: .ValueChanged)
-        collectionView?.addSubview(refreshControl)
-        
-        FirebaseService.getUser(conversation.getPartnerId(), completionHandler: { user in
-            if user != nil {
-                self.partner = user!
-                
-                loadImageUsingCacheWithURL(user!.getImageUrl(), completion: { image, fromCache in
-                    self.partnerImage = image
-                    self.setup()
-                    self.downloadMessages()
-                })
+        downloadRef?.queryOrderedByKey().queryLimitedToLast(1).observeSingleEventOfType(.Value, withBlock: { snapshot in
+            if !snapshot.exists() {
+                self.stopActivityIndicator()
             }
         })
-       
+
+        self.setup()
+        self.downloadMessages()
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(appMovedToBackground), name:UIApplicationDidEnterBackgroundNotification, object: nil)
+
+    }
+    
+    func startActivityIndicator() {
+        dispatch_async(dispatch_get_main_queue(), {
+            if self.settingUp {
+               self.activityIndicator.startAnimating()
+            }
+        })
+    }
+    
+    
+    func stopActivityIndicator() {
+        if settingUp {
+            settingUp = false
+            print("Swtich activity indicator")
+            dispatch_async(dispatch_get_main_queue(), {
+                self.activityIndicator.stopAnimating()
+                self.refreshControl = UIRefreshControl()
+                self.refreshControl.tintColor = UIColor.whiteColor()
+                self.refreshControl.addTarget(self, action: #selector(self.handleRefresh), forControlEvents: .ValueChanged)
+                self.collectionView?.addSubview(self.refreshControl)
+
+            })
+        }
     }
     
     func handleRefresh() {
@@ -155,6 +179,7 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol {
     
     func appMovedToBackground() {
         downloadRef?.removeAllObservers()
+        conversation.listenToConversation()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -165,6 +190,7 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self)
         downloadRef?.removeAllObservers()
+        conversation.listenToConversation()
     }
     
     
@@ -225,7 +251,14 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol {
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = super.collectionView(collectionView, cellForItemAtIndexPath: indexPath) as! JSQMessagesCollectionViewCell
-        cell.textView.textColor = UIColor.whiteColor()
+        
+        let data = messages[indexPath.row]
+        switch(data.senderId) {
+        case self.senderId:
+            cell.textView?.textColor = UIColor(white: 0.96, alpha: 1.0)
+        default:
+            cell.textView?.textColor = UIColor(white: 0.96, alpha: 1.0)
+        }
         return cell
     }
     
@@ -281,6 +314,29 @@ class ChatViewController: JSQMessagesViewController, GetUserProtocol {
         
         return 0.0
     }
+    override func collectionView(collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForCellBottomLabelAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
+        let prevItem = indexPath.item - 1
+        
+        if prevItem >= 0 {
+            let prevMessage = messages[prevItem]
+            if prevMessage.isMediaMessage {
+                return kJSQMessagesCollectionViewCellLabelHeightDefault
+            }
+        }
+        return 0.0
+    }
+    
+    override func collectionView(collectionView: JSQMessagesCollectionView!, attributedTextForCellBottomLabelAtIndexPath indexPath: NSIndexPath!) -> NSAttributedString! {
+        let prevItem = indexPath.item - 1
+        
+        if prevItem >= 0 {
+            let prevMessage = messages[prevItem]
+            if prevMessage.isMediaMessage {
+                return NSAttributedString(string: "            Temporary message.", attributes: nil)
+            }
+        }
+        return NSAttributedString(string: "")
+    }
     
     var loadingNextBatch = false
     var downloadRef:FIRDatabaseReference?
@@ -299,22 +355,7 @@ extension ChatViewController {
     }
     
     override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
-        
-        let messageRef = FirebaseService.ref.child("conversations/\(conversation.getKey())/messages").childByAutoId()
-            
-        messageRef.setValue([
-                "senderId": self.senderId,
-                "recipientId": self.conversation.getPartnerId(),
-                "text": text,
-                "timestamp": [".sv":"timestamp"]
-                ])
-        
-        let ref = FirebaseService.ref.child("api/requests/message").childByAutoId()
-        ref.setValue([
-                "sender": self.senderId,
-                "conversation": conversation.getKey(),
-                "messageID": messageRef.key,
-        ])
+        SocialService.sendMessage(conversation, message: text, uploadKey: nil, completionHandler: nil)
         
         self.finishSendingMessageAnimated(true)
     }
@@ -336,10 +377,25 @@ extension ChatViewController {
                 let timestamp     = snapshot.value!["timestamp"] as! Double
                 
                 let date = NSDate(timeIntervalSince1970: timestamp/1000)
-                let message = JSQMessage(senderId: senderId, senderDisplayName: "", date: date, text: text)
-                self.messages.append(message)
-                self.reloadMessagesView()
-                self.finishReceivingMessageAnimated(true)
+            
+                if let uploadKey = snapshot.value!["upload"] as? String {
+                    let mediaItem = AsyncPhotoMediaItem(withURL: uploadKey)
+                    let mediaMessage = JSQMessage(senderId: senderId, senderDisplayName: "", date: date, media: mediaItem)
+                    let message = JSQMessage(senderId: senderId, senderDisplayName: "", date: date, text: text)
+                    self.messages.append(mediaMessage)
+                    self.messages.append(message)
+                    self.reloadMessagesView()
+                    self.stopActivityIndicator()
+                    self.finishReceivingMessageAnimated(true)
+                    SocialService.deleteMessage(self.conversation, messageKey: snapshot.key)
+                    
+                } else {
+                    let message = JSQMessage(senderId: senderId, senderDisplayName: "", date: date, text: text)
+                    self.messages.append(message)
+                    self.reloadMessagesView()
+                    self.stopActivityIndicator()
+                    self.finishReceivingMessageAnimated(true)
+                }
         })
     }
     
@@ -348,4 +404,48 @@ extension ChatViewController {
     }
     
 
+}
+
+class AsyncPhotoMediaItem: JSQPhotoMediaItem {
+    var asyncImageView: UIImageView!
+    
+    override init!(maskAsOutgoing: Bool) {
+        super.init(maskAsOutgoing: maskAsOutgoing)
+    }
+    
+    init(withURL url: String) {
+        super.init()
+
+        let size = UIScreen.mainScreen().bounds
+        asyncImageView = UIImageView()
+        asyncImageView.frame = CGRectMake(0, 0, size.width * 0.5, size.height * 0.35)
+        asyncImageView.contentMode = .ScaleAspectFill
+        asyncImageView.clipsToBounds = true
+        asyncImageView.layer.cornerRadius = 5
+        asyncImageView.backgroundColor = UIColor.jsq_messageBubbleLightGrayColor()
+        
+        let activityIndicator = JSQMessagesMediaPlaceholderView.viewWithActivityIndicator()
+        activityIndicator?.frame = asyncImageView.frame
+        asyncImageView.addSubview(activityIndicator!)
+        
+        
+        loadImageUsingCacheWithURL(url, completion: { image, fromCache in
+            if image != nil {
+                self.asyncImageView.image = image!
+                activityIndicator.removeFromSuperview()
+            }
+        })
+    }
+    
+    override func mediaView() -> UIView! {
+        return asyncImageView
+    }
+    
+    override func mediaViewDisplaySize() -> CGSize {
+        return asyncImageView.frame.size
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }

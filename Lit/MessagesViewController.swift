@@ -80,19 +80,70 @@ class MessagesViewController: UITableViewController, StoreSubscriber {
         presentConversation(conversations[indexPath.item])
         
     }
-    
+
     
     func presentConversation(conversation:Conversation) {
-        let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("ChatViewController") as! ChatViewController
-        controller.conversation = conversation
-        self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
-        self.navigationController?.pushViewController(controller, animated: true)
-        
-        
+        FirebaseService.getUser(conversation.getPartnerId(), completionHandler: { user in
+            if user != nil {
+                
+                loadImageUsingCacheWithURL(user!.getImageUrl(), completion: { image, fromCache in
+                    let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("ChatViewController") as! ChatViewController
+                    controller.conversation = conversation
+                    controller.partnerImage = image
+                    self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
+                    self.navigationController?.pushViewController(controller, animated: true)
+                })
+            }
+        })
     }
+    
+    // MARK: UITableViewDelegate Methods
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == .Delete {
+            handleDelete(indexPath)
+        }
+    }
+    
+    func handleDelete(indexPath:NSIndexPath) -> Void {
+        let cell = tableView.cellForRowAtIndexPath(indexPath) as! ConversationViewCell
+        let name = cell.usernameLabel.text!
+        
+        let actionSheet = UIAlertController(title: "Delete conversation with \(name)?", message: "Further messages from \(name) will be muted until you reply.", preferredStyle: .Alert)
+        
+        let cancelActionButton: UIAlertAction = UIAlertAction(title: "Cancel", style: .Cancel) { action -> Void in
+        }
+        
+        actionSheet.addAction(cancelActionButton)
+        
+        let saveActionButton: UIAlertAction = UIAlertAction(title: "Delete", style: .Destructive)
+        { action -> Void in
+            let partner = self.conversations[indexPath.row].getPartnerId()
+            let uid = mainStore.state.userState.uid
+            
+            let userRef = FirebaseService.ref.child("users/conversations/\(uid)/\(partner)")
+            
+            userRef.removeValueWithCompletionBlock({ error, ref in
+                mainStore.dispatch(RemoveConversation(index: indexPath.row))
+            })
+        }
+        actionSheet.addAction(saveActionButton)
+        
+        self.presentViewController(actionSheet, animated: true, completion: nil)
+
+    }
+
     
     override func prefersStatusBarHidden() -> Bool {
         return false
+    }
+    
+    func removeConversation(index:Int) {
+//        let alert = UIAlertView(title: "Delete conversation", message: <#T##String#>, delegate: <#T##UIAlertViewDelegate?#>, cancelButtonTitle: <#T##String?#>, otherButtonTitles: <#T##String#>, <#T##moreButtonTitles: String...##String#>)
+//        let conversation = conversations[index]
+//        let uid = mainStore.state.userState.uid
+//        let ref = FirebaseService.ref.child("conversations/\(conversation.getKey())/\(uid)")
+//        ref.updateChildValues(["removed":true])
+//        mainStore.dispatch(RemoveConversation(index: index))
     }
     
     

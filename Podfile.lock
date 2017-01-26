@@ -59,6 +59,7 @@ PODS:
   - GoogleUtilities (1.3.1):
     - GoogleSymbolUtilities (~> 1.0)
   - HMSegmentedControl (1.5.2)
+  - ISHPullUp (1.0.4)
   - JSQMessagesViewController (7.3.4):
     - JSQSystemSoundPlayer (~> 2.0.1)
   - JSQSystemSoundPlayer (2.0.1)
@@ -80,6 +81,7 @@ DEPENDENCIES:
   - Firebase/Database
   - Firebase/Messaging
   - Firebase/Storage
+  - ISHPullUp
   - JSQMessagesViewController
   - MXSegmentedPager
   - NVActivityIndicatorView (= 2.0)
@@ -113,6 +115,7 @@ SPEC CHECKSUMS:
   GoogleSymbolUtilities: 33117db1b5f290c6fbf259585e4885b4c84b98d7
   GoogleUtilities: 56c5ac05b7aa5dc417a1bb85221a9516e04d7032
   HMSegmentedControl: 83b9686022d2176fb6457d2bdb61e5d6393fed7d
+  ISHPullUp: b98a286f3e85dc885a3bf20bf75853947984277d
   JSQMessagesViewController: 39fed975e3c9f8eba7292071e29eeb541d105e66
   JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
   MXPagerView: db0c020aeada6a0c704f18f8053468560e346982
@@ -123,6 +126,6 @@ SPEC CHECKSUMS:
   WDImagePicker: 0014e231d67a63db9a97db74332a8a16723809bc
   Whisper: 74decae53daf8caff5acf8628e24b92d3f05a453
 
-PODFILE CHECKSUM: 96df42e73149631d58e8a235a9e0cb10fb364491
+PODFILE CHECKSUM: 10ce3cba5beafaba1237a8a37b6aac4d07a1a8a4
 
 COCOAPODS: 1.2.0.beta.1

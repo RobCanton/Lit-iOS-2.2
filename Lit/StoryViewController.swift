@@ -34,6 +34,8 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
     
     var viewsTappedHandler:(()->())?
     
+    var itemSetHandler:((item:StoryItem)->())?
+    
     func showOptions(){
         pauseStory()
         optionsTappedHandler?()
@@ -138,6 +140,7 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
             
             let item = items[viewIndex]
             self.item = item
+            itemSetHandler?(item: item)
             self.authorOverlay.setPostMetadata(item)
             if item.contentType == .Image {
                 loadImageContent(item)
@@ -170,6 +173,7 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
         
         if let image = item.image {
             content.image = image
+            self.playerLayer?.player?.replaceCurrentItemWithPlayerItem(nil)
             if self.shouldPlay {
                 self.setForPlay()
             }
@@ -184,7 +188,7 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
             content.image = image
             
         } else {
-            content.loadImageUsingCacheWithURLString(item.downloadUrl.absoluteString, completion: { result in })
+            return story.downloadStory()
         }
         createVideoPlayer()
         if let videoData = loadVideoFromCache(item.key) {
@@ -207,8 +211,6 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
                 })
             })
         } else {
-            content.hidden = false
-            videoContent.hidden = true
             story.downloadStory()
         }
     }
@@ -239,6 +241,7 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
         } else if item.contentType == .Video {
             videoContent.hidden = false
             playVideo()
+            
             if let currentItem = playerLayer?.player?.currentTime() {
                 itemLength -= currentItem.seconds
             }
@@ -256,7 +259,9 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
     }
     
     func nextItem() {
-        viewIndex += 1
+        if !looping {
+            viewIndex += 1
+        }
         shouldPlay = true
         
         setupItem()
@@ -314,10 +319,17 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
         pauseVideo()
     }
     
+    var looping = false
+    
+    func resumeStory() {
+        looping = false
+    }
+    
     func pauseStory() {
-        killTimer()
-        self.resetVideo()
-        progressBar?.resetActiveIndicator()
+        looping = true
+//        killTimer()
+//        self.resetVideo()
+//        progressBar?.pauseActiveIndicator()
     }
     
     func getCurrentItem() -> StoryItem? {
@@ -338,7 +350,6 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
     }
     
     func prepareForTransition(isPresenting:Bool) {
-        content.hidden = false
         videoContent.hidden = true
     }
     
@@ -490,7 +501,7 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
         let width: CGFloat = (UIScreen.mainScreen().bounds.size.width)
         let height: CGFloat = (UIScreen.mainScreen().bounds.size.height)
         
-        authorView.frame = CGRect(x: margin, y: margin + 6.0, width: width, height: authorView.frame.height)
+        authorView.frame = CGRect(x: margin, y: margin + 10.0, width: width, height: authorView.frame.height)
         authorView.authorTappedHandler = self.authorTappedHandler
         return authorView
     }()
@@ -509,7 +520,7 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
         let button = UIButton(frame: CGRectMake(12,height - 36,40,40))
         button.titleLabel!.font = UIFont.init(name: "AvenirNext-Medium", size: 16)
         button.tintColor = UIColor.whiteColor()
-        button.alpha = 0.70
+        button.alpha = 0.0//0.70
         return button
     }()
 
@@ -520,7 +531,7 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
         let button = UIButton(frame: CGRectMake(width - 40,height - 40,40,40))
         button.setImage(UIImage(named: "more2"), forState: .Normal)
         button.tintColor = UIColor.whiteColor()
-        button.alpha = 1.0
+        button.alpha = 0.0//1.0
         return button
     }()
 }

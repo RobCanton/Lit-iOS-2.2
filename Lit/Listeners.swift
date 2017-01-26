@@ -155,10 +155,15 @@ class Listeners {
             conversationsRef.observeEventType(.ChildAdded, withBlock: { snapshot in
                 if snapshot.exists() {
                     let partner = snapshot.key
-                    let conversationKey = snapshot.value! as! String
-                    let conversation = Conversation(key: conversationKey, partner_uid: partner)
-                    
-                    mainStore.dispatch(ConversationAdded(conversation: conversation))
+                    let pairKey = createUserIdPairKey(uid, uid2: partner)
+                    let listening = snapshot.value! as! Bool
+                    if listening {
+                        print("Listening to: \(pairKey)")
+                        let conversation = Conversation(key: pairKey, partner_uid: partner)
+                        mainStore.dispatch(ConversationAdded(conversation: conversation))
+                    } else {
+                        print("Not listening to: \(pairKey)")
+                    }
                 }
             })
         }

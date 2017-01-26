@@ -4,6 +4,7 @@ import CoreLocation
 protocol NotificationDelegate {
     func messageRecieved(sender:String, message:String)
     func newFollower(uid:String)
+    func changeTab(index:Int)
 }
 
 class NotificationService: NSObject {
@@ -27,12 +28,19 @@ class NotificationService: NSObject {
         
     }
     
+    var messageNotifcationsEnabled = true
     func messageReceived(sender:String, message:String) {
-        delegate?.messageRecieved(sender, message: message)
+        if messageNotifcationsEnabled {
+            delegate?.messageRecieved(sender, message: message)
+        }
     }
     
     func newFollower(uid:String) {
         delegate?.newFollower(uid)
+    }
+    
+    func changeTab(index:Int) {
+        delegate?.changeTab(index)
     }
     
     
