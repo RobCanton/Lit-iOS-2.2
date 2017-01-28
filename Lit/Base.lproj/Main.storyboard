@@ -628,7 +628,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="Oyq-XB-Scf" firstAttribute="leading" secondItem="1rd-a9-z6p" secondAttribute="leading" id="VyD-T7-I3J"/>
                             <constraint firstAttribute="trailing" secondItem="Oyq-XB-Scf" secondAttribute="trailing" id="aIk-xY-hde"/>
@@ -653,19 +653,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <visualEffectView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="apb-ut-M6h">
-                                <rect key="frame" x="0.0" y="20" width="600" height="580"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="NQE-W8-phw">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="580"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                </view>
-                                <blurEffect style="dark"/>
-                            </visualEffectView>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ja9-kb-Uj2">
-                                <rect key="frame" x="0.0" y="20" width="600" height="64"/>
+                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ja9-kb-Uj2">
+                                <rect key="frame" x="0.0" y="20" width="600" height="92"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s71-fj-hT7">
-                                        <rect key="frame" x="8" y="0.0" width="584" height="26"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s71-fj-hT7">
+                                        <rect key="frame" x="8" y="28" width="584" height="26"/>
                                         <attributedString key="attributedText">
                                             <fragment content="robcanton: Boy we got a lot of text here. ">
                                                 <attributes>
@@ -677,16 +669,16 @@
                                         </attributedString>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xT4-ID-5w1">
-                                        <rect key="frame" x="0.0" y="32" width="600" height="32"/>
+                                    <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xT4-ID-5w1">
+                                        <rect key="frame" x="0.0" y="60" width="600" height="32"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="14 Views     3 Comments " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BLj-Y5-egs">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="14 Views     3 Comments " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BLj-Y5-egs">
                                                 <rect key="frame" x="8" y="5" width="151" height="21"/>
                                                 <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="14"/>
                                                 <color key="textColor" white="1" alpha="0.59999999999999998" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="14m" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="McZ-gY-eTh">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="14m" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="McZ-gY-eTh">
                                                 <rect key="frame" x="545" y="5" width="47" height="21"/>
                                                 <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="14"/>
                                                 <color key="textColor" white="1" alpha="0.59999999999999998" colorSpace="calibratedWhite"/>
@@ -738,21 +730,26 @@
                                         <exclude reference="Qkh-YK-p3e"/>
                                         <exclude reference="Y2t-Cn-Drl"/>
                                         <exclude reference="a6h-3u-XCa"/>
+                                        <exclude reference="grp-sV-gcl"/>
                                         <exclude reference="CHI-tz-aGz"/>
                                         <exclude reference="Qtm-yQ-j0N"/>
                                         <exclude reference="u8Y-dJ-LkH"/>
                                     </mask>
                                 </variation>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vNt-hb-Hsq">
+                                <rect key="frame" x="0.0" y="8" width="600" height="592"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
+                            </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.70140824044585992" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="topMargin" secondItem="Ja9-kb-Uj2" secondAttribute="top" id="AzU-Ur-okn"/>
-                            <constraint firstAttribute="trailing" secondItem="apb-ut-M6h" secondAttribute="trailing" id="GEj-Pv-HbQ"/>
                             <constraint firstItem="Ja9-kb-Uj2" firstAttribute="top" secondItem="SBx-gP-PGG" secondAttribute="bottom" id="JwH-f5-eMc"/>
-                            <constraint firstItem="apb-ut-M6h" firstAttribute="leading" secondItem="sKE-jt-kpw" secondAttribute="leading" id="NGe-GR-ZNq"/>
-                            <constraint firstItem="apb-ut-M6h" firstAttribute="top" secondItem="SBx-gP-PGG" secondAttribute="bottom" id="QwM-JX-vRU"/>
-                            <constraint firstAttribute="bottomMargin" secondItem="apb-ut-M6h" secondAttribute="bottom" id="Sgt-Jq-ZUM"/>
+                            <constraint firstItem="vNt-hb-Hsq" firstAttribute="top" secondItem="sKE-jt-kpw" secondAttribute="topMargin" constant="8" id="KfN-am-9SB"/>
+                            <constraint firstItem="vNt-hb-Hsq" firstAttribute="leading" secondItem="sKE-jt-kpw" secondAttribute="leading" id="OFe-4X-nzC"/>
+                            <constraint firstAttribute="trailing" secondItem="vNt-hb-Hsq" secondAttribute="trailing" id="SOb-Nl-bXQ"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="vNt-hb-Hsq" secondAttribute="bottom" id="Vad-JU-WRl"/>
                             <constraint firstAttribute="topMargin" secondItem="Ja9-kb-Uj2" secondAttribute="top" constant="-8" id="dfG-pZ-1eE"/>
                             <constraint firstAttribute="trailing" secondItem="Ja9-kb-Uj2" secondAttribute="trailing" id="ili-pR-ibM"/>
                             <constraint firstItem="Ja9-kb-Uj2" firstAttribute="leading" secondItem="sKE-jt-kpw" secondAttribute="leading" id="ycX-b5-U2O"/>

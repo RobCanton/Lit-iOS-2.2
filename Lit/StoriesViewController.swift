@@ -8,7 +8,6 @@
 
 import UIKit
 import Whisper
-import ISHPullUp
 
 class LocationStoriesViewController: StoriesViewController {
     
@@ -115,7 +114,7 @@ class LocationStoriesViewController: StoriesViewController {
     }
 }
 
-class StoriesViewController: ISHPullUpViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIGestureRecognizerDelegate, UINavigationControllerDelegate {
+class StoriesViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIGestureRecognizerDelegate, UINavigationControllerDelegate {
     
     var label:UILabel!
     var tabBarRef:PopUpTabBarController!
@@ -131,10 +130,6 @@ class StoriesViewController: ISHPullUpViewController, UICollectionViewDelegate, 
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(appMovedToBackground), name:UIApplicationDidEnterBackgroundNotification, object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self,
-                                                         selector: #selector(keyboardWasShown),
-                                                         name: UIKeyboardWillChangeFrameNotification,
-                                                         object: nil)
         
         UIView.animateWithDuration(0.15, animations: {
             self.statusBarShouldHide = true
@@ -612,10 +607,6 @@ extension StoriesViewController: View2ViewTransitionPresented {
             self.collectionView.layoutIfNeeded()
         }
     }
-    
-    
-    
-    
 }
 
 extension StoriesViewController: UITextViewDelegate {

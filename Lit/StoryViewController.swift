@@ -9,6 +9,7 @@
 import UIKit
 import AVFoundation
 import NVActivityIndicatorView
+import Firebase
 
 
 public class StoryViewController: UICollectionViewCell, StoryProtocol {
@@ -22,6 +23,8 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
             return false
         }
     }
+    
+    var commentsRef:FIRDatabaseReference?
     
     var item:StoryItem?
     var tap:UITapGestureRecognizer!
@@ -60,6 +63,9 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
             shouldPlay = false
             self.story.delegate = self
             story.determineState()
+            
+            NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(keyboardWillAppear), name: UIKeyboardWillShowNotification, object: nil)
+            NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(keyboardWillDisappear), name: UIKeyboardWillHideNotification, object: nil)
             
             
         }
@@ -131,6 +137,8 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
         
     }
     
+    
+    
     func setupItem() {
         pauseVideo()
         
@@ -161,6 +169,35 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
             
             viewsButton.titleLabel?.sizeToFit()
             viewsButton.sizeToFit()
+            
+            var comments = item.comments
+            commentsView.setTableComments(comments, animated: false)
+            
+            commentsRef?.removeAllObservers()
+            commentsRef = FirebaseService.ref.child("uploads/\(item.getKey())/comments")
+            
+            if let lastItem = item.comments.last {
+                let lastKey = lastItem.getKey()
+                let ts = lastItem.getDate().timeIntervalSince1970 * 1000
+                commentsRef?.queryOrderedByChild("timestamp").queryStartingAtValue(ts).observeEventType(.ChildAdded, withBlock: { snapshot in
+
+                    
+                    let key = snapshot.key
+                    
+                    if key != lastKey {
+                        let author = snapshot.value!["author"] as! String
+                        let text = snapshot.value!["text"] as! String
+                        let timestamp = snapshot.value!["timestamp"] as! Double
+                        
+                        let comment = Comment(key: key, author: author, text: text, timestamp: timestamp)
+                        item.addComment(comment)
+                        self.commentsView.setTableComments(item.comments, animated: true)
+                    }
+                })
+            }
+            
+            
+            
             
         } else {
             self.removeGestureRecognizer(tap)
@@ -304,6 +341,8 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
         destroyVideoPlayer()
         killTimer()
         progressBar?.resetAllProgressBars()
+        commentsRef?.removeAllObservers()
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
     func playVideo() {
@@ -373,16 +412,20 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
     }
     
     func tapped(gesture:UITapGestureRecognizer) {
-        let tappedPoint = gesture.locationInView(self)
-        let width = self.bounds.width
-        if tappedPoint.x < width * 0.25 {
-            prevItem()
-            prevView.alpha = 1.0
-            UIView.animateWithDuration(0.25, animations: {
-                self.prevView.alpha = 0.0
-            })
+        if keyboardUp {
+            dismissKeyboard()
         } else {
-           nextItem()
+            let tappedPoint = gesture.locationInView(self)
+            let width = self.bounds.width
+            if tappedPoint.x < width * 0.25 {
+                prevItem()
+                prevView.alpha = 1.0
+                UIView.animateWithDuration(0.25, animations: {
+                    self.prevView.alpha = 0.0
+                })
+            } else {
+                nextItem()
+            }
         }
     }
 
@@ -403,6 +446,8 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
     }
     
     var moreTapped:UITapGestureRecognizer!
+    
+    var textView:UITextView!
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.contentView.backgroundColor = UIColor(red: 0, green: 0, blue: 1.0, alpha: 0.0)
@@ -413,6 +458,7 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
         self.contentView.addSubview(self.authorOverlay)
         self.contentView.addSubview(self.viewsButton)
         self.contentView.addSubview(self.moreButton)
+        
         
 
         self.fadeCover.alpha = 0.0
@@ -433,7 +479,122 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
         activityView.center = self.center
         self.contentView.addSubview(activityView)
         
+        textView = UITextView(frame: CGRectMake(0,frame.height - 44 ,frame.width, 44))
+        
+        textView.font = UIFont(name: "AvenirNext-Medium", size: 18.0)
+        textView.textColor = UIColor.whiteColor()
+        textView.backgroundColor = UIColor(white: 0.0, alpha: 0.0)
+        textView.hidden = false
+        textView.keyboardAppearance = .Dark
+        textView.returnKeyType = .Send
+        textView.scrollEnabled = false
+        textView.textContainerInset = UIEdgeInsets(top: 10, left: 8, bottom: 10, right: 8)
+        textView.text = "Send a message"
+        textView.delegate = self
+        textView.fitHeightToContent()
+        textView.text = ""
+        
+        self.contentView.addSubview(self.commentsView)
+        
+        commentPlaceHolderLabel = UILabel(frame: CGRectMake(10,textView.frame.origin.y, textView.frame.width, textView.frame.height))
+        
+        commentPlaceHolderLabel.textColor = UIColor(white: 1.0, alpha: 0.5)
+        commentPlaceHolderLabel.text = "Comment"
+        commentPlaceHolderLabel.font = UIFont(name: "AvenirNext-Regular", size: 16.0)
+        
+        self.addSubview(commentPlaceHolderLabel)
+        
+        self.contentView.addSubview(textView)
+        
+        commentsView.frame = CGRectMake(0, textView.frame.origin.y - commentsView.frame.height, commentsView.frame.width, commentsView.frame.height)
+        
     }
+    
+    var commentPlaceHolderLabel:UILabel!
+    
+    var keyboardUp = false
+    
+    func keyboardWillAppear(notification: NSNotification){
+
+        keyboardUp = true
+        looping = true
+        
+        
+        let info = notification.userInfo!
+        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+        
+        UIView.animateWithDuration(0.1, animations: { () -> Void in
+            let height = self.frame.height
+            let textViewFrame = self.textView.frame
+            let textViewY = height - keyboardFrame.height - textViewFrame.height
+            self.textView.frame = CGRectMake(0,textViewY, textViewFrame.width, textViewFrame.height)
+            
+            let commentLabelFrame = self.commentPlaceHolderLabel.frame
+            let commentLabelY = height - keyboardFrame.height - commentLabelFrame.height
+            self.commentPlaceHolderLabel.frame = CGRectMake(commentLabelFrame.origin.x,commentLabelY, commentLabelFrame.width, commentLabelFrame.height)
+            
+            let commentsViewStart = textViewY - self.commentsView.frame.height
+            self.commentsView.frame = CGRectMake(0, commentsViewStart, self.commentsView.frame.width, self.commentsView.frame.height)
+            
+            self.progressBar?.alpha = 0.0
+            self.authorOverlay.alpha = 0.0
+            self.commentPlaceHolderLabel.alpha = 0.0
+        })
+    }
+    
+    func keyboardWillDisappear(notification: NSNotification){
+        keyboardUp = false
+        looping = false
+        
+        
+        
+        UIView.animateWithDuration(0.1, animations: { () -> Void in
+            
+            let height = self.frame.height
+            let textViewFrame = self.textView.frame
+            let textViewStart = height - textViewFrame.height
+            self.textView.frame = CGRectMake(0,textViewStart, textViewFrame.width, textViewFrame.height)
+            
+            let commentLabelFrame = self.commentPlaceHolderLabel.frame
+            let commentLabelY = height - commentLabelFrame.height
+            self.commentPlaceHolderLabel.frame = CGRectMake(commentLabelFrame.origin.x,commentLabelY, commentLabelFrame.width, commentLabelFrame.height)
+            
+            let commentsViewStart = textViewStart - self.commentsView.frame.height
+            self.commentsView.frame = CGRectMake(0, commentsViewStart, self.commentsView.frame.width, self.commentsView.frame.height)
+            
+            self.progressBar?.alpha = 1.0
+            self.authorOverlay.alpha = 1.0
+            if !self.commentLabelShouldHide() {
+                self.commentPlaceHolderLabel.alpha = 1.0
+            }
+            
+            }, completion:  { result in
+                
+        })
+        
+    }
+    
+    func dismissKeyboard() {
+        textView.resignFirstResponder()
+    }
+    
+    func sendComment(comment:String) {
+        textView.text = ""
+        updateTextAndCommentViews()
+        print("Send comment: \(comment)")
+        if item != nil {
+            FirebaseService.addComment(item!.getKey(), comment: comment)
+        }
+    }
+    
+    func commentLabelShouldHide() -> Bool {
+        if textView.text.isEmpty {
+            return false
+        } else {
+            return true
+        }
+    }
+    
     
     func viewsTapped() {
         print("Views tapped")
@@ -506,14 +667,14 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
         return authorView
     }()
     
-//    lazy var socialView: SocialView = {
-//        var socialView = UINib(nibName: "SocialView", bundle: nil).instantiateWithOwner(nil, options: nil)[0] as! SocialView
-//        let width: CGFloat = (UIScreen.mainScreen().bounds.size.width)
-//        let height: CGFloat = (UIScreen.mainScreen().bounds.size.height)
-//        
-//        socialView.frame = CGRect(x: 0, y:height - socialView.frame.height, width: width, height: socialView.frame.height)
-//        return socialView
-//    }()
+    lazy var commentsView: CommentsView = {
+        let width: CGFloat = (UIScreen.mainScreen().bounds.size.width)
+        let height: CGFloat = (UIScreen.mainScreen().bounds.size.height)
+        var commentsView = CommentsView(frame: CGRect(x: 0, y: height / 2, width: width, height: height / 2 - 44 ))
+        
+        return commentsView
+    }()
+
     
     lazy var viewsButton: UIButton = {
         let height: CGFloat = (UIScreen.mainScreen().bounds.size.height)
@@ -534,4 +695,37 @@ public class StoryViewController: UICollectionViewCell, StoryProtocol {
         button.alpha = 0.0//1.0
         return button
     }()
+    
+    var change:CGFloat = 0
+    
+    func updateTextAndCommentViews() {
+        let oldHeight = textView.frame.size.height
+        textView.fitHeightToContent()
+        change = textView.frame.height - oldHeight
+        
+        
+        textView.center = CGPoint(x: textView.center.x, y: textView.center.y - change)
+        
+        self.commentsView.frame = CGRectMake(0, textView.frame.origin.y - self.commentsView.frame.height, self.commentsView.frame.width, self.commentsView.frame.height)
+    }
+}
+
+extension StoryViewController: UITextViewDelegate {
+    public func textViewDidChange(textView: UITextView) {
+        updateTextAndCommentViews()
+    }
+    
+    public func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        
+        if(text == "\n") {
+            print("Length: \(textView.text.characters.count)")
+            if textView.text.characters.count > 0 {
+                sendComment(textView.text)
+            } else {
+                //dismissKeyboard()
+            }
+            return false
+        }
+        return textView.text.characters.count + (text.characters.count - range.length) <= 140
+    }
 }

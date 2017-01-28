@@ -494,8 +494,25 @@ class FirebaseService {
                     if snapshot.hasChild("views") {
                         viewers = snapshot.value!["views"] as! [String:Double]
                     }
+                    
+                    var comments = [Comment]()
+                    if snapshot.hasChild("comments") {
+                        let commentsSnaphot = snapshot.value!["comments"] as! [String:AnyObject]
+                        
+                        for (key, object) in commentsSnaphot {
+                            let key = key
+                            let author = object["author"] as! String
+                            let text = object["text"] as! String
+                            let timestamp = object["timestamp"] as! Double
+                            
+                            let comment = Comment(key: key, author: author, text: text, timestamp: timestamp)
+                            comments.append(comment)
+                        }
+                    }
+                    
+                    comments.sortInPlace({ return $0 < $1 })
 
-                    item = StoryItem(key: key, authorId: authorId,locationKey: locationKey, downloadUrl: downloadUrl,videoURL: videoURL, contentType: contentType, dateCreated: dateCreated, length: length, toProfile: toProfile, toStory: toStory, toLocation: toLocation, viewers: viewers)
+                    item = StoryItem(key: key, authorId: authorId,locationKey: locationKey, downloadUrl: downloadUrl,videoURL: videoURL, contentType: contentType, dateCreated: dateCreated, length: length, toProfile: toProfile, toStory: toStory, toLocation: toLocation, viewers: viewers, comments: comments)
                     dataCache.setObject(item!, forKey: "upload-\(key)")
                 }
             }
@@ -564,6 +581,17 @@ class FirebaseService {
         let postRef = ref.child("uploads/\(postKey)/views/\(uid)")
         postRef.setValue([".sv":"timestamp"])
         
+    }
+    
+    static func addComment(postKey:String, comment:String) {
+        let uid = mainStore.state.userState.uid
+        
+        let postRef = ref.child("uploads/\(postKey)/comments").childByAutoId()
+        postRef.setValue([
+                "author": uid,
+                "text":comment,
+                "timestamp":[".sv":"timestamp"]
+            ])
     }
     
     

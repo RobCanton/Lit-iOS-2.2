@@ -19,6 +19,7 @@ enum ContentType:Int {
     case Invalid =  0
 }
 
+
 class StoryItem: NSObject, NSCoding {
     
     var key:String                    // Key in database
@@ -35,6 +36,7 @@ class StoryItem: NSObject, NSCoding {
     var toLocation:Bool
     
     var viewers:[String:Double]
+    var comments:[Comment]
     
     var delegate:ItemDelegate?
 
@@ -43,7 +45,7 @@ class StoryItem: NSObject, NSCoding {
     dynamic var videoData:NSData?
     
     init(key: String, authorId: String, locationKey:String, downloadUrl: NSURL, videoURL:NSURL?, contentType: ContentType, dateCreated: Double, length: Double,
-         toProfile: Bool, toStory: Bool, toLocation:Bool, viewers:[String:Double])
+         toProfile: Bool, toStory: Bool, toLocation:Bool, viewers:[String:Double], comments: [Comment])
     {
         
         self.key          = key
@@ -58,6 +60,7 @@ class StoryItem: NSObject, NSCoding {
         self.toStory      = toStory
         self.toLocation   = toLocation
         self.viewers      = viewers
+        self.comments    = comments
 
     }
     
@@ -80,6 +83,11 @@ class StoryItem: NSObject, NSCoding {
             viewers = _viewers
         }
         
+        var comments = [Comment]()
+        if let _comments = decoder.decodeObjectForKey("comments") as? [Comment] {
+            comments = _comments
+        }
+        
         var contentType:ContentType = .Invalid
         switch ctInt {
         case 1:
@@ -92,7 +100,7 @@ class StoryItem: NSObject, NSCoding {
             break
         }
         
-        self.init(key: key, authorId: authorId, locationKey:locationKey, downloadUrl: downloadUrl, videoURL: videoURL, contentType: contentType, dateCreated: dateCreated, length: length, toProfile: toProfile, toStory: toStory, toLocation: toLocation, viewers: viewers)
+        self.init(key: key, authorId: authorId, locationKey:locationKey, downloadUrl: downloadUrl, videoURL: videoURL, contentType: contentType, dateCreated: dateCreated, length: length, toProfile: toProfile, toStory: toStory, toLocation: toLocation, viewers: viewers, comments: comments)
     }
     
     
@@ -107,6 +115,7 @@ class StoryItem: NSObject, NSCoding {
         coder.encodeBool(toStory, forKey: "toStory")
         coder.encodeBool(toLocation, forKey: "toLocation")
         coder.encodeObject(viewers, forKey: "viewers")
+        coder.encodeObject(comments, forKey: "comments")
         if videoURL != nil {
             coder.encodeObject(videoURL!, forKey: "videoURL")
         }
@@ -185,6 +194,12 @@ class StoryItem: NSObject, NSCoding {
     
     func hasViewed() -> Bool{
         return viewers[mainStore.state.userState.uid] != nil
+    }
+    
+    func addComment(comment:Comment) {
+        self.comments.append(comment)
+        FirebaseService.dataCache.removeObjectForKey(key)
+        FirebaseService.dataCache.setObject(self, forKey: key)
     }
     
     func postPoints() -> Int {

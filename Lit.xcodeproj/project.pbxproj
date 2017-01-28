@@ -145,6 +145,10 @@
 		B0B35DFC1E1F716800E4546D /* LocationHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0B35DFB1E1F716800E4546D /* LocationHeaderView.xib */; };
 		B0BA326C1DA7163D004352A7 /* CreateProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0BA326B1DA7163D004352A7 /* CreateProfileHeaderView.xib */; };
 		B0BA326E1DA7165A004352A7 /* CreateProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0BA326D1DA7165A004352A7 /* CreateProfileHeaderView.swift */; };
+		B0D3B6801E3AC34300C62950 /* CommentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D3B67F1E3AC34200C62950 /* CommentsView.swift */; };
+		B0D3B6821E3AC35800C62950 /* CommentsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0D3B6811E3AC35800C62950 /* CommentsView.xib */; };
+		B0D3B6851E3AC7A200C62950 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D3B6831E3AC7A200C62950 /* CommentCell.swift */; };
+		B0D3B6861E3AC7A200C62950 /* CommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0D3B6841E3AC7A200C62950 /* CommentCell.xib */; };
 		B0DAFBCE1DF8CB78004EB03D /* StoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FC99D11DE7983A00683155 /* StoryViewController.swift */; };
 		B0DAFBD01DF947E8004EB03D /* ProgressIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DAFBCF1DF947E8004EB03D /* ProgressIndicator.swift */; };
 		B0E2BDC21E086B1800D195A5 /* CameraTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E2BDC11E086B1800D195A5 /* CameraTransition.swift */; };
@@ -326,6 +330,10 @@
 		B0B35DFB1E1F716800E4546D /* LocationHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LocationHeaderView.xib; sourceTree = "<group>"; };
 		B0BA326B1DA7163D004352A7 /* CreateProfileHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreateProfileHeaderView.xib; sourceTree = "<group>"; };
 		B0BA326D1DA7165A004352A7 /* CreateProfileHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateProfileHeaderView.swift; sourceTree = "<group>"; };
+		B0D3B67F1E3AC34200C62950 /* CommentsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsView.swift; sourceTree = "<group>"; };
+		B0D3B6811E3AC35800C62950 /* CommentsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommentsView.xib; sourceTree = "<group>"; };
+		B0D3B6831E3AC7A200C62950 /* CommentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
+		B0D3B6841E3AC7A200C62950 /* CommentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommentCell.xib; sourceTree = "<group>"; };
 		B0DAFBCF1DF947E8004EB03D /* ProgressIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressIndicator.swift; sourceTree = "<group>"; };
 		B0E2BDC11E086B1800D195A5 /* CameraTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraTransition.swift; sourceTree = "<group>"; };
 		B0E591561DD1218D00C032D6 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -648,6 +656,10 @@
 			isa = PBXGroup;
 			children = (
 				B0321ECB1DB568BA00AD4C53 /* LocViewController.swift */,
+				B0D3B67F1E3AC34200C62950 /* CommentsView.swift */,
+				B0D3B6811E3AC35800C62950 /* CommentsView.xib */,
+				B0D3B6831E3AC7A200C62950 /* CommentCell.swift */,
+				B0D3B6841E3AC7A200C62950 /* CommentCell.xib */,
 				B0B35DF91E1F715D00E4546D /* LocationHeaderView.swift */,
 				B0B35DFB1E1F716800E4546D /* LocationHeaderView.xib */,
 				B03504C01DD0661F00C9C83F /* LocationFooterView.swift */,
@@ -834,6 +846,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B09D26F61E2E0033009433EC /* GoogleService-Info.plist in Resources */,
+				B0D3B6861E3AC7A200C62950 /* CommentCell.xib in Resources */,
 				B011B35F1E02261600FA4633 /* LocationTableCell.xib in Resources */,
 				B011B34C1DFFB2BD00FA4633 /* InfoTableViewCell.xib in Resources */,
 				B00BA9271D9E4E1D00F5EA30 /* CreateProfileViewController.xib in Resources */,
@@ -859,6 +872,7 @@
 				B09801F51E1C7869006782E6 /* mapStyle.json in Resources */,
 				76173B7B1D5784AC0093A137 /* Main.storyboard in Resources */,
 				B06BC66B1E24E7250045D920 /* SendProfileViewCell.xib in Resources */,
+				B0D3B6821E3AC35800C62950 /* CommentsView.xib in Resources */,
 				B06D54C11D9ECB6D00F6A4A7 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1012,6 +1026,7 @@
 				B06D54C71D9ECB6D00F6A4A7 /* TextFieldsEffects.swift in Sources */,
 				B087E9CC1D9B88700079E2BF /* LocationsReducer.swift in Sources */,
 				768FB9781D5BB55000251035 /* User.swift in Sources */,
+				B0D3B6851E3AC7A200C62950 /* CommentCell.swift in Sources */,
 				B05ABCFD1D41185200364322 /* Reducer.swift in Sources */,
 				B0B35DFA1E1F715D00E4546D /* LocationHeaderView.swift in Sources */,
 				B02D4C3A1DC85A0F004E2673 /* Event.swift in Sources */,
@@ -1022,6 +1037,7 @@
 				B011B3481DFE7FAD00FA4633 /* GalleryViewController.swift in Sources */,
 				B0E8E3271DDB817B0077D1BC /* View2ViewTransition.swift in Sources */,
 				B0351FBA1DED0503000A4BF5 /* NVActivityIndicatorShape.swift in Sources */,
+				B0D3B6801E3AC34300C62950 /* CommentsView.swift in Sources */,
 				B0351FA91DED0503000A4BF5 /* NVActivityIndicatorAnimationBallZigZag.swift in Sources */,
 				B05ABCF91D41178D00364322 /* AppState.swift in Sources */,
 				B011B35B1E02249900FA4633 /* HomeViewController.swift in Sources */,

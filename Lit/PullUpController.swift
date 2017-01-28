@@ -19,6 +19,9 @@ class BottomVC: UIViewController, StoryPullUpProtocol {
     
     @IBOutlet weak var topView: UIView!
     
+    private var firstAppearanceCompleted = false
+    
+    
     var bottomHeight:CGFloat = 0.0
     
     var author:User?
@@ -30,8 +33,9 @@ class BottomVC: UIViewController, StoryPullUpProtocol {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor(white: 0.0, alpha: 0.75)
-        pullUpController.snapThreshold = 0.35
+        pullUpController.snapThreshold = 0.5
+        
+        pullUpController.dimmingColor = UIColor.clearColor()
 
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture))
@@ -39,6 +43,11 @@ class BottomVC: UIViewController, StoryPullUpProtocol {
         
         pullUpController.setState(.Collapsed, animated: true)
     
+    }
+    
+    override func viewDidAppear(animated:Bool) {
+        super.viewDidAppear(animated)
+        firstAppearanceCompleted = true;
     }
     
     func handleTapGesture(gesture: UITapGestureRecognizer) {
@@ -97,15 +106,15 @@ extension BottomVC: ISHPullUpSizingDelegate, ISHPullUpStateDelegate {
     }
     
     func pullUpViewController(pullUpViewController: ISHPullUpViewController, maximumHeightForBottomViewController bottomVC: UIViewController, maximumAvailableHeight: CGFloat) -> CGFloat {
-        halfWayPoint = maximumAvailableHeight * 0.92 / 2.0
+        //halfWayPoint = maximumAvailableHeight * 0.92 / 2.0
         return maximumAvailableHeight * 0.92
     }
     
     func pullUpViewController(pullUpViewController: ISHPullUpViewController, targetHeightForBottomViewController bottomVC: UIViewController, fromCurrentHeight height: CGFloat) -> CGFloat {
         // if around 30pt of the half way point -> snap to it
-        if abs(height - halfWayPoint) < halfWayPoint / 2 {
-            return halfWayPoint
-        }
+//        if abs(height - halfWayPoint) < halfWayPoint / 2 {
+//            return halfWayPoint
+//        }
         
         // default behaviour
         return height
@@ -116,6 +125,7 @@ extension BottomVC: ISHPullUpSizingDelegate, ISHPullUpStateDelegate {
     }
     
     func pullUpViewController(pullUpViewController: ISHPullUpViewController, didChangeToState state: ISHPullUpState) {
+        print("DID CHANGE STATE")
         switch state {
         case .Collapsed:
             playStory()
@@ -130,6 +140,8 @@ extension BottomVC: ISHPullUpSizingDelegate, ISHPullUpStateDelegate {
             pauseStory()
             break
         }
+        
+        
     }
     
     private func textForState(state: ISHPullUpState) -> String {
@@ -159,6 +171,43 @@ extension BottomVC: ISHPullUpSizingDelegate, ISHPullUpStateDelegate {
         if let controller = pullUpController.contentViewController as? StoriesController {
             controller.getCurrentCell()?.resumeStory()
         }
+    }
+}
+
+class PullUpController: ISHPullUpViewController, UIGestureRecognizerDelegate {
+    
+    var parent:WrapperController!
+    var tabBarRef:PopUpTabBarController!
+    var statusBarShouldHide = false
+    
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        commonInit()
+    }
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        commonInit()
+    }
+    
+    var bottomVC:BottomVC!
+    var contentVC:StoriesController!
+    
+    private func commonInit() {
+        
+        
+        let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+        bottomVC = storyBoard.instantiateViewControllerWithIdentifier("bottom") as! BottomVC
+        contentVC = StoriesController()
+        contentVC.delegate = bottomVC
+        contentViewController = contentVC
+        bottomViewController = bottomVC
+        contentVC.pullUpController = self
+        bottomVC.pullUpController = self
+        //contentDelegate = contentVC
+        sizingDelegate = bottomVC
+        stateDelegate = bottomVC
     }
 }
 
@@ -281,77 +330,4 @@ extension WrapperController: View2ViewTransitionPresented {
     }
 }
 
-
-class PullUpController: ISHPullUpViewController, UIGestureRecognizerDelegate {
-    
-    var parent:WrapperController!
-    var tabBarRef:PopUpTabBarController!
-    var statusBarShouldHide = false
-    
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        commonInit()
-    }
-    
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        commonInit()
-    }
-    
-    var bottomVC:BottomVC!
-    var contentVC:StoriesController!
-    
-    private func commonInit() {
-        snapThreshold = 1.0
-        
-        let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-        bottomVC = storyBoard.instantiateViewControllerWithIdentifier("bottom") as! BottomVC
-        contentVC = StoriesController()
-        contentVC.delegate = bottomVC
-        contentViewController = contentVC
-        bottomViewController = bottomVC
-        contentVC.pullUpController = self
-        bottomVC.pullUpController = self
-        //contentDelegate = contentVC
-        sizingDelegate = bottomVC
-        stateDelegate = bottomVC
-    }
-}
-//
-//
-//extension PullUpController: View2ViewTransitionPresented {
-//    
-//    func destinationFrame(userInfo: [String: AnyObject]?, isPresenting: Bool) -> CGRect {
-//        return view.frame
-//    }
-//    
-//    func destinationView(userInfo: [String: AnyObject]?, isPresenting: Bool) -> UIView {
-//        
-////        let indexPath: NSIndexPath = userInfo!["destinationIndexPath"] as! NSIndexPath
-////        let cell: StoryViewController = self.collectionView.cellForItemAtIndexPath(indexPath) as! StoryViewController
-////        
-////        cell.prepareForTransition(isPresenting)
-//        
-//        return view
-//        
-//    }
-//    
-//    func prepareDestinationView(userInfo: [String: AnyObject]?, isPresenting: Bool) {
-//        
-//        if isPresenting {
-//            
-////            let indexPath: NSIndexPath = userInfo!["destinationIndexPath"] as! NSIndexPath
-////            currentIndex = indexPath
-////            let contentOffset: CGPoint = CGPoint(x: self.collectionView.frame.size.width*CGFloat(indexPath.item), y: 0.0)
-////            self.collectionView.contentOffset = contentOffset
-////            self.collectionView.reloadData()
-////            self.collectionView.layoutIfNeeded()
-//        }
-//    }
-//    
-//    
-//    
-//    
-//}
 
