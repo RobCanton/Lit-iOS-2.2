@@ -31,10 +31,28 @@ class LoginViewController: UIViewController, StoreSubscriber {
     override func viewWillAppear(animated: Bool) {
         mainStore.subscribe(self)
         
+        
         deactivateLoginButton()
         
+        if !mainStore.state.userState.supportedVersion {
+            
+            checkIfViableVersion({ viable in
+                if viable {
+                    mainStore.dispatch(SupportedVersion())
+                    self.setupLoginScreen()
+                } else {
+                    self.showUpdateAlert()
+                }
+            })
+        } else {
+            setupLoginScreen()
+        }
+    }
+    
+    func setupLoginScreen() {
+        
         if let user = FIRAuth.auth()?.currentUser {
-            print("already signed in")
+            print("User already authenticated.")
             
             checkUserAgainstDatabase({success, error in
                 if success {
@@ -78,7 +96,7 @@ class LoginViewController: UIViewController, StoreSubscriber {
     }
     
     func newState(state:AppState) {
-        if state.userState.isAuth && state.userState.user != nil {
+        if state.userState.supportedVersion && state.userState.isAuth && state.userState.user != nil {
             self.performSegueWithIdentifier("showLit", sender: self)
         }
     }
@@ -111,7 +129,19 @@ class LoginViewController: UIViewController, StoreSubscriber {
         activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
         activityIndicator.center = CGPoint(x: view.center.x, y: loginButton.center.y)
         self.view.addSubview(activityIndicator)
-
+    }
+    
+    func showUpdateAlert() {
+        let alert = UIAlertController(title: "This version is no longer supported.", message: "Please update Lit on the Appstore.", preferredStyle: .Alert)
+        
+        
+        let update = UIAlertAction(title: "Got it", style: .Default, handler: nil)
+        alert.addAction(update)
+        
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func showLoginScreen() {
         
     }
     
@@ -125,6 +155,24 @@ class LoginViewController: UIViewController, StoreSubscriber {
         loginButton.removeGestureRecognizer(tap)
     }
     
+    
+    func checkIfViableVersion(completion:((viable:Bool)->())) {
+        activityIndicator.startAnimating()
+        let infoDictionary = NSBundle.mainBundle().infoDictionary!
+        let appId = infoDictionary["CFBundleShortVersionString"] as! String
+        
+        let currentVersion = Int(appId.stringByReplacingOccurrencesOfString(".", withString: ""))!
+        
+        let fetchVersion = FirebaseService.ref.child("config/client/minimum_supported_version")
+        fetchVersion.observeSingleEventOfType(.Value, withBlock: { snapshot in
+            let versionString = snapshot.value! as! String
+            let minimum_supported_version = Int(versionString.stringByReplacingOccurrencesOfString(".", withString: ""))!
+            print("current_version: \(currentVersion) | minimum_supported_version: \(minimum_supported_version)")
+            self.activityIndicator.stopAnimating()
+            completion(viable: currentVersion >= minimum_supported_version)
+        })
+
+    }
     
     
 

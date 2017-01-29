@@ -22,6 +22,7 @@ struct AppState: StateType {
 struct UserState {
     var flow: FlowState = .None
     var isAuth: Bool = false
+    var supportedVersion: Bool = false
     var uid: String = ""
     var user:User?
     var activeLocationKey:String=""

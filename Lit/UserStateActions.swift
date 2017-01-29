@@ -26,3 +26,5 @@ struct UpdateProfileImageURL: Action {
     let largeImageURL: String
     let smallImageURL: String
 }
+
+struct SupportedVersion: Action {}
