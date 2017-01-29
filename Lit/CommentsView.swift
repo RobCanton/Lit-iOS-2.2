@@ -12,10 +12,18 @@ class CommentsView: UIView, UITableViewDelegate, UITableViewDataSource {
     
     var comments = [Comment]()
 
+    var userTapped:((uid:String)->())?
     var tableView:UITableView!
-    
+    var divider:UIView!
     required internal init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func cleanUp() {
+        comments = [Comment]()
+        tableView.reloadData()
+        divider.hidden = true
+        userTapped = nil
     }
     
     override init(frame: CGRect) {
@@ -25,7 +33,7 @@ class CommentsView: UIView, UITableViewDelegate, UITableViewDataSource {
         
         gradient.frame = self.bounds ?? CGRectNull
         gradient.colors = [UIColor.clearColor().CGColor, UIColor.blackColor().CGColor, UIColor.blackColor().CGColor]
-        gradient.locations = [0.0, 0.15, 1.0]
+        gradient.locations = [0.0, 0.05, 1.0]
         self.layer.mask = gradient
         
         tableView = UITableView(frame: self.bounds)
@@ -43,9 +51,10 @@ class CommentsView: UIView, UITableViewDelegate, UITableViewDataSource {
         tableView.tableFooterView = UIView()
         self.addSubview(tableView)
         
-        let divider = UIView(frame: CGRectMake(8,frame.height-1,frame.width-16,1))
+        divider = UIView(frame: CGRectMake(8,frame.height-1,frame.width-16,1))
         divider.backgroundColor = UIColor(white: 1.0, alpha: 0.5)
         self.addSubview(divider)
+        divider.hidden = true
         
         reloadTable()
         scrollBottom(false)
@@ -54,6 +63,11 @@ class CommentsView: UIView, UITableViewDelegate, UITableViewDataSource {
     func setTableComments(comments:[Comment], animated:Bool)
     {
         self.comments = comments
+        if self.comments.count > 0 {
+            divider.hidden = false
+        } else {
+            divider.hidden = true
+        }
         reloadTable()
         scrollBottom(animated)
     }
@@ -87,8 +101,8 @@ class CommentsView: UIView, UITableViewDelegate, UITableViewDataSource {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("commentCell", forIndexPath: indexPath) as! CommentCell
-        print(comments[indexPath.row])
         cell.setContent(comments[indexPath.row])
+        cell.authorTapped = userTapped
         
         return cell
     }
@@ -99,5 +113,4 @@ class CommentsView: UIView, UITableViewDelegate, UITableViewDataSource {
             self.tableView.scrollToRowAtIndexPath(lastIndex, atScrollPosition: UITableViewScrollPosition.Bottom, animated: animated)
         }
     }
-    
 }

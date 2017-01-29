@@ -164,6 +164,7 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
         for story in self.userStories {
             story.determineState()
         }
+        
         tableView?.reloadData()
     }
     
@@ -240,8 +241,7 @@ class LocViewController: UIViewController, UITableViewDataSource, UITableViewDel
         btnName.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         
         btnName.addTarget(self, action: #selector(showMap), forControlEvents: .TouchUpInside)
-        
-        if location.getKey() == mainStore.state.userState.activeLocationKey {
+        if location.isActive() {
             btnName.titleLabel!.font = UIFont(name: "Avenir-Heavy", size: 11.0)
             btnName.setTitle("Nearby", forState: .Normal)
             btnName.backgroundColor = accentColor

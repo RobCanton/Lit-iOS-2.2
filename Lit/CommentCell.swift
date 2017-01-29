@@ -13,6 +13,9 @@ class CommentCell: UITableViewCell {
     @IBOutlet weak var authorLabel: UILabel!
     @IBOutlet weak var commentLabel: UILabel!
     
+    var authorTapped:((userId:String)->())?
+    
+    var comment:Comment!
     @IBOutlet weak var userImage: UIImageView!
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -30,7 +33,7 @@ class CommentCell: UITableViewCell {
     var tap:UITapGestureRecognizer!
 
     func handleTap(sender:UITapGestureRecognizer) {
-        print("Tapped: \(authorLabel.text)")
+        authorTapped?(userId: comment.getAuthor())
     }
     
     override func setSelected(selected: Bool, animated: Bool) {
@@ -41,6 +44,7 @@ class CommentCell: UITableViewCell {
     
     
     func setContent(comment:Comment) {
+        self.comment = comment
         userImage.layer.cornerRadius = userImage.frame.width / 2
         userImage.clipsToBounds = true
         

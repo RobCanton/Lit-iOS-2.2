@@ -54,7 +54,7 @@ class CameraButton: UIView {
         progresser.roundedCorners = false
 
         progresser.angle = 0
-        progresser.setColors(UIColor(colorLiteralRed: 205/255, green: 0, blue: 0, alpha: 1.0))
+        progresser.setColors(UIColor.whiteColor())//UIColor(colorLiteralRed: 205/255, green: 0, blue: 0, alpha: 1.0))
         
         progresser.layer.addSublayer(ring.layer)
         progresser.layer.mask = ring.layer
@@ -63,7 +63,7 @@ class CameraButton: UIView {
         redCircle = UIView(frame: frame)
         redCircle.layer.cornerRadius = redCircle.frame.width/2
         redCircle.clipsToBounds = true
-        redCircle.backgroundColor = UIColor(colorLiteralRed: 205/255, green: 0, blue: 0, alpha: 1.0)
+        redCircle.backgroundColor = UIColor.whiteColor() //UIColor(colorLiteralRed: 205/255, green: 0, blue: 0, alpha: 1.0)
         redCircle.transform = CGAffineTransformMakeScale(0, 0)
         
         interactionView = UIView(frame: frame)
@@ -77,7 +77,7 @@ class CameraButton: UIView {
         press.minimumPressDuration = 0.5
         interactionView.addGestureRecognizer(press)
         interactionView.userInteractionEnabled = true
-        
+
         addSubview(redCircle)
         addSubview(ring)
         addSubview(progresser)
@@ -119,6 +119,10 @@ class CameraButton: UIView {
     
     func updateProgress(progress:CGFloat) {
         progresser.angle = 360.0 * Double(progress)
+        
+        //let red = UIColor(hue: 1.0, saturation: min(1, progress*2), brightness: 1, alpha: 1.0)
+        //redCircle.backgroundColor = red
+        //progresser.setColors(red)
         
     }
     

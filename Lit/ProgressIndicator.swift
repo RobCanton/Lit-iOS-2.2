@@ -20,11 +20,11 @@ class ProgressIndicator: UIView {
         self.clipsToBounds = true
         
         
-        backgroundColor = UIColor(white: 1.0, alpha: 0.25)
+        backgroundColor = UIColor(white: 1.0, alpha: 0.35)
         
         progress = UIView()
         resetProgress()
-        progress.backgroundColor = UIColor(white: 1.0, alpha: 0.5)
+        progress.backgroundColor = UIColor(white: 1.0, alpha: 0.70)
         addSubview(progress)
     }
     

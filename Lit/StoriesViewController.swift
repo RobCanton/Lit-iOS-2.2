@@ -20,7 +20,7 @@ class LocationStoriesViewController: StoriesViewController {
     override func showOptions() {
         guard let cell = getCurrentCell() else { return }
         guard let item = cell.item else {
-            cell.setForPlay()
+            cell.resumeStory()
             return
         }
         
@@ -30,7 +30,7 @@ class LocationStoriesViewController: StoriesViewController {
             
             
             let cancelActionButton: UIAlertAction = UIAlertAction(title: "Cancel", style: .Cancel) { action -> Void in
-                cell.setForPlay()
+                cell.resumeStory()
             }
             actionSheet.addAction(cancelActionButton)
             
@@ -40,7 +40,7 @@ class LocationStoriesViewController: StoriesViewController {
                     let deleteController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
                     
                     let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
-                        cell.setForPlay()
+                        cell.resumeStory()
                     }
                     deleteController.addAction(cancelAction)
                     
@@ -77,7 +77,7 @@ class LocationStoriesViewController: StoriesViewController {
             let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
             
             let cancelActionButton: UIAlertAction = UIAlertAction(title: "Cancel", style: .Cancel) { action -> Void in
-                cell.setForPlay()
+                cell.resumeStory()
             }
             actionSheet.addAction(cancelActionButton)
             
@@ -85,14 +85,14 @@ class LocationStoriesViewController: StoriesViewController {
                 let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
                 
                 let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
-                    cell.setForPlay()
+                    cell.resumeStory()
                 }
                 alertController.addAction(cancelAction)
                 
                 let OKAction = UIAlertAction(title: "It's Inappropriate", style: .Destructive) { (action) in
                     FirebaseService.reportItem(item, type: ReportType.Inappropriate, showNotification: true, completionHandler: { success in
                         
-                        cell.setForPlay()
+                        cell.resumeStory()
                     })
                 }
                 alertController.addAction(OKAction)
@@ -100,7 +100,7 @@ class LocationStoriesViewController: StoriesViewController {
                 let OKAction2 = UIAlertAction(title: "It's Spam", style: .Destructive) { (action) in
                     FirebaseService.reportItem(item, type: ReportType.Spam, showNotification: true, completionHandler: { success in
                         
-                        cell.setForPlay()
+                        cell.resumeStory()
                     })
                 }
                 alertController.addAction(OKAction2)
@@ -127,7 +127,7 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
         tabBarRef.setTabBarVisible(false, animated: true)
-        
+        print("viewWillAppear")
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(appMovedToBackground), name:UIApplicationDidEnterBackgroundNotification, object: nil)
         
         
@@ -135,6 +135,11 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
             self.statusBarShouldHide = true
             self.setNeedsStatusBarAppearanceUpdate()
         })
+        
+        if self.navigationController!.delegate !== transitionController {
+            print("SHOULD RELOAD TABLE")
+            self.collectionView.reloadData()
+        }
     }
     
     
@@ -148,7 +153,6 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
         
         if let cell = getCurrentCell() {
             cell.setForPlay()
-            cell.optionsTappedHandler = showOptions
         }
         
         if let gestureRecognizers = self.view.gestureRecognizers {
@@ -271,6 +275,8 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
         cell.optionsTappedHandler = showOptions
         cell.storyCompleteHandler = storyComplete
         cell.viewsTappedHandler = showViewers
+        cell.commentsView.userTapped = showAuthor
+        print("CELL SET")
         return cell
     }
     
@@ -287,11 +293,11 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
         popStoryController(true)
     }
     
-    func showAuthor(user:User) {
+    func showAuthor(uid:String) {
         self.navigationController?.delegate = self
         let controller = UIStoryboard(name: "Main", bundle: nil)
             .instantiateViewControllerWithIdentifier("UserProfileViewController") as! UserProfileViewController
-        controller.uid = user.getUserId()
+        controller.uid = uid
         self.navigationController?.pushViewController(controller, animated: true)
     }
     
@@ -329,16 +335,15 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
     func showOptions() {
         guard let cell = getCurrentCell() else { return }
         guard let item = cell.item else {
-            cell.setForPlay()
+            cell.resumeStory()
             return }
 
         if cell.story.getUserId() == mainStore.state.userState.uid {
             
             let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
             
-            
             let cancelActionButton: UIAlertAction = UIAlertAction(title: "Cancel", style: .Cancel) { action -> Void in
-                cell.setForPlay()
+                cell.resumeStory()
             }
             actionSheet.addAction(cancelActionButton)
             
@@ -348,7 +353,7 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
                     let deleteController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
                     
                     let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
-                        cell.setForPlay()
+                        cell.resumeStory()
                     }
                     deleteController.addAction(cancelAction)
                     let storyAction: UIAlertAction = UIAlertAction(title: "Remove from my story", style: .Destructive)
@@ -380,7 +385,7 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
             let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
             
             let cancelActionButton: UIAlertAction = UIAlertAction(title: "Cancel", style: .Cancel) { action -> Void in
-                cell.setForPlay()
+                cell.resumeStory()
             }
             actionSheet.addAction(cancelActionButton)
             
@@ -388,14 +393,14 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
                 let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
                 
                 let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) in
-                    cell.setForPlay()
+                    cell.resumeStory()
                 }
                 alertController.addAction(cancelAction)
                 
                 let OKAction = UIAlertAction(title: "It's Inappropriate", style: .Destructive) { (action) in
                     FirebaseService.reportItem(item, type: ReportType.Inappropriate, showNotification: true, completionHandler: { success in
                         
-                        cell.setForPlay()
+                        cell.resumeStory()
                     })
                 }
                 alertController.addAction(OKAction)
@@ -403,13 +408,13 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
                 let OKAction2 = UIAlertAction(title: "It's Spam", style: .Destructive) { (action) in
                     FirebaseService.reportItem(item, type: ReportType.Spam, showNotification: true, completionHandler: { success in
                         
-                        cell.setForPlay()
+                        cell.resumeStory()
                     })
                 }
                 alertController.addAction(OKAction2)
                 
                 self.presentViewController(alertController, animated: true) {
-                    cell.setForPlay()
+                    cell.resumeStory()
                 }
             }
             actionSheet.addAction(OKAction)
@@ -514,6 +519,7 @@ class StoriesViewController: UIViewController, UICollectionViewDelegate, UIColle
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         let xOffset = scrollView.contentOffset.x
         
+        
         let newItem = Int(xOffset / self.collectionView.frame.width)
         currentIndex = NSIndexPath(forItem: newItem, inSection: 0)
         
@@ -578,6 +584,7 @@ extension UIView
 }
 
 
+
 extension StoriesViewController: View2ViewTransitionPresented {
     
     func destinationFrame(userInfo: [String: AnyObject]?, isPresenting: Bool) -> CGRect {
@@ -598,7 +605,7 @@ extension StoriesViewController: View2ViewTransitionPresented {
     func prepareDestinationView(userInfo: [String: AnyObject]?, isPresenting: Bool) {
         
         if isPresenting {
-            
+            print("isPresenting")
             let indexPath: NSIndexPath = userInfo!["destinationIndexPath"] as! NSIndexPath
             currentIndex = indexPath
             let contentOffset: CGPoint = CGPoint(x: self.collectionView.frame.size.width*CGFloat(indexPath.item), y: 0.0)

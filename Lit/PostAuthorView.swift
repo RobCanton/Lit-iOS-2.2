@@ -19,7 +19,7 @@ class PostAuthorView: UIView {
     
     var user:User?
     var authorTap:UITapGestureRecognizer!
-    var authorTappedHandler:((user:User)->())?
+    var authorTappedHandler:((uid:String)->())?
 
     var locationTap:UITapGestureRecognizer!
     var locationTappedHandler:((location:Location)->())?
@@ -95,7 +95,7 @@ class PostAuthorView: UIView {
     
     func authorTapped(gesture:UITapGestureRecognizer) {
         if user != nil {
-            authorTappedHandler?(user: user!)
+            authorTappedHandler?(uid: user!.getUserId())
         }
     }
     
@@ -103,6 +103,14 @@ class PostAuthorView: UIView {
         if location != nil {
            locationTappedHandler?(location: location!)
         }
+    }
+    
+    func cleanUp() {
+        user = nil
+        location = nil
+        authorImageView.image = nil
+        authorUsernameLabel.text = nil
+        locationLabel.text = nil
     }
     
     let circle = UIView();
@@ -138,6 +146,8 @@ class PostAuthorView: UIView {
         //animateCircle()
         
     }
+    
+    
     func animateCircle() {
         let fromValue = 0.00000000001
         let toValue = 1

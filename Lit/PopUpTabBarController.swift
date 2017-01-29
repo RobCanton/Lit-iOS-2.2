@@ -218,7 +218,7 @@ class PopUpTabBarController: UITabBarController, StoreSubscriber, UITabBarContro
             
             self.tabBar.addSubview(cameraButton)
             
-            cameraActivity = NVActivityIndicatorView(frame: cameraButton.bounds, type: .BallScaleRipple, color: UIColor.whiteColor(), padding: 1.0)
+            cameraActivity = NVActivityIndicatorView(frame: cameraButton.bounds, type: .BallScaleRipple, color: UIColor.whiteColor(), padding: 1.0, speed: 0.75)
             self.cameraButton.addSubview(cameraActivity)
             cameraActivity.userInteractionEnabled = false
             

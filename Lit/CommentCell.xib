@@ -16,21 +16,22 @@
                 <rect key="frame" x="0.0" y="0.0" width="386" height="49"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J7m-wK-Gyg">
-                        <rect key="frame" x="57" y="29" width="42" height="20"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6WB-zi-X86">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6WB-zi-X86">
                         <rect key="frame" x="8" y="8" width="33" height="33"/>
+                        <color key="backgroundColor" white="1" alpha="0.5" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="6WB-zi-X86" secondAttribute="height" multiplier="1:1" id="Bhl-tv-GUS"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K8S-yc-OWp">
                         <rect key="frame" x="57" y="0.0" width="42" height="20"/>
-                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                        <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="15"/>
+                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J7m-wK-Gyg">
+                        <rect key="frame" x="57" y="29" width="42" height="20"/>
+                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="15"/>
                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -42,7 +43,7 @@
                     <constraint firstItem="K8S-yc-OWp" firstAttribute="leading" secondItem="6WB-zi-X86" secondAttribute="trailing" constant="8" id="Oqa-Tt-WtU"/>
                     <constraint firstItem="K8S-yc-OWp" firstAttribute="leading" secondItem="6WB-zi-X86" secondAttribute="trailing" id="PUU-OY-2X7"/>
                     <constraint firstAttribute="bottomMargin" secondItem="6WB-zi-X86" secondAttribute="bottom" id="S0O-MB-PSP"/>
-                    <constraint firstItem="J7m-wK-Gyg" firstAttribute="top" secondItem="K8S-yc-OWp" secondAttribute="bottom" constant="2" id="SPT-Bd-21o"/>
+                    <constraint firstItem="J7m-wK-Gyg" firstAttribute="top" secondItem="K8S-yc-OWp" secondAttribute="bottom" id="SPT-Bd-21o"/>
                     <constraint firstAttribute="trailingMargin" secondItem="6WB-zi-X86" secondAttribute="trailing" constant="337" id="Uhb-CV-LFK"/>
                     <constraint firstAttribute="leadingMargin" secondItem="K8S-yc-OWp" secondAttribute="leading" id="XO2-JA-Gx8"/>
                     <constraint firstItem="K8S-yc-OWp" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="XXX-Q1-uAr"/>

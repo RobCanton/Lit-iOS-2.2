@@ -109,7 +109,6 @@ class StoriesController: UIViewController, UICollectionViewDelegate, UICollectio
         let cell: StoryViewController = collectionView.dequeueReusableCellWithReuseIdentifier("presented_cell", forIndexPath: indexPath) as! StoryViewController
         cell.contentView.backgroundColor = UIColor.blackColor()
         cell.itemSetHandler = delegate?.setCurrentItem
-        cell.authorOverlay.authorTappedHandler = showAuthor
         cell.authorOverlay.locationTappedHandler = showLocation
         cell.optionsTappedHandler = showOptions
         cell.storyCompleteHandler = storyComplete

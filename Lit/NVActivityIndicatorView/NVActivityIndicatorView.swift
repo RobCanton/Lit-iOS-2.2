@@ -332,6 +332,8 @@ public class NVActivityIndicatorView: UIView {
 
     /// Animation type.
     public var type: NVActivityIndicatorType = NVActivityIndicatorView.DEFAULT_TYPE
+    
+    
 
     @available(*, unavailable, message="This property is reserved for Interface Builder. Use 'type' instead.")
     @IBInspectable var typeName: String {
@@ -354,6 +356,8 @@ public class NVActivityIndicatorView: UIView {
         return _animating
     }
     private var _animating: Bool = false
+    
+    private var speed: Float = 1.0
     
     /**
      Returns an object initialized from data in a given unarchiver.
@@ -381,10 +385,11 @@ public class NVActivityIndicatorView: UIView {
      
      - returns: The activity indicator view.
      */
-    public init(frame: CGRect, type: NVActivityIndicatorType? = nil, color: UIColor? = nil, padding: CGFloat? = nil) {
+    public init(frame: CGRect, type: NVActivityIndicatorType? = nil, color: UIColor? = nil, padding: CGFloat? = nil, speed: Float? = nil) {
         self.type = type ?? NVActivityIndicatorView.DEFAULT_TYPE
         self.color = color ?? NVActivityIndicatorView.DEFAULT_COLOR
         self.padding = padding ?? NVActivityIndicatorView.DEFAULT_PADDING
+        self.speed = speed ?? 1.0
         super.init(frame: frame)
         self.hidden = true
     }
@@ -409,7 +414,7 @@ public class NVActivityIndicatorView: UIView {
     public func startAnimating() {
         self.hidden = false
         self._animating = true
-        self.layer.speed = 0.75
+        self.layer.speed = self.speed
         setUpAnimation()
     }
     
